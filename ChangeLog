@@ -1,5 +1,8 @@
 2005-03-01  Li Daobing  <lidaobing@gmail.com>
 
+	* src/CCS2/catordiff.py:
+	  - new calclooptor
+
 	* src/Molecule/atom.py (atomord):
 	  - Fix: can't recognise 'N+'
 

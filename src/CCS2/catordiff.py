@@ -25,6 +25,9 @@ def getlooptor(mol):
     loops = loopdetect.loopdetect(mol)
     assert len(loops) == 1
     loop = loops[0]
+    return calclooptor(mol, loop)
+
+def calclooptor(mol, loop):
     doubleloop = loop * 2
     tors = [mol.calctor(*doubleloop[i:i+4]) for i in range(len(loop))]
     return tors
