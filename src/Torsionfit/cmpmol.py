@@ -2,7 +2,7 @@
 # $Id$
 
 from itcc.Molecule import read, relalist
-from itcc.Torsionfit import tools
+from itcc.Tools import tools
 
 class Cmpresabs:
     "Abstract Compare Result Class"

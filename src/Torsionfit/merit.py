@@ -1,8 +1,9 @@
 # $Id$
 
 import operator
-from itcc.Torsionfir import cmpmol, tools
+from itcc.Torsionfit import cmpmol
 from itcc.Tinker import tinker
+from itcc.Tools import tools
 
 optimize = tinker.batchoptimize
 energy = tinker.batchenergy

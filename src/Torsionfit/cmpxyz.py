@@ -1,6 +1,7 @@
 import math
 from itcc.Molecule import read
-from itcc.Torsionfit import gen, tools
+from itcc.Torsionfit import gen
+from itcc.Tools import tools
 
 __revision__ = "$Id$"
 
