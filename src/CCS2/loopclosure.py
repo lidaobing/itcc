@@ -7,7 +7,7 @@ import pprint
 import itertools
 from copy import copy
 from itcc.Tinker import tinker
-from itcc.CCS2 import loopdetect, base, peptide, R6
+from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei
 from itcc.Molecule import read, write
 from itcc.Tools import tools
 
@@ -42,7 +42,7 @@ class LoopClosure(object):
         self.r6s = tuple(sets.Set(itertools.chain(*self.combinations)))
         printcombinations(self.combinations)
         
-        mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconvergeha)
+        mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self.addtask(mol, ene)
         self._run(mol, ene)
 
@@ -95,7 +95,7 @@ class LoopClosure(object):
             yield taskidx, mol, ene
 
     def getloopatoms(self, mol):
-        loops = loopdetect(mol)
+        loops = loopdetect.loopdetect(mol)
         assert len(loops) == 1
         return loops[0]
 
@@ -155,7 +155,7 @@ class LoopClosure(object):
 def getr6result(coords, r6, dismat):
     if r6type(r6) == (1,1,1,1,1,1,1):
         idxs = tuple(itertools.chain(*r6))
-        return R6.R6(coords, idxs, dismat)
+        return Mezei.R6(coords, idxs, dismat)
     assert False, r6type(r6)
 
 def r6type(r6):

@@ -1,5 +1,4 @@
 # $Id$
-from itcc.CCS2.Mezei import R6
 from itcc.Tools.tools import length
 from itertools import chain
 
@@ -16,7 +15,7 @@ def R6_in_vivo(points):
     return R6(points[:2] + points[-2:],
               len1, len2)
 
-class R6_:
+class R6:
     def __init__(self, data):
         assert len(data) == 7
         self.data = tuple(data)

@@ -1,5 +1,6 @@
 2005-02-04  Li Daobing  <lidaobing@gmail.com>
 
+	* make confsearch.py can run for cycC17
 	* src/Tools/Vector.cpp: remove the can't pass compile code
 	* pylint
 	* move Torsionfit/xyz2gro.py to scripts

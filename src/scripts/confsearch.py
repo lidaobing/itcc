@@ -1,28 +1,10 @@
 #! /usr/bin/python
 # $Id$
-import math
-import os.path
-import time
-import resource
-from itcc.CCS2 import loopclosure, loopdetect
-from itcc.Molecule import writexyz
-from itcc.Tinker import tinker
-from itcc.CCS2 import neighbour, R6combine
+from itcc.CCS2 import loopclosure, R6combine
 
 __revision__ = '$Rev$'
 
-def statstor(mol):
-    loops = loopdetect(mol)
-    assert len(loops) == 1
-    loop = loops[0]
-    doubleloop = loop * 2
-    tors = [math.degrees(mol.calctor(*doubleloop[i:i+4]))
-            for i in range(len(loop))]
-    return tors
-
 def testcyc(ifname, options):
-    neighbour_dict = {1:neighbour.NeighbourI,
-                      2:neighbour.NeighbourII}
     combine_dict = {1:R6combine.R6combine1,
                     2:R6combine.R6combine2,
                     3:R6combine.R6combine3}
@@ -30,26 +12,9 @@ def testcyc(ifname, options):
                                     options.keepbound,
                                     options.searchbound)
     loopc.maxsteps = options.maxsteps
-    loopc.f_neighbour = neighbour_dict[options.neighbour]
     loopc.f_R6combine = combine_dict[options.combine]
     
-    root, ext = os.path.splitext(ifname)
-    
-    time1 = time.time()
-    print time.ctime(time1)
-    goodmol = loopc(ifname)
-    counter = 1
-    for result in goodmol:
-        print '%i: %f, %i' % (counter, result.ene, result.opttimes)
-        print '['+', '.join(['%.1f' % tor for tor in statstor(result.mol)])+']'
-        writexyz(result.mol, file('%s-%05i%s' % (root, counter, ext), 'w+'))
-        counter += 1
-    print 'Times of minimize: %i' % tinker.minimize_count
-    print time.asctime()
-    time2 = time.time()
-    print 'Total Time(physical time): %.2fs' % (time2 - time1)
-    print resource.getrusage(resource.RUSAGE_SELF)
-    print resource.getrusage(resource.RUSAGE_CHILDREN)
+    loopc(ifname)
 
 def main():
     from optparse import OptionParser
@@ -67,9 +32,6 @@ def main():
     parser.add_option('-m', "--maxsteps", dest="maxsteps",
                       default=0, type='int',
                       help='max optimization steps, default is infinite')
-    parser.add_option('-n', "--neighbour", dest="neighbour",
-                      default=1, type='int',
-                      help='-n1: Neig I, -n2: Neig II, default: -n1')
     parser.add_option('-c', "--combine", dest="combine",
                       default=3, type='int',
                       help='-c1: Comb I, -c2: Comb II, -c3: Comb III, '
