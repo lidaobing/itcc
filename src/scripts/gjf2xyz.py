@@ -1,6 +1,9 @@
 #! /usr/bin/env python
+# $Id$
 
 from itcc.Molecule import read, write
+
+__revision__ = '$Rev$'
 
 def gjf2xyz(gjffname, xyzfname):
     ofile = file(xyzfname, 'w+')
