@@ -1,5 +1,7 @@
 # $Id$
+
 __all__ = ["Atom", 'atomsymbol', 'atommass', 'atomchr', 'atomord']
+__revision__ = '$Rev$'
 
 
 _knownAtoms = {}
@@ -67,6 +69,9 @@ class Atom(object):
     def getsymbol(self):
         return self._symbol
     symbol = property(getsymbol)
+
+    def atomchr(self):
+        return atomchr[self._no]
 
 atomsymbol = ['',
               'H',  'He', 'Li', 'Be', 'B',    # 1- 5
