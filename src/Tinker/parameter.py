@@ -61,5 +61,5 @@ def readtorsionprm(prmfname, i, j, k, l):
                 result.append(float(data[0]))
             ifile.close()
             return result
-            
+    return None
             

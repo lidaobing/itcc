@@ -1,6 +1,6 @@
 # $Id$
 
-__all__ = ['Relalist', 'genR', 'genA', 'genD', 'genI']
+__all__ = ['Relalist', 'genconns', 'genR', 'genA', 'genD', 'genI']
 
 class Relalist:
     """
