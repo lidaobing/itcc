@@ -2,8 +2,8 @@
 """extend Mezei's method to protein.
 """
 import math
-from itcc.CC2 import pyramid
-from itcc.CC2 import config
+from itcc.CCS2 import pyramid
+from itcc.CCS2 import config
 
 __revision__ = '$Rev$'
 
