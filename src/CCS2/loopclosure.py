@@ -23,7 +23,7 @@ class LoopClosure(object):
         self.searchrange = searchrange
         self.maxsteps = None
         self.eneerror = 0.0001          # unit: kcal/mol
-        self.torerror = 1               # unit: degree
+        self.torerror = 10              # unit: degree
         self.moltypekey = None
         self.tasks = []                 # List of (mol, ene)
         self.taskheap = []              # Heap of (ene, taskidx)

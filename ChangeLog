@@ -1,3 +1,11 @@
+2005-03-04  Li Daobing  <lidaobing@gmail.com>
+
+	* Makefile: change default to python2.4
+
+	* src/CCS2/loopclosure.py:
+	  - Change default torerror to 10 degrees(See JACS, 119,
+	  5657(1997), Ref 49)
+
 2005-03-01  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/loopclosure.py (LoopClosure.findneighbor): check
