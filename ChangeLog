@@ -1,3 +1,7 @@
+2005-02-08  Li Daobing  <lidaobing@gmail.com>
+
+	* change file's encoding from gb2312 to utf-8.
+
 2005-02-06  Li Daobing  <lidaobing@gmail.com>
 
 	* src/Molecule/tools.py (distmat): 从

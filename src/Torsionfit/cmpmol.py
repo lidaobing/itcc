@@ -1,4 +1,4 @@
-# -*- coding: gb2312 -*-
+# -*- coding: utf8 -*-
 # $Id$
 
 from itcc.Molecule import read, relalist
@@ -19,7 +19,7 @@ class Cmpresabs:
             return cmp(abs(self._cmpres[3]), abs(other._cmpres[3]))
         else:
             return cmp(abs(self._cmpres[3]), other)
-    
+
     def _str(self, config):
         result = "%s: " + config * 3
         return result % tuple(self._cmpres)
@@ -45,7 +45,7 @@ class Cmpresult:
         self.angles = []
         self.torsions = []
         self.displacement = []
-        
+
 
     def maxbondchange(self):
         return max(self.bonds)
@@ -90,8 +90,8 @@ class Batchcmpresult(list):
         data = []
         for cmpres in self:
             data.extend([x[1] for x in cmpres.displacement])
-        return max(data)        
-        
+        return max(data)
+
 def cmpmol(mol1, mol2, cmplist = None):
     if cmplist is None:
         cmplist1 = relalist.Relalist(mol1)
@@ -107,12 +107,12 @@ def cmpmol(mol1, mol2, cmplist = None):
         b1 = mol1.calclen(x[0], x[1])
         b2 = mol2.calclen(x[0], x[1])
         result.bonds.append(Cmpresbon(x, b1, b2, b1-b2))
-        
+
     for x in cmplist.angles:
         b1 = mol1.calcang(x[0], x[1], x[2])
         b2 = mol2.calcang(x[0], x[1], x[2])
         result.angles.append(Cmpresang(x, b1, b2, b1-b2))
-        
+
     for x in cmplist.torsions:
         b1 = mol1.calctor(x[0], x[1], x[2], x[3])
         b2 = mol2.calctor(x[0], x[1], x[2], x[3])
@@ -125,13 +125,13 @@ def cmpmol(mol1, mol2, cmplist = None):
 
     for i in range(len(mol1)):
         result.displacement.append([i, tools.distance(mol1[i], mol2[i])])
-        
+
     return result
 
 def cmpmolfile(file1, file2, cmplist = None, f1type='xyz', f2type=None):
     if f2type is None:
         f2type = f1type
-    
+
     f1read = getattr(read, 'read'+f1type)
     f2read = getattr(read, 'read'+f2type)
     mol1 = f1read(file1)
@@ -146,16 +146,16 @@ def batchcmpmolfile(flist1, flist2):
         result.append(cmpmolfile(file1, file2, cmplist))
 
     return result
-                      
+
 def cmpmoltop(mol1, mol2):
-    "比较拓朴结构"
+    "姣旇緝鎷撴湸缁撴瀯"
     if len(mol1.atoms) != len(mol2.atoms):
         return False
-    
+
     for i in xrange(len(mol1.atoms)):
         if mol1.atoms[i]._no != mol2.atoms[i]._no:
             return False
-        
+
     mol1.confirmconnect()
     mol2.confirmconnect()
 
@@ -163,11 +163,3 @@ def cmpmoltop(mol1, mol2):
         return False
     else:
         return True
-
-
-    
-    
-
-
-
-

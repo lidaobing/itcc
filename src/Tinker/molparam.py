@@ -1,4 +1,4 @@
-# -*- coding: gb2312 -*-
+# -*- coding: utf8 -*-
 # $Id$
 
 from sets import Set
@@ -12,7 +12,7 @@ class Param:
         self.param = {}
 
 def bond_uni(l):
-    "¼ü±àºÅÕı¹æ»¯"
+    "é”®ç¼–å·æ­£è§„åŒ–"
     r = list(l)
     assert len(r) == 2
     if r[0] > r[1]:
@@ -20,7 +20,7 @@ def bond_uni(l):
     return tuple(r)
 
 def angle_uni(l):
-    "¼ü½Ç±àºÅÕı¹æ»¯"
+    "é”®è§’ç¼–å·æ­£è§„åŒ–"
     r = list(l)
     assert len(r) == 3
     if r[0] > r[2]:
@@ -28,7 +28,7 @@ def angle_uni(l):
     return tuple(r)
 
 def torsion_uni(l):
-    "¶şÃæ½Ç±êºÅÕı¹æ»¯"
+    "äºŒé¢è§’æ ‡å·æ­£è§„åŒ–"
     r = list(l)
     assert len(r) == 4
     if r[1] > r[2] or (r[1] == r[2] and r[0] > r[3]):
@@ -36,7 +36,7 @@ def torsion_uni(l):
     return tuple(r)
 
 def imptor_uni(l):
-    "imptor±àºÅÕı¹æ»¯"
+    "imptorç¼–å·æ­£è§„åŒ–"
     r = l[:2] + l[3:4]
     r.sort()
     r.insert(2, l[2])
