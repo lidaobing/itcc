@@ -1,6 +1,7 @@
 # $Id$
 import os
 import os.path
+import math
 import bisect
 import heapq
 import sets
@@ -8,7 +9,7 @@ import pprint
 import itertools
 import time
 from itcc.Tinker import tinker
-from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, shake
+from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, shake, catordiff
 from itcc.Molecule import read, write, tools as moltools
 from itcc.Tools import tools
 
@@ -21,11 +22,12 @@ class LoopClosure(object):
         self.keeprange = keeprange
         self.searchrange = searchrange
         self.maxsteps = None
-        self.eneerror = 0.0000
+        self.eneerror = 0.0001          # unit: kcal/mol
+        self.torerror = 1               # unit: degree
         self.moltypekey = None
-        self.tasks = []
-        self.taskheap = []
-        self.enes = []
+        self.tasks = []                 # List of (mol, ene)
+        self.taskheap = []              # Heap of (ene, taskidx)
+        self.enes = []                  # Sorted List of (ene, taskidx)
         self.minconverge = 0.001
         self.molnametmp = None
         self.newmolnametmp = None
@@ -75,27 +77,43 @@ class LoopClosure(object):
         print
 
         for newmol, newene in self.findneighbor(mol):
-            if self.isuseful(newene):
+            if self.isuseful(newmol, newene):
                 self.addtask(newmol, newene)
             if newene < self.lowestene:
                 self.lowestene = newene
-                if ene >= self.searchbound:
+                if self.searchbound is not None and ene >= self.searchbound:
                     return
 
-    def isuseful(self, ene):
-        if not self.isnewene(ene):
-            return False
-        if self.keeprange is None or self.searchrange is None:
-            return True
-        if ene <= self.keepbound or ene <= self.searchbound:
-            return True
-        return False
+    def isuseful(self, mol, ene):
+        if self.keeprange is not None and \
+           self.searchrange is not None:
+            if ene > max(self.keepbound, self.searchbound):
+                return False
+        return self.isnewene(mol, ene)
+
+    def isnewene(self, mol, ene):
+        initidx = bisect.bisect(self.enes, (ene,))
+        for idx in range(initidx-1, -1, -1):
+            ene2 = self.enes[idx][0]
+            if round(ene - ene2, 4) > self.eneerror:
+                break
+            mol2 = self.tasks[self.enes[idx][1]][0]
+            if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
+                return False
+        for idx in range(initidx, len(self.enes)):
+            ene2 = self.enes[idx][0]
+            if round(ene2 - ene, 4) > self.eneerror:
+                break
+            mol2 = self.tasks[self.enes[idx][1]][0]
+            if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
+                return False
+        return True
 
     def addtask(self, mol, ene):
         self.tasks.append((mol, ene))
         taskidx = len(self.tasks) - 1
         heapq.heappush(self.taskheap, (ene, taskidx))
-        bisect.insort(self.enes, ene)
+        bisect.insort(self.enes, (ene, taskidx))
         print
         print '    Potential Surface Map       Minimum ' \
               '%6i %21.4f' % (taskidx+1, ene)
@@ -124,23 +142,21 @@ class LoopClosure(object):
 
     def printend(self):
         print 'Endtime: %s' % time.asctime()
+        try:
+            import resource
+        except ImportError:
+            pass
+        else:
+            res = resource.getrusage(resource.RUSAGE_CHILDREN)
+            print 'Time used by external program: %.1fs(%.1f+%.1f)' % (res[0]+res[1], res[0], res[1])
+            res = resource.getrusage(resource.RUSAGE_SELF)
+            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' % (res[0]+res[1], res[0], res[1])
 
     def writemol(self, idx, mol, ene):
         ofname = self.molnametmp % idx
         ofile = file(ofname, 'w+')
         write.writexyz(mol, ofile, '%.4f' % ene)
         ofile.close()
-
-    def isnewene(self, ene):
-        idx = bisect.bisect(self.enes, ene)
-        if idx - 1 >= 0 and \
-               round(abs(self.enes[idx-1] - ene), 4) <= self.eneerror:
-            return False
-        if idx < len(self.enes) and \
-               round(abs(self.enes[idx] - ene), 4) <= self.eneerror:
-            return False
-        bisect.insort(self.enes, ene)
-        return True
 
     def findneighbor(self, mol):
         coords = mol.coords

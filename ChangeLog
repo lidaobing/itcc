@@ -1,6 +1,8 @@
 2005-02-17  Li Daobing  <lidaobing@gmail.com>
 
-	* src/CCS2/loopclosure.py: add printend(print the end time)
+	* src/CCS2/loopclosure.py:
+	  - add printend(print the end time, time usage)
+	  - isnewene will check the tordiff
 
 2005-02-16  Li Daobing  <lidaobing@gmail.com>
 

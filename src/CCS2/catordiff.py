@@ -4,7 +4,7 @@
 import sys
 import math
 from itcc.Tools import periodnumber
-from itcc.Molecule import read
+from itcc.Molecule import read, molecule
 from itcc.CCS2 import loopdetect
 
 __revision__ = '$Rev$'
@@ -15,6 +15,8 @@ debug = False
 Angle = periodnumber.genPNclass(-math.pi, math.pi)
 
 def catordiff(mol1, mol2):
+    assert isinstance(mol1, molecule.Molecule)
+    assert isinstance(mol2, molecule.Molecule)
     tors1 = getlooptor(mol1)
     tors2 = getlooptor(mol2)
     return tordiff(tors1, tors2)
