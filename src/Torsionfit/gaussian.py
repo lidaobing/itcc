@@ -1,6 +1,5 @@
 import os
-import molecular
-from itcc.Molecule import atom
+from itcc.Molecule import atom, molecule
 
 __revision__ = '$Id$'
 
@@ -70,7 +69,7 @@ def out2mol(outfname):
     i3 = 0
     for i1, x in enumerate(line1):
         
-        mol = molecular.Molecular()
+        mol = molecule.Molecule()
         
         while line2[i2] < x:
             i2 += 1

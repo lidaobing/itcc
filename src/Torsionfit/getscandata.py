@@ -1,5 +1,6 @@
 import re
-from molecular import Molecular, Atom
+from itcc.Molecule.molecule import Molecule
+from itcc.Molecule.atom import Atom
 
 def beginoflink(ifile, linknum):
     restr = '(Enter .*l%d.exe)' % linknum
@@ -14,7 +15,7 @@ def beginoflink(ifile, linknum):
     return None
 
 def getxyz_202(ifile):
-    mol = Molecular()
+    mol = Molecule()
 
     while 1:
         line = ifile.readline()
