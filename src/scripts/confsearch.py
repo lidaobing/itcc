@@ -5,7 +5,7 @@ import os.path
 import time
 import resource
 from itcc.CCS2 import loopclosure, loopdetect
-from itcc.Molecular import readxyz, writexyz
+from itcc.Molecule import readxyz, writexyz
 from itcc.Tinker import tinker
 from itcc.CCS2 import neighbour, R6combine
 
