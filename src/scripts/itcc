@@ -6,6 +6,7 @@ import os.path
 import itcc
 from itcc.Molecule import rmsd
 from itcc.CCS2 import catordiff
+from itcc.Torsionfit import parmfit
 
 __revision__ = '$Rev$'
 

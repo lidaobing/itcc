@@ -1,8 +1,9 @@
 2005-02-25  Li Daobing  <lidaobing@gmail.com>
 
+	* src/scripts/itcc: fix bug. 
 	* merge 146:147 from 0.2 branches
 	  - src/scripts/sumxyz.py: fix bugs.
-   	  - src/Tools/tools.py (datafreq):add this function from torpy to
+	  - src/Tools/tools.py (datafreq):add this function from torpy to
 	  support sumxyz 
 	
 	* merge 0.2.6 to trunk
