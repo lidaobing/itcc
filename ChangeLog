@@ -1,5 +1,8 @@
 2005-03-04  Li Daobing  <lidaobing@gmail.com>
 
+	* src/Molecule/tools.py: Move connectatoms and neighborlist from
+	Molecule to tools
+
 	* src/CCS2/Mezeipro.py: use all 16 results(instead of 4)
 
 	* Makefile: change default to python2.4

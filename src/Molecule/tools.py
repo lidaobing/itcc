@@ -21,3 +21,23 @@ def calclooptor(mol, loop):
     doubleloop = loop * 2
     tors = [mol.calctor(*doubleloop[i:i+4]) for i in range(len(loop))]
     return tors
+
+def connectatoms(mol, atmidx):
+    connect = mol.connect[atmidx]
+    return [idx for idx, data in enumerate(connect)
+            if data]
+
+def neighborlist(mol):
+    '''return the neighborlist
+    for example, for CH4, will return
+    [[1, 2, 3, 4],
+    [0],
+    [0],
+    [0],
+    [0]]
+    '''
+    result = []
+    for atmidx in range(len(mol.atoms)):
+        result.append(connectatoms(mol, atmidx))
+    return result
+

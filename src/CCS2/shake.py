@@ -2,6 +2,7 @@
 
 from Scientific.Geometry import Vector
 from itcc.Tools import cpptools
+from itcc.Molecule import tools
 
 __revision__ = '$Rev$'
 
@@ -13,7 +14,7 @@ class Shake:
         return self.func(coords, distmat, self.idxs)
 
 def shakedata(mol, loopatoms):
-    neighborlist = mol.neighborlist()
+    neighborlist = tools.neighborlist(mol)
     results = {}
 
     for atmidx in loopatoms:

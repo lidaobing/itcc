@@ -71,25 +71,6 @@ class Molecule(object):
     def delconnect(self, j, i):
         self.connect[i, j] = self.connect[j, i] = 0
 
-    def connectatoms(self, atmidx):
-        connect = self.connect[atmidx]
-        return [idx for idx, data in enumerate(connect)
-                if data]
-
-    def neighborlist(self):
-        '''return the neighborlist
-        for example, for CH4, will return
-        [[1, 2, 3, 4],
-         [0],
-         [0],
-         [0],
-         [0]]
-        '''
-        result = []
-        for atmidx in range(len(self.atoms)):
-            result.append(self.connectatoms(atmidx))
-        return result
-
     def mainchain(self):
         """
         return a new Molecule object, 去掉所有的H原子
