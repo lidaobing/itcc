@@ -12,3 +12,4 @@ def distmat(mol):
             distance = (mol.coords[i] - mol.coords[j]).length()
             result[i, j] = distance
             result[j, i] = distance
+    return result

@@ -18,18 +18,11 @@ class Molecule(object):
         self.coords = coords or []
         self.connect = connect
 
-    def __getstate__(self):
-        return [self.atoms, self.coords, self.connect]
-
-    def __setstate__(self, state):
-        self.atoms = state[0]
-        self.coords = state[1]
-        self.connect = state[2]
-
     def __copy__(self):
-        return Molecule(self.atoms[:], self.coords[:], self.connect)
+        return Molecule(self.atoms[:], self.coords[:], self.connect.copy())
 
     __deepcopy__ = __copy__
+    copy = __copy__
 
     def __len__(self):
         return len(self.atoms)
@@ -77,6 +70,11 @@ class Molecule(object):
 
     def delconnect(self, j, i):
         self.connect[i, j] = self.connect[j, i] = 0
+
+    def connectatoms(self, atmidx):
+        connect = self.connect[atmidx]
+        return [idx for idx, data in enumerate(connect)
+                if data]
 
     def mainchain(self):
         """
