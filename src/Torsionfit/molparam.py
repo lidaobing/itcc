@@ -2,7 +2,7 @@
 # $Id$
 
 from sets import Set
-from itcc.Torsionfit.relalist import Relalist
+from itcc.Molecule.relalist import Relalist
 
 class Param:
     def __init__(self):
@@ -135,7 +135,7 @@ def molparam(mol, prmfile):
     angles = list(angles)
     def angles_sort(x, y):
         if x[1] == y[1]:
-            return cmp(x,y)
+            return cmp(x, y)
         else:
             return cmp(x[1], y[1])
     angles.sort(angles_sort)
@@ -152,11 +152,11 @@ def molparam(mol, prmfile):
         
     torsions = list(torsions)
 
-    def torsions_sort(x,y):
+    def torsions_sort(x, y):
         result = cmp(x[1:3], y[1:3])
 
         if result == 0:
-            return cmp(x,y)
+            return cmp(x, y)
         else:
             return result
 
@@ -169,10 +169,10 @@ def molparam(mol, prmfile):
     for x in rl.imptors:
         imptors.add(tuple(imptor_uni([int(classes[y-1]) for y in x])))
     imptors = list(imptors)
-    def imptor_sort(x,y):
+    def imptor_sort(x, y):
         result = cmp(x[2], y[2])
         if result == 0:
-            return cmp(x,y)
+            return cmp(x, y)
         else:
             return result
     imptors.sort(imptor_sort)

@@ -1,8 +1,8 @@
 # -*- coding: gb2312 -*-
 # $Id$
 
-from itcc.Molecule import read
-from itcc.Torsionfit import relalist, tools
+from itcc.Molecule import read, relalist
+from itcc.Torsionfit import tools
 
 class Cmpresabs:
     "Abstract Compare Result Class"
