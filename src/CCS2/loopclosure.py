@@ -12,8 +12,7 @@ from itcc.CCS2.R6combine import R6combine3
 from itcc.CCS2.neighbour import NeighbourI
 from itcc.CCS2.neighbour import calctor
 from itcc.CCS2.tors import TorsSet
-from itcc.CCS2 import getshakeHdata
-from itcc.CCS2 import loopdetect
+from itcc.CCS2 import getshakeHdata, loopdetect, peptide
 from itcc.CCS2.searchresult import SearchResult
 
 __all__ = ['LoopClosure']
@@ -62,9 +61,9 @@ class LoopClosure(object):
         self.printparams()
         
         mol, ene = tinker.optimizemol(mol, self.forcefield)
-
+        moltype = peptide.Peptide(mol)
         self.loopatoms = self.getloopatoms(mol)
-        self.R6s = self.getR6s(self.loopatoms)
+        self.R6s = moltype.getr6s(self.loopatoms)
         self.printR6s(self.R6s)
         self.combinations = self.getcombinations(self.R6s)
         self.printcombinations(self.combinations)
