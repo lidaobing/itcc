@@ -1,0 +1,33 @@
+                                                       -*- outline -*-
+
+* CCS2
+** use sidechain to replace shake
+shake algorithm can't deal with the complex sidechain
+
+** implement another R6 algorithm provide by Sha Yao
+
+** autodetect the logic symmetry of molecule
+and a general method to deal with symmetry relation functions.
+
+** support all-kinds of peptide.
+
+* Molecule
+** clean Molecule class
+keep Molecule class small and clean, remove other methods to
+src/Molecule/tools.py.
+
+** full-implement RMSD
+now rmsd.py doesn't consider translation and rotation
+
+** support more file formats
+PDF
+gjf
+mae
+Tinker int
+
+** support auto-detection of file format
+
+* Tinker
+** detect error happened
+If the input parameter is error, for example, xyz file not exist or
+param file not exist, the program will hang.
