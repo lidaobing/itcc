@@ -1,1 +1,3 @@
-from tinker import optimizemol, minimizemol
+# $Id$
+
+__revision__ = '$Rev$'
