@@ -1,4 +1,3 @@
-# -*- coding: utf8 -*-
 # $Id$
 import pprint
 import bisect
@@ -65,7 +64,7 @@ class LoopClosure(object):
         self.loopatoms = self.getloopatoms(mol)
         self.R6s = moltype.getr6s(self.loopatoms)
         self.printR6s(self.R6s)
-        self.combinations = self.getcombinations(self.R6s)
+        self.combinations = moltype.getcombinations(self.R6s)
         self.printcombinations(self.combinations)
         tors = calctor(mol.coords, self.loopatoms)
         self.knownmols = self.torsset([tors])

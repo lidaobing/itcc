@@ -25,16 +25,25 @@ class Peptide:
                 newloopatoms.append((loopatoms[idx], loopatoms[idx+1]))
                 idx += 2
             else:
-                newloopatoms.append(loopatoms[idx])
+                newloopatoms.append((loopatoms[idx],))
                 idx += 1
         if idx == len(loopatoms) - 1:
-            newloopatoms.append(loopatoms[-1])
+            newloopatoms.append((loopatoms[-1],))
         else:
             assert idx == len(loopatoms)
 
         doubleloop = newloopatoms * 2
         
         return [tuple(doubleloop[i:i+7]) for i in range(len(newloopatoms))]
+
+    def getcombinations(self, R6s):
+        result = []
+        for R6 in R6s:
+            if len(R6[3]) == 2:
+                continue
+            assert tuple([len(x) for x in R6]) == (2,1,2,1,2,1,2)
+            result.append((R6,))
+        return result
 
 def gettypes(mol, idxs):
     result = []
