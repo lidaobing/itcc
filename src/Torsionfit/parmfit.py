@@ -108,7 +108,7 @@ def parmfit(datfname, idxfname, param):
         E_fit = E_qm - E_mm + E_tor
         weight = math.sqrt(weight)
         B.append(E_fit * weight)
-        A.append([x*weight for x in getA(mol, idxs, folds, tors)])
+        A.append([x*weight for x in getA(newmol, idxs, folds, tors)])
     A = Numeric.array(A)
     B = Numeric.array(B)
 
