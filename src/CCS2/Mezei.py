@@ -44,7 +44,7 @@ def _calc_p3(points, d13, d35):
     p5 = points[2]
     V15 = p5 - p1
     d15 = V15.length()
-    
+
     if d13 + d35 < d15 or d13 + d15 < d35 or d15 + d35 < d13:
         return None
 
@@ -61,9 +61,9 @@ def _calc_p2_p4(points, len1, len2, p3_result, angle):
     p0, p1, p5, p6 = tuple(points)
     d12, d23, d34, d45 = tuple(len1)
     d02, d13, d24, d35, d46 = tuple(len2)
-    
+
     threshold = config.get('Mezei_p24_threshold', -0.01*0.01)
-    
+
     p3o, p3x, p3y = p3_result
     p3 = p3o + p3x * cos(angle) + p3y * sin(angle)
     p2s, z2s = pyramid(p0, p1, p3, d02, d12, d23)
@@ -85,11 +85,11 @@ class p24_Resolver:
     def __call__(self, angle):
         self.p3 = self.p3o + self.p3x * cos(angle) + self.p3y * sin(angle)
         p2s, z2s = pyramid(self.p0, self.p1, self.p3, self.d02,
-                           self.d12, self.d23) 
+                           self.d12, self.d23)
         if z2s < self.threshold:
             return None
         p4s, z4s = pyramid(self.p6, self.p5, self.p3, self.d46,
-                           self.d45, self.d34) 
+                           self.d45, self.d34)
         if z4s < self.threshold:
             return None
         if self.mode == -1:
@@ -103,22 +103,22 @@ class p24_Resolver:
     def switch(self, mode):
         self.mode = mode
 
-def R6(points, len1, len2):
+def _R6(points, len1, len2):
     assert(len(points) == 4 and
            len(len1) == 4 and
            len(len2) == 5)
-    p0,p1,p5,p6 = tuple(points)
-    d12,d23,d34,d45 = tuple(len1)
-    d02,d13,d24,d35,d46 = tuple(len2)
+    p0, p1, p5, p6 = tuple(points)
+    d12, d23, d34, d45 = tuple(len1)
+    d02, d13, d24, d35, d46 = tuple(len2)
 
-    p3_result = _calc_p3((p0,p1,p5), d13, d35)
+    p3_result = _calc_p3((p0, p1, p5), d13, d35)
     if p3_result is None:
         return []
     p3o, p3x, p3y = p3_result
-    
+
     steps = config.get('Mezei_R6_steps', 36)
     step = 2 * pi / steps
-    
+
     d24s = Numeric.zeros((4, steps+1), Numeric.Float)
     for i in range(steps):
         angle = i * step
@@ -140,15 +140,35 @@ def R6(points, len1, len2):
         p24_res.switch(i)
         for j in range(steps):
             if d24s[i][j] and d24s[i][j+1] and \
-                   (d24s[i][j] - d24)*(d24s[i][j+1] - d24) <= 0: 
+                   (d24s[i][j] - d24)*(d24s[i][j+1] - d24) <= 0:
                 angle = rtbis(p24_res, j*step, (j+1)*step, 0.1)
                 result.append((i, angle, p24_res.p2, p24_res.p3, p24_res.p4))
     return result
-        
 
-if __name__ == '__main__':
-    from Scientific.Geometry import Vector
-    p0 = Vector(0.0, 0.0, 1.0)
-    p1 = Vector(0.0, 0.0, 0.0)
-    p5 = Vector(1.0, 0.0, 0.0)
-    print _calc_p3([p0, p1, p5], 1.4, 1.4)
+def __R6(coords, atmidx, dismat):
+    results = []
+    assert len(atmidx) == 7
+    points = [coords[atmidx[i]] for i in (0, 1, 5, 6)]
+    len1idx = ((1, 2), (2, 3), (3, 4), (4, 5))
+    len1 = [dismat[atmidx[i], atmidx[j]] for i, j in len1idx]
+    len2idx = ((0, 2), (1, 3), (2, 4), (3, 5), (4, 6))
+    len2 = [dismat[atmidx[i], atmidx[j]] for i, j in len2idx]
+    for _result in _R6(points, len1, len2):
+        result = {}
+        result[atmidx[2]] = _result[2]
+        result[atmidx[3]] = _result[3]
+        result[atmidx[4]] = _result[4]
+        results.append(result)
+    return results
+
+def R6(coords, atmidx, dismat, shakedata):
+    '''Wrapped R6 algorithm, include R6 and shakeH'''
+    shakes = [shakedata[idx] for idx in atmidx[1:-1]]
+    for baseresult in __R6(coords, atmidx, dismat):
+        newcoords = coords[:]
+        for idx, newcoord in baseresult.items():
+            newcoords[idx] = newcoord
+        for shake in shakes:
+            baseresult.update(shake(newcoords, dismat))
+        yield baseresult
+

@@ -1,5 +1,7 @@
 2005-02-15  Li Daobing  <lidaobing@gmail.com>
 
+	* src/CCS2/Mezei.py: rename `R6' to `__R6', and add new `R6', the
+	new R6 include shake procedure.
 	* src/CCS2/loopclosure.py: add `LoopClosure.shakehdata', this
 	variable store the shake information for the `getr6result'
 	* src/CCS2/shake.py: rename `shakehdata' to `shakedata'
