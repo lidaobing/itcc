@@ -1,19 +1,4 @@
 # $Id$
-# $Log: merit.py,v $
-# Revision 1.5  2004/02/04 06:14:28  nichloas
-# *** empty log message ***
-#
-# Revision 1.4  2003/12/04 11:38:46  nichloas
-# add class Detailmerit
-#
-# Revision 1.3  2003/12/01 05:42:09  nichloas
-# bug fix.
-#
-# Revision 1.2  2003/11/20 16:44:05  nichloas
-# big modify
-#
-#
-
 
 import cmpmol
 import tinker
@@ -124,7 +109,7 @@ def test2():
 
 
 def test():
-    import parameter
+    from itcc.Tinker import parameter
     params = ((1,21,30,1,4.669,5.124,0.0),
               (1,1,30,21,-1.220,-0.126,0.422),
               (21,1,1,30,0.845,-0.962,0.713),
