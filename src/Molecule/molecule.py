@@ -6,9 +6,9 @@ from Scientific.Geometry import Vector
 from itcc.Tools import tools
 from atom import *
 
-__all__ = ["Molecular"]
+__all__ = ["Molecule"]
         
-class Molecular(object):
+class Molecule(object):
     __maxbondlen = 1.6
 
     def __init__(self, atoms = None, coords = None, connect = None):
@@ -25,7 +25,7 @@ class Molecular(object):
         self.connect = state[2]
 
     def __copy__(self):
-        return Molecular(self.atoms[:], self.coords[:], self.connect)
+        return Molecule(self.atoms[:], self.coords[:], self.connect)
 
     __deepcopy__ = __copy__
 
@@ -39,7 +39,7 @@ class Molecular(object):
         self.atoms[key], self.coords[key] = value
 
     def __str__(self):
-        results = ['Molecular(\n']
+        results = ['Molecule(\n']
         results.append(pprint.pformat(self.atoms))
         results.append(',\n')
         results.append(pprint.pformat(self.coords))
@@ -84,9 +84,9 @@ class Molecular(object):
 
     def mainchain(self):
         """
-        return a new Molecular object, 去掉所有的H原子
+        return a new Molecule object, 去掉所有的H原子
         """
-        result = Molecular()
+        result = Molecule()
         for x in self.atoms:
             if x.no != 1:                # 如果x不是H原子
                 result.atoms.append(x.copy())
@@ -111,7 +111,7 @@ class Molecular(object):
 
     def center(self):
         '''
-        return the mass center of the molecular (x0, y0, z0)
+        return the mass center of the Molecule (x0, y0, z0)
         if there is no atom, return (0.0, 0.0, 0.0)
         '''
         if len(self) == 0:
@@ -129,7 +129,7 @@ class Molecular(object):
         return result
 
     def reorder(self, neworder):
-        '''build a new Molecular with neworder, keep connect, you can only
+        '''build a new Molecule with neworder, keep connect, you can only
         keep a subset of old atoms'''
         class IdxAtom:
             def __init__(self, atom, coord, idx):
@@ -150,7 +150,7 @@ class Molecular(object):
             atoms[oldidx].idx = newidx
             newatoms.append(atoms[oldidx])
         
-        result = Molecular()
+        result = Molecule()
         for idxatom in newatoms:
             result.addatom(idxatom.atom, idxatom.coord)
         for connect in connects:

@@ -1,7 +1,7 @@
-from itcc.Molecular.molecular import *
+from itcc.Molecule.molecule import *
 
 def writexyz(mol, ofile, comment=None):
-    assert(isinstance(mol, Molecular))
+    assert(isinstance(mol, Molecule))
 
     ofile.write('%6i' % len(mol))
     if comment is not None:

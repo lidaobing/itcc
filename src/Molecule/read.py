@@ -6,8 +6,8 @@ import re
 from os.path import splitext
 from Scientific.IO import PDB
 from Scientific.Geometry import Vector
-from itcc.Molecular.molecular import *
-from itcc.Molecular.atom import Atom
+from itcc.Molecule.molecule import *
+from itcc.Molecule.atom import Atom
 
 
 
@@ -30,7 +30,7 @@ class FormatError(Exception):
 #
 # conect_format = FortranFormat('A6,11I5')
 # def readpdb(ifname):
-#     mol = Molecular()
+#     mol = Molecule()
 #     ifile = PDB.PDBFile(ifname)
 #     while 1:
 #         rectyp, data = ifile.readLine()
@@ -51,7 +51,7 @@ class FormatError(Exception):
 #     ifile = file(ifname)
 
 #     blanklines = 0
-#     mol = Molecular()
+#     mol = Molecule()
 
 #     while blanklines < 2:
 #         line = ifile.readline().strip()
@@ -74,10 +74,10 @@ class FormatError(Exception):
 #     return mol
 
 def readxyz(ifile):
-    """readxyz(ifile) => Molecular
+    """readxyz(ifile) => Molecule
     if got errors, raise FormatError
     """
-    mol = Molecular()
+    mol = Molecule()
 
     connects = []
 
