@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# $Id$
+
+__revision__ = '$Rev$'
 
 def findatom(ifname, atmclass2):
     ifile = file(ifname)

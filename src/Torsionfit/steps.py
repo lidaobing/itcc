@@ -1,7 +1,9 @@
 # $Id$
 
-import os, string, math
+import os, math
 import Gnuplot
+
+__revision__ = '$Rev$'
 
 tangle = [[5,6,8,9],[5,6,8,10],[5,6,8,11]]
 prm = ''
@@ -24,7 +26,7 @@ def _parsetemp(ifilename, ofilename, col):
     lines = ifile.readlines()
     ifile.close()
 
-    lines = map(string.split, lines)
+    lines = [line.split() for line in lines]
     lines = [x[col]+'\n' for x in lines]
 
     ofile = file(ofilename, 'w+')
@@ -153,7 +155,7 @@ def _step4(ifilename, ofilename):
     lines = ifile.readlines()
     ifile.close()
 
-    lines = map(string.split, lines)
+    lines = [line.split() for line in lines]
 
     ofile = file(ofilename, 'w+')
 

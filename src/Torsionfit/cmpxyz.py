@@ -1,8 +1,9 @@
+# $Id$
 import math
 from itcc.Molecule import read, relalist
 from itcc.Tools import tools
 
-__revision__ = "$Id$"
+__revision__ = "$Rev$"
 
 def maxb(seq):
     m = 0

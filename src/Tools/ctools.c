@@ -1,20 +1,4 @@
-/*  
- * $Id$
- * $Log: ctools.c,v $
- * Revision 1.5  2003/11/28 12:33:16  nichloas
- * little bug fix
- *
- * Revision 1.4  2003/11/28 12:30:48  nichloas
- * torsionangle returns in radian
- * angle returns in radian
- *
- * Revision 1.3  2003/11/20 12:06:59  nichloas
- * implements angle and torsionangle
- *
- * Revision 1.2  2003/11/20 10:22:30  nichloas
- * *** empty log message ***
- * 
- */
+/* $Id$ */
 
 #include <Python.h>
 #include <math.h>

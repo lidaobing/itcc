@@ -1,11 +1,13 @@
+# $Id$
 # -*- coding: utf-8 -*-
 
 import pprint
 from Numeric import zeros, Float
 from itcc.Tools import tools
-from itcc.Molecule.atom import *
+from itcc.Molecule.atom import Atom
 
 __all__ = ["Molecule"]
+__revision__ = '$Rev$'
         
 class Molecule(object):
     __maxbondlen = 1.6
@@ -49,9 +51,6 @@ class Molecule(object):
 
     __repr__ = __str__
 
-    def __cmp__(self, other):
-        return 0
-        
     def addatom(self, atom, coord, pos = None):
         if pos is None:
             pos = len(self)

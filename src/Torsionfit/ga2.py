@@ -1,8 +1,9 @@
-# ÒÅ´«Ëã·¨
-
+# $Id$
 import random
 import os
 import math
+
+__revision__ = '$Rev$'
 
 cycle = 1
 bestcycle = 0
@@ -62,7 +63,7 @@ def calene(fname):
             result = float(x[-1])
             return result
     
-def eval(param):
+def eval_(param):
     wrtparam(param)
     refdata = [0.952, 0.000, 0.901, 0.649, 1.013, 0.240, \
                0.007, 3.429, 1.838, 4.683, 4.161, 1.146, \
@@ -143,7 +144,7 @@ if __name__ == '__main__':
     for cycle in range(1,300):
         mark = []
         for x in list:
-            mark.append(eval(x))
+            mark.append(eval_(x))
             
         if findgood(list, mark):
             tmpstr = '[' + ', '.join(['%.3f' % x for x in best]) + ']'

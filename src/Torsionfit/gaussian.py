@@ -1,7 +1,8 @@
+# $Id$
 import os
 from itcc.Molecule import atom, molecule
 
-__revision__ = '$Id$'
+__revision__ = '$Rev$'
 
 def hatree2kcalpermol(hatree):
     return 627.51 * float(hatree)
@@ -47,10 +48,10 @@ def out2ene(ifname):
 
     return None
 
-def findstrline(outfname, str):
+def findstrline(outfname, keystr):
     result = []
     
-    cmdline = 'grep -n -- "%s" %s' % (str, outfname)
+    cmdline = 'grep -n -- "%s" %s' % (keystr, outfname)
     ifile = os.popen(cmdline)
     for line in ifile:
         result.append(int(line[:line.index(':')]))

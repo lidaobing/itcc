@@ -1,4 +1,7 @@
-#! /usr/bin/env python
+#!/usr/bin/env python
+# $Id$
+
+__revision__ = '$Rev$'
 
 def xyz2gro(ifname, ofname):
     ifile = file(ifname)
@@ -18,7 +21,8 @@ def xyz2gro(ifname, ofname):
         cx = float(x[2])/10.0
         cy = float(x[3])/10.0
         cz = float(x[4])/10.0
-        ofile.write('%5d%5s%5s%5d%8.3f%8.3f%8.3f\n' % (1, 'DIEST', symbol, no, cx, cy, cz))
+        ofile.write('%5d%5s%5s%5d%8.3f%8.3f%8.3f\n' %
+                    (1, 'DIEST', symbol, no, cx, cy, cz)) 
     ofile.write('%10.5f%10.5f%10.5f\n' % (0, 0, 0))
 
     ofile.close()

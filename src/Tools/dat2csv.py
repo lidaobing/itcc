@@ -1,5 +1,7 @@
+# $Id$
 import sys
 
+__revision__ = '$Rev$'
 
 def dat2csv(ifname, ofname):
     ifile = file(ifname)

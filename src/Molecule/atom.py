@@ -1,5 +1,7 @@
 # $Id$
+
 __all__ = ["Atom", 'atomsymbol', 'atommass', 'atomchr', 'atomord']
+__revision__ = '$Rev$'
 
 
 _knownAtoms = {}
@@ -7,7 +9,7 @@ _knownAtoms = {}
 class Atom(object):
     __slots__ = ['_no', '_type', '_symbol']
 
-    def __new__(cls, no, type = 0, symbol = None):
+    def __new__(cls, no, type_ = 0, symbol = None):
         if isinstance(no, int):
             if no <= 0:
                 raise ValueError
@@ -21,13 +23,13 @@ class Atom(object):
             raise TypeError
 
         
-        key = (no, type, symbol)
+        key = (no, type_, symbol)
         if key in _knownAtoms:
             return _knownAtoms[key]
         
         self = object.__new__(cls)
         self._no = no
-        self._type = type
+        self._type = type_
         self._symbol = symbol
         _knownAtoms[key] = self
 
@@ -42,7 +44,7 @@ class Atom(object):
         self._symbol = state[2]
 
     def __copy__(self):
-	return self
+        return self
     __deepcopy__ = __copy__
 
     def __str__(self):
@@ -67,6 +69,9 @@ class Atom(object):
     def getsymbol(self):
         return self._symbol
     symbol = property(getsymbol)
+
+    def atomchr(self):
+        return atomsymbol[self._no]
 
 atomsymbol = ['',
               'H',  'He', 'Li', 'Be', 'B',    # 1- 5
@@ -101,15 +106,15 @@ def atomchr(i):
         raise ValueError
     return atomsymbol[i]
 
-def atomord(chr):
-    if len(chr) == 0:
+def atomord(chr_):
+    if len(chr_) == 0:
         raise ValueError
-    if len(chr) == 1:
-        key = chr
-    elif chr[1].isupper():
-        key = chr[0]
+    if len(chr_) == 1:
+        key = chr_
+    elif chr_[1].isupper():
+        key = chr_[0]
     else:
-        key = chr[:2]
+        key = chr_[:2]
     
     return atomsymbol.index(key)
 

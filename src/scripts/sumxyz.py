@@ -1,8 +1,11 @@
 #!/usr/bin/python
+# $Id$
 
 import math
 from itcc.Tools import tools
 from itcc.Molecule import read
+
+__revision__ = '$Rev$'
 
 def sumxyz(seq, filelist):
     if len(seq) < 2 or len(seq) > 3:
@@ -23,16 +26,16 @@ def sumxyz(seq, filelist):
     print 'stdev = %f' % tools.stdev(result)
     print result
     
-def sumxyz_torsion(list, filelist):
-    if len(list) != 4:
+def sumxyz_torsion(list_, filelist):
+    if len(list_) != 4:
         raise ValueError
 
     result = []
 
     for x in filelist:
         mol = read.readxyz(x)
-        result.append(math.degrees(mol.calctor(list[0], list[1],
-            list[2], list[3])))
+        result.append(math.degrees(mol.calctor(list_[0], list_[1],
+            list_[2], list_[3])))
 
     print 'n = %d' % len(result)
 

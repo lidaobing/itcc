@@ -1,3 +1,4 @@
+# $Id$
 """
 To: amber@cgl.ucsf.EDU
 Subject: esp to resp 
@@ -29,18 +30,17 @@ Look in your g94 output for the number of atoms and esp points.
 
 import sys
 
-def grepfile(ifname, str):
+__revision__ = '$Rev$'
+
+def grepfile(ifname, keystr):
     ifile = file(ifname)
     lines = ifile.readlines()
     ifile.close()
-
-    return filter(lambda x: x.find(str) != -1, lines)
-
-
+    return [line for line in lines if keystr in line]
 
 def readit(ifname, ofname):
 
-    unit=0.529177249
+    unit = 0.529177249
     
     lines1 = grepfile(ifname, 'Atomic Center ')
     lines2 = grepfile(ifname, 'ESP Fit')

@@ -5,7 +5,7 @@ import os.path
 import time
 import resource
 from itcc.CCS2 import loopclosure, loopdetect
-from itcc.Molecule import readxyz, writexyz
+from itcc.Molecule import writexyz
 from itcc.Tinker import tinker
 from itcc.CCS2 import neighbour, R6combine
 
@@ -36,10 +36,8 @@ def testcyc(ifname, options):
     root, ext = os.path.splitext(ifname)
     
     time1 = time.time()
-    clock1 = time.clock()
     print time.ctime(time1)
-    mol = readxyz(file(ifname))
-    goodmol = loopc(mol)
+    goodmol = loopc(ifname)
     counter = 1
     for result in goodmol:
         print '%i: %f, %i' % (counter, result.ene, result.opttimes)
@@ -49,7 +47,6 @@ def testcyc(ifname, options):
     print 'Times of minimize: %i' % tinker.minimize_count
     print time.asctime()
     time2 = time.time()
-    clock2 = time.clock()
     print 'Total Time(physical time): %.2fs' % (time2 - time1)
     print resource.getrusage(resource.RUSAGE_SELF)
     print resource.getrusage(resource.RUSAGE_CHILDREN)
@@ -75,7 +72,8 @@ def main():
                       help='-n1: Neig I, -n2: Neig II, default: -n1')
     parser.add_option('-c', "--combine", dest="combine",
                       default=3, type='int',
-                      help='-c1: Comb I, -c2: Comb II, -c3: Comb III, default: -c3')
+                      help='-c1: Comb I, -c2: Comb II, -c3: Comb III, '
+                      'default: -c3') 
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("incorrect number of arguments")

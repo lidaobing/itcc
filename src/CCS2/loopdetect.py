@@ -1,7 +1,7 @@
 # $Id$
-import Numeric
 
 __all__ = ["loopdetect"]
+__revision__ = '$Rev$'
 
 def _symmatp(mat):
     """_symmatp(mat) -> Bool
@@ -48,36 +48,36 @@ def _countloop(mat):
     deg_max = max(trunk_deg)
     assert(deg_max != 1)
     if deg_max == 0:
-	return []
+        return []
     elif deg_max == 2:
         return _countloop2(mat)
     else:
-	raise RuntimeError, "I can't deal with molecule with complex cycle."
+        raise RuntimeError, "I can't deal with molecule with complex cycle."
 
 def _countloop2(mat):
     trunk_deg = sum(mat).tolist()
     result = []
     while True:
-	try:
-	    i = trunk_deg.index(2)
-	except ValueError:
-	    break
-	result.append([i])
+        try:
+            i = trunk_deg.index(2)
+        except ValueError:
+            break
+        result.append([i])
 	
-	while True:
-	    j = mat[i].tolist().index(1)
+        while True:
+            j = mat[i].tolist().index(1)
 
 	    # break the connect between i and j
-	    mat[i][j] = 0
-	    mat[j][i] = 0
-	    trunk_deg[i] -= 1
-	    trunk_deg[j] -= 1
+            mat[i][j] = 0
+            mat[j][i] = 0
+            trunk_deg[i] -= 1
+            trunk_deg[j] -= 1
 
-	    if j == result[-1][0]:
-		break
+            if j == result[-1][0]:
+                break
 
-	    result[-1].append(j)
-	    i = j
+            result[-1].append(j)
+            i = j
     return result
 
 def _connectmatrix(mol):

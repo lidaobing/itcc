@@ -1,6 +1,6 @@
-# -*- coding: gb2312 -*-
+# -*- coding: utf8 -*-
 # $Id$
-#�Ŵ��㷨
+#遗传算法
 
 import random
 

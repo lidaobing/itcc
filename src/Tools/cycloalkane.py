@@ -4,6 +4,8 @@ import math
 from itcc import Molecule, CCS2, Tinker, Tools
 from Scientific.Geometry import Vector
 
+__revision__ = '$Rev$'
+
 FF_MM2 = 'mm2'
 FF_MM3 = 'mm3'
 FF_OPLSAA = 'oplsaa'

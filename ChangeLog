@@ -1,3 +1,8 @@
+2005-02-04  Li Daobing  <lidaobing@gmail.com>
+
+	* pylint
+	* move Torsionfit/xyz2gro.py to scripts
+
 2005-02-03  Li Daobing  <lidaobing@gmail.com>
 
 	* merge 0.2.4 to trunk

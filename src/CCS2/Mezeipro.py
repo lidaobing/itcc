@@ -65,7 +65,7 @@ def R6a(atmidx, coords, dismat):
     p5o, p5x, p5y = wrappyramid2((i5, i2, i8), coords, dismat)
 
     steps = config.config.get('Mezei_R6_steps', 36)
-    stepsize = 2 * pi / steps
+    stepsize = 2 * math.pi / steps
 
     results = []
     for i in range(steps):
@@ -86,10 +86,6 @@ def R6a(atmidx, coords, dismat):
             results[-1].append((p3,p4,p5,p6,p7))
 
     results.append(results[0])
-    swapaxes
-        
-    
-    
     d24s = Numeric.zeros((4, steps+1), Numeric.Float)
     for i in range(steps):
         angle = i * step

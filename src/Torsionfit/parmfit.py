@@ -30,8 +30,8 @@ def readidx(idxfname):
     folds = []
     for line in file(idxfname):
         words = line.split()
-	if not words:
-	    continue
+        if not words:
+            continue
         assert 4 <= len(words) <= 5
         idx = tuple([int(x) for x in words[:4]])
         if len(words) == 5:

@@ -1,4 +1,7 @@
-import ga
+# $Id$
+from itcc.Torsionfit import ga
+
+__revision__ = '$Rev$'
 
 
 def foo(list):

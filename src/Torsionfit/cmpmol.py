@@ -4,6 +4,8 @@
 from itcc.Molecule import read, relalist
 from itcc.Tools import tools
 
+__revision__ = '$Rev$'
+
 class Cmpresabs:
     "Abstract Compare Result Class"
     def __init__(self, *args):

@@ -1,13 +1,17 @@
 # -*- coding: utf8 -*-
+# $Id$
 import Numeric
 import math
 from Scientific.Geometry import Tensor, Vector
-from Scientific.Geometry.Transformation import Translation, Rotation, RotationTranslation
+from Scientific.Geometry.Transformation import Translation, \
+     RotationTranslation
 
 __all__ = ['pyramid']
+__revision__ = '$Rev$'
 
 def construct_transform_matrixA(O, Ox, Oy, Oz):
-    "建坐标变换矩阵，新的坐标系的原点位于O, x轴在Ox上，..., 坐标变换从frame->WC"
+    """建坐标变换矩阵，新的坐标系的原点位于O, x轴在Ox上，
+    ..., 坐标变换从frame->WC"""
     tensor = Tensor([[Ox[0], Oy[0], Oz[0]],
                      [Ox[1], Oy[1], Oz[1]],
                      [Ox[2], Oy[2], Oz[2]]])
@@ -16,7 +20,8 @@ def construct_transform_matrixA(O, Ox, Oy, Oz):
     return trans
 
 def construct_both_transform_matrix(A, B, C):
-    """建坐标变换矩阵，新的坐标系的原点位于A, x轴在AB上，z轴垂直于ABC平面,
+    """建坐标变换矩阵，新的坐标系的原点位于A,
+    x轴在AB上，z轴垂直于ABC平面,
     result[1] = frame->WC
     result[0] = WC->frame"""
 
@@ -79,8 +84,7 @@ def pyramid2(A, B, rAX, rBX):
         return (None, None, None)
     
     c = (rAX * rAX - rBX * rBX) / ( 2 * rAB * rAB) + 0.5
-    rAO = c * rAB
-    rXO = sqrt(rAX * rAX - rXO * rXO)
+    rXO = math.sqrt(rAX * rAX - rXO * rXO)
     O = A + c * AB
 
     ABn = AB.normal()
@@ -92,10 +96,3 @@ def pyramid2(A, B, rAX, rBX):
     return (O, OXx, OXy)
 
 
-if __name__ == '__main__':
-    A = Vector([0.147056, 1.359141, 1.933333])
-    B = Vector([1.274109, 1.429382, 2.842904])
-    C = Vector([1.654506, 2.815342, 3.035033])
-    #  3.089963    2.901247    3.220999 
- 
-    print pyramid(A,B,C,3.563, 2.368, 1.450)

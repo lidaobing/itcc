@@ -1,6 +1,7 @@
 # $Id$
 
 __all__ = ['Relalist', 'genconns', 'genR', 'genA', 'genD', 'genI']
+__revision__ = '$Rev$'
 
 class Relalist:
     """
@@ -67,14 +68,14 @@ def genR(conns):
     for i in range(len(conns)):
         for x in conns[i]:
             if i < x:
-                result.append((i,x))
+                result.append((i, x))
     return result
 
 def genA(conns):
     result = []
     for i in range(len(conns)):
         for j in range(len(conns[i])):
-            for k in range(j+1,len(conns[i])):
+            for k in range(j+1, len(conns[i])):
                 result.append((conns[i][j], i, conns[i][k]))
     return result
 

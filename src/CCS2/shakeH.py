@@ -4,6 +4,7 @@ import math
 from itcc.Tools import tools
 
 __all__ = ['getshakeHdata', 'shakeH']
+__revision__ = '$Rev$'
 
 def getshakeHdata(mol):
     """getshakeHdata(mol) -> dict
@@ -35,9 +36,3 @@ def shakeH(coords, shakeHdata, Cidxs = None):
                                           coords[data[0][1]])  
     return
 
-if __name__ == '__main__':
-    import sys
-    import pprint
-    from itcc.Molecule.read import readxyz
-    mol = readxyz(file(sys.argv[1]))
-    pprint.pprint(getshakeHdata(mol))

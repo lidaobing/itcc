@@ -10,7 +10,7 @@ def gettortype(mol, tor):
     return tuple([mol.atoms[idx].type for idx in tor])
 
 def gettorsbytype(mol, types):
-    types = map(molparam.torsion_uni, types)
+    types = [molparam.torsion_uni(type_) for type_ in types]
     
     result = {}
     for typ in types:

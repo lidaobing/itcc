@@ -2,6 +2,8 @@
 
 from itcc.Torsionfit import parmfit
 
+__revision__ = '$Rev$'
+
 def main():
     import sys
     if len(sys.argv) != 4:

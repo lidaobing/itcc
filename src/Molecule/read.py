@@ -1,12 +1,12 @@
+# $Id$
 # -*- coding: utf-8 -*-
 
 __all__ = ['readxyz', 'readgjf', 'FormatError']
+__revision__ = '$Rev$'
 
 import re
-from os.path import splitext
-from Scientific.IO import PDB
 from Scientific.Geometry import Vector
-from itcc.Molecule.molecule import *
+from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import Atom
 
 
@@ -70,7 +70,8 @@ def readgjf(ifname):
         for word in words:
             x.extend(word.split(','))
         atom = Atom(x[0])
-        coords = Vector([float(coord) for coord in x[-3:]])   #可以处理两种类型的gjf: 'H 0.1 0.2 0.3' 和 'H 0 0.1 0.2 0.3'
+        #Can deal with two types gjf file: 'H 0.1 0.2 0.3' and 'H 0 0.1 0.2 0.3'
+        coords = Vector([float(coord) for coord in x[-3:]])   
         mol.addatom(atom, coords)
     ifile.close()
     return mol
@@ -105,13 +106,5 @@ def readxyz(ifile):
     
     return mol
 
-if __name__ == '__main__':
-    import sys
-    if len(sys.argv) != 2:
-        sys.exit(1)
-    mol = readxyz(file(sys.argv[1]))
-
-    import write
-    write.writexyz(mol, file("001.xyz", 'w'))
     
     

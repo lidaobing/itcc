@@ -1,19 +1,12 @@
-# 	$Id$
-# $Log: process.py,v $
-# Revision 1.2  2004/02/04 06:14:28  nichloas
-# *** empty log message ***
-#
-
+# $Id$
 
 import os
 
+__revision__ = '$Rev$'
+
 if __name__ == '__main__':
 
-
     os.system('grep -A 15 -B 4 Z-Matrix c3h6o2s3.out > log')
-
-
-
 
     ifile = file('log', 'r')
     lines = ifile.readlines()
@@ -21,17 +14,17 @@ if __name__ == '__main__':
 
     i = 0
 
-    dict = {}
+    dict_ = {}
 
     while i < len(lines):
         fname = "%02i.xyz" % ((int(lines[i][56:60])+190)/10)
         coords = [x.split()[-3:] for x in lines[i+9:i+20]]
-        dict[fname] = coords
+        dict_[fname] = coords
         i = i + 21
 
     symbols = ['C', 'H', 'H', 'H', 'C', 'O', 'O', 'C', 'H', 'H', 'H']
 
-    str = ['  113     2     3     4     5',
+    str_ = ['  113     2     3     4     5',
            '  122     1',
            '  122     1',
            '  122     1',
@@ -44,12 +37,12 @@ if __name__ == '__main__':
            '  130     8']
 
 
-    for fname, data in dict.items():
+    for fname, data in dict_.items():
         ofile = file(fname, 'w+')
         ofile.write('11\n')
         for i in range(len(data)):
-            tmpstr = '%6d %2s  %12s%12s%12s %s\n' %\
-                     (i+1, symbols[i], data[i][0], data[i][1], data[i][2], str[i])
+            tmpstr = '%6d %2s  %12s%12s%12s %s\n' % \
+                     (i+1, symbols[i], data[i][0], data[i][1], data[i][2], str_[i])
             ofile.write(tmpstr)
         ofile.close()
 

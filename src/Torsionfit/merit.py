@@ -5,6 +5,8 @@ from itcc.Torsionfit import cmpmol
 from itcc.Tinker import tinker
 from itcc.Tools import tools
 
+__revision__ = '$Rev$'
+
 optimize = tinker.batchoptimize
 energy = tinker.batchenergy
 

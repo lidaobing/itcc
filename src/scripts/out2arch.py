@@ -12,11 +12,10 @@ Options:
     -h, --help   show help message
 """
 
-
-import string
 import sys
 
 __all__ = ['out2arch']
+__revision__ = '$Rev$'
 
 if sys.hexversion < 0x2010000:
     raise ImportError, "This file only for python 2.1 or later"
@@ -55,7 +54,7 @@ def out2arch(ifile, full = 0):
         if pos2 != -1:
             result = result[:pos2+1]
 
-    result = string.split(result, '\\')
+    result = result.split('\\')
     for x in result:
         print x
 
@@ -78,7 +77,7 @@ def main():
         
     full = 0
     
-    for o, a in opts:
+    for o, _ in opts:
         if o in ("-h", "--help"):
             usage(sys.stdout)
             sys.exit()

@@ -1,6 +1,9 @@
+# $Id$
 import re
 from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import Atom
+
+__revision__ = '$Rev$'
 
 def beginoflink(ifile, linknum):
     restr = '(Enter .*l%d.exe)' % linknum

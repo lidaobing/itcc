@@ -1,5 +1,7 @@
 #!/usr/bin/env python
+# $Id$
 
+__revision__ = '$Rev$'
 
 def out2ene(ifname):
     ifile = file(ifname)
@@ -30,7 +32,7 @@ def out2ene(ifname):
 
     return None
 
-if __name__ == '__main__':
+def main():
     import sys
     if len(sys.argv) == 2:
         result = out2ene(sys.argv[1])
@@ -41,4 +43,8 @@ if __name__ == '__main__':
             print >> sys.stderr, "NO data found"
     else:
         print >> sys.stderr, "Usage: %s outfname" % sys.argv[0]
+
+if __name__ == '__main__':
+    main()
+        
 

@@ -155,10 +155,10 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
     return newmol, result
 
-def _vibratefloat(str):
-    if str.endswith('I'):
-        return -float(str[:-1])
-    return float(str)
+def _vibratefloat(str_):
+    if str_.endswith('I'):
+        return -float(str_[:-1])
+    return float(str_)
 
 def vibratemol(mol, forcefield):
     molfile = _writemoltotempfile(mol)

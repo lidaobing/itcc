@@ -1,6 +1,9 @@
 #! /usr/bin/env python
+# $Id$
 import getopt, sys
 from itcc.Tinker import tinker
+
+__revision__ = '$Rev$'
 
 def usage():
     print >> sys.stderr, 'Usage: %s [-c converge] xyzfname ...'

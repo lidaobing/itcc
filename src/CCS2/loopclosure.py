@@ -1,243 +1,181 @@
-# -*- coding: utf8 -*-
 # $Id$
-import pprint
+import os.path
 import bisect
-import sys
-import signal
-import math
-import time
 import heapq
+import sets
+import pprint
+import itertools
+from copy import copy
 from itcc.Tinker import tinker
-from itcc.CCS2.R6combine import R6combine3
-from itcc.CCS2.neighbour import NeighbourI
-from itcc.CCS2.neighbour import calctor
-from itcc.CCS2.tors import TorsSet
-from itcc.CCS2 import getshakeHdata
-from itcc.CCS2 import loopdetect
-from itcc.CCS2.searchresult import SearchResult
+from itcc.CCS2 import loopdetect, base, peptide, R6
+from itcc.Molecule import read, write
+from itcc.Tools import tools
 
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
-def handler(signum, frame):
-    from itcc.Molecule import write
-    
-    signal.signal(signal.SIGTERM, signal.SIG_IGN)
-    signal.signal(signal.SIGINT, signal.SIG_IGN)
-
-    lc = _loopclosure
-    print
-    lc.printsummary()
-    for idx, minimal in enumerate(lc.minimals):
-        print idx+1, minimal.ene, minimal.opttimes
-        write.writexyz(minimal.mol, sys.stdout)
-        print
-    sys.exit(1)
-
-_loopclosure = None
-
 class LoopClosure(object):
-    __slots__ = ['forcefield', 'runned', 'keepbound', 'searchbound',
-                 'mol', 'loopatoms', 'R6s', 'combinations',
-                 'shakeHdata', 'knownmols', 'minimals', 'tasks',
-                 'finishedtask', 'caseboundary', 'lowestene',
-                 'maxsteps', 'f_neighbour', 'f_R6combine', 'torsset'] 
-    
-    def __init__(self, forcefield, keepbound, searchbound):
-        global _loopclosure
-        
+    def __init__(self, forcefield, keeprange, searchrange):
         self.forcefield = forcefield
-        self.runned = False
-        self.keepbound = keepbound
-        self.searchbound = searchbound
-        _loopclosure = self
+        self.keeprange = keeprange
+        self.keepbound = None
+        self.searchrange = searchrange
+        self.searchbound = None
         self.maxsteps = 0
-        self.f_neighbour = NeighbourI
-        self.f_R6combine = R6combine3
-        self.torsset = TorsSet
+        self.eneerror = 0.0003
+        self.moltypekey = None
+        self.tasks = []
+        self.taskheap = []
+        self.enes = []
+        self.minconverge = 0.001
         
-    def __call__(self, mol):
-        assert not self.runned
-
+    def __call__(self, molfname):
         self.printparams()
+        mol = read.readxyz(file(molfname))
+        self.molnametmp = os.path.splitext(molfname)[0] + '.%03i'
         
-        mol, ene = tinker.optimizemol(mol, self.forcefield)
-
+        moltype = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
-        self.R6s = self.getR6s(self.loopatoms)
-        self.printR6s(self.R6s)
-        self.combinations = self.getcombinations(self.R6s)
-        self.printcombinations(self.combinations)
-        tors = calctor(mol.coords, self.loopatoms)
-        self.knownmols = self.torsset([tors])
-        self.shakeHdata = getshakeHdata(mol)
-        sys.stdout.flush()
-
-        signal.signal(signal.SIGTERM, handler)
-        signal.signal(signal.SIGINT, handler)
-
-        if self.searchbound is None and self.keepbound is None:
-            self.caseboundary = self.noboundary
-        elif self.searchbound is not None and self.keepbound is not None:
-            self.caseboundary = self.boundary
-        else:
-            assert False
-
+        self.r6s = moltype.getr6s(self.loopatoms)
+        printr6s(self.r6s)
+        self.combinations = moltype.getcombinations(self.r6s)
+        self.r6s = tuple(sets.Set(itertools.chain(*self.combinations)))
+        printcombinations(self.combinations)
+        
+        mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconvergeha)
+        self.addtask(mol, ene)
         self._run(mol, ene)
 
-            
-        print 'We got %i conformations' % len(self.minimals)
-        print
-        self.runned = True
-        self.printsummary()
-        return self.minimals
-
     def _run(self, mol, ene):
-        self.tasks = [self.f_neighbour(mol, ene, self)]
-        self.minimals = [SearchResult(mol, ene, tinker.minimize_count)]
-        minimals = self.minimals
         self.lowestene = ene
-        self.finishedtask = 0
+        self.updatebound()
+        step = 1
 
-        starttime = time.time()
-        
-        while True:
-            try:
-                newmol, newene = self.tasks[0].next()
-            except StopIteration:
-                self.finishedtask += 1
-                heapq.heappop(self.tasks)
-                if not self.tasks:
-                    break
-                continue
-            heapq.heapreplace(self.tasks, self.tasks[0])
+        for taskidx, initmol, initene in self.taskqueue():
+            print
+            print ' CCS2 Local Search              Minimum %6i %21.4f' \
+                  % (taskidx + 1, initene)
+            print
             
-            if newmol is not None:
-                self.caseboundary(newmol, newene)
+            for cmbidx, idx, mol, ene in self.findneighbor(initmol):
+                print '  Step %5i Comb %2i %2i %44.4f' % \
+                      (step, cmbidx, idx, ene)
+                step += 1
+                if self.keepbound is not None:
+                    if ene > self.keepbound:
+                        continue
+                if self.isnewene(ene):
+                    self.addtask(mol, ene)
+                    if ene < self.lowestene:
+                        self.lowestene = ene
+                        self.updatebound()
+                        if initene > self.searchbound:
+                            break
+            print
 
-            if tinker.minimize_count % 10 == 0:
-                self.printsmallsummary()
-                if tinker.minimize_count % 100 == 0:
-                    self.printenes()
-                    endtime = time.time()
-                    print 'Time: %.2f' % (endtime - starttime)
-                    sys.stdout.flush()
-                    starttime = endtime
+    def addtask(self, mol, ene):
+        self.tasks.append(mol)
+        taskidx = len(self.tasks) - 1
+        heapq.heappush(self.taskheap, (ene, taskidx))
+        bisect.insort(self.enes, ene)
+        print
+        print '    Potential Surface Map       Minimum ' \
+              '%6i %21.4f' % (taskidx+1, ene)
+        print
+        self.writemol(taskidx+1, mol, ene)
 
-            if self.maxsteps and tinker.minimize_count >= self.maxsteps:
-                break
-        return minimals
 
-    def noboundary(self, newmol, newene):
-        if tinker.isminimal(newmol, self.forcefield):
-            newresult = SearchResult(newmol, newene, tinker.minimize_count)
-            bisect.insort(self.minimals, newresult)
-            heapq.heappush(self.tasks, self.f_neighbour(newmol, newene, self))
-            if newene < self.lowestene:
-                self.lowestene = newene
-
-    def boundary(self, newmol, newene):
-        lowestene = self.lowestene
-        searchbound = self.searchbound
-        keepbound = self.keepbound
-        
-        if lowestene < newene < lowestene + max(searchbound, keepbound):
-            if not tinker.isminimal(newmol, self.forcefield):
+    def taskqueue(self):
+        while self.taskheap:
+            ene, taskidx = heapq.heappop(self.taskheap)
+            if self.searchbound is not None and ene > self.searchbound:
+                print self.searchbound
                 return
-        if newene < lowestene:
-            self.lowestene = newene
-            del self.minimals[bisect.bisect(self.minimals, newene+keepbound):]
-            self.tasks = [task for task in self.tasks
-                          if task.ene <= newene + searchbound]
-            heapq.heapify(self.tasks)
-        if newene <= lowestene + searchbound:
-            heapq.heappush(self.tasks, self.f_neighbour(newmol, newene, self))
-        if newene <= lowestene + keepbound:
-            newresult = SearchResult(newmol, newene, tinker.minimize_count)
-            bisect.insort(self.minimals, newresult)
+            mol = self.tasks[taskidx]
+            yield taskidx, mol, ene
 
     def getloopatoms(self, mol):
         loops = loopdetect(mol)
         assert len(loops) == 1
         return loops[0]
-        
-    def getR6s(self, loopatoms):
-        doubleloop = loopatoms * 2
-        return [tuple(doubleloop[i:i+7]) for i in range(len(loopatoms))]
-
-    def printR6s(self, R6s):
-        print "This loop has %i R6 blocks:" % len(R6s)
-        pprint.pprint(R6s)
-        print
-
-    def getcombinations(self, R6s):
-        return R6combine3(R6s)
-
-    def printcombinations(self, combinations):
-        print "These R6 blocks have %i kinds of combination:" % len(combinations)
-        for i, combination in enumerate(combinations):
-            print "Combination-%i: %s" % (i, combination)
-        print
-
-    def getprogress(self):
-        totaltask = self.finishedtask + len(self.tasks)
-        finishedtask = float(self.finishedtask)
-        for task in self.tasks:
-            finishedtask += task.getprogress()
-        return finishedtask/totaltask
 
     def printparams(self):
         print 'Forcefield: %s' % self.forcefield
-        print 'KeepBound: %s' % self.keepbound
-        print 'SearchBound: %s' % self.searchbound
-        print 'Neigbout Algorithm: %s' % self.f_neighbour.idstr
+        print 'KeepRange: %s' % self.keeprange
+        print 'SearchRange: %s' % self.searchrange
         print
 
-    def printsmallsummary(self):
-        minimals = self.minimals
-        print 'Min %i, Good %i, Energy:%.4f-%.4f, %.1f%%' % \
-              (tinker.minimize_count, len(minimals),
-               minimals[0].ene, minimals[-1].ene, 100*self.getprogress())
-        sys.stdout.flush()
+    def writemol(self, idx, mol, ene):
+        ofname = self.molnametmp % idx
+        ofile = file(ofname, 'w+')
+        write.writexyz(mol, ofile, '%.4f' % ene)
+        ofile.close()
 
-    def printsummary(self):
-        print 'Total optimization times: %i' % tinker.minimize_count
-        print '  Find the best minimal at: %i' % self.minimals[0].opttimes
-        print '  Find first minimal at: %i' % min([x.opttimes for x in
-                                                   self.minimals]) 
-        print '  Find last minimal at: %i' % max([x.opttimes for x in
-                                                  self.minimals]) 
-        print '  Wasted optimization times: %i' % \
-              (tinker.minimize_count - max([x.opttimes for x in
-                                            self.minimals])) 
-        print '  The largest minimal find times gap: %i' % self.getmintimesgap()
-        print
-        self.printenes()
-        self.printtors()
-        
-    def getmintimesgap(self):
-        times = [x.opttimes for x in self.minimals]
-        times.sort()
-        timesgap = [times[i+1] - times[i] for i in range(len(times)-1)]
-        if not timesgap:
-            return 0
-        else:
-            return max(timesgap)
+    def updatebound(self):
+        if self.searchrange is not None:
+            self.searchbound = self.lowestene + self.searchrange
+        if self.keeprange is not None:
+            self.keepbound = self.lowestene + self.keeprange
 
-    def printenes(self):
-        minimals = self.minimals
-        enes = [minimal.ene for minimal in minimals]
-        for i in range(0, len(enes), 5):
-            print ' '.join(['%.4f' % ene for ene in enes[i:i+5]])
-        print
-        sys.stdout.flush()
+    def isnewene(self, ene):
+        idx = bisect.bisect(self.enes, ene)
+        if idx - 1 >= 0 and \
+               abs(self.enes[idx-1] - ene) < self.eneerror:
+            return False
+        if idx < len(self.enes) and \
+               abs(self.enes[idx] - ene) < self.eneerror:
+            return False
+        return True
 
-    def printtors(self):
-        doubleloop = self.loopatoms * 2
-        for idx, minimal in enumerate(self.minimals):
-            tors = [math.degrees(minimal.mol.calctor(*doubleloop[i:i+4]))
-                    for i in range(len(self.loopatoms))]
+    def findneighbor(self, mol):
+        mol.builddistancematrix()
+        coords = mol.coords
+        dismat = mol.distancematrix
+        r6results = {}
+        for r6 in self.r6s:
+            r6results[r6] = getr6result(coords, r6, dismat)
+        for cmbidx, combine in enumerate(self.combinations):
+            r6s = [r6results[r6] for r6 in combine]
+            needshakeatoms = []
+            for r6 in combine:
+                needshakeatoms.extend(R6.R6(r6).needshakenodes())
+            result = list(tools.combinecombine(r6s))
+            for molidx, molresult in enumerate(result):
+                newmol = copy(mol)
+                for r6result in molresult:
+                    for idx, coord in r6result.items():
+                        newmol.coords[idx] = coord
+                rmol, rene = tinker.minimizemol(newmol,
+                                                self.forcefield,
+                                                self.minconverge)
+                yield cmbidx, molidx, rmol, rene
+
+                
+
+def getr6result(coords, r6, dismat):
+    if r6type(r6) == (1,1,1,1,1,1,1):
+        idxs = tuple(itertools.chain(*r6))
+        return R6.R6(coords, idxs, dismat)
+    assert False, r6type(r6)
+
+def r6type(r6):
+    return tuple([len(x) for x in r6])
+
+moltypedict = {'peptide': peptide.Peptide}
+def getmoltype(key):
+    return moltypedict.get(key, base.Base)
+    
+def printr6s(r6s):
+    print "This loop has %i R6 blocks:" % len(r6s)
+    pprint.pprint(r6s)
+    print
+    
+def printcombinations(combinations):
+    print "These R6 blocks have %i kinds of combination:" % len(combinations)
+    for i, combination in enumerate(combinations):
+        print "Combination-%i: %s" % (i, combination)
+    print
             
-            print idx+1,
-            print '['+', '.join(['%.1f' % tor for tor in tors])+']'
-        print
+            
+            
+            

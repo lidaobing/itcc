@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-
+# $Id$
 """xpermutations.py
 Copy from: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/190465
 And modify `xuniqueCombinations' by myself(Li Daobing)
@@ -17,12 +16,13 @@ See also: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66463
 See also: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66465
 """
 
+__revision__ = '$Rev$'
 __version__ = "1.0"
 
 from __future__ import generators
 
 def xcombinations(items, n):
-    if n==0: yield []
+    if n == 0: yield []
     else:
         for i in xrange(len(items)):
             for cc in xcombinations(items[:i]+items[i+1:],n-1):

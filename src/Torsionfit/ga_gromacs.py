@@ -1,11 +1,15 @@
-#ÒÅ´«Ëã·¨
+# $Id$
+# -*- coding: utf8 -*-
+#é—ä¼ ç®—æ³•
 #copyleft by nichloas@sohu.com
 
 from random import shuffle
 
+__revision__ = '$Rev$'
+
 class Chromosome:
     '''
-    ±äÁ¿£º
+    å˜é‡ï¼š
     data:     float(n x 1)
     mark:     float    (less is better)
     '''
@@ -31,7 +35,7 @@ class GA:
     '''
     Genetic Algorithm
 
-    ±äÁ¿£º
+    å˜é‡ï¼š
     self.n:           integer, number of chromosomes
     self.len:         integer, len of chromosome
     self.chromosomes: Chromosome(self.n * 1), chromosomes
@@ -42,12 +46,12 @@ class GA:
     self.goodcycle:   integer
     self.maxgoodcycle:integer
 
-    self.P_select:    float, Ã¿ÂÖÌÔÌ­ÂÊ
-    self.P_mutation:  float, Ã¿ÂÖ±äÒìÂÊ
+    self.P_select:    float, æ¯è½®æ·˜æ±°ç‡
+    self.P_mutation:  float, æ¯è½®å˜å¼‚ç‡
 
-    self.feval:       function, ÆÀ¼Ûº¯Êı
+    self.feval:       function, è¯„ä»·å‡½æ•°
 
-    ·½·¨£º
+    æ–¹æ³•ï¼š
     readlimit(ifname):    read self.limit from file
     init()
 
@@ -85,7 +89,7 @@ class GA:
 
     def readlimit(ifname):
         """
-        ²ÎÊıÎÄ¼ş¸ñÊ½Îª£º '%f %f\n'
+        å‚æ•°æ–‡ä»¶æ ¼å¼ä¸ºï¼š '%f %f\n'
         """
         try:
             ifile = file(ifname)

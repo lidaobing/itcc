@@ -1,5 +1,7 @@
+# $Id$
 
 __all__ = ['config']
+__revision__ = '$Rev$'
 
 config = {}
 
