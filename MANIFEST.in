@@ -1,2 +1,3 @@
 include src/Tools/Vector.hpp
 include Makefile
+include AUTHORS COPYING THANKS TODO
