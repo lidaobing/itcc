@@ -1,7 +1,7 @@
 from distutils.core import setup, Extension
 
 setup(name="itcc",
-      version="0.0.1",
+      version="0.2",
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',
