@@ -1,6 +1,8 @@
 # $Id$
 '''Deal with the tinker .prm file'''
 
+from itcc.Tinker import molparam
+
 __revision__ = '$Rev$'
 __all__ = ['Parameter', 'Torsionparameter', 'Parameters']
 
@@ -40,15 +42,13 @@ class Parameters(list):
         return result
 
 def readtorsionprm(prmfname, i, j, k, l):
+    toridx = molparam.torsion_uni((i, j, k, l))
     ifile = file(prmfname)
     for line in ifile:
         words = line.split()
         if len(words) in [14, 17, 20, 23] \
                and words[0] == 'torsion' \
-               and int(words[1]) == i \
-               and int(words[2]) == j \
-               and int(words[3]) == k \
-               and int(words[4]) == l:
+               and molparam.bond_uni([int(x) for x in words[1:5]]) == toridx:
             fold = (len(words) - 5) // 3
             result = []
             for idx in range(fold):
@@ -59,6 +59,7 @@ def readtorsionprm(prmfname, i, j, k, l):
                     assert float(data[1]) == 180.0
                 assert int(data[2]) == idx + 1
                 result.append(float(data[0]))
+            ifile.close()
             return result
             
             

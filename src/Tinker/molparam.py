@@ -4,6 +4,8 @@
 from sets import Set
 from itcc.Molecule.relalist import Relalist
 
+__revision__ = '$Rev$'
+
 class Param:
     def __init__(self):
         self.typcls = {}
@@ -11,24 +13,27 @@ class Param:
 
 def bond_uni(l):
     "键编号正规化"
-    r = l[:]
+    r = list(l)
+    assert len(r) == 2
     if r[0] > r[1]:
         r.reverse()
-    return r
+    return tuple(r)
 
 def angle_uni(l):
     "键角编号正规化"
-    r = l[:]
+    r = list(l)
+    assert len(r) == 3
     if r[0] > r[2]:
         r.reverse()
-    return r
+    return tuple(r)
 
 def torsion_uni(l):
     "二面角标号正规化"
-    r = l[:]
+    r = list(l)
+    assert len(r) == 4
     if r[1] > r[2] or (r[1] == r[2] and r[0] > r[3]):
         r.reverse()
-    return r
+    return tuple(r)
 
 def imptor_uni(l):
     "imptor编号正规化"
@@ -97,10 +102,10 @@ def molparam(mol, prmfile):
 
     
     types_set = list(Set(types))
-    types_set.sort(lambda x,y: cmp(int(x), int(y)))
+    types_set.sort(lambda x, y: cmp(int(x), int(y)))
                
     classes_set = list(Set(classes))
-    classes_set.sort(lambda x,y: cmp(int(x), int(y)))
+    classes_set.sort(lambda x, y: cmp(int(x), int(y)))
     
     head = param.param.get('head', '')
 
