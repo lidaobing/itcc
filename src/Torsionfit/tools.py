@@ -1,23 +1,5 @@
-# coding: gb2312
+# -*- coding: gb2312 -*-
 # $Id$
-# $Log: tools.py,v $
-# Revision 1.6  2004/02/16 12:07:41  nichloas
-# fix import Scientific.Statistics bug
-#
-# Revision 1.5  2004/02/04 06:21:30  nichloas
-# *** empty log message ***
-#
-# Revision 1.4  2004/02/01 04:43:52  nichloas
-# implement copy
-#
-# Revision 1.3  2003/11/20 16:45:03  nichloas
-# add RMS, RMSD, etc.
-#
-# Revision 1.2  2003/11/20 12:06:16  nichloas
-# use ctools version angle torsionangle
-#
-#
-
 
 import math
 import os
@@ -26,17 +8,17 @@ import re
 import select
 import operator
 
-from torsionfit.ctools import *
+from itcc.Tools.ctools import *
 
 try:
     from Scientific.Statistics import *
     stdev = standardDeviation
 except ImportError:
 
-    def stdev(list):
-        sum1 = float(sum(list))
-        sum2 = float(sum(map(lambda x: x*x, list)))
-        n = len(list)
+    def stdev(seq):
+        sum1 = float(sum(seq))
+        sum2 = float(sum(map(lambda x: x*x, seq)))
+        n = len(seq)
         return math.sqrt((sum2 - sum1 * sum1 / n)/(n-1))
 
     standardDeviation = stdev
@@ -54,7 +36,7 @@ def vector(a, b):
     x = b[0] - a[0]
     y = b[1] - a[1]
     z = b[2] - a[2]
-    return (x,y,z)
+    return (x, y, z)
 
 def crossmulti(a, b):
     x = a[1] * b[2] - a[2] * b[1]
@@ -186,8 +168,6 @@ if __name__ == '__main__':
     b = [2.330, 2.345, 2.348]
     x = linesearch(a,b)
 
-    list = [2,3,4,2,1]
-    
     print stdev([1,2,3])
 
     
