@@ -1,3 +1,11 @@
+2005-03-07  Li Daobing  <nichloas@sohu.com>
+
+	* src/CCS2/loopclosure.py, Mezei.py, Mezeipro.py: switch from
+	shake to sidechain
+	* src/CCS2/shake.py: deleted
+	* test/confsearchca_test.py: new file, a conforseach testsuite on
+	cycloalkane 
+	
 2005-03-06  Li Daobing  <nichloas@sohu.com>
 
 	* test/sidechain_test.py (main): add testsuite for sidechain

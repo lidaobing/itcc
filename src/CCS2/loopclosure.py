@@ -9,7 +9,7 @@ import pprint
 import itertools
 import time
 from itcc.Tinker import tinker
-from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, shake, catordiff, Mezeipro
+from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, catordiff, Mezeipro, sidechain
 from itcc.Molecule import read, write, tools as moltools
 from itcc.Tools import tools
 
@@ -54,7 +54,7 @@ class LoopClosure(object):
         self.molnametmp = os.path.splitext(molfname)[0] + '.tmp.%03i'
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
-        self.shakedata = shake.shakedata(mol, self.loopatoms)
+        self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = typedmol.getr6s(self.loopatoms)
         printr6s(self.r6s)
         self.combinations = typedmol.getcombinations(self.r6s)
@@ -247,6 +247,15 @@ def r6type(r6):
 moltypedict = {'peptide': peptide.Peptide}
 def getmoltype(key):
     return moltypedict.get(key, base.Base)
+
+def getshakedata(mol, loop):
+    result = {}
+    dloop = loop * 2
+    for idx, atomidx in enumerate(loop):
+        refidxs = [atomidx, dloop[idx-1], dloop[idx+1]]
+        sidechain_ = sidechain.getsidechain(mol, loop, atomidx)
+        result[atomidx] = (refidxs, sidechain_)
+    return result
 
 def printr6s(r6s):
     print "This loop has %i R6 blocks:" % len(r6s)

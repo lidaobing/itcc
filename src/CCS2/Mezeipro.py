@@ -6,7 +6,7 @@ import sys
 import operator
 import Numeric
 from Scientific import Geometry
-from itcc.CCS2 import pyramid
+from itcc.CCS2 import pyramid, sidechain
 from itcc.CCS2 import config
 from itcc.CCS2.Mezei import rtbis
 
@@ -154,6 +154,6 @@ def R6(coords, atmidx, dismat, shakedata):
         newcoords = coords[:]
         for idx, newcoord in baseresult.items():
             newcoords[idx] = newcoord
-        for shake in shakes:
-            baseresult.update(shake(newcoords, dismat))
+        for refidxs, sidechain_ in shakes:
+            baseresult.update(sidechain.movesidechain(coords, newcoords, refidxs, sidechain_))
         yield baseresult
