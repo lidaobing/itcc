@@ -1,4 +1,7 @@
-Sat Jan  8 14:31:20 2005  Li Daobing  <lidaobing@gmail.com>
+2005-01-08  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/pyramid.py (pyramid2): 31 add pyramid2 to prepare
+	replace _calc_p3
 
 	* src/CCS2/Mezei.py: pylint
 

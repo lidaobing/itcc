@@ -69,6 +69,29 @@ def pyramid(A, B, C, rAX, rBX, rCX):
     result2 = revtrans(Vector(X))
     return ((result1, result2), X22)
 
+def pyramid2(A, B, rAX, rBX):
+    '''known the coords of A, B and rAX, rBX, then X will be on a
+    circle. return the circle center and 2 vertical axis.
+    '''
+    AB = B - A
+    rAB = AB.length()
+    if rAX + rBX < rAB or abs(rAX - rBX) > rAB:
+        return (None, None, None)
+    
+    c = (rAX * rAX - rBX * rBX) / ( 2 * rAB * rAB) + 0.5
+    rAO = c * rAB
+    rXO = sqrt(rAX * rAX - rXO * rXO)
+    O = A + c * AB
+
+    ABn = AB.normal()
+    if abs(ABn.x()) < 0.7071:
+        OXx = ABn.cross(Vector(1.0, 0.0, 0.0)).normal() * rXO
+    else:
+        OXx = ABn.cross(Vector(0.0, 1.0, 0.0)).normal() * rXO
+    OXy = OXx.cross(ABn)
+    return (O, OXx, OXy)
+
+
 if __name__ == '__main__':
     A = Vector([0.147056, 1.359141, 1.933333])
     B = Vector([1.274109, 1.429382, 2.842904])
