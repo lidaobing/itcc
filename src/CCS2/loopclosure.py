@@ -136,15 +136,21 @@ class LoopClosure(object):
             r6results[r6] = getr6result(coords, r6, dismat)
         for cmbidx, combine in enumerate(self.combinations):
             r6s = [r6results[r6] for r6 in combine]
+            needshakeatoms = []
+            for r6 in combine:
+                needshakeatoms.extend(R6.R6(r6).needshakenodes())
             result = list(tools.combinecombine(r6s))
             for molidx, molresult in enumerate(result):
                 newmol = copy(mol)
                 for r6result in molresult:
                     for idx, coord in r6result.items():
                         newmol.coords[idx] = coord
+                for atmidx in needshakeatoms:
+                    
                 rmol, rene = \
                       tinker.minimizemol(newmol, self.forcefield, self.minconverge)
                 yield cmbidx, molidx, rmol, rene
+
                 
 
 def getr6result(coords, r6, dismat):

@@ -1,3 +1,4 @@
+# $Id$
 import glob
 from distutils.core import setup, Extension
 
@@ -5,6 +6,17 @@ __revision__ = '$Rev$'
 
 scripts = glob.glob('src/scripts/*.py')
 scripts.append('src/scripts/parmfit')
+
+ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
+             Extension("itcc.Tools.cpptools",
+                       ["src/Tools/cpptools.cpp"],
+                       depends=['src/Tools/Vector.hpp']),
+             Extension('itcc.Tools.Vector',
+                       ['src/Tools/Vector.cpp'],
+                       depends=['src/Tools/Vector.hpp'],
+                       libraries=['boost_python'])
+             ] 
+
 
 setup(name="itcc",
       version="0.2.2",
@@ -22,10 +34,7 @@ setup(name="itcc",
                 'itcc.Tinker',
                 'itcc.Tools',
                 'itcc.Torsionfit'],
-      ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
-                   Extension("itcc.Tools.cpptools",
-                             ["src/Tools/cpptools.cpp"],
-                             depends=['src/Tools/Vector.hpp'])], 
+      ext_modules = ext_modules,
       scripts=scripts
       )
 
