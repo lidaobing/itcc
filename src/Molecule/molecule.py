@@ -2,13 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import pprint
-from Numeric import zeros, Float
+from Numeric import zeros
 from itcc.Tools import tools
 from itcc.Molecule.atom import Atom
+from itcc.Molecule import tools as moltools
 
 __all__ = ["Molecule"]
 __revision__ = '$Rev$'
-        
+
 class Molecule(object):
     __maxbondlen = 1.6
 
@@ -58,19 +59,10 @@ class Molecule(object):
         self.coords.insert(pos, coord)
         self.connect = None
 
-    def builddistancematrix(self):
-        self.distancematrix = zeros((len(self), len(self)), Float)
-        
-        for i in range(len(self)):
-            for j in range(i):
-                distance = (self.coords[i] - self.coords[j]).length()
-                self.distancematrix[i, j] = distance
-                self.distancematrix[j, i] = distance
-                
     # connect system
     def makeconnect(self):
-        self.builddistancematrix()
-        self.connect = self.distancematrix < self.__maxbondlen
+        distmat = moltools.distmat(self)
+        self.connect = distmat < self.__maxbondlen
         for i in range(len(self)):
             self.connect[i, i] = False
 
@@ -153,7 +145,7 @@ class Molecule(object):
         for newidx, oldidx in enumerate(neworder):
             atoms[oldidx].idx = newidx
             newatoms.append(atoms[oldidx])
-        
+
         result = Molecule()
         for idxatom in newatoms:
             result.addatom(idxatom.atom, idxatom.coord)
