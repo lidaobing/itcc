@@ -1,6 +1,6 @@
 # $Id$
 
-from itcc.Molecule.molecule import *
+from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import atomchr
 
 __revision__ = '$Rev$'
@@ -12,9 +12,9 @@ def writexyz(mol, ofile, comment=None):
 
     ofile.write('%6i' % len(mol))
     if comment is not None:
-        ofile.write(' %s' % comment)
+        ofile.write('  %s' % comment)
     elif hasattr(mol, 'comment'):
-        ofile.write(' %s' % mol.comment)
+        ofile.write('  %s' % mol.comment)
     ofile.write('\n')
         
     for i in range(len(mol)):
