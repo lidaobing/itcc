@@ -1,4 +1,3 @@
-# -*- coding: gb2312 -*-
 # $Id$
 
 __revision__ = '$Rev$'
@@ -8,7 +7,7 @@ import math
 import Numeric
 import LinearAlgebra
 from itcc.Molecule import read
-from itcc.Tinker import parameter, analyze, tinker
+from itcc.Tinker import parameter, analyze, tinker, molparam
 from itcc.Torsionfit import tools
 
 def torene(tor, param):
@@ -31,13 +30,15 @@ def readidx(idxfname):
     folds = []
     for line in file(idxfname):
         words = line.split()
+	if not words:
+	    continue
         assert 4 <= len(words) <= 5
         idx = tuple([int(x) for x in words[:4]])
         if len(words) == 5:
             fold = int(words[-1])
         else:
             fold = 3
-        idxs.append(idx)
+        idxs.append(molparam.torsion_uni(idx))
         folds.append(fold)
     return (idxs, folds)
 
