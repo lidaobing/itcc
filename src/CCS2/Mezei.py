@@ -103,7 +103,7 @@ class p24_Resolver:
     def switch(self, mode):
         self.mode = mode
 
-def R6(points, len1, len2):
+def _R6(points, len1, len2):
     assert(len(points) == 4 and
            len(len1) == 4 and
            len(len2) == 5)
@@ -144,6 +144,22 @@ def R6(points, len1, len2):
                 angle = rtbis(p24_res, j*step, (j+1)*step, 0.1)
                 result.append((i, angle, p24_res.p2, p24_res.p3, p24_res.p4))
     return result
+
+def R6(coords, atmidx, dismat):
+    results = []
+    assert len(atmidx) == 7
+    points = [coords[atmidx[i]] for i in (0,1,5,6)]
+    len1idx = ((1,2),(2,3),(3,4),(4,5))
+    len1 = [dismat[atmidx[i], atmidx[j]] for i, j in len1idx]
+    len2idx = ((0,2),(1,3),(2,4),(3,5),(4,6))
+    len2 = [dismat[atmidx[i], atmidx[j]] for i, j in len2idx]
+    for _result in _R6(points, len1, len2):
+        result = {}
+        result[atmidx[2]] = _result[2]
+        result[atmidx[3]] = _result[3]
+        result[atmidx[4]] = _result[4]
+        results.append(result)
+    return results
         
 
 if __name__ == '__main__':

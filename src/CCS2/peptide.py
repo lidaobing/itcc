@@ -2,10 +2,12 @@
 '''custom function of peptide
 '''
 
+from itcc.CCS2 import base
+
 __revision__ = '$Rev$'
 __all__ = ['Peptide']
 
-class Peptide:
+class Peptide(base.Base):
     def __init__(self, mol):
         self.mol = mol
         
@@ -41,7 +43,7 @@ class Peptide:
         for R6 in R6s:
             if len(R6[3]) == 2:
                 continue
-            assert tuple([len(x) for x in R6]) == (2,1,2,1,2,1,2)
+            assert tuple([len(x) for x in R6]) == (2, 1, 2, 1, 2, 1, 2)
             result.append((R6,))
         return result
 
