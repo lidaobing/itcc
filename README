@@ -1,3 +1,20 @@
+=======
+INSTALL
+=======
+
+for Debian system, before install this package, you should install
+these packages first:
+
+python
+python-numeric
+python-numeric-ext
+python-scientific
+
+
+====
+Help
+====
+
 parmeval.py -- evaluate a parameter
 
 Usage:
