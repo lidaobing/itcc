@@ -24,7 +24,8 @@ setup(name="itcc",
                 'itcc.Torsionfit'],
       ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
                    Extension("itcc.Tools.cpptools",
-                       ["src/Tools/cpptools.cpp", 'src/Tools/Vector.hpp'])],
+                             ["src/Tools/cpptools.cpp"],
+                             depends=['src/Tools/Vector.hpp'])], 
       scripts=scripts
       )
 
