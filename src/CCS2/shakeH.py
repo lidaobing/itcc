@@ -29,13 +29,10 @@ def shakeH(coords, shakeHdata, Cidxs = None):
         Cidxs = shakeHdata.keys()
     for Cidx in Cidxs:
         data = shakeHdata[Cidx]
-        if len(data[0]) == 2:
-            coords[data[1][0]], coords[data[1][1]] = \
-              tools.shakeH2(coords[Cidx], coords[data[0][0]],
-                            coords[data[0][1]])  
-        else:
-            print data, Cidx
-            raise RuntimeError
+        assert len(data[0]) == 2, str((data, Cidx))
+        coords[data[1][0]], coords[data[1][1]] = \
+                            tools.shakeH2(coords[Cidx], coords[data[0][0]],
+                                          coords[data[0][1]])  
     return
 
 if __name__ == '__main__':
