@@ -1,16 +1,8 @@
-2005-01-09  Li Daobing  <lidaobing@gmail.com>
+0.2.2
+=====
+Tue Jan 11 16:58:36 CST 2005
 
-	* src/Tinker/molparam.py : move this file from Torsionfit to here.
-
-	* src/Tinker/parameter.py (readtorsionprm): add this function
-	  
-
-2005-01-08  Li Daobing  <lidaobing@gmail.com>
-
-	* src/CCS2/pyramid.py (pyramid2): add pyramid2 to prepare
-	replace _calc_p3
-
-	* src/CCS2/Mezei.py: pylint
+- A new version parmfit
 
 0.2.1
 =====
