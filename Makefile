@@ -1,29 +1,22 @@
 .PHONY: TAGS test
+
+PYTHON?=python
+
 all:
-	python setup.py build
+	$(PYTHON) setup.py build
 debug: clean
-	python setup.py build --debug
-	python setup.py install
+	$(PYTHON) setup.py build --debug
+	$(PYTHON) setup.py install
 install:
-	python setup.py install
+	$(PYTHON) setup.py install
 sdist:
-	python setup.py sdist
+	$(PYTHON) setup.py sdist
 bdist:
-	python setup.py bdist
+	$(PYTHON) setup.py bdist
 clean:
 	rm -rf build dist MANIFEST
-	-find . -name *.pyc | xargs rm -f
-	-find . -name *.o | xargs rm -f
-check:
-	-(cd src/Molecule; pychecker *.py)
-	-(cd src/Tools; pychecker *.py)
-	-(cd src/Tinker; pychecker *.py)
-	-(cd src/CCS2; pychecker *.py)
-
-test:
-	(cd test; python test.py)
-testv:
-	(cd test; python test.py -v)
+	-find . -name *.pyc -exec rm -f {} \;
+	-find . -name *.o -exec rm -f {} \;
 TAGS:
 	rm -f TAGS
 	find ./ -name "*.c" -type f -exec etags -a {} \;
