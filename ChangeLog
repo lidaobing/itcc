@@ -1,3 +1,7 @@
+Sat Jan  8 14:31:20 2005  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/Mezei.py: pylint
+
 0.2.1
 =====
 Sat Jan  1 02:32:14 CST 2005

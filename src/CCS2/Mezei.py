@@ -1,3 +1,4 @@
+# $Id$
 #
 # Reference to:
 #
@@ -5,12 +6,12 @@
 # chains using local moves, tested on a solvated lipid bilayer,
 # Journal of Chemical Physics, 2003, 118(8):3874-3879
 
-from math import sqrt, sin, cos, pi, degrees
-from config import config
-from pyramid import pyramid
-from pprint import pprint
+from math import sqrt, sin, cos, pi
 import Numeric
+from itcc.CCS2.config import config
+from itcc.CCS2.pyramid import pyramid
 
+__revision__ = '$Rev$'
 __all__ = ["R6"]
 
 def rtbis(func, x1, x2, xacc):
@@ -57,9 +58,9 @@ def _calc_p3(points, d13, d35):
     return (p3o, p3x, p3y)
 
 def _calc_p2_p4(points, len1, len2, p3_result, angle):
-    p0,p1,p5,p6 = tuple(points)
-    d12,d23,d34,d45 = tuple(len1)
-    d02,d13,d24,d35,d46 = tuple(len2)
+    p0, p1, p5, p6 = tuple(points)
+    d12, d23, d34, d45 = tuple(len1)
+    d02, d13, d24, d35, d46 = tuple(len2)
     
     threshold = config.get('Mezei_p24_threshold', -0.01*0.01)
     
@@ -83,10 +84,12 @@ class p24_Resolver:
         self.mode = -1
     def __call__(self, angle):
         self.p3 = self.p3o + self.p3x * cos(angle) + self.p3y * sin(angle)
-        p2s, z2s = pyramid(self.p0, self.p1, self.p3, self.d02, self.d12, self.d23)
+        p2s, z2s = pyramid(self.p0, self.p1, self.p3, self.d02,
+                           self.d12, self.d23) 
         if z2s < self.threshold:
             return None
-        p4s, z4s = pyramid(self.p6, self.p5, self.p3, self.d46, self.d45, self.d34)
+        p4s, z4s = pyramid(self.p6, self.p5, self.p3, self.d46,
+                           self.d45, self.d34) 
         if z4s < self.threshold:
             return None
         if self.mode == -1:
