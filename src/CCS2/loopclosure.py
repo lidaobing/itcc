@@ -77,47 +77,51 @@ class LoopClosure(object):
         print
 
         for newmol, newene in self.findneighbor(mol):
-            if self.isuseful(newmol, newene):
+            idx = self.eneidx(newmol, newene)
+            if idx >= 0:
+                print '(%i)' % (idx + 1)
+            else:
+                print
+            if idx == -1:
                 self.addtask(newmol, newene)
             if newene < self.lowestene:
                 self.lowestene = newene
                 if self.searchbound is not None and ene >= self.searchbound:
                     return
 
-    def isuseful(self, mol, ene):
+    def eneidx(self, mol, ene):
+        '''return the taskidx, if is new ene, return -1, if is out of range, return -2'''
         if self.keeprange is not None and \
            self.searchrange is not None:
             if ene > max(self.keepbound, self.searchbound):
-                return False
-        return self.isnewene(mol, ene)
+                return -2
 
-    def isnewene(self, mol, ene):
         initidx = bisect.bisect(self.enes, (ene,))
         for idx in range(initidx-1, -1, -1):
             ene2 = self.enes[idx][0]
             if round(ene - ene2, 4) > self.eneerror:
                 break
-            mol2 = self.tasks[self.enes[idx][1]][0]
+            taskidx = self.enes[idx][1]
+            mol2 = self.tasks[taskidx][0]
             if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
-                return False
+                return taskidx
         for idx in range(initidx, len(self.enes)):
             ene2 = self.enes[idx][0]
             if round(ene2 - ene, 4) > self.eneerror:
                 break
-            mol2 = self.tasks[self.enes[idx][1]][0]
+            taskidx = self.enes[idx][1]
+            mol2 = self.tasks[taskidx][0]
             if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
-                return False
-        return True
+                return taskidx
+        return -1
 
     def addtask(self, mol, ene):
         self.tasks.append((mol, ene))
         taskidx = len(self.tasks) - 1
         heapq.heappush(self.taskheap, (ene, taskidx))
         bisect.insort(self.enes, (ene, taskidx))
-        print
         print '    Potential Surface Map       Minimum ' \
               '%6i %21.4f' % (taskidx+1, ene)
-        print
         self.writemol(taskidx+1, mol, ene)
 
     def taskqueue(self):
@@ -180,7 +184,7 @@ class LoopClosure(object):
                                                 self.minconverge)
                 self.step += 1
                 print '  Step %5i   Comb %02i-%02i %42.4f' % \
-                      (self.step, cmbidx, molidx, rene)
+                      (self.step, cmbidx, molidx, rene),
 
                 yield rmol, rene
 

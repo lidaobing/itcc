@@ -3,6 +3,7 @@
 	* src/CCS2/loopclosure.py:
 	  - add printend(print the end time, time usage)
 	  - isnewene will check the tordiff
+	  - display the idx of each neighbor
 
 2005-02-16  Li Daobing  <lidaobing@gmail.com>
 
