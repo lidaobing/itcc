@@ -18,7 +18,7 @@ from itcc.CCS2.searchresult import SearchResult
 __all__ = ['LoopClosure']
 
 def handler(signum, frame):
-    from itcc.Molecular import write
+    from itcc.Molecule import write
     
     signal.signal(signal.SIGTERM, signal.SIG_IGN)
     signal.signal(signal.SIGINT, signal.SIG_IGN)

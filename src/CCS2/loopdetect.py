@@ -52,7 +52,7 @@ def _countloop(mat):
     elif deg_max == 2:
         return _countloop2(mat)
     else:
-	raise RuntimeError, "I can't deal with molecular with complex cycle."
+	raise RuntimeError, "I can't deal with molecule with complex cycle."
 
 def _countloop2(mat):
     trunk_deg = sum(mat).tolist()

@@ -41,6 +41,6 @@ def shakeH(coords, shakeHdata, Cidxs = None):
 if __name__ == '__main__':
     import sys
     import pprint
-    from itcc.Molecular.read import readxyz
+    from itcc.Molecule.read import readxyz
     mol = readxyz(file(sys.argv[1]))
     pprint.pprint(getshakeHdata(mol))

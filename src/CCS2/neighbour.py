@@ -2,7 +2,7 @@
 import math
 import random
 import sys
-from itcc.Molecular.molecular import Molecular
+from itcc.Molecule.molecule import Molecule
 from itcc.Tools.tools import combinecombine, torsionangle
 from itcc.Tinker import tinker
 from itcc.CCS2 import shakeH, getshakeHdata, loopdetect
@@ -96,7 +96,7 @@ class Neighbour:
         newcoords = list(self.coordsset.pop())
 
         shakeH(newcoords, self.shakeHdata)
-        newmol = Molecular(self.mol.atoms, newcoords, self.mol.connect)
+        newmol = Molecule(self.mol.atoms, newcoords, self.mol.connect)
         newmol, ene = tinker.minimizemol(newmol, self.forcefield, 0.001)
         tors = calctor(newmol.coords, self.loopatoms)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from itcc.Molecular import read, write
+from itcc.Molecule import read, write
 
 def gettypes(typefname):
     result = []
