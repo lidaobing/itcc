@@ -12,7 +12,7 @@ class Shake:
     def __call__(self, coords, distmat):
         return self.func(coords, distmat, self.idxs)
 
-def shakehdata(mol, loopatoms):
+def shakedata(mol, loopatoms):
     neighborlist = mol.neighborlist()
     results = {}
 

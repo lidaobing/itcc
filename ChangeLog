@@ -1,3 +1,7 @@
+2005-02-15  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/shake.py: rename `shakehdata' to `shakedata'
+
 2005-02-08  Li Daobing  <lidaobing@gmail.com>
 
 	* MANIFEST.in: include Makefile
