@@ -21,7 +21,7 @@ class LoopClosure(object):
         self.keeprange = keeprange
         self.searchrange = searchrange
         self.maxsteps = None
-        self.eneerror = 0.0003
+        self.eneerror = 0.0000
         self.moltypekey = None
         self.tasks = []
         self.taskheap = []
@@ -65,6 +65,7 @@ class LoopClosure(object):
         for taskidx in self.taskqueue():
             self.runtask(taskidx)
         self.reorganizeresults()
+        self.printend()
 
     def runtask(self, taskidx):
         mol, ene = self.tasks[taskidx]
@@ -121,6 +122,9 @@ class LoopClosure(object):
         print 'SearchRange: %s' % self.searchrange
         print
 
+    def printend(self):
+        print 'Endtime: %s' % time.asctime()
+
     def writemol(self, idx, mol, ene):
         ofname = self.molnametmp % idx
         ofile = file(ofname, 'w+')
@@ -130,10 +134,10 @@ class LoopClosure(object):
     def isnewene(self, ene):
         idx = bisect.bisect(self.enes, ene)
         if idx - 1 >= 0 and \
-               abs(self.enes[idx-1] - ene) < self.eneerror:
+               round(abs(self.enes[idx-1] - ene), 4) <= self.eneerror:
             return False
         if idx < len(self.enes) and \
-               abs(self.enes[idx] - ene) < self.eneerror:
+               round(abs(self.enes[idx] - ene), 4) <= self.eneerror:
             return False
         bisect.insort(self.enes, ene)
         return True
@@ -189,8 +193,6 @@ class LoopClosure(object):
         for newidx, ene in enumerate(newenes):
             oldidx = oldenes.index(ene)
             print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
-            
-                                          
 
 def getr6result(coords, r6, dismat, shakedata):
     if r6type(r6) == (1,1,1,1,1,1,1):

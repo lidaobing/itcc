@@ -1,3 +1,7 @@
+2005-02-17  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/loopclosure.py: add printend(print the end time)
+
 2005-02-16  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/catordiff.py: a sub-command of itcc, calculate the
