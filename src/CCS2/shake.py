@@ -38,4 +38,8 @@ def shake22(coords, distmat, atmidxs):
     return {atmidxs[3]: Vector(p3),
             atmidxs[4]: Vector(p4)}
 
-funcidx = {(2, 2): shake22}
+def shakenull(coords, distmat, atmidxs):
+    return {}
+
+funcidx = {(2, 2): shake22,
+           (2, 0): shakenull}

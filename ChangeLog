@@ -1,3 +1,7 @@
+2005-02-27  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/shake.py: add support to crown ether.
+
 2005-02-26  Li Daobing  <lidaobing@gmail.com>
 
 	* src/Tinker/simpparam.py: add this file to simpilify param file.
