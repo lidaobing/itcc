@@ -1,7 +1,7 @@
 # $Id$
 import random
 import math
-from itcc import Molecular, CCS2, Tinker, Tools
+from itcc import Molecule, CCS2, Tinker, Tools
 from Scientific.Geometry import Vector
 
 FF_MM2 = 'mm2'
@@ -40,7 +40,7 @@ class CycloAlkane:
         self.forcefield = forcefield
 
     def makebyrandom(self, n):
-        '''return a Molecular object'''
+        '''return a Molecule object'''
         forcefield = self.forcefield
         
         if n < 3:
@@ -53,9 +53,9 @@ class CycloAlkane:
             angle = math.pi * 2.0 * i / n
             coords.append(Vector(r * math.cos(angle), r * math.sin(angle), random.random()*0.1))
 
-        mol = Molecular.Molecular()
-        C = Molecular.Atom(6,Ctype)
-        H = Molecular.Atom(1,Htype)
+        mol = Molecule.Molecule()
+        C = Molecule.Atom(6,Ctype)
+        H = Molecule.Atom(1,Htype)
         for i in range(n):
             mol.addatom(C, coords[i])
         for i in range(2*n):
@@ -73,8 +73,8 @@ class CycloAlkane:
         n = len(tors) + 3
 
         Ctype, Htype = self.gettype(forcefield, n)
-        C = Molecular.Atom(6,Ctype)
-        H = Molecular.Atom(1,Htype)
+        C = Molecule.Atom(6,Ctype)
+        H = Molecule.Atom(1,Htype)
 
         coords = [None] * n
         coords[0] = Vector(self.CClen, 0.0, 0.0)
@@ -85,7 +85,7 @@ class CycloAlkane:
             coords[i] = Tools.xyzatm(coords[i-1], coords[i-2], coords[i-3],
                                      self.CClen, self.CCCangle, tors[i-3])
 
-        mol = Molecular.Molecular()
+        mol = Molecule.Molecule()
         for coord in coords:
             mol.addatom(C, coord)
         for i in range(2*n):
