@@ -1,8 +1,9 @@
 # $Id$
-import pprint
-import bisect
 import os.path
+import bisect
+import heapq
 import sets
+import pprint
 import itertools
 from copy import copy
 from itcc.Tinker import tinker
@@ -23,6 +24,10 @@ class LoopClosure(object):
         self.maxsteps = 0
         self.eneerror = 0.0003
         self.moltypekey = None
+        self.tasks = []
+        self.taskheap = []
+        self.enes = []
+        self.minconverge = 0.001
         
     def __call__(self, molfname):
         self.printparams()
@@ -37,53 +42,57 @@ class LoopClosure(object):
         self.r6s = tuple(sets.Set(itertools.chain(*self.combinations)))
         printcombinations(self.combinations)
         
-        mol, ene = tinker.optimizemol(mol, self.forcefield)
-        print '    Potential Surface Map       Minimum ' \
-              '%6i %21.4f' % (1, ene)
-        print
-        self.writemol(1, mol)
-        
+        mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconvergeha)
+        self.addtask(mol, ene)
         self._run(mol, ene)
 
     def _run(self, mol, ene):
-        self.tasks = [(mol, ene)]
-        self.enes = [ene]
         self.lowestene = ene
         self.updatebound()
-        taskidx = 0
+        step = 1
 
-        while taskidx < len(self.tasks):
-            initmol, ene = self.tasks[taskidx]
-            if self.searchbound is not None and \
-                   ene > self.searchbound:
-                taskidx += 1
-                continue
-            
+        for taskidx, initmol, initene in self.taskqueue():
             print
             print ' CCS2 Local Search              Minimum %6i %21.4f' \
-                  % (taskidx + 1, ene)
+                  % (taskidx + 1, initene)
             print
             
-            idx = 1
-            for mol, ene in self.findneighbor(initmol):
-                print '    Search Direction %3i %43.4f' % (idx, ene)
-                idx += 1
+            for cmbidx, idx, mol, ene in self.findneighbor(initmol):
+                print '  Step %5i Comb %2i %2i %44.4f' % \
+                      (step, cmbidx, idx, ene)
+                step += 1
                 if self.keepbound is not None:
-                    if ene > self.searchbound:
+                    if ene > self.keepbound:
                         continue
                 if self.isnewene(ene):
-                    self.tasks.append((mol, ene))
-                    self.writemol(len(self.tasks), mol)
-                    bisect.insort(self.enes, ene)
-                    print
-                    print '    Potential Surface Map       Minimum ' \
-                          '%6i %21.4f' % (len(self.tasks), ene)
-                    print
+                    self.addtask(mol, ene)
                     if ene < self.lowestene:
                         self.lowestene = ene
                         self.updatebound()
-            taskidx += 1
+                        if initene > self.searchbound:
+                            break
             print
+
+    def addtask(self, mol, ene):
+        self.tasks.append(mol)
+        taskidx = len(self.tasks) - 1
+        heapq.heappush(self.taskheap, (ene, taskidx))
+        bisect.insort(self.enes, ene)
+        print
+        print '    Potential Surface Map       Minimum ' \
+              '%6i %21.4f' % (taskidx+1, ene)
+        print
+        self.writemol(taskidx+1, mol, ene)
+
+
+    def taskqueue(self):
+        while self.taskheap:
+            ene, taskidx = heapq.heappop(self.taskheap)
+            if self.searchbound is not None and ene > self.searchbound:
+                print self.searchbound
+                return
+            mol = self.tasks[taskidx]
+            yield taskidx, mol, ene
 
     def getloopatoms(self, mol):
         loops = loopdetect(mol)
@@ -96,10 +105,10 @@ class LoopClosure(object):
         print 'SearchRange: %s' % self.searchrange
         print
 
-    def writemol(self, idx, mol):
+    def writemol(self, idx, mol, ene):
         ofname = self.molnametmp % idx
         ofile = file(ofname, 'w+')
-        write.writexyz(mol, ofile)
+        write.writexyz(mol, ofile, '%.4f' % ene)
         ofile.close()
 
     def updatebound(self):
@@ -125,15 +134,18 @@ class LoopClosure(object):
         r6results = {}
         for r6 in self.r6s:
             r6results[r6] = getr6result(coords, r6, dismat)
-        for combine in self.combinations:
+        for cmbidx, combine in enumerate(self.combinations):
             r6s = [r6results[r6] for r6 in combine]
             result = list(tools.combinecombine(r6s))
-            for molresult in result:
+            for molidx, molresult in enumerate(result):
                 newmol = copy(mol)
                 for r6result in molresult:
                     for idx, coord in r6result.items():
                         newmol.coords[idx] = coord
-                yield tinker.minimizemol(newmol, self.forcefield)
+                rmol, rene = \
+                      tinker.minimizemol(newmol, self.forcefield, self.minconverge)
+                yield cmbidx, molidx, rmol, rene
+                
 
 def getr6result(coords, r6, dismat):
     if r6type(r6) == (1,1,1,1,1,1,1):
