@@ -1,9 +1,11 @@
-from math import sqrt, sin, cos, acos
+# $Id$
+from math import sqrt, sin, cos, acos, pi
 from Scientific.Geometry import Vector
 from itcc.Tools import ctools
 from itcc.Tools import cpptools
 
-__all__ = ['length', 'angle', 'torsionangle', 'shakeH2',
+__revision__ = '$Rev$'
+__all__ = ['length', 'angle', 'torsionangle', 'imptor', 'shakeH2',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx']
 
 def length(a, b):
@@ -19,6 +21,21 @@ def torsionangle(a, b, c, d):
 
     return ctools.torsionangle(tuple(a.array), tuple(b.array),
                                tuple(c.array), tuple(d.array)) 
+
+def imptor(a, b, c, d):
+    '''imptor(a, b, c, d) -> angle
+    a, b, c, d are 4 Scientific.Geometry.Vector
+    return the imptor of a-b-c-d
+
+    imptor(abcd) is the angle between vector ad and plane abc,
+    crossmulti(ab, ac) is the positive direction. 
+    '''
+    ad = d - a
+    ab = b - a
+    ac = c - a
+    abc = ab.cross(ac)
+    angle = ad.angle(abc)
+    return pi - angle
 
 def shakeH2(p0, p1, p2, CHlen=1.113):
     p3, p4 = cpptools.shakeH2(tuple(p0.array), tuple(p1.array),
