@@ -4,6 +4,7 @@ from distutils.core import setup, Extension
 __revision__ = '$Rev$'
 
 scripts = glob.glob('src/scripts/*.py')
+scripts.append('src/scripts/parmfit')
 
 setup(name="itcc",
       version="0.2.1",

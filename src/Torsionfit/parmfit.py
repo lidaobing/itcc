@@ -3,86 +3,27 @@
 
 __revision__ = '$Rev$'
 
+import sys
 import math
 import Numeric
 import LinearAlgebra
 from itcc.Molecule import read
-from itcc.Tinker import parameter, analyze
+from itcc.Tinker import parameter, analyze, tinker
 
-__DEBUG__ = 1
-
-def torene(tors, param):
-    """torene(tors, param) -> Array of Float
-    tors: List/Array of Float
+def torene(tor, param):
+    """torene(tor, param) -> Float
+    tor: Float
     param: List of Float
     """
-
-    tors = Numeric.array(tors)
-
-    result = Numeric.zeros(len(tors), 'd')
+    result = 0.0
 
     for i, x in enumerate(param):
         i += 1
         if i % 2 == 1:
-            result += 0.5 * x * (1 + Numeric.cos(i * tors))
+            result += 0.5 * x * (1 + math.cos(i * tor))
         else:
-            result += 0.5 * x * (1 - Numeric.cos(i * tors))
+            result += 0.5 * x * (1 - math.cos(i * tor))
     return result
-    
-def genparam(types, param):
-    """genparam(types, param) -> String
-    """
-    fmtstr = 'torsion   %4i %4i %4i %4i  '
-    for i in range(1, len(param)+1):
-        if i % 2 == 1:
-            fmtstr = fmtstr + ' %8.3f 0.0 ' + '%d' % i
-        else:
-            fmtstr = fmtstr + ' %8.3f 180.0 ' + '%d' % i
-    fmtstr += '\n'
-    
-    return fmtstr % tuple(list(types) + list(param))
-
-def genparams(params):
-    """genparams(params) -> List of String
-    params: Mappings
-    """
-    results = []
-    for x, y in params.iteritems():
-        results.append(genparam(x, y))
-    return results
-
-
-def fitparam(thetas, E_fit, fold = 3):
-    """fitparam(thetas, E_fit, fold = 3) -> (newparam, error)
-    thetas: List of Float
-    E_fit: List of Float
-    fold: integer
-    
-    newparam: List of Float
-    error: Float, the RMS error
-    """
-
-    thetas = Numeric.array(thetas)
-    E_fit = Numeric.array(E_fit)
-    A = []
-
-    for i in range(1, fold+1):
-        if i % 2 == 1:
-            A.append(+0.5 * Numeric.cos(i * thetas))
-        else:
-            A.append(-0.5 * Numeric.cos(i * thetas))
-        
-
-    A.append(Numeric.array([1.0] * len(thetas)))
-    
-    A = Numeric.swapaxes(Numeric.array(A), 0, 1)
-    B = E_fit
-    
-    result = LinearAlgebra.linear_least_squares(A, B)
-    newparam = result[0][:-1]
-    error = math.sqrt(result[1][0]/len(E_fit))
-
-    return newparam, error
 
 def readdat(datfname):
     fnames = []
@@ -92,7 +33,7 @@ def readdat(datfname):
         fname, ene, weight = tuple(line.split())
         fnames.append(fname)
         enes.append(float(ene))
-        weights.append(weight)
+        weights.append(float(weight))
     return (fnames, enes, weights)
 
 def readidx(idxfname):
@@ -111,26 +52,69 @@ def readidx(idxfname):
     return (idxs, folds)
 
 def getparams(idxs, param):
-    result = []
+    result = {}
     for idx in idxs:
         assert len(idx) == 4
         torprm = parameter.readtorsionprm(param, idx[0], idx[1], idx[2], idx[3])
         assert torprm is not None
-        result.append(torprm)
+        result[idx] = torprm
     return result
-        
+
+def getetor(mol, data, params):
+    result = 0.0
+    for typ, tors in data.items():
+        param = params[typ]
+        for tor in tors:
+            torang = mol.calctor(tor[0], tor[1], tor[2], tor[3])
+            result += torene(torang, param)
+    return result
+
+def getA(mol, types, folds, data):
+    result = [0.0] * (sum(folds) + 1)
+    result[-1] = 1.0
+
+    idx = 0
+    
+    for typ, fold in zip(types, folds):
+        for tor in data[typ]:
+            torang = mol.calctor(tor[0], tor[1], tor[2], tor[3])
+            for i in range(1, fold+1):
+                if i % 2 == 1:
+                    result[idx+i-1] += +0.5 * math.cos(i * torang)
+                else:
+                    result[idx+i-1] += -0.5 * math.cos(i * torang)
+        idx += fold
+    return result
+
+def printprm(param, types, folds):
+    assert len(param) == sum(folds)
+    idx = 0
+    for typ, fold in zip(types, folds):
+        sys.stdout.write(str(parameter.Torsionparameter(list(typ) +
+            param[idx:idx+fold])))
+        idx += fold
 
 def parmfit(datfname, idxfname, param):
     fnames, enes, weights = readdat(datfname)
     idxs, folds = readidx(idxfname)
     params = getparams(idxs, param)
-    for fname in datfname:
+    A = []
+    B = []
+    for fname, E_qm, weight in zip(fnames, enes, weights):
         mol = read.readxyz(file(fname))
-        print analyze.gettorsbytype(mol, idxs)
-        return
+        tors = analyze.gettorsbytype(mol, idxs)
+        newmol, E_mm = tinker.minimize_file(fname, param)
+        E_tor = getetor(newmol, tors, params)
+        E_fit = E_qm - E_mm + E_tor
+        weight = math.sqrt(weight)
+        B.append(E_fit * weight)
+        A.append([x*weight for x in getA(mol, idxs, folds, tors)])
+    A = Numeric.array(A)
+    B = Numeric.array(B)
 
-def main():
-    pass
-
-if __name__ == '__main__':
-    main()
+    result = LinearAlgebra.linear_least_squares(A, B)
+    newparam = list(result[0][:-1])
+    error = math.sqrt(result[1][0]/len(B))
+    printprm(newparam, idxs, folds)
+    print error
+    

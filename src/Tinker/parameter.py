@@ -48,7 +48,7 @@ def readtorsionprm(prmfname, i, j, k, l):
         words = line.split()
         if len(words) in [14, 17, 20, 23] \
                and words[0] == 'torsion' \
-               and molparam.bond_uni([int(x) for x in words[1:5]]) == toridx:
+               and molparam.torsion_uni([int(x) for x in words[1:5]]) == toridx:
             fold = (len(words) - 5) // 3
             result = []
             for idx in range(fold):
