@@ -1,3 +1,8 @@
+2005-03-15  Li Daobing  <lidaobing@gmail.com>
+
+	* src/Molecule/_rmsd.cpp: a better rmsd algorithm(consider
+	transition and rotation)
+
 2005-03-11  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/Mezeipro.py: fix a bug.

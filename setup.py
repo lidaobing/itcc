@@ -15,7 +15,10 @@ ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
              Extension('itcc.Tools.Vector',
                        ['src/Tools/Vector.cpp'],
                        depends=['src/Tools/Vector.hpp'],
-                       libraries=['boost_python'])
+                       libraries=['boost_python']),
+             Extension('itcc.Molecule._rmsd',
+                       ['src/Molecule/_rmsd.cpp'],
+                       libraries=['lapack']),
              ]
 
 
