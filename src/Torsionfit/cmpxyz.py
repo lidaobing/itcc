@@ -1,12 +1,13 @@
-#! /usr/bin/env python
-import read, gen, tools, math
+import math
+from itcc.Molecule import read
+from itcc.Torsionfit import gen, tools
 
 __revision__ = "$Id$"
 
-def maxb(list):
+def maxb(seq):
     m = 0
-    for i in range(1, len(list)):
-        if list[i] > list[m]:
+    for i in range(1, len(seq)):
+        if seq[i] > seq[m]:
             m = i
     return m
             

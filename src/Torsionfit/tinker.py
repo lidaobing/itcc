@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 # $Id$
 
-
 import os
 import os.path
-import read, relalist
-import write
+from itcc.Molecule import read
+from itcc.Torsionfit import relalist
+from itcc.Torsionfit import write
 
 TNK_ROOT = os.getenv("TNK_ROOT", "")    # use same environment with molden
 

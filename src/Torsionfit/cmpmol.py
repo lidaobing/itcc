@@ -1,25 +1,8 @@
-# coding: gb2312
+# -*- coding: gb2312 -*-
 # $Id$
-# $Log: cmpmol.py,v $
-# Revision 1.5  2004/04/12 12:36:37  nichloas
-# fix bug in cmpmoltop
-#
-# Revision 1.4  2004/02/04 07:17:22  nichloas
-# Add cmpmoltop
-#
-# Revision 1.3  2003/12/01 07:56:01  nichloas
-# add dismean, etc.
-#
-# Revision 1.2  2003/11/20 16:43:45  nichloas
-# add displacement
-#
-#
-#
 
-
-import relalist
-import read
-import tools
+from itcc.Molecule import read
+from itcc.Torsionfit import relalist, tools
 
 class Cmpresabs:
     "Abstract Compare Result Class"

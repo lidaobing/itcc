@@ -1,18 +1,8 @@
 # -*- coding: gb2312 -*-
 # $Id$
-# $Log: molparam.py,v $
-# Revision 1.3  2003/12/22 05:36:49  nichloas
-# add unit_code, imptors
-#
-# Revision 1.2  2003/12/21 06:14:28  nichloas
-# fix bug.
-#
-# Revision 1.1  2003/12/21 04:37:18  nichloas
-# *** empty log message ***
-#
 
 from sets import Set
-from relalist import Relalist
+from itcc.Torsionfit.relalist import Relalist
 
 class Param:
     def __init__(self):
@@ -143,11 +133,11 @@ def molparam(mol, prmfile):
     for x in rl.angles:
         angles.add(tuple(angle_uni([int(classes[y-1]) for y in x])))
     angles = list(angles)
-    def angles_sort(x,y):
+    def angles_sort(x, y):
         if x[1] == y[1]:
             return cmp(x,y)
         else:
-            return cmp(x[1],y[1])
+            return cmp(x[1], y[1])
     angles.sort(angles_sort)
     for x in angles:
         print param.param['angle-%s-%s-%s' % x],
@@ -199,7 +189,7 @@ def main():
         print "Usage: %s xyzfile prmfile\n" % sys.argv[0]
         sys.exit(1)
 
-    import read
+    from itcc.Molecule import read
     mol = read.readxyz(sys.argv[1])
 
     molparam(mol, sys.argv[2])
