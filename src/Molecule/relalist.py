@@ -1,19 +1,6 @@
 # $Id$
-# $Log: relalist.py,v $
-# Revision 1.4  2003/12/22 05:37:16  nichloas
-# fix bug.
-#
-# Revision 1.3  2003/12/22 03:11:52  nichloas
-# add imptors
-#
-# Revision 1.2  2003/12/01 07:59:19  nichloas
-# bug fix.
-#
-# Revision 1.1.1.1  2003/11/20 06:12:42  nichloas
-# Initial version
-#
-#
 
+__all__ = ['Relalist', 'genR', 'genA', 'genD', 'genI']
 
 class Relalist:
     """
@@ -22,19 +9,16 @@ class Relalist:
     angles
     torsions
     imptors
-
-    Care:
-    the index number of mol.connect is begin with 0
-    and the bonds, angles, torsions's index is begin with 1
     """
 
     def __init__(self, mol = None):
         if mol is not None:
             mol.confirmconnect()
-            self.bonds = genR(mol.connect)
-            self.angles = genA(mol.connect)
-            self.torsions = genD(mol.connect)
-            self.imptors = genI(mol.connect)
+            conns = genconns(mol.connect)
+            self.bonds = genR(conns)
+            self.angles = genA(conns)
+            self.torsions = genD(conns)
+            self.imptors = genI(conns)
         else:
             self.bonds = None
             self.angles = None
@@ -51,32 +35,39 @@ class Relalist:
         return not self == other
 
     def __str__(self):
+        convfun = lambda seq: str(tuple([x+1 for x in seq])) + '\n'
         result = []
         result.append('Bonds: %i\n' % len(self.bonds))
-        for x in self.bonds:
-            result.append(str(x)+'\n')
+        result.extend([convfun(x) for x in self.bonds])
 
         result.append('\nAngles: %i\n' % len(self.angles))
-        for x in self.angles:
-            result.append(str(x)+'\n')
+        result.extend([convfun(x) for x in self.angles])
 
         result.append('\nTorsions: %i\n' % len(self.torsions))
-        for x in self.torsions:
-            result.append(str(x)+'\n')
+        result.extend([convfun(x) for x in self.torsions])
 
         result.append('\nImptors: %i\n' % len(self.imptors))
-        for x in self.imptors:
-            result.append(str(x)+'\n')
+        result.extend([convfun(x) for x in self.imptors])
         
         return ''.join(result)
         
         
-def genR(conns, bias = 1):
+def genconns(connect):
+    result = []
+    size = len(connect)
+    for i in range(size):
+        result.append([])
+        for j in range(size):
+            if connect[i][j]:
+                result[-1].append(j)
+    return result
+
+def genR(conns):
     result = []
     for i in range(len(conns)):
         for x in conns[i]:
             if i < x:
-                result.append((i+bias,x+bias))
+                result.append((i,x))
     return result
 
 def genA(conns):
@@ -84,12 +75,12 @@ def genA(conns):
     for i in range(len(conns)):
         for j in range(len(conns[i])):
             for k in range(j+1,len(conns[i])):
-                result.append((conns[i][j]+1, i+1, conns[i][k]+1))
+                result.append((conns[i][j], i, conns[i][k]))
     return result
 
 def genD(conns):
     result = []
-    Rs = genR(conns, 0)
+    Rs = genR(conns)
     for x in Rs:
         if len(conns[x[0]]) == 1 or len(conns[x[1]]) == 1:
             continue
@@ -99,7 +90,7 @@ def genD(conns):
             for z in conns[x[1]]:
                 if z == x[0] or z == y:
                     continue
-                result.append((y+1, x[0]+1, x[1]+1, z+1))
+                result.append((y, x[0], x[1], z))
     return result
 
 def genI(conns):

@@ -1,6 +1,5 @@
 import math
-from itcc.Molecule import read
-from itcc.Torsionfit import gen
+from itcc.Molecule import read, relalist
 from itcc.Tools import tools
 
 __revision__ = "$Id$"
@@ -17,9 +16,9 @@ def maxb(seq):
 def cmpxyz(ifname1, ifname2):
     conns = read.readconns(ifname1)
 
-    Rs = gen.genR(conns)
-    As = gen.genA(conns)
-    Ds = gen.genD(conns)
+    Rs = relalist.genR(conns)
+    As = relalist.genA(conns)
+    Ds = relalist.genD(conns)
     
     xyz1 = read.readxyz_2(ifname1)
     xyz2 = read.readxyz_2(ifname2)
