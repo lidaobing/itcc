@@ -1,22 +1,22 @@
 #!/usr/bin/python
 
 import math
-from itcc.torsionfit import tools
-from itcc.torsionfit import read
+from itcc.Tools import tools
+from itcc.Molecule import read
 
-def sumxyz(list, filelist):
-    if len(list) < 2 or len(list) > 3:
+def sumxyz(seq, filelist):
+    if len(seq) < 2 or len(seq) > 3:
         raise ValueError
 
     result = []
 
     for x in filelist:
         mol = read.readxyz(x)
-        if len(list) == 2:
-            result.append(mol.calclen(list[0], list[1]))
-        elif len(list) == 3:
-            result.append(math.degrees(mol.calcang(list[0], list[1],
-                list[2])))
+        if len(seq) == 2:
+            result.append(mol.calclen(seq[0], seq[1]))
+        elif len(seq) == 3:
+            result.append(math.degrees(mol.calcang(seq[0], seq[1],
+                                                   seq[2])))
 
     print 'n = %d' % len(result)
     print 'average = %f' % tools.average(result)
@@ -38,11 +38,13 @@ def sumxyz_torsion(list, filelist):
 
     i = 0
     while i < len(result):
-        print '%02i-%02i' % (i+1, i+5), ' '.join(['%7.2f' % x for x in result[i:i+5]])
+        print '%02i-%02i' % (i+1, i+5),
+        print ' '.join(['%7.2f' % x for x in result[i:i+5]])
         i += 5
 
     dataf = tools.datafreq(result, -180, 180, 36)
-    print '\n'.join(['%4d - %4d: %d' % (-180+i*10, -170+i*10, dataf[i]) for i in range(36)])
+    print '\n'.join(['%4d - %4d: %d' % (-180+i*10, -170+i*10, dataf[i])
+                     for i in range(36)])
 
 
 def main():

@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 import getopt, sys
-from torsionfit import tinker
+from itcc.Tinker import tinker
 
 def usage():
     print >> sys.stderr, 'Usage: %s [-c converge] xyzfname ...'

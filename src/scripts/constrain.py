@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from torsionfit import tinker
+from itcc.Tinker import tinker
 
 
 def main():
