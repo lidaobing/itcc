@@ -15,7 +15,7 @@ clean:
 	-find . -name *.pyc | xargs rm -f
 	-find . -name *.o | xargs rm -f
 check:
-	-(cd src/Molecular; pychecker *.py)
+	-(cd src/Molecule; pychecker *.py)
 	-(cd src/Tools; pychecker *.py)
 	-(cd src/Tinker; pychecker *.py)
 	-(cd src/CCS2; pychecker *.py)
