@@ -5,6 +5,7 @@
 	* src/CCS2/loopclosure.py: add `LoopClosure.shakehdata', this
 	variable store the shake information for the `getr6result'
 	* src/CCS2/shake.py: rename `shakehdata' to `shakedata'
+	Fix a bug: funcidx should be put after all the functions
 
 2005-02-08  Li Daobing  <lidaobing@gmail.com>
 

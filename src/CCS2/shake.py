@@ -26,8 +26,6 @@ def shakedata(mol, loopatoms):
         results[atmidx] = Shake(func, idxs)
     return results
 
-funcidx = {(2, 2): shake22}
-
 def shake22(coords, distmat, atmidxs):
     assert len(atmidxs) == 5
     p0 = coords[atmidxs[0]]
@@ -39,3 +37,5 @@ def shake22(coords, distmat, atmidxs):
                               tuple(p2.array), r03, r04)
     return {atmidxs[3]: Vector(p3),
             atmidxs[4]: Vector(p4)}
+
+funcidx = {(2, 2): shake22}
