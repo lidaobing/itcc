@@ -6,7 +6,7 @@ __revision__ = '$Rev$'
 scripts = glob.glob('src/scripts/*.py')
 
 setup(name="itcc",
-      version="0.2",
+      version="0.2.1",
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',

@@ -1,3 +1,10 @@
+0.2.1
+=====
+Sat Jan  1 02:32:14 CST 2005
+
+merge torsionfit as itcc.Torsionfit and del duplicate module
+
+
 0.2
 ===
 Tue Dec 28 03:26:12 CST 2004
