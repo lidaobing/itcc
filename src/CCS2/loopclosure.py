@@ -1,4 +1,5 @@
 # $Id$
+import os
 import os.path
 import bisect
 import heapq
@@ -27,6 +28,7 @@ class LoopClosure(object):
         self.enes = []
         self.minconverge = 0.001
         self.molnametmp = None
+        self.newmolnametmp = None
         self.lowestene = None
         self.step = 0
         self.shakedata = None
@@ -46,7 +48,8 @@ class LoopClosure(object):
     def __call__(self, molfname):
         self.printparams()
         mol = read.readxyz(file(molfname))
-        self.molnametmp = os.path.splitext(molfname)[0] + '.%03i'
+        self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
+        self.molnametmp = os.path.splitext(molfname)[0] + '.tmp.%03i'
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
         self.shakedata = shake.shakedata(mol, self.loopatoms)
@@ -61,6 +64,7 @@ class LoopClosure(object):
         self.addtask(mol, ene)
         for taskidx in self.taskqueue():
             self.runtask(taskidx)
+        self.reorganizeresults()
 
     def runtask(self, taskidx):
         mol, ene = self.tasks[taskidx]
@@ -159,6 +163,34 @@ class LoopClosure(object):
                       (self.step, cmbidx, molidx, rene)
 
                 yield rmol, rene
+
+    def reorganizeresults(self):
+        oldenes = [task[1] for task in self.tasks]
+        newenes = oldenes[:]
+        newenes.sort()
+        if self.keeprange is not None:
+            idx = bisect.bisect(newenes, self.keepbound)
+            newenes = newenes[:idx]
+        print
+        print 'Oldidx Newidx Ene(sort by Oldidx)'
+        for oldidx, ene in enumerate(oldenes):
+            oldfname = self.molnametmp % (oldidx + 1)
+            try:
+                newidx = newenes.index(ene)
+            except ValueError:
+                os.unlink(oldfname)
+                print '%6i %6s %.4f' % (oldidx+1, '', ene)
+            else:
+                newfname = self.newmolnametmp % (newidx + 1)
+                os.rename(oldfname, newfname)
+                print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+        print
+        print 'Oldidx Newidx Ene(sort by Newidx)'
+        for newidx, ene in enumerate(newenes):
+            oldidx = oldenes.index(ene)
+            print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+            
+                                          
 
 def getr6result(coords, r6, dismat, shakedata):
     if r6type(r6) == (1,1,1,1,1,1,1):
