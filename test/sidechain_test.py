@@ -4,7 +4,7 @@ from itcc.CCS2 import sidechain
 
 class TestSidechain(unittest.TestCase):
     def testsidechain(self):
-        mol = read.readxyz(file('methane1.xyz'))
+        mol = read.readxyz(file('methane.xyz'))
         coords1 = mol.coords
         coords2 = coords1[0:1] + coords1[3:] + coords1[1:3]
         newcoords = sidechain.movesidechain(coords1, coords2, (0,1,2), (3,4))
