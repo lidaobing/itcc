@@ -93,6 +93,23 @@ def maxidx(iterable):
             item = x
     return idx, item
 
+def swapaxes(matrix):
+    rank1 = len(matrix)
+    if rank1 == 0:
+        return []
+    rank2 = len(matrix[0])
+    for row in matrix:
+        assert len(row) == rank2
+
+    result = [[None] * rank1 for i in range(rank2)]
+        
+    for i in range(rank2):
+        for j in range(rank1):
+            result[i][j] = matrix[j][i]
+
+    return result
+        
+
 def _test():
     import doctest, tools
     return doctest.testmod(tools)
