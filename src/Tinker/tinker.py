@@ -41,7 +41,7 @@ def getparam(key):
         if os.path.isfile(param):
             return param
 
-    param = os.param.join('/usr/share/tinker/params', key)
+    param = os.path.join('/usr/share/tinker/params', key)
     if os.path.isfile(param):
         return param
     
