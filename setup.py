@@ -6,6 +6,7 @@ __revision__ = '$Rev$'
 
 scripts = glob.glob('src/scripts/*.py')
 scripts.append('src/scripts/parmfit')
+scripts.append('src/scripts/itcc')
 
 ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
              Extension("itcc.Tools.cpptools",

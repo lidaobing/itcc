@@ -1,0 +1,12 @@
+#!/usr/bin/env python
+# $Id$
+
+import itcc
+
+__revision__ = '$Rev$'
+
+def main():
+    print 'Version:', itcc.__version__
+
+if __name__ == '__main__':
+    main()
