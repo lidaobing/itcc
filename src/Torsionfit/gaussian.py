@@ -1,8 +1,8 @@
+import os
+import molecular
+from itcc.Molecule import atom
 
 __revision__ = '$Id$'
-
-import os
-import molecular, atom
 
 def hatree2kcalpermol(hatree):
     return 627.51 * float(hatree)

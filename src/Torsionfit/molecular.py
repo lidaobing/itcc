@@ -1,44 +1,13 @@
 # -*- coding: utf-8 -*-
 # 
 # $Id$
-# $Log: molecular.py,v $
-# Revision 1.11  2004/08/27 11:32:02  nichloas
-# commit at 2004-08-27
-#
-# Revision 1.10  2004/08/13 12:15:52  nichloas
-# * change encoding to utf-8
-# * fix a bug in Molecular.copy(connect only need to copy 1 time)
-#
-# Revision 1.9  2004/02/16 11:21:51  nichloas
-# *** empty log message ***
-#
-# Revision 1.8  2004/02/01 05:17:44  nichloas
-# modify molecular.copy()
-#
-# Revision 1.7  2004/02/01 04:43:31  nichloas
-# implement copy
-#
-# Revision 1.6  2004/02/01 04:05:32  nichloas
-# *** empty log message ***
-#
-# Revision 1.5  2004/02/01 04:04:37  nichloas
-# add copy(not implement)
-#
-# Revision 1.4  2003/12/21 04:33:32  nichloas
-# modify: gettypes
-# addL cmptopstr
-#
-# Revision 1.3  2003/12/01 07:57:38  nichloas
-# add comment.
-#
-# 
 
-__version__ = "$Revision: 1.11 $"[11:-2]
+__revision__ = "$Revision: 1.11 $"[11:-2]
 
 import tools
 from Numeric import zeros, Float
 import pickle
-from atom import *
+from itcc.Molecule.atom import *
 
 __all__ = ["Molecular"]
 

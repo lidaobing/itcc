@@ -4,7 +4,7 @@
 import itertools
 from os.path import splitext
 from molecular import *
-from atom import Atom
+from itcc.Molecule.atom import Atom
 from Scientific.IO import PDB
 
 class FormatError(Exception):
