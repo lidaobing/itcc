@@ -1,5 +1,7 @@
 2005-02-16  Li Daobing  <lidaobing@gmail.com>
 
+	* src/CCS2/catordiff.py: a sub-command of itcc, calculate the
+	torsion diff of two cycloalkanes
 	* src/scripts/itcc: add rmsd as a subcommand, and change
 	svn:keywords to `Id rev'
 	* src/Molecule/rmsd.py: set rmsd as a sub-command of itcc
