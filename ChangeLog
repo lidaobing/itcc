@@ -1,6 +1,6 @@
 2005-03-01  Li Daobing  <lidaobing@gmail.com>
 
-	* src/CCS2/catordiff.py:
+	* src/Molecule/tools.py: 
 	  - new calclooptor
 
 	* src/Molecule/atom.py (atomord):

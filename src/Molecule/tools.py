@@ -16,3 +16,8 @@ def distmat(mol):
 
 def gettypes(mol):
     return [atom.type for atom in mol.atoms]
+
+def calclooptor(mol, loop):
+    doubleloop = loop * 2
+    tors = [mol.calctor(*doubleloop[i:i+4]) for i in range(len(loop))]
+    return tors

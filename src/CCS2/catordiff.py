@@ -4,7 +4,7 @@
 import sys
 import math
 from itcc.Tools import periodnumber
-from itcc.Molecule import read, molecule
+from itcc.Molecule import read, molecule, tools
 from itcc.CCS2 import loopdetect
 
 __revision__ = '$Rev$'
@@ -25,12 +25,7 @@ def getlooptor(mol):
     loops = loopdetect.loopdetect(mol)
     assert len(loops) == 1
     loop = loops[0]
-    return calclooptor(mol, loop)
-
-def calclooptor(mol, loop):
-    doubleloop = loop * 2
-    tors = [mol.calctor(*doubleloop[i:i+4]) for i in range(len(loop))]
-    return tors
+    return tools.calclooptor(mol, loop)
 
 def tordiff(tors1, tors2):
     assert len(tors1) == len(tors2)
