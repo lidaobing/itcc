@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+# $Id$
 import pprint
 import bisect
 import sys
@@ -16,6 +17,7 @@ from itcc.CCS2 import loopdetect
 from itcc.CCS2.searchresult import SearchResult
 
 __all__ = ['LoopClosure']
+__revision__ = '$Rev$'
 
 def handler(signum, frame):
     from itcc.Molecule import write
@@ -205,7 +207,7 @@ class LoopClosure(object):
                                                    self.minimals]) 
         print '  Find last minimal at: %i' % max([x.opttimes for x in
                                                   self.minimals]) 
-        print '  Wasted optimization times: %i' %\
+        print '  Wasted optimization times: %i' % \
               (tinker.minimize_count - max([x.opttimes for x in
                                             self.minimals])) 
         print '  The largest minimal find times gap: %i' % self.getmintimesgap()
