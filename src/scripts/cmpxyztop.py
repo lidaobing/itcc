@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# $Id$
+import sys
+from itcc.Molecule import read, atom
+
+__revision__ = '$Rev$'
+
+def cmpxyztop(ifname1, ifname2):
+    mol1 = read.readxyz(file(ifname1))
+    mol2 = read.readxyz(file(ifname2))
+    if cmpatoms(mol1, mol2):
+        if cmpconnect(mol1, mol2):
+            sys.exit(0)
+    sys.exit(1)
+
+def cmpatoms(mol1, mol2):
+    if len(mol1) != len(mol2):
+        print 'Atom numbers is not equal: %i vs %i' % (len(mol1),
+                len(mol2))
+        return False
+    result = True
+    for idx in range(len(mol1)):
+        atom1 = mol1.atoms[idx]
+        atom2 = mol2.atoms[idx]
+        if atom1.no != atom2.no:
+            print 'the %i atom is different: %s vs %s' % (idx+1,
+                atom.atomchr(atom1.no), atom.atomchr(atom2.no))
+            result = False
+        elif atom1.type != atom2.type:
+            print 'the %i atom\'s type is different: %i vs %i' % (idx+1,
+                atom1.type, atom2.type)
+            result = False
+    return result
+
+def cmpconnect(mol1, mol2):
+    connect1 = mol1.connect
+    connect2 = mol2.connect
+
+    result = True
+    
+    for j in range(len(connect1)):
+        for i in range(j):
+            if connect1[i, j] != connect2[i, j]:
+                print 'the connect condition of atom %i and %i is' \
+                    'diffrent: %s vs %s' % (i+1, j+1, bool(connect1[i,j]),
+                    bool(connect2[i,j]))
+                result = False
+    return result
+                        
+def main():
+    if len(sys.argv) == 3:
+        cmpxyztop(sys.argv[1], sys.argv[2])
+
+if __name__ == '__main__':
+    main()
