@@ -1,4 +1,9 @@
+# $Id$
+
 from itcc.Molecule.molecule import *
+from itcc.Molecule.atom import atomchr
+
+__revision__ = '$Rev$'
 
 def writexyz(mol, ofile, comment=None):
     assert(isinstance(mol, Molecule))
@@ -21,6 +26,25 @@ def writexyz(mol, ofile, comment=None):
                 tmpstr += '%6i' % (j+1)
         tmpstr += '\n'
         ofile.write(tmpstr)
+
+gjfheader ='#p b3lyp/6-31g* opt\n'
+gjfcomment = 'notitle\n'
+gjfchargespin = '0 1\n'
+
+def writegjf(mol, ofile):
+    assert(isinstance(mol, Molecule))
+    ofile.write(gjfheader)
+    ofile.write('\n')
+    ofile.write(gjfcomment)
+    ofile.write('\n')
+    ofile.write(gjfchargespin)
+    for i in range(len(mol)):
+        atom, coord = mol[i]
+        ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord.x(),
+            coord.y(), coord.z()))
+    ofile.write('\n')
+
+    
 
 
         
