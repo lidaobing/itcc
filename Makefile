@@ -17,7 +17,11 @@ clean:
 	rm -rf build dist MANIFEST
 	-find . -name *.pyc -exec rm -f {} \;
 	-find . -name *.o -exec rm -f {} \;
+test:
+	(cd tests && $(MAKE) test)
 TAGS:
 	rm -f TAGS
 	find ./ -name "*.c" -type f -exec etags -a {} \;
 	find ./ -name "*.py" -type f -exec etags -a {} \;
+
+.PHONY: test clean
