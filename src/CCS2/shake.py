@@ -37,4 +37,5 @@ def shake22(coords, distmat, atmidxs):
     r04 = distmat[atmidxs[0], atmidxs[4]]
     p3, p4 = cpptools.shakeH2(tuple(p0.array), tuple(p1.array),
                               tuple(p2.array), r03, r04)
-    return Vector(p3), Vector(p4)
+    return {atmidxs[3]: Vector(p3),
+            atmidxs[4]: Vector(p4)}
