@@ -7,7 +7,18 @@ from itcc.Tools import cpptools
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
-           'weightedmean', 'weightedsd']
+           'weightedmean', 'weightedsd', 'datafreq']
+
+def datafreq(data, min, max, num):
+    result = [0] * num
+    step = float(max - min)/num
+
+    for x in data:
+        type = int((x - min)/step)
+        if 0 <= type < num:
+            result[type] += 1
+
+    return result
 
 def length(a, b):
     return (a-b).length()

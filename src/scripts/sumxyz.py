@@ -2,6 +2,7 @@
 # $Id$
 
 import math
+from Scientific import Statistics
 from itcc.Tools import tools
 from itcc.Molecule import read
 
@@ -14,7 +15,7 @@ def sumxyz(seq, filelist):
     result = []
 
     for x in filelist:
-        mol = read.readxyz(x)
+        mol = read.readxyz(file(x))
         if len(seq) == 2:
             result.append(mol.calclen(seq[0], seq[1]))
         elif len(seq) == 3:
@@ -22,10 +23,11 @@ def sumxyz(seq, filelist):
                                                    seq[2])))
 
     print 'n = %d' % len(result)
-    print 'average = %f' % tools.average(result)
-    print 'stdev = %f' % tools.stdev(result)
+    print 'average = %f' % Statistics.mean(result)
+    if len(filelist) >= 2:
+        print 'stdev = %f' % Statistics.standardDeviation(result)
     print result
-    
+
 def sumxyz_torsion(list_, filelist):
     if len(list_) != 4:
         raise ValueError
@@ -33,7 +35,7 @@ def sumxyz_torsion(list_, filelist):
     result = []
 
     for x in filelist:
-        mol = read.readxyz(x)
+        mol = read.readxyz(file(x))
         result.append(math.degrees(mol.calctor(list_[0], list_[1],
             list_[2], list_[3])))
 
@@ -64,8 +66,7 @@ def main():
     else:
         print 'Usage: %s i,j[,k[,l]] filename ...' % \
         os.path.basename(sys.argv[0])
-    
+
 
 if __name__ == '__main__':
-    main()       
-    
+    main()
