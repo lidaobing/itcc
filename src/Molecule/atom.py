@@ -22,11 +22,11 @@ class Atom(object):
         else:
             raise TypeError
 
-        
+
         key = (no, type_, symbol)
         if key in _knownAtoms:
             return _knownAtoms[key]
-        
+
         self = object.__new__(cls)
         self._no = no
         self._type = type_
@@ -52,7 +52,7 @@ class Atom(object):
 
     def __repr__(self):
         return "Atom(%i, %i, %s)" % (self._no, self._type, `self._symbol`)
-        
+
     def getmass(self):
         return atommass[self._no]
 
@@ -111,11 +111,11 @@ def atomord(chr_):
         raise ValueError
     if len(chr_) == 1:
         key = chr_
-    elif chr_[1].isupper():
-        key = chr_[0]
-    else:
+    elif chr_[1].islower():
         key = chr_[:2]
-    
+    else:
+        key = chr_[0]
+
     return atomsymbol.index(key)
 
 if __name__ == '__main__':
@@ -128,5 +128,5 @@ if __name__ == '__main__':
     b = pickle.loads(ap)
     print `b`
 
-                
-        
+
+
