@@ -7,7 +7,7 @@ import sys
 import os.path
 import tempfile
 import itertools
-from itcc.Molecular import read, relalist, write
+from itcc.Molecule import read, relalist, write
 
 debug = False
 
@@ -56,7 +56,7 @@ def minimizemol(mol, forcefield, converge = 0.01):
     return optimize_minimize_mol('minimize', mol, forcefield, converge)
 
 def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
-    """optimizemol(mol, forcefield, converge = 0.01) -> (Molecular, Float)
+    """optimizemol(mol, forcefield, converge = 0.01) -> (Molecule, Float)
     optimized the mol, and return the optimized energy
     """
     progpath = os.path.join(TINKERDIR, cmdname)
