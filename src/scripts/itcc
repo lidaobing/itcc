@@ -1,12 +1,39 @@
 #!/usr/bin/env python
 # $Id$
 
+import sys
+import os.path
 import itcc
+from itcc.Molecule import rmsd
 
 __revision__ = '$Rev$'
 
-def main():
+subscript = {'rmsd': rmsd.main}
+
+def help():
+    basename = os.path.basename(sys.argv[0])
+    
     print 'Version:', itcc.__version__
+    print
+    print 'Sub-commands:'
+    keys = list(subscript)
+    keys.sort()
+    for key in keys:
+        print '  %s %s' % (basename, key)
+
+def main():
+    if len(sys.argv) == 1:
+        help()
+        sys.exit(0)
+        
+    key = sys.argv[1]
+    del sys.argv[1]
+
+    if key in subscript:
+        subscript[key]()
+    else:
+        help()
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

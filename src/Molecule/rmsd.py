@@ -13,7 +13,7 @@ def rmsd(mol1, mol2):
     coords1 = mol1.coords
     coords2 = mol2.coords
     assert len(coords1) == len(coords2)
-    
+
     result = 0.0
     for i in range(len(coords1)):
         length = (coords1[i] - coords2[i]).length()
@@ -30,4 +30,14 @@ def topeq(mol1, mol2):
         if mol1.atoms[i].no != mol2.atoms[i].no:
             return False
     return True
-    
+
+def main():
+    import sys
+    from itcc.Molecule import read
+    assert len(sys.argv) == 3
+    mol1 = read.readxyz(file(sys.argv[1]))
+    mol2 = read.readxyz(file(sys.argv[2]))
+    print rmsd(mol1, mol2)
+
+if __name__ == '__main__':
+    main()

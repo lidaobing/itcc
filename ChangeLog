@@ -1,3 +1,9 @@
+2005-02-16  Li Daobing  <lidaobing@gmail.com>
+
+	* src/scripts/itcc: add rmsd as a subcommand, and change
+	svn:keywords to `Id rev'
+	* src/Molecule/rmsd.py: set rmsd as a sub-command of itcc
+
 2005-02-15  Li Daobing  <lidaobing@gmail.com>
 
 	* src/scripts/confsearch.py: add `-h' to `usage'
