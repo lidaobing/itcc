@@ -1,12 +1,13 @@
 # $Id$
-from math import sqrt, sin, cos, acos, pi
+from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector
 from itcc.Tools import ctools
 from itcc.Tools import cpptools
 
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor', 'shakeH2',
-           'combinecombine', 'xyzatm', 'minidx', 'maxidx']
+           'combinecombine', 'xyzatm', 'minidx', 'maxidx',
+           'weightedmean', 'weightedsd']
 
 def length(a, b):
     return (a-b).length()
@@ -109,32 +110,40 @@ def swapaxes(matrix):
 
     return result
         
+def weightedmean(datas, weights):
+    assert len(datas) == len(weights)
+    sum_ = sum([data * weight for data, weight in zip(datas, weights)])
+    totalweight = sum(weights)
+    return sum_/totalweight
 
-def _test():
-    import doctest, tools
-    return doctest.testmod(tools)
-    
+def weightedsd(datas, weights):
+    assert len(datas) == len(weights)
+    assert len(datas) > 1
+    mean = weightedmean(datas, weights)
+    sum_ = sum([(data - mean)**2 * weight \
+                for data, weight in zip(datas, weights)])
+    totalweight = sum(weights)
+    return sqrt(sum_/totalweight)
+
 if __name__ == '__main__':
-    a = Vector(0,0,0)
-    b = Vector(1.0,0.0,0.0)
-    c = Vector(1.0,1.0,0.0)
-    d = Vector(1.0,1.0,1.0)
-    print torsionangle(a,b,c,d)
+    a_ = Vector(0, 0, 0)
+    b_ = Vector(1.0, 0.0, 0.0)
+    c_ = Vector(1.0, 1.0, 0.0)
+    d_ = Vector(1.0, 1.0, 1.0)
+    print torsionangle(a_, b_, c_, d_)
 
     print
 
     
-    p0 = Vector(0,0,0)
-    p1 = Vector(0,0,1.089)
-    p2 = Vector(1.026719,    0.000000,   -0.363000)
-    print shakeH2(p0, p1, p2, 1.089)
+    p0_ = Vector(0, 0, 0)
+    p1_ = Vector(0, 0, 1.089)
+    p2_ = Vector(1.026719,    0.000000,   -0.363000)
+    print shakeH2(p0_, p1_, p2_, 1.089)
 
-    p0 = Vector(0,0,0)
-    p1 = Vector(-1,1,1)
-    p2 = Vector(-1,-1,-1)
-    print shakeH2(p0, p1, p2, 1.732)
-
-    _test()
+    p0_ = Vector(0, 0, 0)
+    p1_ = Vector(-1, 1, 1)
+    p2_ = Vector(-1, -1, -1)
+    print shakeH2(p0_, p1_, p2_, 1.732)
 
     
     

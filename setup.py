@@ -7,7 +7,7 @@ scripts = glob.glob('src/scripts/*.py')
 scripts.append('src/scripts/parmfit')
 
 setup(name="itcc",
-      version="0.2.2",
+      version="0.2.4",
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',

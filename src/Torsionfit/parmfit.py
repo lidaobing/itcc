@@ -9,6 +9,7 @@ import Numeric
 import LinearAlgebra
 from itcc.Molecule import read
 from itcc.Tinker import parameter, analyze, tinker
+from itcc.Torsionfit import tools
 
 def torene(tor, param):
     """torene(tor, param) -> Float
@@ -24,17 +25,6 @@ def torene(tor, param):
         else:
             result += 0.5 * x * (1 - math.cos(i * tor))
     return result
-
-def readdat(datfname):
-    fnames = []
-    enes = []
-    weights = []
-    for line in file(datfname):
-        fname, ene, weight = tuple(line.split())
-        fnames.append(fname)
-        enes.append(float(ene))
-        weights.append(float(weight))
-    return (fnames, enes, weights)
 
 def readidx(idxfname):
     idxs = []
@@ -95,7 +85,7 @@ def printprm(param, types, folds):
         idx += fold
 
 def parmfit(datfname, idxfname, param):
-    fnames, enes, weights = readdat(datfname)
+    fnames, enes, weights = tools.readdat(datfname)
     idxs, folds = readidx(idxfname)
     params = getparams(idxs, param)
     A = []
