@@ -5,10 +5,12 @@ INSTALL
 for Debian system, before install this package, you should install
 these packages first:
 
-python
-python-numeric
-python-numeric-ext
-python-scientific
+libboost-python-dev
+python2.4
+python2.4-dev
+python2.4-numeric
+python2.4-numeric-ext
+python2.4-scientific
 tinker
 
 ====
