@@ -1,0 +1,506 @@
+
+src/Tools/ctools.c,569
+  double x;x23,486
+  double y;y24,498
+  double z;z25,510
+} Point;Point26,522
+_vector(Point a, Point b) {_vector29,545
+_crossmulti(Point a, Point b) {_crossmulti38,669
+_dotmulti(Point a, Point b) {_dotmulti47,834
+_angle(Point a, Point b, Point c) {_angle53,926
+_torsionangle(Point a, Point b, Point c, Point d) {_torsionangle68,1166
+angle(PyObject *self, PyObject *args)angle100,1698
+torsionangle(PyObject *self, PyObject *args)torsionangle121,2003
+static PyMethodDef CtoolsMethods[] = {CtoolsMethods140,2333
+initctools(void)initctools149,2591
+
+build/lib.linux-i686-2.3/itcc/__init__.py,0
+
+build/lib.linux-i686-2.3/itcc/CCS2/Mezei.py,412
+def rtbis(func, x1, x2, xacc):rtbis16,364
+def _calc_p3(points, d13, d35):_calc_p340,902
+def _calc_p2_p4(points, len1, len2, p3_result, angle):_calc_p2_p459,1358
+class p24_Resolver:p24_Resolver76,1881
+    def __init__(self, points, len1, len2, p3_result):__init__77,1901
+    def __call__(self, angle):__call__84,2290
+    def switch(self, mode):switch100,2929
+def R6(points, len1, len2):R6103,2983
+
+build/lib.linux-i686-2.3/itcc/CCS2/R6.py,41
+def R6_in_vivo(points):R6_in_vivo7,101
+
+build/lib.linux-i686-2.3/itcc/CCS2/crown.py,67
+class TSCrown(TorsSet):TSCrown5,55
+    def vary(item):vary6,79
+
+build/lib.linux-i686-2.3/itcc/CCS2/R6combine.py,301
+def _valid_R6_combine(combine):_valid_R6_combine9,183
+def _R6s_combine_gen_num(R6s, R6_number):_R6s_combine_gen_num29,748
+def _new_combine(combine, result):_new_combine35,894
+def R6combine1(R6s):R6combine142,1025
+def R6combine2(R6s):R6combine253,1383
+def R6combine3(R6s):R6combine359,1576
+
+build/lib.linux-i686-2.3/itcc/CCS2/__init__.py,0
+
+build/lib.linux-i686-2.3/itcc/CCS2/config.py,0
+
+build/lib.linux-i686-2.3/itcc/CCS2/loopclosure.py,1009
+def handler(signum, frame):handler20,450
+class LoopClosure(object):LoopClosure37,873
+    def __init__(self, forcefield, keepbound, searchbound):__init__44,1232
+    def __call__(self, mol):__call__57,1638
+    def _run(self, mol, ene):_run93,2770
+    def noboundary(self, newmol, newene):noboundary129,3994
+    def boundary(self, newmol, newene):boundary137,4378
+    def getloopatoms(self, mol):getloopatoms157,5293
+    def getR6s(self, loopatoms):getR6s162,5422
+    def printR6s(self, R6s):printR6s166,5564
+    def getcombinations(self, R6s):getcombinations171,5690
+    def printcombinations(self, combinations):printcombinations174,5758
+    def getprogress(self):getprogress180,6015
+    def printparams(self):printparams187,6264
+    def printsmallsummary(self):printsmallsummary194,6517
+    def printsummary(self):printsummary201,6800
+    def getmintimesgap(self):getmintimesgap216,7579
+    def printenes(self):printenes225,7848
+    def printtors(self):printtors233,8108
+
+build/lib.linux-i686-2.3/itcc/CCS2/loopdetect.py,285
+def _symmatp(mat):_symmatp6,98
+def _diagonalzerop(mat):_diagonalzerop17,359
+def _delleaf(mat):_delleaf23,483
+def _countloop(mat):_countloop46,1117
+def _countloop2(mat):_countloop257,1386
+def _connectmatrix(mol):_connectmatrix83,1828
+def loopdetect(mol):loopdetect95,2081
+
+build/lib.linux-i686-2.3/itcc/CCS2/neighbour.py,912
+def calctor(coords, loopatoms):calctor15,453
+class NeighbourConfig:NeighbourConfig22,704
+    def __init__(self, mol, forcefield):__init__23,727
+    def getloopatoms(self, mol):getloopatoms34,1169
+    def getR6s(loopatoms):getR6s39,1298
+    def getcombinations(R6s):getcombinations44,1468
+class Neighbour:Neighbour50,1615
+    def __init__(self, mol, ene, lc):__init__51,1632
+    def init(self):init63,2005
+    def __iter__(self):__iter__85,2814
+    def next(self):next88,2867
+    def _next(self):_next93,2971
+    def gettotaltask(self):gettotaltask109,3496
+    def finishedtask(self):finishedtask113,3608
+    def getprogress(self):getprogress118,3743
+    def inited(self):inited123,3887
+class NeighbourI(Neighbour):NeighbourI126,3969
+    def __cmp__(self, other):__cmp__128,4019
+class NeighbourII(Neighbour):NeighbourII131,4090
+    def __cmp__(self, other):__cmp__133,4142
+
+build/lib.linux-i686-2.3/itcc/CCS2/pyramid.py,219
+def construct_transform_matrixA(O, Ox, Oy, Oz):construct_transform_matrixA9,211
+def construct_both_transform_matrix(A, B, C):construct_both_transform_matrix18,581
+def pyramid(A, B, C, rAX, rBX, rCX):pyramid32,995
+
+build/lib.linux-i686-2.3/itcc/CCS2/searchresult.py,142
+class SearchResult:SearchResult5,54
+    def __init__(self, mol, ene, opttimes):__init__7,137
+    def __cmp__(self, other):__cmp__11,260
+
+build/lib.linux-i686-2.3/itcc/CCS2/shakeH.py,104
+def getshakeHdata(mol):getshakeHdata8,134
+def shakeH(coords, shakeHdata, Cidxs = None):shakeH27,660
+
+build/lib.linux-i686-2.3/itcc/CCS2/tors.py,552
+class TorsSet:TorsSet7,58
+    def __init__(self, data=None):__init__8,73
+    def append(self, item):append15,244
+    def __contains__(self, item):__contains__18,321
+    def _contain(self, item):_contain26,536
+    def vary(item):vary47,1131
+    def isnear(item1, item2):isnear58,1497
+    def distance(item1, item2):distance66,1733
+class Tors(object):Tors72,1899
+    def __init__(self, data):__init__75,1959
+    def __eq__(self, other):__eq__82,2218
+    def __str__(self):__str__103,2968
+    def __repr__(self):__repr__106,3023
+
+build/lib.linux-i686-2.3/itcc/Molecular/__init__.py,0
+
+build/lib.linux-i686-2.3/itcc/Molecular/atom.py,544
+class Atom(object):Atom7,137
+    def __new__(cls, no, type = 0, symbol = None):__new__10,202
+    def __getstate__(self):__getstate__36,860
+    def __setstate__(self, state):__setstate__39,941
+    def __copy__(self):__copy__44,1067
+    def __str__(self):__str__48,1133
+    def __repr__(self):__repr__51,1185
+    def getmass(self):getmass54,1293
+    def getno(self):getno59,1381
+    def gettype(self):gettype63,1452
+    def getsymbol(self):getsymbol67,1531
+def atomchr(i):atomchr99,2952
+def atomord(chr):atomord104,3033
+
+build/lib.linux-i686-2.3/itcc/Molecular/molecular.py,1168
+class Molecular(object):Molecular16,259
+    def __init__(self, atoms = None, coords = None, connect = None):__init__19,308
+    def __getstate__(self):__getstate__24,477
+    def __setstate__(self, state):__setstate__27,561
+    def __copy__(self):__copy__32,690
+    def __len__(self):__len__37,814
+    def __getitem__(self, key):__getitem__40,869
+    def __setitem__(self, key, value):__setitem__43,953
+    def __str__(self):__str__46,1043
+    def __cmp__(self, other):__cmp__58,1388
+    def addatom(self, atom, coord, pos = None):addatom61,1444
+    def builddistancematrix(self):builddistancematrix68,1649
+    def makeconnect(self):makeconnect78,2053
+    def buildconnect(self, i, j):buildconnect82,2179
+    def delconnect(self, j, i):delconnect87,2350
+    def mainchain(self):mainchain90,2433
+    def calclen(self, i, j):calclen100,2735
+    def calcang(self, i, j, k):calcang104,2842
+    def calctor(self, i, j, k, l):calctor109,2997
+    def center(self):center117,3269
+    def reorder(self, neworder):reorder136,3825
+        class IdxAtom:IdxAtom139,3971
+            def __init__(self, atom, coord, idx):__init__140,3994
+
+build/lib.linux-i686-2.3/itcc/Molecular/read.py,85
+class FormatError(Exception):FormatError14,250
+def readxyz(ifile):readxyz76,1905
+
+build/lib.linux-i686-2.3/itcc/Molecular/relalist.py,341
+class Relalist:Relalist18,332
+    def __init__(self, mol = None):__init__31,571
+    def __eq__(self, other):__eq__44,987
+    def __ne__(self, other):__ne__50,1211
+    def __str__(self):__str__53,1274
+def genR(conns, bias = 1):genR74,1894
+def genA(conns):genA82,2084
+def genD(conns):genD90,2321
+def genI(conns):genI105,2736
+
+build/lib.linux-i686-2.3/itcc/Molecular/write.py,54
+def writexyz(mol, ofile, comment=None):writexyz3,40
+
+build/lib.linux-i686-2.3/itcc/Tinker/__init__.py,0
+
+build/lib.linux-i686-2.3/itcc/Tinker/tinker.py,990
+def constrain(ifname, param = None):constrain27,483
+def _writemoltotempfile(mol):_writemoltotempfile43,935
+def optimizemol(mol, forcefield, converge = 0.01):optimizemol49,1074
+def minimizemol(mol, forcefield, converge = 0.01):minimizemol52,1198
+def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):optimize_minimize_mol57,1372
+def minimize_file(ifname, forcefield, converge = 0.01):minimize_file101,2497
+def optimize_file(ifname, forcefield, converge = 0.01):optimize_file104,2630
+def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):optimize_minimize_file107,2763
+def optimize(ifname, ofname = None, converge = 0.01):optimize138,3487
+def energy(ifname):energy166,4199
+def optimizes(iflist, oflist = None, converge = 0.01):optimizes190,4694
+def energies(iflist):energies203,5180
+def _vibratefloat(str):_vibratefloat213,5405
+def vibratemol(mol, forcefield):vibratemol218,5510
+def isminimal(mol, forcefield):isminimal254,6435
+
+build/lib.linux-i686-2.3/itcc/Tools/__init__.py,0
+
+build/lib.linux-i686-2.3/itcc/Tools/cycloalkane.py,378
+def gettype_MM2(n):gettype_MM211,223
+def gettype_MM3(n):gettype_MM317,308
+def gettype_OPLSAA(_):gettype_OPLSAA24,414
+class CycloAlkane:CycloAlkane29,455
+    def gettype(self, forcefield, n):gettype36,612
+    def setforcefield(self, forcefield):setforcefield39,697
+    def makebyrandom(self, n):makebyrandom42,776
+    def makebytors(self, tors):makebytors71,1773
+
+build/lib.linux-i686-2.3/itcc/Tools/tools.py,370
+def length(a, b):length9,257
+def angle(a, b, c):angle12,302
+def torsionangle(a, b, c, d):torsionangle15,351
+def shakeH2(p0, p1, p2, CHlen=1.113):shakeH223,641
+def combinecombine(cmbs):combinecombine30,857
+def xyzatm(p1, p2, p3, r, theta, phi):xyzatm38,1026
+def minidx(iterable):minidx59,1619
+def maxidx(iterable):maxidx69,1833
+def _test():_test79,2047
+
+build/lib.linux-i686-2.3/itcc/Tools/xpermutations.py,207
+def xcombinations(items, n):xcombinations24,729
+def xuniqueCombinations(items, n):xuniqueCombinations31,928
+def xselections(items, n):xselections38,1145
+def xpermutations(items):xpermutations45,1325
+
+setup.py,0
+
+src/CCS2/Mezei.py,412
+def rtbis(func, x1, x2, xacc):rtbis16,364
+def _calc_p3(points, d13, d35):_calc_p340,902
+def _calc_p2_p4(points, len1, len2, p3_result, angle):_calc_p2_p459,1358
+class p24_Resolver:p24_Resolver76,1881
+    def __init__(self, points, len1, len2, p3_result):__init__77,1901
+    def __call__(self, angle):__call__84,2290
+    def switch(self, mode):switch100,2929
+def R6(points, len1, len2):R6103,2983
+
+src/CCS2/R6.py,41
+def R6_in_vivo(points):R6_in_vivo7,101
+
+src/CCS2/crown.py,67
+class TSCrown(TorsSet):TSCrown5,55
+    def vary(item):vary6,79
+
+src/CCS2/R6combine.py,301
+def _valid_R6_combine(combine):_valid_R6_combine9,183
+def _R6s_combine_gen_num(R6s, R6_number):_R6s_combine_gen_num29,748
+def _new_combine(combine, result):_new_combine35,894
+def R6combine1(R6s):R6combine142,1025
+def R6combine2(R6s):R6combine253,1383
+def R6combine3(R6s):R6combine359,1576
+
+src/CCS2/__init__.py,0
+
+src/CCS2/config.py,0
+
+src/CCS2/loopclosure.py,1009
+def handler(signum, frame):handler20,450
+class LoopClosure(object):LoopClosure37,873
+    def __init__(self, forcefield, keepbound, searchbound):__init__44,1232
+    def __call__(self, mol):__call__57,1638
+    def _run(self, mol, ene):_run93,2770
+    def noboundary(self, newmol, newene):noboundary129,3994
+    def boundary(self, newmol, newene):boundary137,4378
+    def getloopatoms(self, mol):getloopatoms157,5293
+    def getR6s(self, loopatoms):getR6s162,5422
+    def printR6s(self, R6s):printR6s166,5564
+    def getcombinations(self, R6s):getcombinations171,5690
+    def printcombinations(self, combinations):printcombinations174,5758
+    def getprogress(self):getprogress180,6015
+    def printparams(self):printparams187,6264
+    def printsmallsummary(self):printsmallsummary194,6517
+    def printsummary(self):printsummary201,6800
+    def getmintimesgap(self):getmintimesgap216,7579
+    def printenes(self):printenes225,7848
+    def printtors(self):printtors233,8108
+
+src/CCS2/loopdetect.py,285
+def _symmatp(mat):_symmatp6,98
+def _diagonalzerop(mat):_diagonalzerop17,359
+def _delleaf(mat):_delleaf23,483
+def _countloop(mat):_countloop46,1117
+def _countloop2(mat):_countloop257,1386
+def _connectmatrix(mol):_connectmatrix83,1828
+def loopdetect(mol):loopdetect95,2081
+
+src/CCS2/neighbour.py,912
+def calctor(coords, loopatoms):calctor15,453
+class NeighbourConfig:NeighbourConfig22,704
+    def __init__(self, mol, forcefield):__init__23,727
+    def getloopatoms(self, mol):getloopatoms34,1169
+    def getR6s(loopatoms):getR6s39,1298
+    def getcombinations(R6s):getcombinations44,1468
+class Neighbour:Neighbour50,1615
+    def __init__(self, mol, ene, lc):__init__51,1632
+    def init(self):init63,2005
+    def __iter__(self):__iter__85,2814
+    def next(self):next88,2867
+    def _next(self):_next93,2971
+    def gettotaltask(self):gettotaltask109,3496
+    def finishedtask(self):finishedtask113,3608
+    def getprogress(self):getprogress118,3743
+    def inited(self):inited123,3887
+class NeighbourI(Neighbour):NeighbourI126,3969
+    def __cmp__(self, other):__cmp__128,4019
+class NeighbourII(Neighbour):NeighbourII131,4090
+    def __cmp__(self, other):__cmp__133,4142
+
+src/CCS2/pyramid.py,219
+def construct_transform_matrixA(O, Ox, Oy, Oz):construct_transform_matrixA9,211
+def construct_both_transform_matrix(A, B, C):construct_both_transform_matrix18,581
+def pyramid(A, B, C, rAX, rBX, rCX):pyramid32,995
+
+src/CCS2/searchresult.py,142
+class SearchResult:SearchResult5,54
+    def __init__(self, mol, ene, opttimes):__init__7,137
+    def __cmp__(self, other):__cmp__11,260
+
+src/CCS2/shakeH.py,104
+def getshakeHdata(mol):getshakeHdata8,134
+def shakeH(coords, shakeHdata, Cidxs = None):shakeH27,660
+
+src/CCS2/tors.py,552
+class TorsSet:TorsSet7,58
+    def __init__(self, data=None):__init__8,73
+    def append(self, item):append15,244
+    def __contains__(self, item):__contains__18,321
+    def _contain(self, item):_contain26,536
+    def vary(item):vary47,1131
+    def isnear(item1, item2):isnear58,1497
+    def distance(item1, item2):distance66,1733
+class Tors(object):Tors72,1899
+    def __init__(self, data):__init__75,1959
+    def __eq__(self, other):__eq__82,2218
+    def __str__(self):__str__103,2968
+    def __repr__(self):__repr__106,3023
+
+src/Molecular/__init__.py,0
+
+src/Molecular/atom.py,544
+class Atom(object):Atom7,137
+    def __new__(cls, no, type = 0, symbol = None):__new__10,202
+    def __getstate__(self):__getstate__36,860
+    def __setstate__(self, state):__setstate__39,941
+    def __copy__(self):__copy__44,1067
+    def __str__(self):__str__48,1133
+    def __repr__(self):__repr__51,1185
+    def getmass(self):getmass54,1293
+    def getno(self):getno59,1381
+    def gettype(self):gettype63,1452
+    def getsymbol(self):getsymbol67,1531
+def atomchr(i):atomchr99,2952
+def atomord(chr):atomord104,3033
+
+src/Molecular/molecular.py,1168
+class Molecular(object):Molecular16,259
+    def __init__(self, atoms = None, coords = None, connect = None):__init__19,308
+    def __getstate__(self):__getstate__24,477
+    def __setstate__(self, state):__setstate__27,561
+    def __copy__(self):__copy__32,690
+    def __len__(self):__len__37,814
+    def __getitem__(self, key):__getitem__40,869
+    def __setitem__(self, key, value):__setitem__43,953
+    def __str__(self):__str__46,1043
+    def __cmp__(self, other):__cmp__58,1388
+    def addatom(self, atom, coord, pos = None):addatom61,1444
+    def builddistancematrix(self):builddistancematrix68,1649
+    def makeconnect(self):makeconnect78,2053
+    def buildconnect(self, i, j):buildconnect82,2179
+    def delconnect(self, j, i):delconnect87,2350
+    def mainchain(self):mainchain90,2433
+    def calclen(self, i, j):calclen100,2735
+    def calcang(self, i, j, k):calcang104,2842
+    def calctor(self, i, j, k, l):calctor109,2997
+    def center(self):center117,3269
+    def reorder(self, neworder):reorder136,3825
+        class IdxAtom:IdxAtom139,3971
+            def __init__(self, atom, coord, idx):__init__140,3994
+
+src/Molecular/read.py,85
+class FormatError(Exception):FormatError14,250
+def readxyz(ifile):readxyz76,1905
+
+src/Molecular/relalist.py,341
+class Relalist:Relalist18,332
+    def __init__(self, mol = None):__init__31,571
+    def __eq__(self, other):__eq__44,987
+    def __ne__(self, other):__ne__50,1211
+    def __str__(self):__str__53,1274
+def genR(conns, bias = 1):genR74,1894
+def genA(conns):genA82,2084
+def genD(conns):genD90,2321
+def genI(conns):genI105,2736
+
+src/Molecular/write.py,54
+def writexyz(mol, ofile, comment=None):writexyz3,40
+
+src/Tinker/__init__.py,0
+
+src/Tinker/tinker.py,990
+def constrain(ifname, param = None):constrain27,483
+def _writemoltotempfile(mol):_writemoltotempfile43,935
+def optimizemol(mol, forcefield, converge = 0.01):optimizemol49,1074
+def minimizemol(mol, forcefield, converge = 0.01):minimizemol52,1198
+def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):optimize_minimize_mol57,1372
+def minimize_file(ifname, forcefield, converge = 0.01):minimize_file101,2497
+def optimize_file(ifname, forcefield, converge = 0.01):optimize_file104,2630
+def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):optimize_minimize_file107,2763
+def optimize(ifname, ofname = None, converge = 0.01):optimize138,3487
+def energy(ifname):energy166,4199
+def optimizes(iflist, oflist = None, converge = 0.01):optimizes190,4694
+def energies(iflist):energies203,5180
+def _vibratefloat(str):_vibratefloat213,5405
+def vibratemol(mol, forcefield):vibratemol218,5510
+def isminimal(mol, forcefield):isminimal254,6435
+
+src/Tools/__init__.py,0
+
+src/Tools/cycloalkane.py,378
+def gettype_MM2(n):gettype_MM211,223
+def gettype_MM3(n):gettype_MM317,308
+def gettype_OPLSAA(_):gettype_OPLSAA24,414
+class CycloAlkane:CycloAlkane29,455
+    def gettype(self, forcefield, n):gettype36,612
+    def setforcefield(self, forcefield):setforcefield39,697
+    def makebyrandom(self, n):makebyrandom42,776
+    def makebytors(self, tors):makebytors71,1773
+
+src/Tools/tools.py,370
+def length(a, b):length9,257
+def angle(a, b, c):angle12,302
+def torsionangle(a, b, c, d):torsionangle15,351
+def shakeH2(p0, p1, p2, CHlen=1.113):shakeH223,641
+def combinecombine(cmbs):combinecombine30,857
+def xyzatm(p1, p2, p3, r, theta, phi):xyzatm38,1026
+def minidx(iterable):minidx59,1619
+def maxidx(iterable):maxidx69,1833
+def _test():_test79,2047
+
+src/Tools/xpermutations.py,207
+def xcombinations(items, n):xcombinations24,729
+def xuniqueCombinations(items, n):xuniqueCombinations31,928
+def xselections(items, n):xselections38,1145
+def xpermutations(items):xpermutations45,1325
+
+src/__init__.py,0
+
+test/puncture/time-step/test.py,94
+def tinker_step_time():tinker_step_time4,25
+def main():main19,535
+def main():main28,709
+
+test/puncture/ene-grad/enegrad.py,104
+def findene(enes, grads, crit):findene4,25
+def enegrad(crits):enegrad10,167
+def main():main30,819
+
+test/puncture/RMSgrad/RMSgrad.py,438
+def angdis(ang1, ang2):angdis13,284
+def angsdis(angs1, angs2):angsdis17,396
+def gettotaltime(who = resource.RUSAGE_CHILDREN):gettotaltime21,532
+def minimize(ifname, crit):minimize25,665
+def getstep(str):getstep38,1082
+def getene(str):getene45,1244
+def torangdif(mol1, mol2):torangdif51,1412
+def RMSgrad():RMSgrad59,1627
+def stats(results, i,j):stats73,2080
+def RMSgrads(times):RMSgrads77,2201
+def main():main90,2673
+
+test/hist.py,60
+def hist(datas, step=1.0):hist1,0
+def main():main12,236
+
+test/crown/makecrown.py,164
+def randomcoords():randomcoords8,142
+def cycliccoords(n, bondlen=1.5, noise=0.1):cycliccoords11,211
+def makecrown(n):makecrown24,536
+def main():main53,1371
+
+test/crown/testcrown.py,105
+def statstor(mol):statstor14,278
+def testcyc(ifname, options):testcyc23,512
+def main():main63,2137
+
+test/cycloalkane/makecyclicalkane.py,73
+def makecyclicalkane(n):makecyclicalkane11,148
+def main():main38,961
+
+test/cycloalkane/testcyc.py,105
+def statstor(mol):statstor13,242
+def testcyc(ifname, options):testcyc22,476
+def main():main56,1827
+
+test/__init__.py,0

@@ -1,0 +1,136 @@
+2004-10-01  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/loopclosure.py (loopclosure): 
+	  - check the freqs of the mol
+
+	* src/Tinker/tinker.py (vibratemol): 
+	  - add vibratemol(a wrap to tinker-vibrate)
+	  (minimalp): new, determinal whether a mol is a minima(via vibratemol)
+
+	* src/Molecular/molecular.py (Molecular.__str__): 
+	  finish the code of __str__ and __repr__(=`__str__')
+
+	* src/Molecular/atom.py (Atom): 
+	  - modify some function to direct use _no, _type, _symbol instead
+	  of use no, type, symbol
+
+	* src/Molecular/read.py (readxyz): 
+	  - [fix bug] atom type should convert to int
+
+2004-09-30  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/loopclosure.py (loopclosure): 
+	  - use `//' instead of '/'
+	  - fix bugs in init value of knowntors and knownmols
+	  - change log's format
+
+	* src/CCS2/Tors.py: 
+	  - new file, maintain tors
+	
+	* src/CCS2/neighbour.py (Neighbour.next): 
+	  - change RMS from 0.01 to 0.001
+	  - lazy-init.
+	  - use Tors instead of normaltor
+
+2004-09-29  Li Daobing  <lidaobing@gmail.com>
+
+	* src/Molecular/atom.py (Atom): 
+	  - add __slots__ to save memory
+
+	* src/CCS2/loopclosure.py: 
+	  del extra calctor
+
+	* src/CCS2/neighbour.py (Neighbour.next): 
+	  - use normaltor to normalize tors
+
+	* src/CCS2/normaltor.py: 
+	  - newfile, complete coding(for normalize tors)
+
+	* src/Tools/tools.py: 
+	  - add minidx, maxidx
+
+2004-09-27  Li Daobing  <lidaobing@gmail.com>
+
+	* src/Molecular/molecular.py (Molecular): 
+	  - del len, ang, tor
+
+	* src/Tools/cycloalkane.py:
+	  - complete coding.
+
+2004-09-26  Li Daobing  <lidaobing@gmail.com>
+	* src/Tools/tools.py (findIndex): 
+	  - add xyzatm
+	  - add doctest of xyzatm
+
+	* src/Tools/cycloalkane.py: 
+	  - working copy
+
+2004-09-25  Li Daobing  <lidaobing@gmail.com>
+	* It-Run!!!!!!!!!!!!!!!!!!
+
+	* src/Tinker/tinker.py (minimizemol): 
+	  - add a counter
+
+	* src/CCS2/shakeH.py (getshakeHdata): 
+	  - del `print'
+
+	* src/Molecular/molecular.py (Molecular.__cmp__): 
+	  - add __cmp__ for support sortedList
+
+	* src/Tools/tools.py (findIndex): 
+	  - add findIndex(to support sortedList)
+
+	* src/CCS2/neighbour.py (Neighbour.__cmp__): 
+	  - add __cmp__.
+
+2004-09-24  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/loopdetect.py (_connectmatrix): 
+	  - fix bug: we need get a copy of mol.connect
+
+	* src/CCS2/neighbour.py:
+	  - complete coding.
+
+2004-09-23  Li Daobing  <lidaobing@gmail.com>
+
+	* src/Tinker/tinker.py: 
+	  - add minimizemol: similar to optimizemol but use `minimize'
+	  - optimize_minimize_mol: the common function called by
+	  minimizemol and optimizemol.
+
+	* src/Tools/tools.py: 
+	  - add shakeH2(wrap itcc.Tools.cpptools.shakeH2)
+	  - copy combinecombine from  itcc.CCS2.loopclosure
+
+	* src/Tools/cpptools.cpp: 
+	  - initial version(provide shakeH2)
+
+	* src/Tools/Vector.hpp:
+	  - initial version(provide class Vector).
+
+	* src/Molecular/molecular.py (Molecular.__init__): 
+	  - fix bug.
+
+	* src/CCS2/shakeH.py:
+	  - complete coding.
+
+2004-09-22  Li Daobing  <lidaobing@gmail.com>
+
+	* src/Tools/tools.py (torsionangle): 
+	  - use `ctools.torsionangle' 
+
+	* src/Tools/ctools.c: 
+	  - copy from torpy project, we will use `torsionangle' function
+
+	* src/CCS2/loopdetect.py (_connectmatrix): 
+	  - update to fit the new `Molecular' class.
+	
+	* src/Molecular/write.py (writexyz): 
+	  - rewrite to fit the new `Molecular' class.
+
+	* src/Molecular/read.py (readxyz): 
+	  - rewrite to fit the new `Molecular' class.
+
+	* src/Molecular/molecular.py: 
+	  - rewrite to fit the new `Atom' class.
+
