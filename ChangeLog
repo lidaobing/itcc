@@ -1,3 +1,10 @@
+2005-02-25  Li Daobing  <lidaobing@gmail.com>
+
+	* merge 0.2.6 to trunk
+
+	* 0.2.6 released
+	  - add 'itcc printefit'
+
 2005-02-18  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/loopclosure.py:

@@ -10,11 +10,12 @@ from itcc.CCS2 import catordiff
 __revision__ = '$Rev$'
 
 subscript = {'rmsd': rmsd.main,
-             'catordiff': catordiff.main}
+             'catordiff': catordiff.main,
+             'printefit': parmfit.main}
 
 def help():
     basename = os.path.basename(sys.argv[0])
-    
+
     print 'Version:', itcc.__version__
     print
     print 'Sub-commands:'
@@ -27,7 +28,7 @@ def main():
     if len(sys.argv) == 1:
         help()
         sys.exit(0)
-        
+
     key = sys.argv[1]
     del sys.argv[1]
 

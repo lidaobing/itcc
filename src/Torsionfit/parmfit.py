@@ -65,7 +65,7 @@ def getA(mol, types, folds, data):
     result[-1] = 1.0
 
     idx = 0
-    
+
     for typ, fold in zip(types, folds):
         for tor in data[typ]:
             torang = mol.calctor(tor[0], tor[1], tor[2], tor[3])
@@ -108,4 +108,35 @@ def parmfit(datfname, idxfname, param):
     error = math.sqrt(result[1][0]/len(B))
     printprm(newparam, idxs, folds)
     print error
-    
+
+def main():
+    '''Only print E_fit'''
+    import sys
+    import csv
+    if len(sys.argv) != 4:
+        import os.path
+        print >> sys.stderr, 'Usage: %s datfname idxfname param' % \
+              os.path.basename(sys.argv[0])
+        sys.exit(1)
+    datfname = sys.argv[1]
+    idxfname = sys.argv[2]
+    param = sys.argv[3]
+    fnames, enes, weights = tools.readdat(datfname)
+    idxs, folds = readidx(idxfname)
+    params = getparams(idxs, param)
+    E_mms = []
+    E_tors = []
+    E_fits = []
+    writer = csv.writer(sys.stdout)
+    writer.writerow(['Filename', 'weight', 'E_qm', 'E_mm', 'E_tor', 'E_fit'])
+    for fname, E_qm, weight in zip(fnames, enes, weights):
+        mol = read.readxyz(file(fname))
+        tors = analyze.gettorsbytype(mol, idxs)
+        newmol, E_mm = tinker.minimize_file(fname, param)
+        E_tor = getetor(newmol, tors, params)
+        E_fit = E_qm - E_mm + E_tor
+        writer.writerow([fname, weight, E_qm, E_mm, E_tor, E_fit])
+
+if __name__ == '__main__':
+    main()
+
