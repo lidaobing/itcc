@@ -38,8 +38,18 @@ def shake22(coords, distmat, atmidxs):
     return {atmidxs[3]: Vector(p3),
             atmidxs[4]: Vector(p4)}
 
+def shake21(coords, distmat, atmidxs):
+    assert len(atmidxs) == 4
+    p0 = coords[atmidxs[0]]
+    p1 = coords[atmidxs[1]]
+    p2 = coords[atmidxs[2]]
+    r03 = distmat[atmidxs[0], atmidxs[3]]
+    p3 = ((p1 - p0).normal() + (p2 - p0).normal()).normal() * -r03 + p0
+    return {atmidxs[3]: p3}
+
 def shakenull(coords, distmat, atmidxs):
     return {}
 
 funcidx = {(2, 2): shake22,
+           (2, 1): shake21,
            (2, 0): shakenull}

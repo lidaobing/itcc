@@ -37,7 +37,7 @@ def construct_both_transform_matrix(A, B, C):
 def pyramid(A, B, C, rAX, rBX, rCX):
     # 新坐标系，原点在A, x轴在AB上， z轴垂直于ABC平面
     trans = Translation(-A)
-    
+
     trans, revtrans = construct_both_transform_matrix(A, B, C)
 
     A = trans(A)
@@ -69,7 +69,7 @@ def pyramid(A, B, C, rAX, rBX, rCX):
 
     X[2] = math.sqrt(max(0.0, X22))
     result1 = revtrans(Vector(X))
-    
+
     X[2] = -X[2]
     result2 = revtrans(Vector(X))
     return ((result1, result2), X22)
@@ -82,9 +82,10 @@ def pyramid2(A, B, rAX, rBX):
     rAB = AB.length()
     if rAX + rBX < rAB or abs(rAX - rBX) > rAB:
         return (None, None, None)
-    
+
     c = (rAX * rAX - rBX * rBX) / ( 2 * rAB * rAB) + 0.5
-    rXO = math.sqrt(rAX * rAX - rXO * rXO)
+    rAO = c * rAB
+    rXO = math.sqrt(rAX * rAX - rAO * rAO)
     O = A + c * AB
 
     ABn = AB.normal()

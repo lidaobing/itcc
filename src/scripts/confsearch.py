@@ -1,19 +1,15 @@
 #! /usr/bin/env python
 # $Id$
-from itcc.CCS2 import loopclosure, R6combine
+from itcc.CCS2 import loopclosure
 
 __revision__ = '$Rev$'
 
 def testcyc(ifname, options):
-    combine_dict = {1:R6combine.R6combine1,
-                    2:R6combine.R6combine2,
-                    3:R6combine.R6combine3}
     loopc = loopclosure.LoopClosure(options.forcefield,
                                     options.keepbound,
                                     options.searchbound)
     loopc.maxsteps = options.maxsteps
-    loopc.f_R6combine = combine_dict[options.combine]
-
+    loopc.moltypekey = options.moltype
     loopc(ifname)
 
 def main():
@@ -32,10 +28,8 @@ def main():
     parser.add_option('-m', "--maxsteps", dest="maxsteps",
                       default=0, type='int',
                       help='max optimization steps, default is infinite')
-    parser.add_option('-c', "--combine", dest="combine",
-                      default=3, type='int',
-                      help='-c1: Comb I, -c2: Comb II, -c3: Comb III, '
-                      'default: -c3')
+    parser.add_option('-t', "--moltype", dest="moltype",
+                      default=None, help='you can set it to peptide')
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("incorrect number of arguments")

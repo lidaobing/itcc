@@ -34,14 +34,9 @@ def tordiff(tors1, tors2):
     results = []
     tors1 = [Angle(tor) for tor in tors1]
     tors2 = [Angle(tor) for tor in tors2]
-    negtors2 = [-tor for tor in tors2]
-
-    vartors2 = [tors2 * 2, tors2[::-1]*2, negtors2*2, negtors2[::-1]*2]
-    for subvartors2 in vartors2:
-        for idx in range(len(tors2)):
-            newtors2 = subvartors2[idx:idx+len(tors2)]
-            diff = max([abs(ang1 - ang2) for ang1, ang2 in zip(tors1, newtors2)])
-            results.append((diff, newtors2))
+    for newtors2 in varytors(tors2):
+        diff = max([abs(ang1 - ang2) for ang1, ang2 in zip(tors1, newtors2)])
+        results.append((diff, newtors2))
     results.sort()
     if debug:
         print 'Torsion of mol1: ', ['%6.1f' % math.degrees(float(tor)) for tor in tors1]
@@ -49,6 +44,13 @@ def tordiff(tors1, tors2):
         print 'Torsion of mol3: ', ['%6.1f' % math.degrees(float(tor)) for tor in results[0][1]]
         print ['%5.1f' % math.degrees(result[0]) for result in results]
     return results[0][0]
+
+def varytors(tors):
+    negtors = [-tor for tor in tors]
+    vartors = [tors * 2, tors[::-1]*2, negtors*2, negtors[::-1]*2]
+    for subvartors in vartors:
+        for idx in range(len(tors)):
+            yield subvartors[idx:idx+len(tors)]
 
 def main():
     global debug

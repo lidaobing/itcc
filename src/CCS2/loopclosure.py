@@ -9,7 +9,7 @@ import pprint
 import itertools
 import time
 from itcc.Tinker import tinker
-from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, shake, catordiff
+from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, shake, catordiff, Mezeipro
 from itcc.Molecule import read, write, tools as moltools
 from itcc.Tools import tools
 
@@ -229,9 +229,13 @@ class LoopClosure(object):
         return finishedtasknum, waitingtasknum
 
 def getr6result(coords, r6, dismat, shakedata):
-    if r6type(r6) == (1,1,1,1,1,1,1):
+    type_ = r6type(r6)
+    if type_ == (1,1,1,1,1,1,1):
         idxs = tuple(itertools.chain(*r6))
         return Mezei.R6(coords, idxs, dismat, shakedata)
+    elif type_ == (2, 1, 2, 1, 2, 1, 2):
+        idxs = tuple(itertools.chain(*r6))[1:-1]
+        return Mezeipro.R6(coords, idxs, dismat, shakedata)
     assert False, r6type(r6)
 
 def r6type(r6):
