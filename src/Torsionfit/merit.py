@@ -1,9 +1,8 @@
 # $Id$
 
-import cmpmol
-import tinker
-import tools
 import operator
+from itcc.Torsionfir import cmpmol, tools
+from itcc.Tinker import tinker
 
 optimize = tinker.batchoptimize
 energy = tinker.batchenergy
@@ -34,7 +33,7 @@ def merit(param):
     
     iflist, oflist, refene = getfilelist()
     optene = tinker.batchoptimize(iflist, oflist)
-    difene = [x-y for x,y in zip(refene, optene)]
+    difene = [x-y for x, y in zip(refene, optene)]
     result = tools.stdev(difene)
 
 #    print chkdeform(iflist, oflist)
