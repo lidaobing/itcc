@@ -6,7 +6,8 @@ __revision__ = '$Rev$'
 import math
 import Numeric
 import LinearAlgebra
-from itcc.Tinker import parameter
+from itcc.Molecule import read
+from itcc.Tinker import parameter, analyze
 
 __DEBUG__ = 1
 
@@ -124,11 +125,9 @@ def parmfit(datfname, idxfname, param):
     idxs, folds = readidx(idxfname)
     params = getparams(idxs, param)
     for fname in datfname:
-        
-    
-    
-    
-
+        mol = read.readxyz(file(fname))
+        print analyze.gettorsbytype(mol, idxs)
+        return
 
 def main():
     pass
