@@ -1,5 +1,6 @@
 2005-02-08  Li Daobing  <lidaobing@gmail.com>
 
+	* MANIFEST.in: include Makefile
 	* README: add install information.
 	* change file's encoding from gb2312 to utf-8.
 
