@@ -15,11 +15,11 @@ ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
                        ['src/Tools/Vector.cpp'],
                        depends=['src/Tools/Vector.hpp'],
                        libraries=['boost_python'])
-             ] 
+             ]
 
 
 setup(name="itcc",
-      version="0.2.4",
+      version="0.2.99",
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',
