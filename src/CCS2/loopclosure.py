@@ -72,8 +72,9 @@ class LoopClosure(object):
     def runtask(self, taskidx):
         mol, ene = self.tasks[taskidx]
         print
-        print ' CCS2 Local Search              Minimum %6i %21.4f' \
-              % (taskidx + 1, ene)
+        head = ' CCS2 Local Search(%i/%i)' % self.getprogress()
+        print '%-31s Minimum %6i %21.4f' \
+              % (head, taskidx + 1, ene)
         print
 
         for newmol, newene in self.findneighbor(mol):
@@ -213,6 +214,18 @@ class LoopClosure(object):
         for newidx, ene in enumerate(newenes):
             oldidx = oldenes.index(ene)
             print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+
+    def getprogress(self):
+        finishedtasknum = len(self.tasks) - len(self.taskheap)
+        if self.searchrange is None:
+            waitingtasknum = len(self.taskheap)
+        else:
+            waitingtasknum = 0
+            searchbound = self.searchbound
+            for ene, _ in self.taskheap:
+                if ene <= searchbound:
+                    waitingtasknum += 1
+        return finishedtasknum, waitingtasknum
 
 def getr6result(coords, r6, dismat, shakedata):
     if r6type(r6) == (1,1,1,1,1,1,1):
