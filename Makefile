@@ -8,7 +8,7 @@ debug: clean
 	$(PYTHON) setup.py build --debug
 	$(PYTHON) setup.py install
 install:
-	$(PYTHON) setup.py install
+	$(PYTHON) setup.py install --root $(DESTDIR)/
 sdist:
 	$(PYTHON) setup.py sdist
 bdist:
