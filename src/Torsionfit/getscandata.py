@@ -1,7 +1,6 @@
 import re
 from molecular import Molecular, Atom
 
-
 def beginoflink(ifile, linknum):
     restr = '(Enter .*l%d.exe)' % linknum
     prog = re.compile(restr)
@@ -71,10 +70,8 @@ def getscandata(ifname):
     return result
 
 if __name__ == '__main__':
-
-
-    
-    import sys, write
+    import sys
+    from itcc.Molecule import write
     if len(sys.argv) == 3:
         mols = getscandata(sys.argv[1])
         for i in range(len(mols)):

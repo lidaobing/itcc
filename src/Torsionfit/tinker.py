@@ -3,9 +3,8 @@
 
 import os
 import os.path
-from itcc.Molecule import read
+from itcc.Molecule import read, write
 from itcc.Torsionfit import relalist
-from itcc.Torsionfit import write
 
 TNK_ROOT = os.getenv("TNK_ROOT", "")    # use same environment with molden
 
