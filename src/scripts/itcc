@@ -7,12 +7,14 @@ import itcc
 from itcc.Molecule import rmsd
 from itcc.CCS2 import catordiff
 from itcc.Torsionfit import parmfit
+from itcc.Tinker import simpparam
 
 __revision__ = '$Rev$'
 
 subscript = {'rmsd': rmsd.main,
              'catordiff': catordiff.main,
-             'printefit': parmfit.main}
+             'printefit': parmfit.main,
+             'simpparam': simpparam.main}
 
 def help():
     basename = os.path.basename(sys.argv[0])

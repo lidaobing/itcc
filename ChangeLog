@@ -1,5 +1,7 @@
 2005-02-26  Li Daobing  <lidaobing@gmail.com>
 
+	* src/Tinker/simpparam.py: add this file to simpilify param file.
+
 	* merge 150:151 from 0.2 branch
 	  - src/scripts/sumxyz.py: fix bug.
 

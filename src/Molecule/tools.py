@@ -13,3 +13,6 @@ def distmat(mol):
             result[i, j] = distance
             result[j, i] = distance
     return result
+
+def gettypes(mol):
+    return [atom.type for atom in mol.atoms]
