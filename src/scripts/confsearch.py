@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#! /usr/bin/env python
 # $Id$
 from itcc.CCS2 import loopclosure, R6combine
 
@@ -13,13 +13,13 @@ def testcyc(ifname, options):
                                     options.searchbound)
     loopc.maxsteps = options.maxsteps
     loopc.f_R6combine = combine_dict[options.combine]
-    
+
     loopc(ifname)
 
 def main():
     from optparse import OptionParser
 
-    usage = "usage: %prog [options] xyzfile"
+    usage = "usage: %prog [-h|options] xyzfile"
     parser = OptionParser(usage)
     parser.add_option("-f", "--forcefield", dest='forcefield',
                       default='mm2', help="default is mm2")
@@ -35,13 +35,13 @@ def main():
     parser.add_option('-c', "--combine", dest="combine",
                       default=3, type='int',
                       help='-c1: Comb I, -c2: Comb II, -c3: Comb III, '
-                      'default: -c3') 
+                      'default: -c3')
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("incorrect number of arguments")
 
-    testcyc(args[0], options)    
+    testcyc(args[0], options)
 
 if __name__ == '__main__':
     main()
-        
+
