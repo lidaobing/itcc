@@ -1,6 +1,8 @@
 # $Id$
+'''Deal with the tinker .prm file'''
 
 __revision__ = '$Rev$'
+__all__ = ['Parameter', 'Torsionparameter', 'Parameters']
 
 class Parameter:
     pass
@@ -36,3 +38,27 @@ class Parameters(list):
             result += str(x)
 
         return result
+
+def readtorsionprm(prmfname, i, j, k, l):
+    ifile = file(prmfname)
+    for line in ifile:
+        words = line.split()
+        if len(words) in [14, 17, 20, 23] \
+               and words[0] == 'torsion' \
+               and int(words[1]) == i \
+               and int(words[2]) == j \
+               and int(words[3]) == k \
+               and int(words[4]) == l:
+            fold = (len(words) - 5) // 3
+            result = []
+            for idx in range(fold):
+                data = words[5+3*idx:8+3*idx]
+                if idx % 2 == 0:
+                    assert float(data[1]) == 0.0
+                else:
+                    assert float(data[1]) == 180.0
+                assert int(data[2]) == idx + 1
+                result.append(float(data[0]))
+            return result
+            
+            
