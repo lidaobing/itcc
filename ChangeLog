@@ -1,3 +1,9 @@
+2005-03-06  Li Daobing  <nichloas@sohu.com>
+
+	* test/sidechain_test.py (main): add testsuite for sidechain
+
+	* src/CCS2/sidechain.py (movesidechain): add
+
 2005-03-04  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/sidechain.py:
