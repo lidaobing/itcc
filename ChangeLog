@@ -1,3 +1,7 @@
+2005-03-11  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/Mezeipro.py: fix a bug.
+
 2005-03-07  Li Daobing  <nichloas@sohu.com>
 
 	* src/CCS2/loopclosure.py, Mezei.py, Mezeipro.py: switch from

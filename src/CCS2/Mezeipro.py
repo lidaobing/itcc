@@ -80,16 +80,15 @@ class R6sub:
         newcoords = self.coords[:]
         newcoords[i5] = p5
         results = []
-        for p4, p3 in propyramida((i5, i4, i3, i2, i1), newcoords, self.dismat):
-            if p4 is None:
-                results.append((None,)*5)
-                results.append((None,)*5)
-                continue
-            for p6, p7 in propyramida((i5, i6, i7, i8, i9), newcoords, self.dismat):
-                if p6 is None:
-                    results.append((None,)*5)
-                    continue
-                results.append((p3,p4,p5,p6,p7))
+        resultsa = tuple(propyramida((i5, i4, i3, i2, i1), newcoords, self.dismat))
+        resultsb = tuple(propyramida((i5, i6, i7, i8, i9), newcoords, self.dismat))
+
+        for p4, p3 in resultsa:
+            for p6, p7 in resultsb:
+                if p4 is None or p6 is None:
+                    results.append((None,) * 5)
+                else:
+                    results.append((p3,p4,p5,p6,p7))
         return results
 
 def R6a(coords, atmidx, dismat):
