@@ -1,6 +1,6 @@
 PYTHON ?= python2.4
 
-all: test
+all: check
 
-test:
+check:
 	$(PYTHON) test.py
