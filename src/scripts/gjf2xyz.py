@@ -1,9 +1,11 @@
 #! /usr/bin/env python
 
-from itcc.torsionfit import read, write
+from itcc.Molecule import read, write
 
 def gjf2xyz(gjffname, xyzfname):
-    write.writexyz(read.readgjf(gjffname), xyzfname)
+    ofile = file(xyzfname, 'w+')
+    write.writexyz(read.readgjf(gjffname), ofile)
+    ofile.close()
 
 if __name__ == '__main__':
     import sys

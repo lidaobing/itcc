@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import pprint
-from Numeric import zeros, Float, Int
-from Scientific.Geometry import Vector
+from Numeric import zeros, Float
 from itcc.Tools import tools
-from atom import *
+from itcc.Molecule.atom import *
 
 __all__ = ["Molecule"]
         
@@ -61,26 +60,32 @@ class Molecule(object):
         self.connect = None
 
     def builddistancematrix(self):
-        self.distancematrix = zeros((len(self),len(self)), Float)
+        self.distancematrix = zeros((len(self), len(self)), Float)
         
         for i in range(len(self)):
             for j in range(i):
-                distance = tools.distance(self.atoms[i].coords, self.atoms[j].coords)
-                self.distancematrix[i,j] = distance
-                self.distancematrix[j,i] = distance
+                distance = (self.coords[i] - self.coords[j]).length()
+                self.distancematrix[i, j] = distance
+                self.distancematrix[j, i] = distance
                 
     # connect system
     def makeconnect(self):
         self.builddistancematrix()
         self.connect = self.distancematrix < self.__maxbondlen
+        for i in range(len(self)):
+            self.connect[i, i] = False
+
+    def confirmconnect(self):
+        if self.connect is None:
+            self.makeconnect()
 
     def buildconnect(self, i, j):
         if not self.connect:
             self.connect = zeros((len(self), len(self)))
-        self.connect[i,j] = self.connect[j,i] = 1
+        self.connect[i, j] = self.connect[j, i] = 1
 
     def delconnect(self, j, i):
-        self.connect[i,j] = self.connect[j,i] = 0
+        self.connect[i, j] = self.connect[j, i] = 0
 
     def mainchain(self):
         """
@@ -142,7 +147,7 @@ class Molecule(object):
             atoms.append(IdxAtom(self.atoms[i], self.coords[i], i))
         for i in range(len(self)):
             for j in range(i):
-                if self.connect[i,j]:
+                if self.connect[i, j]:
                     connects.append((atoms[i], atoms[j]))
 
         newatoms = []

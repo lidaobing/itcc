@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ['readxyz', 'FormatError']
+__all__ = ['readxyz', 'readgjf', 'FormatError']
 
 import re
 from os.path import splitext
@@ -47,31 +47,33 @@ class FormatError(Exception):
 #             mol.appendconnect(data['bonded'])
 #     return mol
 
-# def readgjf(ifname):
-#     ifile = file(ifname)
+def readgjf(ifname):
+    ifile = file(ifname)
 
-#     blanklines = 0
-#     mol = Molecule()
+    blanklines = 0
+    mol = Molecule()
 
-#     while blanklines < 2:
-#         line = ifile.readline().strip()
-#         if line == '':
-#             blanklines += 1
+    while blanklines < 2:
+        line = ifile.readline().strip()
+        if line == '':
+            blanklines += 1
 
-#     ifile.readline()  #跳过 '0 1' 这一行
-        
-    
-#     for line in ifile:
-#         line = line.strip()
-#         if line == '':
-#             break
-#         x = line.split()
-#         atom = Atom()
-#         atom.symbol = x[0]
-#         atom.coords = x[-3:]   #可以处理两种类型的gjf: 'H 0.1 0.2 0.3' 和 'H 0 0.1 0.2 0.3'
-#         mol.atoms.append(atom)
-#     ifile.close()
-#     return mol
+    ifile.readline()  #跳过 '0 1' 这一行
+      
+  
+    for line in ifile:
+        line = line.strip()
+        if line == '':
+            break
+        words = line.split()
+        x = []
+        for word in words:
+            x.extend(word.split(','))
+        atom = Atom(x[0])
+        coords = Vector([float(coord) for coord in x[-3:]])   #可以处理两种类型的gjf: 'H 0.1 0.2 0.3' 和 'H 0 0.1 0.2 0.3'
+        mol.addatom(atom, coords)
+    ifile.close()
+    return mol
 
 def readxyz(ifile):
     """readxyz(ifile) => Molecule
