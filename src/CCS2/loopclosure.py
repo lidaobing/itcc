@@ -184,10 +184,13 @@ class LoopClosure(object):
                                                 self.forcefield,
                                                 self.minconverge)
                 self.step += 1
-                print '  Step %5i   Comb %02i-%02i %42.4f' % \
-                      (self.step, cmbidx, molidx, rene),
-
-                yield rmol, rene
+                if tinker.isminimal(rmol, self.forcefield):
+                    print '  Step %5i   Comb %02i-%02i %42.4f' % \
+                          (self.step, cmbidx, molidx, rene),
+                    yield rmol, rene
+                else:
+                    print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
+                          (self.step, cmbidx, molidx, rene)
 
     def reorganizeresults(self):
         if self.keeprange is None:

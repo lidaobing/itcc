@@ -1,5 +1,8 @@
 2005-03-01  Li Daobing  <lidaobing@gmail.com>
 
+	* src/CCS2/loopclosure.py (LoopClosure.findneighbor): check
+	isminimal before yield
+
 	* src/Molecule/tools.py: 
 	  - new calclooptor
 
