@@ -39,7 +39,7 @@ def imptor(a, b, c, d):
 
 def shakeH2(p0, p1, p2, CHlen=1.113):
     p3, p4 = cpptools.shakeH2(tuple(p0.array), tuple(p1.array),
-                              tuple(p2.array), CHlen) 
+                              tuple(p2.array), CHlen, CHlen) 
     p3 = Vector(p3)
     p4 = Vector(p4)
     return p3, p4

@@ -10,24 +10,20 @@ static void
 _shakeH2(const Vector & p0,
 	 const Vector & p1,
 	 const Vector & p2,
-	 double CHlen,
+	 double r03,
+	 double r04,
 	 Vector & p3,
 	 Vector & p4)
 {
-  double CHlenx = CHlen * sqrt(1.0/3.0);
-  double CHleny = CHlen * sqrt(2.0/3.0);
+  static const double lenx = sqrt(1.0/3.0);
+  static const double leny = sqrt(2.0/3.0);
   
-  Vector v01 = p1 - p0;
-  Vector v02 = p2 - p0;
-  v01.normal();
-  v02.normal();
-  Vector vrx = v01 + v02;
-  vrx.normal(-CHlenx);
-  vrx += p0;
-  Vector vry = v01.cross(v02);
-  vry.normal(CHleny);
-  p3 = vrx + vry;
-  p4 = vrx - vry;
+  Vector v01 = (p1 - p0).normal();
+  Vector v02 = (p2 - p0).normal();
+  Vector vrx = (v01 + v02).normal(-lenx);
+  Vector vry = v01.cross(v02).normal(leny);
+  p3 = p0 + (vrx + vry) * r03;
+  p4 = p0 + (vrx - vry) * r04;
   return;
 }
 
@@ -37,17 +33,17 @@ extern "C" {
   shakeH2(PyObject * self, PyObject * args)
   {
     Vector p0, p1, p2;
-    double CHlen;
+    double r03, r04;
     Vector p3, p4;
-    if(!PyArg_ParseTuple(args, "(ddd)(ddd)(ddd)d",
+    if(!PyArg_ParseTuple(args, "(ddd)(ddd)(ddd)dd",
 			 &p0.x, &p0.y, &p0.z,
 			 &p1.x, &p1.y, &p1.z,
 			 &p2.x, &p2.y, &p2.z,
-			 &CHlen)) {
+			 &r03, &r04)){
       return NULL;
     }
 
-    _shakeH2(p0, p1, p2, CHlen, p3, p4);
+    _shakeH2(p0, p1, p2, r03, r04, p3, p4);
   
     return Py_BuildValue("((ddd)(ddd))",
 			 p3.x, p3.y, p3.z,
