@@ -1,5 +1,8 @@
 2005-03-04  Li Daobing  <lidaobing@gmail.com>
 
+	* src/CCS2/sidechain.py:
+	  - add this file, prepare to replace shake
+
 	* src/Molecule/tools.py: Move connectatoms and neighborlist from
 	Molecule to tools
 
