@@ -1,3 +1,9 @@
+2005-02-18  Li Daobing  <lidaobing@gmail.com>
+
+	* src/CCS2/loopclosure.py:
+	  - fix a bug in `reorganizeresults', use idx to index a
+	  conformation, not energy
+
 2005-02-17  Li Daobing  <lidaobing@gmail.com>
 
 	* src/CCS2/loopclosure.py:

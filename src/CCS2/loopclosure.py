@@ -190,18 +190,18 @@ class LoopClosure(object):
                 yield rmol, rene
 
     def reorganizeresults(self):
-        oldenes = [task[1] for task in self.tasks]
-        newenes = oldenes[:]
-        newenes.sort()
-        if self.keeprange is not None:
-            idx = bisect.bisect(newenes, self.keepbound)
-            newenes = newenes[:idx]
+        if self.keeprange is None:
+            newidxs = [ene[1] for ene in self.enes]
+        else:
+            newidxs = [ene[1] for ene in self.enes if ene[0] <= self.keepbound]
+
         print
         print 'Oldidx Newidx Ene(sort by Oldidx)'
-        for oldidx, ene in enumerate(oldenes):
+        for oldidx in range(len(self.tasks)):
+            ene = self.tasks[oldidx][1]
             oldfname = self.molnametmp % (oldidx + 1)
             try:
-                newidx = newenes.index(ene)
+                newidx = newidxs.index(oldidx)
             except ValueError:
                 os.unlink(oldfname)
                 print '%6i %6s %.4f' % (oldidx+1, '', ene)
@@ -209,11 +209,12 @@ class LoopClosure(object):
                 newfname = self.newmolnametmp % (newidx + 1)
                 os.rename(oldfname, newfname)
                 print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+
         print
         print 'Oldidx Newidx Ene(sort by Newidx)'
-        for newidx, ene in enumerate(newenes):
-            oldidx = oldenes.index(ene)
-            print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+        for newidx, oldidx in enumerate(newidxs):
+            print '%6i %6i %.4f' % (oldidx+1, newidx+1, self.tasks[oldidx][1])
+        print
 
     def getprogress(self):
         finishedtasknum = len(self.tasks) - len(self.taskheap)
