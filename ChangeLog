@@ -1,3 +1,8 @@
+2005-02-26  Li Daobing  <lidaobing@gmail.com>
+
+	* merge 150:151 from 0.2 branch
+	  - src/scripts/sumxyz.py: fix bug.
+
 2005-02-25  Li Daobing  <lidaobing@gmail.com>
 
 	* src/scripts/itcc: fix bug. 

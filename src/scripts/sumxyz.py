@@ -57,7 +57,7 @@ def main():
     import os.path
     if len(sys.argv) >= 3:
         fnamelist = sys.argv[2:]
-        atmidx = [int(x) for x in sys.argv[1].split(',')]
+        atmidx = [int(x)-1 for x in sys.argv[1].split(',')]
         assert 2 <= len(atmidx) <= 4
         if len(atmidx) < 4:
             sumxyz(atmidx, fnamelist)
