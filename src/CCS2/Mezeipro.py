@@ -48,16 +48,17 @@ def propyramida(atmidx, coords, dismat):
     for i3coord in wrappyramid((i3, i1, i4, i5), coords, dismat):
         if i3coord is None:
             result.append((None, None))
+            result.append((None, None))
             continue
         newcoords = coords[:]
         newcoords[i3] = i3coord
         i2coords = wrappyramid((i2, i1, i3, i4), newcoords, dismat)
         if i2coords[0] is None:
             result.append((None, None))
+            result.append((None, None))
             continue
-#        assert (i2coords[0] - i2coords[1]).length() < 0.3, \
-#               (i3coord, i2coords)
         result.append((i2coords[0], i3coord))
+        result.append((i2coords[1], i3coord))
     return result
 
 def safeop(op, *args):
@@ -116,7 +117,7 @@ def R6a(coords, atmidx, dismat):
 
     results = []
     for i in range(steps):
-        for j in range(4):
+        for j in range(16):
             if d46mat[i][j] is not None and \
                d46mat[i+1][j] is not None and \
                d46mat[i][j] * d46mat[i+1][j] <= 0:
