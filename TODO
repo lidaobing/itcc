@@ -1,9 +1,5 @@
                                                        -*- outline -*-
-
 * CCS2
-** use sidechain to replace shake
-shake algorithm can't deal with the complex sidechain
-
 ** implement another R6 algorithm provide by Sha Yao
 
 ** autodetect the logic symmetry of molecule
@@ -31,3 +27,6 @@ Tinker int
 ** detect error happened
 If the input parameter is error, for example, xyz file not exist or
 param file not exist, the program will hang.
+
+* test
+** add confsearch testsuite for cyclopeptide
