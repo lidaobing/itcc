@@ -39,7 +39,7 @@ def testcyc(ifname, options):
     clock1 = time.clock()
     print time.ctime(time1)
     mol = readxyz(file(ifname))
-    goodmol = loopc(mol)
+    goodmol = loopc(ifname)
     counter = 1
     for result in goodmol:
         print '%i: %f, %i' % (counter, result.ene, result.opttimes)
