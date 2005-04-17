@@ -9,6 +9,9 @@ and a general method to deal with symmetry relation functions.
 
 ** support all-kinds of peptide.
 
+** use a faster algorithm of CCS2
+ref: JCC, 18(2), 277-289, 1997
+
 * Molecule
 ** clean Molecule class
 keep Molecule class small and clean, remove other methods to
