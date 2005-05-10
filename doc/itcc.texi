@@ -1,0 +1,22 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename itcc.info
+@settitle ITCC Manual 0.2
+@c %**end of header
+
+@node Top
+@top Manual of ITCC
+
+Manual of ITCC
+
+@menu
+* Torsionfit::                  
+@end menu
+
+@node Torsionfit
+@chapter Torsionfit
+
+@section get data from Gaussian result
+use @file{src/Torsionfit/getscandata.py}.
+
+@bye
