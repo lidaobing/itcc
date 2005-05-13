@@ -2,6 +2,7 @@
 import re
 from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import Atom
+from Scientific.Geometry import Vector
 
 __revision__ = '$Rev$'
 
@@ -35,10 +36,9 @@ def getxyz_202(ifile):
         words = line.split()
         if len(words) != 6:
             break
-        atom = Atom()
-        atom.no = int(words[1])
-        atom.coords = [float(x) for x in words[3:6]]
-        mol.atoms.append(atom)
+        atom = Atom(int(words[1]))
+        coords = Vector([float(x) for x in words[3:6]])
+        mol.addatom(atom, coords)
 
     return mol
 
@@ -80,7 +80,7 @@ if __name__ == '__main__':
         mols = getscandata(sys.argv[1])
         for i in range(len(mols)):
             ofilename = sys.argv[2] + '%02d.xyz' % (i+1)
-            write.writexyz(mols[i], ofilename)
+            write.writexyz(mols[i], file(ofilename, 'w'))
     else:
         import os.path
         print 'Usage: %s ifilename ofileprefix' % os.path.basename(sys.argv[0])
