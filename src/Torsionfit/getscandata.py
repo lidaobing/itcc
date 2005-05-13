@@ -82,6 +82,7 @@ if __name__ == '__main__':
             ofilename = sys.argv[2] + '%02d.xyz' % (i+1)
             write.writexyz(mols[i], ofilename)
     else:
-        print 'Usage: %s ifilename ofileprefix' % sys.argv[0]
+        import os.path
+        print 'Usage: %s ifilename ofileprefix' % os.path.basename(sys.argv[0])
         
         
