@@ -6,8 +6,9 @@ from Numeric import zeros
 from itcc.Tools import tools
 from itcc.Molecule.atom import Atom
 from itcc.Molecule import tools as moltools
+from Scientific.Geometry import Vector as CoordType
 
-__all__ = ["Molecule"]
+__all__ = ["Molecule", 'CoordType']
 __revision__ = '$Rev$'
 
 class Molecule(object):

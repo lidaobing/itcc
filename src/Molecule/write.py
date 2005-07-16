@@ -1,11 +1,12 @@
 # $Id$
 
+import sys
 from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import atomchr
 
 __revision__ = '$Rev$'
 
-def writexyz(mol, ofile, comment=None):
+def writexyz(mol, ofile=sys.stdout, comment=None):
     assert(isinstance(mol, Molecule))
 
     mol.confirmconnect()
