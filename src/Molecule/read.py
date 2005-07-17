@@ -89,10 +89,8 @@ def readxyz(ifile):
     atmnum = int(match.group(1))
     mol.comment = match.group(2)
 
-    for line in ifile:
-        words = line.split()
-        if not words:
-            break
+    for i in range(atmnum):
+        words = ifile.readline().split()
         atom = Atom(words[1], int(words[5]))
         coord = Vector([float(x) for x in words[2:5]])
         mol.addatom(atom, coord)
