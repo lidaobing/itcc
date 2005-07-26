@@ -8,7 +8,7 @@ from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff, confsearch
 from itcc.Torsionfit import parmfit
 from itcc.Tinker import simpparam, constrain, optimizes
-from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz
+from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch
 
 __revision__ = '$Rev$'
 
@@ -20,6 +20,7 @@ subscript = {
     'gjf2xyz':    (gjf2xyz.main, 'convert gjf to xyz'),
     'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
     'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
+    'out2arch':   (out2arch.main, 'Gaussian out to arch file'),
     'printefit':  (parmfit.main, 'print efit'),
     'removepbc':  (removepbc.main, 'remove PBC'),
     'rmsd':       (rmsd.main, 'RMSD'),

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # $Id$
 """
 out2arch.py
@@ -24,13 +23,13 @@ def out2arch(ifile, full = 0):
     """out2arch(ifile, full = 0) -> None
     output Gaussian's output file's arch info to stdout with format
     @ifile: file object of Gaussian log(out) file
-    @full: 
+    @full:
        full = 0: output is a standard gjf input
        full = 1: all information in arch
     output is directly to sys.stdout
     """
     lines = ifile.readlines()
-    
+
     idx = 0
 
     while idx < len(lines) and lines[idx][:5] != ' 1\\1\\':
@@ -44,7 +43,6 @@ def out2arch(ifile, full = 0):
     while result[-3:] != '\\\\@' and idx < len(lines):
         result = result + lines[idx][1:-1]
         idx = idx + 1
-    
 
     if not full:
         pos1 = result.find('\\\\#')
@@ -74,9 +72,9 @@ def main():
     except getopt.GetoptError:
         usage(sys.stderr)
         sys.exit(2)
-        
+
     full = 0
-    
+
     for o, _ in opts:
         if o in ("-h", "--help"):
             usage(sys.stdout)
@@ -90,8 +88,7 @@ def main():
 
     ifile = open(args[0])
     out2arch(ifile, full)
-        
-                    
+
 if __name__ == "__main__":
     main()
 
