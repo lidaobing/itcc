@@ -1,10 +1,8 @@
 # $Id$
-#!/usr/bin/env python
 
 from itcc.Tinker import tinker
 
 __revision__ = '$Rev$'
-
 
 def main():
     import sys

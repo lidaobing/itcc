@@ -7,20 +7,21 @@ import itcc
 from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff, confsearch
 from itcc.Torsionfit import parmfit
-from itcc.Tinker import simpparam
+from itcc.Tinker import simpparam, constrain
 from itcc.Tools import mtxyzrg, cmpxyztop
 
 __revision__ = '$Rev$'
 
 subscript = {
-    'catordiff': (catordiff.main, 'cyclic alkane torsion diffrent'),
-    'cmpxyztop': (cmpxyztop.main, 'Compare topology of two xyz files'),
+    'catordiff':  (catordiff.main, 'cyclic alkane torsion diffrent'),
+    'cmpxyztop':  (cmpxyztop.main, 'Compare topology of two xyz files'),
     'confsearch': (confsearch.main, 'Conformational search'),
-    'mtxyzrg':   (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
-    'printefit': (parmfit.main, 'print efit'),
-    'removepbc': (removepbc.main, 'remove PBC'),
-    'rmsd': (rmsd.main, 'RMSD'),
-    'simpparam': (simpparam.main, 'simplify parameter'),
+    'constrain':  (constrain.main, 'generate a constrain tinker.key'),
+    'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
+    'printefit':  (parmfit.main, 'print efit'),
+    'removepbc':  (removepbc.main, 'remove PBC'),
+    'rmsd':       (rmsd.main, 'RMSD'),
+    'simpparam':  (simpparam.main, 'simplify parameter'),
     }
 
 def help():
