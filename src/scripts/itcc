@@ -8,17 +8,19 @@ from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff
 from itcc.Torsionfit import parmfit
 from itcc.Tinker import simpparam
-from itcc.Tools import mtxyzrg
+from itcc.Tools import mtxyzrg, cmpxyztop
 
 __revision__ = '$Rev$'
 
-subscript = {'rmsd': (rmsd.main, 'RMSD'),
-             'catordiff': (catordiff.main, 'cyclic alkane torsion diffrent'),
-             'printefit': (parmfit.main, 'print efit'),
-             'simpparam': (simpparam.main, 'simplify parameter'),
-             'removepbc': (removepbc.main, 'remove PBC'),
-             'mtxyzrg':   (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
-             }
+subscript = {
+    'catordiff': (catordiff.main, 'cyclic alkane torsion diffrent'),
+    'cmpxyztop': (cmpxyztop.main, 'Compare topology of two xyz files'),
+    'mtxyzrg':   (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
+    'printefit': (parmfit.main, 'print efit'),
+    'removepbc': (removepbc.main, 'remove PBC'),
+    'rmsd': (rmsd.main, 'RMSD'),
+    'simpparam': (simpparam.main, 'simplify parameter'),
+    }
 
 def help():
     basename = os.path.basename(sys.argv[0])
