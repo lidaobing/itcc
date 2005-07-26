@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 # $Id$
 
 from itcc.Molecule import read, write
@@ -10,12 +9,16 @@ def gjf2xyz(gjffname, xyzfname):
     write.writexyz(read.readgjf(gjffname), ofile)
     ofile.close()
 
-if __name__ == '__main__':
+def main():
     import sys
     if len(sys.argv) != 3:
         print >> sys.stderr, "Usage: %s gjffname xyzfname" % sys.argv[0]
-    else:
-        gjf2xyz(sys.argv[1], sys.argv[2])
+        sys.exit(1)
+
+    gjf2xyz(sys.argv[1], sys.argv[2])
+
+if __name__ == '__main__':
+    main()
 
 
 
