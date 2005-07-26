@@ -53,7 +53,9 @@ def varytors(tors):
 def main():
     global debug
     debug = True
-    assert len(sys.argv) == 3
+    if len(sys.argv) != 3:
+        print 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
+        sys.exit(1)
     mol1 = read.readxyz(file(sys.argv[1]))
     mol2 = read.readxyz(file(sys.argv[2]))
     print math.degrees(catordiff(mol1, mol2))
