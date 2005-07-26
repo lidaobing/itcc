@@ -5,7 +5,7 @@ import sys
 import os.path
 import itcc
 from itcc.Molecule import rmsd, removepbc
-from itcc.CCS2 import catordiff
+from itcc.CCS2 import catordiff, confsearch
 from itcc.Torsionfit import parmfit
 from itcc.Tinker import simpparam
 from itcc.Tools import mtxyzrg, cmpxyztop
@@ -15,6 +15,7 @@ __revision__ = '$Rev$'
 subscript = {
     'catordiff': (catordiff.main, 'cyclic alkane torsion diffrent'),
     'cmpxyztop': (cmpxyztop.main, 'Compare topology of two xyz files'),
+    'confsearch': (confsearch.main, 'Conformational search'),
     'mtxyzrg':   (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
     'printefit': (parmfit.main, 'print efit'),
     'removepbc': (removepbc.main, 'remove PBC'),
@@ -31,7 +32,7 @@ def help():
     keys = subscript.items()
     keys.sort()
     for key in keys:
-        print '  %s %-9s  %s' % (basename, key[0], key[1][1])
+        print '  %s %-10s  %s' % (basename, key[0], key[1][1])
 
 def main():
     if len(sys.argv) == 1:
