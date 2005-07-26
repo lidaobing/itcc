@@ -1,4 +1,3 @@
-#! /usr/bin/env python
 # $Id$
 import getopt, sys
 from itcc.Tinker import tinker
@@ -6,7 +5,7 @@ from itcc.Tinker import tinker
 __revision__ = '$Rev$'
 
 def usage():
-    print >> sys.stderr, 'Usage: %s [-c converge] xyzfname ...'
+    print >> sys.stderr, 'Usage: %s [-c converge] xyzfname ...' % sys.argv[0]
 
 def main():
     try:
@@ -27,9 +26,6 @@ def main():
     enes = tinker.batchoptimize(args, converge=converge)
     for fname, ene in zip(args, enes):
         print '%s,%.3f' % (fname, ene)
-    
-
-    
 
 if __name__ == "__main__":
     main()

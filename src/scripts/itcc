@@ -7,7 +7,7 @@ import itcc
 from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff, confsearch
 from itcc.Torsionfit import parmfit
-from itcc.Tinker import simpparam, constrain
+from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz
 
 __revision__ = '$Rev$'
@@ -19,6 +19,7 @@ subscript = {
     'constrain':  (constrain.main, 'generate a constrain tinker.key'),
     'gjf2xyz':    (gjf2xyz.main, 'convert gjf to xyz'),
     'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
+    'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
     'printefit':  (parmfit.main, 'print efit'),
     'removepbc':  (removepbc.main, 'remove PBC'),
     'rmsd':       (rmsd.main, 'RMSD'),
