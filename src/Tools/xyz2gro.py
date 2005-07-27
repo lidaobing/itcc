@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # $Id$
 
 __revision__ = '$Rev$'
@@ -22,12 +21,17 @@ def xyz2gro(ifname, ofname):
         cy = float(x[3])/10.0
         cz = float(x[4])/10.0
         ofile.write('%5d%5s%5s%5d%8.3f%8.3f%8.3f\n' %
-                    (1, 'DIEST', symbol, no, cx, cy, cz)) 
+                    (1, 'DIEST', symbol, no, cx, cy, cz))
     ofile.write('%10.5f%10.5f%10.5f\n' % (0, 0, 0))
 
     ofile.close()
-                    
-if __name__ == '__main__':
+
+def main():
     import sys
-    if len(sys.argv) == 3:
-        xyz2gro(sys.argv[1], sys.argv[2])
+    if len(sys.argv) != 3:
+        print >> sys.stderr, "Usage: %s ifname ofname" % sys.argv[0]
+        sys.exit(1)
+    xyz2gro(sys.argv[1], sys.argv[2])
+
+if __name__ == '__main__':
+    main()

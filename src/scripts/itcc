@@ -6,9 +6,10 @@ import os.path
 import itcc
 from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff, confsearch
-from itcc.Torsionfit import parmfit
+from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
+from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam
 
 __revision__ = '$Rev$'
 
@@ -22,10 +23,16 @@ subscript = {
     'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
     'out2arch':   (out2arch.main, 'Gaussian out to arch file'),
     'out2ene':    (out2ene.main, 'Gaussian out to ene'),
+    'parmeval':   (parmeval.main, 'evaluate parameter files'),
     'printefit':  (parmfit.main, 'print efit'),
     'removepbc':  (removepbc.main, 'remove PBC'),
     'rmsd':       (rmsd.main, 'RMSD'),
+    'settype':    (settype.main, 'Change the types of xyz file'),
     'simpparam':  (simpparam.main, 'simplify parameter'),
+    'sumxyz':     (sumxyz.main, 'summary xyz file\'s info'),
+    'sumparam':   (sumparam.main, 'choose params from tinker parameter file'),
+    'xyz2gjf':    (xyz2gjf.main, 'XYZ to GJF format'),
+    'xyz2gro':    (xyz2gro.main, 'XYZ to GRO format'),
     }
 
 def help():
