@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # $Id$
 
 __revision__ = '$Rev$'
@@ -7,14 +6,14 @@ def out2ene(ifname):
     ifile = file(ifname)
 
     state = False
-    
+
     lines = ''
-    
+
     for line in ifile:
         if not state:
             if line.startswith(' 1\\1\\'):
                 state = True
-                lines += line[1:-1] 
+                lines += line[1:-1]
                 if lines.endswith('\\\\@'):
                     break
         else:
@@ -46,5 +45,5 @@ def main():
 
 if __name__ == '__main__':
     main()
-        
+
 
