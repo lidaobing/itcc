@@ -17,11 +17,11 @@ tinker
 Help
 ====
 
-parmeval.py -- evaluate a parameter
+itcc parmeval -- evaluate a parameter
 
 Usage:
 
-parmeval.py scandata.dat param > result.csv
+itcc parmeval scandata.dat param > result.csv
 
 a scandata.dat example is
 
@@ -41,6 +41,3 @@ the second column is the QM energy
 the third column(optional) is the weight, default value is 1.0
 
 you can use Excel like program to open the result.csv
-
-
-
