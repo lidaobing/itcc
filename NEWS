@@ -1,43 +1,40 @@
--*- outline -*-
+itcc NEWS -- history of user-visible changes.
 
-* 0.2.6-svn
+Version 0.2.6-svn
 
-** src/Molecule/_rmsd.cpp
+* add src/Tools/tor2freeene.py
+* src/Molecule/_rmsd.cpp
    a better rmsd algorithm(consider transition and rotation)
-** src/Torsionfit/getscandata.py
+* src/Torsionfit/getscandata.py
    rework   
 
-* 0.2.6
-** add 'itcc printefit'
+Version 0.2.6
 
-* 0.2.4
-  2005-02-02
+* add 'itcc printefit'
+
+Version 0.2.4
    
-** parmeval.py: rewrite, become a script
-** Torsionfit: now the scandata.dat's third column is optional(default is 1.0)
-** add README
+* parmeval.py: rewrite, become a script
+* Torsionfit: now the scandata.dat's third column is optional(default is 1.0)
+* add README
 
-* 0.2.3
-  Sat Jan 29 13:30:46 CST 2005
+Version 0.2.3
 
-** fix a bug in readidx
-** fix a bug in `make sdist'
+* fix a bug in readidx
+* fix a bug in `make sdist'
 
-* 0.2.2
-  Tue Jan 11 16:58:36 CST 2005
+Version 0.2.2
 
-  A new version parmfit
+* A new version parmfit
 
-* 0.2.1
-  Sat Jan  1 02:32:14 CST 2005
+Version 0.2.1
 
-  merge torsionfit as itcc.Torsionfit and del duplicate module
+* merge torsionfit as itcc.Torsionfit and del duplicate module
 
-* 0.2
-  Tue Dec 28 03:26:12 CST 2004
+Version 0.2
 
-  Can do something version
+* Can do something version
 
+Version 0.1	
 
-* 0.1	
-  First can-run version.
+* First can-run version.
