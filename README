@@ -11,7 +11,8 @@ python2.4-dev
 python2.4-numeric
 python2.4-numeric-ext
 python2.4-scientific
-tinker
+lapack-dev
+tinker(optional)
 
 ====
 Help
