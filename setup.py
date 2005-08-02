@@ -20,7 +20,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
 
 
 setup(name="itcc",
-      version="0.3-svn",
+      version="0.2.7",
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',

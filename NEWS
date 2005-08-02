@@ -1,7 +1,8 @@
 itcc NEWS -- history of user-visible changes.
 
-Version 0.2.6-svn
+Version 0.2.7
 
+* use itcc to control all scripts
 * add src/Tools/tor2freeene.py
 * src/Molecule/_rmsd.cpp
    a better rmsd algorithm(consider transition and rotation)
