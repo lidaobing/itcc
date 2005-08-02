@@ -1,8 +1,10 @@
 # $Id$
 from distutils.core import setup, Extension
+import src
 
 __revision__ = '$Rev$'
 
+version = src.__version__
 scripts = ['src/scripts/itcc']
 
 ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
@@ -20,7 +22,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["src/Tools/ctools.c"]),
 
 
 setup(name="itcc",
-      version="0.2.7",
+      version=version,
       author='Li Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'src',
@@ -36,6 +38,6 @@ setup(name="itcc",
                 'itcc.Tools',
                 'itcc.Torsionfit'],
       ext_modules = ext_modules,
-      scripts=scripts
+      scripts=scripts,
       )
 
