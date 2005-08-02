@@ -10,6 +10,7 @@ from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
 from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy
+from itcc.Tools import tor2freeene
 
 __revision__ = '$Rev$'
 
@@ -33,6 +34,7 @@ subscript = {
     'simpparam':  (simpparam.main, 'simplify parameter'),
     'sumxyz':     (sumxyz.main, 'summary xyz file\'s info'),
     'sumparam':   (sumparam.main, 'choose params from tinker parameter file'),
+    'tor2freeene':(tor2freeene.main, 'torsion to free energy'),
     'xyz2gjf':    (xyz2gjf.main, 'XYZ to GJF format'),
     'xyz2gro':    (xyz2gro.main, 'XYZ to GRO format'),
     }
@@ -46,7 +48,7 @@ def help():
     keys = subscript.items()
     keys.sort()
     for key in keys:
-        print '  %s %-10s  %s' % (basename, key[0], key[1][1])
+        print '  %s %-11s  %s' % (basename, key[0], key[1][1])
 
 def main():
     if len(sys.argv) == 1:
