@@ -23,10 +23,14 @@ def removepbc(xyzfname, pbc):
 
 def main():
     import sys
-    if len(sys.argv) != 5:
-        print >> sys.stderr, 'Usage: %s xyzfname pbc.x pbc.y pbc.z' % sys.argv[0]
+    if len(sys.argv) not in (3, 5):
+        print >> sys.stderr, 'Usage: %s xyzfname pbc.x' % sys.argv[0]
+        print >> sys.stderr, '       %s xyzfname pbc.x pbc.y pbc.z' % sys.argv[0]
         sys.exit(1)
-    removepbc(sys.argv[1], [float(x) for x in sys.argv[2:5]])
+    if len(sys.argv) == 3:
+        removepbc(sys.argv[1], [float(sys.argv[2])] * 3)
+    else:
+        removepbc(sys.argv[1], [float(x) for x in sys.argv[2:5]])
 
 if __name__ == '__main__':
     main()
