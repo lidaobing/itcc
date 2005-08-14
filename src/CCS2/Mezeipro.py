@@ -2,9 +2,6 @@
 """extend Mezei's method to protein.
 """
 import math
-import sys
-import operator
-import Numeric
 from Scientific import Geometry
 from itcc.CCS2 import pyramid, sidechain
 from itcc.CCS2 import config

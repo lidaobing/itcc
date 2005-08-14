@@ -14,9 +14,9 @@ def datafreq(data, min, max, num):
     step = float(max - min)/num
 
     for x in data:
-        type = int((x - min)/step)
-        if 0 <= type < num:
-            result[type] += 1
+        type_ = int((x - min)/step)
+        if 0 <= type_ < num:
+            result[type_] += 1
 
     return result
 

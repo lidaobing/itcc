@@ -2,8 +2,6 @@
 from itcc.Tools.tools import length
 from itertools import chain
 
-
-
 __all__ = ['R6', 'R6_in_vivo']
 __revision__ = '$Rev$'
 

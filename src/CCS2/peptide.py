@@ -24,7 +24,6 @@ class Peptide(base.Base):
             type1 = types[idx]
             type2 = types[idx+1]
             if ispair(type1, type2):
-                newloopatoms
                 newloopatoms.append((loopatoms[idx], loopatoms[idx+1]))
                 idx += 2
             else:

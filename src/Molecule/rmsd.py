@@ -1,6 +1,5 @@
 # $Id$
 
-import math
 from itcc.Molecule import _rmsd
 
 __revision__ = '$Rev$'

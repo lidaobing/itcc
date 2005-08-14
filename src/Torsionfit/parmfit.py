@@ -111,7 +111,6 @@ def parmfit(datfname, idxfname, param):
 
 def printefit():
     '''Only print E_fit'''
-    import sys
     import csv
     if len(sys.argv) != 4:
         import os.path
@@ -124,9 +123,6 @@ def printefit():
     fnames, enes, weights = tools.readdat(datfname)
     idxs, folds = readidx(idxfname)
     params = getparams(idxs, param)
-    E_mms = []
-    E_tors = []
-    E_fits = []
     writer = csv.writer(sys.stdout)
     writer.writerow(['Filename', 'weight', 'E_qm', 'E_mm', 'E_tor', 'E_fit'])
     for fname, E_qm, weight in zip(fnames, enes, weights):
@@ -138,7 +134,6 @@ def printefit():
         writer.writerow([fname, weight, E_qm, E_mm, E_tor, E_fit])
 
 def main():
-    import sys
     if len(sys.argv) != 4:
         import os.path
         print >> sys.stderr, 'Usage: %s datfname idxfname param' % \

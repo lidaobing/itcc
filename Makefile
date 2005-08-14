@@ -1,6 +1,6 @@
 .PHONY: TAGS test
 
-PYTHON?=python2.4
+PYTHON?=python
 
 all:
 	$(PYTHON) setup.py build
