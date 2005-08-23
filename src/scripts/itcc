@@ -10,7 +10,7 @@ from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
 from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy
-from itcc.Tools import tor2freeene
+from itcc.Tools import tor2freeene, scalexyz
 
 __revision__ = '$Rev$'
 
@@ -30,6 +30,7 @@ subscript = {
     'printefit':  (parmfit.printefit, 'print efit'),
     'removepbc':  (removepbc.main, 'remove PBC'),
     'rmsd':       (rmsd.main, 'RMSD'),
+    'scalexyz':   (scalexyz.main, 'scale xyz'),
     'settype':    (settype.main, 'Change the types of xyz file'),
     'simpparam':  (simpparam.main, 'simplify parameter'),
     'sumxyz':     (sumxyz.main, 'summary xyz file\'s info'),
