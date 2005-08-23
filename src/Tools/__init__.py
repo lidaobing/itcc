@@ -1,1 +1,3 @@
-from tools import *
+# $Id$
+
+__revision__ = '$Rev$'
