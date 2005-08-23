@@ -11,7 +11,7 @@ python-dev
 python-numeric
 python-numeric-ext
 python-scientific
-lapack-dev
+lapack3-dev
 tinker(optional)
 
 ====
