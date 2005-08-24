@@ -12,20 +12,20 @@ def kcalpermol2hatree(kcalpermol):
 
 
 def out2arch(ifname):
-    
+
     TAILLINENUMBER = 100
-    
+
     ifile = os.popen('tail -n %i %s' % (TAILLINENUMBER, ifname))
 
     state = False
-    
+
     lines = ''
-    
+
     for line in ifile:
         if not state:
             if line.startswith(' 1\\1\\'):
                 state = True
-                lines += line[1:-1] 
+                lines += line[1:-1]
                 if lines.endswith('\\\\@'):
                     break
         else:
@@ -40,7 +40,7 @@ def out2arch(ifname):
 
 def out2ene(ifname):
     lines = out2arch(ifname)
-    
+
     for x in lines:
         if x.startswith('HF='):
             x = x[3:]
@@ -50,7 +50,7 @@ def out2ene(ifname):
 
 def findstrline(outfname, keystr):
     result = []
-    
+
     cmdline = 'grep -n -- "%s" %s' % (keystr, outfname)
     ifile = os.popen(cmdline)
     for line in ifile:
@@ -61,7 +61,7 @@ def findstrline(outfname, keystr):
 
 def out2mol(outfname):
     result = []
-    
+
     line1 = findstrline(outfname, "Optimized Parameters")
     line2 = findstrline(outfname, "Enter /home/user/g../l202\.exe")
     line3 = findstrline(outfname,
@@ -69,9 +69,9 @@ def out2mol(outfname):
     i2 = 0
     i3 = 0
     for i1, x in enumerate(line1):
-        
+
         mol = molecule.Molecule()
-        
+
         while line2[i2] < x:
             i2 += 1
         y = line2[i2-1]
@@ -82,7 +82,7 @@ def out2mol(outfname):
         cmdline = 'head -n %i %s | tail -n %i' % \
                   (z2-1, outfname, z2-z1-1)
         ifile = os.popen(cmdline)
-        
+
         for line in ifile:
             words = line.split()
             atm = atom.Atom(int(words[1]))
@@ -90,11 +90,7 @@ def out2mol(outfname):
             atm.y = float(words[4])
             atm.z = float(words[5])
             mol.atoms.append(atm)
-        
+
         ifile.close()
         result.append(mol)
     return result
-
-
-
-
