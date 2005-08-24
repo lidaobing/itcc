@@ -23,7 +23,7 @@ def stdev(list):
 
 def init():
     global limit
-    
+
     param = [0.254, -2.794,  2.652, 1.318, -4.287, -0.119, -1.803, -1.856]
 
     limit = [[x-1, x+1] for x in param]
@@ -62,7 +62,7 @@ def calene(fname):
             x = x.split()
             result = float(x[-1])
             return result
-    
+
 def eval_(param):
     wrtparam(param)
     refdata = [0.952, 0.000, 0.901, 0.649, 1.013, 0.240, \
@@ -98,14 +98,14 @@ def crossover(list, P = 0.5):
         list[b] = list[b][:point] + list[a][point:]
         list[a] = temp
 
-    
+
 
 
 def findgood(list, mark):
     global bestmark
     global best
     global bestcycle
-    
+
     if cycle == 1 or min(mark) < bestmark:
         bestmark = min(mark)
         best = list[mark.index(bestmark)][:]
@@ -115,11 +115,11 @@ def findgood(list, mark):
         bestcycle = bestcycle + 1
         return False
 
-    
+
 def select(list, mark, P = 0.2):
     n = len(list)
     keep = int(n * (1-P))
-    
+
     markb = mark[:]
     markb.sort()
     threshold = markb[keep]
@@ -135,7 +135,7 @@ def newrandom(list, limit):
     n = len(list[0]) * 5 - len(list)
     for i in range(n):
         list.append([random.uniform(x[0], x[1]) for x in limit])
-    
+
 
 if __name__ == '__main__':
     list = init()
@@ -145,7 +145,7 @@ if __name__ == '__main__':
         mark = []
         for x in list:
             mark.append(eval_(x))
-            
+
         if findgood(list, mark):
             tmpstr = '[' + ', '.join(['%.3f' % x for x in best]) + ']'
             log.write('Cycle %i: %s %f\n' % (cycle, tmpstr, bestmark))
@@ -159,5 +159,5 @@ if __name__ == '__main__':
         mutation(list, limit)
         crossover(list)
         newrandom(list, limit)
-        
+
     log.close()
