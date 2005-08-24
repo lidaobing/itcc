@@ -9,7 +9,7 @@ def genPNclass(llimit, ulimit):
         def __init__(self, data):
             gap = ulimit - llimit
             self.data = (data - llimit) % gap + llimit
-        
+
         def __float__(self):
             return self.data
 
@@ -21,7 +21,7 @@ def genPNclass(llimit, ulimit):
 
         def __add__(self, other):
             return self.__class__(self.data + float(other))
-        
+
         def __sub__(self, other):
             return self.__class__(self.data - float(other))
 
@@ -32,4 +32,4 @@ def genPNclass(llimit, ulimit):
             return abs(self.data)
     return Periodnumber
 
-        
+
