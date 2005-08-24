@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # $Id$
 #遗传算法
 
@@ -21,13 +21,13 @@ class GA:
         self.n = len(self.chromosomes)
         self.keep = int(self.n * (1 - self.P_select))
         self.length = len(self.chromosomes[0])
-    
+
     def mainloop(self):
         self.init()
         for i in range(maxcycle):
             pass
-            
-        
+
+
 
     def eval(self):
         self.mark = [self.feval(x) for x in self.chromosomes]
@@ -35,7 +35,7 @@ class GA:
     def select(self):
         n = len(self.chromosomes)
         keep = int(n * (1-self.P_select))
-        
+
         markb = self.mark[:]
         markb.sort()
         threshold = markb[keep]
@@ -82,7 +82,7 @@ if __name__ == '__main__':
     ga.eval()
     ga.select()
     print '\n'.join([str(x) for x in ga.chromosomes]) + '\n'
-    
+
     ga.mutation()
     print '\n'.join([str(x) for x in ga.chromosomes]) + '\n'
 
