@@ -10,13 +10,14 @@ from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
 from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy
-from itcc.Tools import tor2freeene, scalexyz
+from itcc.Tools import tor2freeene, scalexyz, columnmean
 
 __revision__ = '$Rev$'
 
 subscript = {
     'catordiff':  (catordiff.main, 'cyclic alkane torsion diffrent'),
     'cmpxyztop':  (cmpxyztop.main, 'Compare topology of two xyz files'),
+    'columnmean': (columnmean.main, 'mean for column'),
     'confsearch': (confsearch.main, 'Conformational search'),
     'constrain':  (constrain.main, 'generate a constrain tinker.key'),
     'dmddummy':   (dmddummy.main, 'dmddummy'),
