@@ -2,7 +2,12 @@
 
 __revision__ = '$Rev$'
 
-def columnmean(ifile):
+def columnmean(ifile, input_header, output_header):
+    if input_header:
+        header = ifile.readline()
+        if output_header:
+            print header.strip()
+
     line = ifile.readline()
     totals = [float(word) for word in line.split()]
     linecount = 1
@@ -18,15 +23,27 @@ def columnmean(ifile):
 
 def main():
     import sys
-    if len(sys.argv) != 2:
-        sys.stderr.write('Usage: %s {ifname|-}\n' % sys.argv[0])
-        sys.exit(1)
+    from optparse import OptionParser
 
-    if sys.argv[1] == '-':
+    usage = 'usage: %prog [-h|options] {ifname|-}'
+    parser = OptionParser(usage)
+    parser.add_option('-i', '--input-header',
+                      action='store_true', dest='input_header',
+                      help='input file has header')
+    parser.add_option('-o', '--output-header',
+                      action='store_true', dest='output_header',
+                      help='output header')
+    (options, args) = parser.parse_args()
+
+    if len(args) != 1:
+        parser.error("incorrect number of arguments")
+
+    if args[0] == '-':
         ifile = sys.stdin
     else:
-        ifile = file(sys.argv[1])
-    columnmean(ifile)
+        ifile = file(args[0])
+
+    columnmean(ifile, options.input_header, options.output_header)
 
 if __name__ == '__main__':
     main()
