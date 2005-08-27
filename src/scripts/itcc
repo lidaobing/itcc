@@ -10,7 +10,7 @@ from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
 from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy
-from itcc.Tools import tor2freeene, scalexyz, columnmean
+from itcc.Tools import tor2freeene, scalexyz, columnmean, mtxyzstat
 
 __revision__ = '$Rev$'
 
@@ -23,6 +23,7 @@ subscript = {
     'dmddummy':   (dmddummy.main, 'dmddummy'),
     'gjf2xyz':    (gjf2xyz.main, 'convert gjf to xyz'),
     'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
+    'mtxyzstat':  (mtxyzstat.main, 'multi tinker xyz stat'),
     'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
     'out2arch':   (out2arch.main, 'Gaussian out to arch file'),
     'out2ene':    (out2ene.main, 'Gaussian out to ene'),
