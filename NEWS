@@ -5,6 +5,7 @@ Version 0.2.7+svn
 * add 'itcc scalexyz'
 * add 'itcc columnmean'
 * add 'itcc mtxyzstat'
+* [itcc.Tools.tools] add 'any', 'all'.
 
 Version 0.2.7
 

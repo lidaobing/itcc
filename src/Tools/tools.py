@@ -2,19 +2,18 @@
 from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector
 from itcc.Tools import ctools
-from itcc.Tools import cpptools
 
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
-           'weightedmean', 'weightedsd', 'datafreq']
+           'weightedmean', 'weightedsd', 'datafreq', 'any', 'all']
 
-def datafreq(data, min, max, num):
+def datafreq(data, min_, max_, num):
     result = [0] * num
-    step = float(max - min)/num
+    step = float(max_ - min_)/num
 
     for x in data:
-        type_ = int((x - min)/step)
+        type_ = int((x - min_)/step)
         if 0 <= type_ < num:
             result[type_] += 1
 
@@ -46,8 +45,8 @@ def imptor(a, b, c, d):
     ab = b - a
     ac = c - a
     abc = ab.cross(ac)
-    angle = ad.angle(abc)
-    return pi - angle
+    angle_ = ad.angle(abc)
+    return pi - angle_
 
 def combinecombine(cmbs):
     if not cmbs:
@@ -128,6 +127,18 @@ def weightedsd(datas, weights):
                 for data, weight in zip(datas, weights)])
     totalweight = sum(weights)
     return sqrt(sum_/totalweight)
+
+def any(iterable):
+    for element in iterable:
+        if element:
+            return True
+    return False
+
+def all(iterable):
+    for element in iterable:
+        if not element:
+            return False
+    return True
 
 if __name__ == '__main__':
     a_ = Vector(0, 0, 0)
