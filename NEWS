@@ -6,6 +6,7 @@ Version 0.2.7+svn
 * add 'itcc columnmean'
 * add 'itcc mtxyzstat'
 * add 'itcc mol2top'
+* add 'itcc onecolumn'
 * [itcc.Tools.tools] add 'any', 'all'.
 
 Version 0.2.7

@@ -1,3 +1,7 @@
+# $Id$
+
+__revision__ = '$Rev$'
+
 def onecolumn(ifname):
     for line in file(ifname):
         for word in line.split():

@@ -8,9 +8,9 @@ from itcc.Molecule import rmsd, removepbc
 from itcc.CCS2 import catordiff, confsearch
 from itcc.Torsionfit import parmfit, parmeval
 from itcc.Tinker import simpparam, constrain, optimizes
-from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene
-from itcc.Tools import settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy
-from itcc.Tools import tor2freeene, scalexyz, columnmean, mtxyzstat, mol2top
+from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene, \
+     settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy, \
+     tor2freeene, scalexyz, columnmean, mtxyzstat, mol2top, onecolumn
 
 __revision__ = '$Rev$'
 
@@ -25,6 +25,7 @@ subscript = {
     'mol2top':    (mol2top.main, 'mol to top'),
     'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
     'mtxyzstat':  (mtxyzstat.main, 'multi tinker xyz stat'),
+    'onecolumn':  (onecolumn.main, 'change multi columns file to one colum'),
     'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
     'out2arch':   (out2arch.main, 'Gaussian out to arch file'),
     'out2ene':    (out2ene.main, 'Gaussian out to ene'),
