@@ -1,4 +1,5 @@
 # $Id$
+import random
 from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector
 from itcc.Tools import ctools
@@ -6,7 +7,8 @@ from itcc.Tools import ctools
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
-           'weightedmean', 'weightedsd', 'datafreq', 'any', 'all']
+           'weightedmean', 'weightedsd', 'datafreq', 'any', 'all',
+           'random_vector']
 
 def datafreq(data, min_, max_, num):
     result = [0] * num
@@ -139,6 +141,14 @@ def all(iterable):
         if not element:
             return False
     return True
+
+def random_vector(length_=1.0):
+    z = random.uniform(-length_, length_)
+    s = sqrt(length_*length_ - z*z)
+    theta = random.uniform(0.0, pi+pi)
+    x = s * cos(theta)
+    y = s * sin(theta)
+    return (x, y, z)
 
 if __name__ == '__main__':
     a_ = Vector(0, 0, 0)
