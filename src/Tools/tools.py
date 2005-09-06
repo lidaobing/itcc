@@ -2,13 +2,14 @@
 import random
 from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector
+from Scientific.Statistics import mean, standardDeviation as stdev
 from itcc.Tools import ctools
 
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
            'weightedmean', 'weightedsd', 'datafreq', 'any', 'all',
-           'random_vector']
+           'random_vector', 'mean', 'stdev']
 
 def datafreq(data, min_, max_, num):
     result = [0] * num
