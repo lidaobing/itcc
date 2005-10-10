@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import read, write, molecule
+from itcc.Molecule import write, molecule, mtxyz
 
 def nearestmirror(coord, origin, pbc):
     result = [None] * 3
@@ -14,12 +14,12 @@ def nearestmirror(coord, origin, pbc):
     return molecule.CoordType(result)
 
 def removepbc(xyzfname, pbc):
-    mol = read.readxyz(file(xyzfname))
-    coords = mol.coords
-    origin = coords[0]
-    for i in range(1, len(coords)):
-        coords[i] = nearestmirror(coords[i], origin, pbc)
-    write.writexyz(mol)
+    for mol in mtxyz.Mtxyz(file(xyzfname)):
+        coords = mol.coords
+        origin = coords[0]
+        for i in range(1, len(coords)):
+            coords[i] = nearestmirror(coords[i], origin, pbc)
+        write.writexyz(mol)
 
 def main():
     import sys

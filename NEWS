@@ -8,6 +8,7 @@ Version 0.2.7+svn
 * add 'itcc mol2top'
 * add 'itcc onecolumn'
 * [itcc.Tools.tools] add 'any', 'all'.
+* add 'itcc removepbc'
 
 Version 0.2.7
 
