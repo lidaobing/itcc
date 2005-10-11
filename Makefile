@@ -9,6 +9,7 @@ debug: clean
 	$(PYTHON) setup.py install
 install:
 	$(PYTHON) setup.py install --root $(DESTDIR)/
+dist: sdist
 sdist:
 	$(PYTHON) setup.py sdist
 bdist:
