@@ -1,6 +1,6 @@
 itcc NEWS -- history of user-visible changes.
 
-Version 0.2.7+svn
+Version 0.2.8
 
 * add 'itcc scalexyz'
 * add 'itcc columnmean'
