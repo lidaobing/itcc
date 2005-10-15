@@ -10,13 +10,17 @@ def parseframe(frame_str):
         return None
     frame = []
     for range_ in frame_str.split(','):
-        nodes = [int(x)-1 for x in range_.split('-')]
-        assert len(nodes) in (1,2)
-        if len(nodes) == 1:
-            frame.append(nodes[0])
+        step = 1
+        if '/' in range_:
+            range_, step = tuple(range_.split('-'))
+            step = int(step)
+        if '-' in range_:
+            begin, end = tuple([int(x) - 1 for x in range_.split('-')])
         else:
-            assert nodes[0] < nodes[1]
-            frame.extend(range(nodes[0], nodes[1]+1))
+            begin = int(range_) - 1
+            end = begin+1
+
+        frame.extend(range(begin, end, step))
     frame.sort()
     return tuple(frame)
 
@@ -42,7 +46,7 @@ def main():
     usage = "usage: %prog [-h|options] dmddatfname molfname"
     parser = OptionParser(usage)
     parser.add_option("-f", "--frame", dest='frame_str',
-                      default=None, help="select frame, for example '-f 2-4,7-9'")
+                      default=None, help="select frame, for example '-f 2-40/3,71-91/2'")
     (options, args) = parser.parse_args()
 
     frame = parseframe(options.frame_str)
