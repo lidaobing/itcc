@@ -12,10 +12,11 @@ def parseframe(frame_str):
     for range_ in frame_str.split(','):
         step = 1
         if '/' in range_:
-            range_, step = tuple(range_.split('-'))
+            range_, step = tuple(range_.split('/'))
             step = int(step)
         if '-' in range_:
             begin, end = tuple([int(x) - 1 for x in range_.split('-')])
+	    end += 1
         else:
             begin = int(range_) - 1
             end = begin+1
@@ -45,8 +46,10 @@ def main():
 
     usage = "usage: %prog [-h|options] dmddatfname molfname"
     parser = OptionParser(usage)
-    parser.add_option("-f", "--frame", dest='frame_str',
-                      default=None, help="select frame, for example '-f 2-40/3,71-91/2'")
+    parser.add_option(
+    	"-f", "--frame", dest='frame_str',
+	default=None, 
+	help="select frame, format is 'begin[-end[/step]](,begin[-end[/step]])*', for example '-f 2-40/3,71-91/2'")
     (options, args) = parser.parse_args()
 
     frame = parseframe(options.frame_str)
