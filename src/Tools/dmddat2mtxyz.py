@@ -17,6 +17,7 @@ def parseframe(frame_str):
         else:
             assert nodes[0] < nodes[1]
             frame.extend(range(nodes[0], nodes[1]+1))
+    frame.sort()
     return tuple(frame)
 
 def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
@@ -26,13 +27,14 @@ def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
     if select_frames is None:
         select_frames = range(aDmddat.framenum)
 
-    frames = tuple(aDmddat)
-    for select_frame in select_frames:
-        frame = frames[select_frame]
-        assert len(frame) == len(mol)
-        for i in range(len(frame)):
-            mol.coords[i] = molecule.CoordType(frame[i])
-        write.writexyz(mol, comment = 'frame: %i' % (select_frame+1))
+    for idx, frame in enumerate(aDmddat):
+        if idx in select_frames:
+            assert len(frame) == len(mol)
+            for i in range(len(frame)):
+                mol.coords[i] = molecule.CoordType(frame[i])
+            write.writexyz(mol, comment = 'frame: %i' % (idx+1))
+            if idx == max(select_frames):
+                break
 
 def main():
     from optparse import OptionParser

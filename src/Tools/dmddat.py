@@ -7,7 +7,7 @@ import struct
 class Dmddat:
     def __init__(self, ifile):
         self.ifile = ifile
-        header_fmt = "IIIIIIIIIIIIIIII"
+        header_fmt = "=LLLLLLLLLLLLLLLL"
         assert struct.calcsize(header_fmt) == 64
         header_str = ifile.read(struct.calcsize(header_fmt))
         header = struct.unpack(header_fmt, header_str)
@@ -23,9 +23,10 @@ class Dmddat:
 
         result = []
         for i in range(self.beadnum):
-            coord_fmt = "III"
+            coord_fmt = "=lll"
             assert struct.calcsize(coord_fmt) == 12
-            coord = struct.unpack(coord_fmt, self.ifile.read(struct.calcsize(coord_fmt)))
+            coord_str = self.ifile.read(struct.calcsize(coord_fmt))
+            coord = struct.unpack(coord_fmt, coord_str)
             result.append(tuple([float(x)/1000.0 for x in coord]))
         return tuple(result)
 
