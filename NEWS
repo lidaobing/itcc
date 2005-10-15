@@ -1,5 +1,9 @@
 itcc NEWS -- history of user-visible changes.
 
+Version 0.2.9
+
+* new 'itcc dmddat2mtxyz'
+
 Version 0.2.8
 
 * add 'itcc scalexyz'
