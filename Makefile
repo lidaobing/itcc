@@ -11,7 +11,7 @@ install:
 	$(PYTHON) setup.py install --root $(DESTDIR)/
 dist: sdist
 sdist:
-	$(PYTHON) setup.py sdist
+	$(PYTHON) setup.py sdist -f
 bdist:
 	$(PYTHON) setup.py bdist
 clean:
