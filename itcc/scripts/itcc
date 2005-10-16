@@ -11,7 +11,7 @@ from itcc.Tinker import simpparam, constrain, optimizes
 from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene, \
      settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy, \
      tor2freeene, scalexyz, columnmean, mtxyzstat, mol2top, onecolumn, \
-     dmddat2mtxyz
+     dmddat2mtxyz, dmddat2xtc
 
 __revision__ = '$Rev$'
 
@@ -23,6 +23,7 @@ subscript = {
     'constrain':  (constrain.main, 'generate a constrain tinker.key'),
     'dmddummy':   (dmddummy.main, 'dmddummy'),
     'dmddat2mtxyz':(dmddat2mtxyz.main, 'convert dmddat file to mtxyz'),
+    'dmddat2xtc': (dmddat2xtc.main, 'convert dmddat file to xtc'),
     'gjf2xyz':    (gjf2xyz.main, 'convert gjf to xyz'),
     'mol2top':    (mol2top.main, 'mol to top'),
     'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),

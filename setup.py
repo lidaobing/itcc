@@ -18,6 +18,10 @@ ext_modules=[Extension("itcc.Tools.ctools", ["itcc/Tools/ctools.c"]),
              Extension('itcc.Molecule._rmsd',
                        ['itcc/Molecule/_rmsd.cpp'],
                        libraries=['lapack']),
+             Extension('itcc.Tools._gmx_xtcio',
+                       ['itcc/Tools/_gmx_xtcio.c'],
+                       include_dirs=["/usr/include/gromacs"],
+                       extra_link_args=['/usr/lib/libgmx.a'])
              ]
 
 
