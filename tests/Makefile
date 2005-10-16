@@ -1,4 +1,4 @@
-PYTHON ?= python2.3
+PYTHON ?= python
 
 all: check
 
