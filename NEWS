@@ -4,6 +4,7 @@ Version 0.2.9
 
 * new 'itcc dmddat2mtxyz'
 * fix bug: 'make dist' maybe miss new file(s).
+* move src/ to itcc/ (it easy to write testsuite without install.)
 
 Version 0.2.8
 
