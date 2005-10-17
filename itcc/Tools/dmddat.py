@@ -22,7 +22,7 @@ class Dmddat:
         self.nextframe += 1
 
         result = []
-        for i in range(self.beadnum):
+        for _ in range(self.beadnum):
             coord_fmt = "=lll"
             assert struct.calcsize(coord_fmt) == 12
             coord_str = self.ifile.read(struct.calcsize(coord_fmt))
