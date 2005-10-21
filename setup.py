@@ -27,7 +27,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["itcc/Tools/ctools.c"]),
 
 setup(name="itcc",
       version=version,
-      author='Li Daobing',
+      author='LI Daobing',
       author_email='lidaobing@gmail.com',
       package_dir={'itcc':'itcc',
                    'itcc.CCS2':'itcc/CCS2',

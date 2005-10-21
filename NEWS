@@ -6,6 +6,7 @@ Version 0.2.9
 * fix bug: 'make dist' maybe miss new file(s).
 * move src/ to itcc/ (it easy to write testsuite without install.)
 * new 'itcc dmddat2xtc'
+* itcc now is much faster at startup
 
 Version 0.2.8
 

@@ -1,51 +1,45 @@
 #!/usr/bin/env python
 # $Id$
 
+__revision__ = '$Rev$'
+
 import sys
 import os.path
 import itcc
-from itcc.Molecule import rmsd, removepbc
-from itcc.CCS2 import catordiff, confsearch
-from itcc.Torsionfit import parmfit, parmeval
-from itcc.Tinker import simpparam, constrain, optimizes
-from itcc.Tools import mtxyzrg, cmpxyztop, gjf2xyz, out2arch, out2ene, \
-     settype, sumxyz, xyz2gjf, xyz2gro, sumparam, dmddummy, \
-     tor2freeene, scalexyz, columnmean, mtxyzstat, mol2top, onecolumn, \
-     dmddat2mtxyz, dmddat2xtc
-
-__revision__ = '$Rev$'
 
 subscript = {
-    'catordiff':  (catordiff.main, 'cyclic alkane torsion diffrent'),
-    'cmpxyztop':  (cmpxyztop.main, 'Compare topology of two xyz files'),
-    'columnmean': (columnmean.main, 'mean for column'),
-    'confsearch': (confsearch.main, 'Conformational search'),
-    'constrain':  (constrain.main, 'generate a constrain tinker.key'),
-    'dmddummy':   (dmddummy.main, 'dmddummy'),
-    'dmddat2mtxyz':(dmddat2mtxyz.main, 'convert dmddat file to mtxyz'),
-    'dmddat2xtc': (dmddat2xtc.main, 'convert dmddat file to xtc'),
-    'gjf2xyz':    (gjf2xyz.main, 'convert gjf to xyz'),
-    'mol2top':    (mol2top.main, 'mol to top'),
-    'mtxyzrg':    (mtxyzrg.main, 'multi tinker xyz file\'s Rg'),
-    'mtxyzstat':  (mtxyzstat.main, 'multi tinker xyz stat'),
-    'onecolumn':  (onecolumn.main, 'change multi columns file to one colum'),
-    'optimizes':  (optimizes.main, 'optimizes a series of xyz files(broken)'),
-    'out2arch':   (out2arch.main, 'Gaussian out to arch file'),
-    'out2ene':    (out2ene.main, 'Gaussian out to ene'),
-    'parmeval':   (parmeval.main, 'evaluate parameter files'),
-    'parmfit':    (parmfit.main, 'parm fit'),
-    'printefit':  (parmfit.printefit, 'print efit'),
-    'removepbc':  (removepbc.main, 'remove PBC'),
-    'rmsd':       (rmsd.main, 'RMSD'),
-    'scalexyz':   (scalexyz.main, 'scale xyz'),
-    'settype':    (settype.main, 'Change the types of xyz file'),
-    'simpparam':  (simpparam.main, 'simplify parameter'),
-    'sumxyz':     (sumxyz.main, 'summary xyz file\'s info'),
-    'sumparam':   (sumparam.main, 'choose params from tinker parameter file'),
-    'tor2freeene':(tor2freeene.main, 'torsion to free energy'),
-    'xyz2gjf':    (xyz2gjf.main, 'XYZ to GJF format'),
-    'xyz2gro':    (xyz2gro.main, 'XYZ to GRO format'),
+    'catordiff':  ('CCS2.catordiff', 'cyclic alkane torsion diffrent'),
+    'cmpxyztop':  ('Tools.cmpxyztop', 'Compare topology of two xyz files'),
+    'columnmean': ('Tools.columnmean', 'mean for column'),
+    'confsearch': ('CCS2.confsearch', 'Conformational search'),
+    'constrain':  ('Tinker.constrain', 'generate a constrain tinker.key'),
+    'dmddummy':   ('Tools.dmddummy', 'dmddummy'),
+    'dmddat2mtxyz':('Tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
+    'dmddat2xtc': ('Tools.dmddat2xtc', 'convert dmddat file to xtc'),
+    'gjf2xyz':    ('Tools.gjf2xyz', 'convert gjf to xyz'),
+    'mol2top':    ('Tools.mol2top', 'mol to top'),
+    'mtxyzrg':    ('Tools.mtxyzrg', 'multi tinker xyz file\'s Rg'),
+    'mtxyzstat':  ('Tools.mtxyzstat', 'multi tinker xyz stat'),
+    'onecolumn':  ('Tools.onecolumn', 'change multi columns file to one colum'),
+    'optimizes':  ('Tinker.optimizes', 'optimizes a series of xyz files(broken)'),
+    'out2arch':   ('Tools.out2arch', 'Gaussian out to arch file'),
+    'out2ene':    ('Tools.out2ene', 'Gaussian out to ene'),
+    'parmeval':   ('Torsionfit.parmeval', 'evaluate parameter files'),
+    'parmfit':    ('Torsionfit.parmfit', 'parm fit'),
+    'printefit':  ('Torsionfit.printefit', 'print efit'),
+    'removepbc':  ('Molecule.removepbc', 'remove PBC'),
+    'rmsd':       ('Molecule.rmsd', 'RMSD'),
+    'scalexyz':   ('Tools.scalexyz', 'scale xyz'),
+    'settype':    ('Tools.settype', 'Change the types of xyz file'),
+    'simpparam':  ('Tinker.simpparam', 'simplify parameter'),
+    'sumxyz':     ('Tools.sumxyz', 'summary xyz file\'s info'),
+    'sumparam':   ('Tools.sumparam', 'choose params from tinker parameter file'),
+    'tor2freeene':('Tools.tor2freeene', 'torsion to free energy'),
+    'xyz2gjf':    ('Tools.xyz2gjf', 'XYZ to GJF format'),
+    'xyz2gro':    ('Tools.xyz2gro', 'XYZ to GRO format'),
     }
+
+path_base = '/usr/lib/python2.3/site-packages/itcc'
 
 def help():
     basename = os.path.basename(sys.argv[0])
@@ -67,7 +61,10 @@ def main():
 
     if key in subscript:
         del sys.argv[0]
-        subscript[key][0]()
+        __import__('itcc.' + subscript[key][0])
+        exec('itcc.' + subscript[key][0] + '.main()')
+#         'itcc.Tools.'spam.ham', globals(), locals(), ['eggs']')
+#         execfile(os.path.join(path_base, subscript[key][0]))
     else:
         help()
         sys.exit(1)
