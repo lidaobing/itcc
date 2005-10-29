@@ -59,14 +59,17 @@ def main():
 
     key = sys.argv[1]
 
-    if key in subscript:
+    if key == '--version':
+        print 'Version:', itcc.__version__
+    elif key in ['-h', '--help', 'help']:
+        help()
+    elif key in subscript:
         del sys.argv[0]
         __import__('itcc.' + subscript[key][0])
         exec('itcc.' + subscript[key][0] + '.main()')
-#         'itcc.Tools.'spam.ham', globals(), locals(), ['eggs']')
-#         execfile(os.path.join(path_base, subscript[key][0]))
     else:
-        help()
+        sys.stderr.write('Unknown option: %s\n' % key)
+        sys.stderr.write("Type 'itcc help' for usage.\n")
         sys.exit(1)
 
 if __name__ == '__main__':
