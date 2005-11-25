@@ -17,7 +17,7 @@ def writexyz(mol, ofile=sys.stdout, comment=None):
     elif hasattr(mol, 'comment'):
         ofile.write('  %s' % mol.comment)
     ofile.write('\n')
-        
+
     for i in range(len(mol)):
         atom, coord = mol[i]
         tmpstr = '%6d  %-3s%12.6f%12.6f%12.6f%6s' % \
@@ -44,10 +44,3 @@ def writegjf(mol, ofile):
         ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord.x(),
             coord.y(), coord.z()))
     ofile.write('\n')
-
-    
-
-
-        
-    
-    
