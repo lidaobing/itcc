@@ -9,6 +9,7 @@ import LinearAlgebra
 from itcc.Molecule import read
 from itcc.Tinker import parameter, analyze, tinker, molparam
 from itcc.Torsionfit import tools
+from itcc.Tools import tools as extra_tools
 
 def torene(tor, param):
     """torene(tor, param) -> Float
@@ -105,7 +106,9 @@ def parmfit(datfname, idxfname, param):
 
     result = LinearAlgebra.linear_least_squares(A, B)
     newparam = list(result[0][:-1])
-    error = math.sqrt(result[1][0]/len(B))
+    errors = Numeric.matrixmultiply(A, result[0]) - B
+    errors = [error/math.sqrt(weight) for error, weight in zip(errors, weights)]
+    error = extra_tools.weightedsd(errors, weights)
     printprm(newparam, idxs, folds)
     print error
 
