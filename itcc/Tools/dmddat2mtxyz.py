@@ -33,6 +33,7 @@ def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
         select_frames = range(aDmddat.framenum)
 
     for idx, frame in enumerate(aDmddat):
+        frame = frame.coords
         if idx in select_frames:
             assert len(frame) == len(mol)
             for i in range(len(frame)):

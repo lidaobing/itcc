@@ -4,6 +4,11 @@ __revision__ = '$Rev$'
 
 import struct
 
+class Frame:
+    def __init__(self, time, coords):
+        self.time = time
+        self.coords = coords
+
 class Dmddat:
     def __init__(self, ifile):
         self.ifile = ifile
@@ -22,13 +27,18 @@ class Dmddat:
         self.nextframe += 1
 
         result = []
+        
+        time_fmt = "d"
+        time = struct.unpack(time_fmt,
+                             self.ifile.read(struct.calcsize(time_fmt)))
+        
         for _ in range(self.beadnum):
             coord_fmt = "=lll"
             assert struct.calcsize(coord_fmt) == 12
             coord_str = self.ifile.read(struct.calcsize(coord_fmt))
             coord = struct.unpack(coord_fmt, coord_str)
             result.append(tuple([float(x)/1000.0 for x in coord]))
-        return tuple(result)
+        return Frame(time, tuple(result))
 
     def __iter__(self):
         return self

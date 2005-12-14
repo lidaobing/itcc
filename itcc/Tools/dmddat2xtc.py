@@ -12,8 +12,10 @@ def dmddat2xtc(ifile, ofname):
            (0.0, aDmddat.boxsize[1], 0.0),
            (0.0, 0.0, aDmddat.boxsize[2]))
     for idx, frame in enumerate(aDmddat):
+        time = frame.time
+        frame = frame.coords
         frame = tuple([tuple([y/10.0 for y in x]) for x in frame])
-        _gmx_xtcio.write_xtc(xtc, aDmddat.beadnum, idx+1, 0.0,
+        _gmx_xtcio.write_xtc(xtc, aDmddat.beadnum, idx+1, time,
                              box, frame, 1000.0)
     _gmx_xtcio.close_xtc(xtc);
 
