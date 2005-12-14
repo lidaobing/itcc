@@ -45,10 +45,10 @@ write_xtc_wrap(PyObject* self, PyObject* args)
   int fp;
   int natoms;
   int step;
-  real time;
+  double time;
   matrix box;
   rvec* x;
-  real prec;
+  double prec;
 
   int result;
 
@@ -57,7 +57,7 @@ write_xtc_wrap(PyObject* self, PyObject* args)
 
   int i, j;
   
-  if(!PyArg_ParseTuple(args, "iiifOOf",
+  if(!PyArg_ParseTuple(args, "iiidOOd",
 		       &fp, &natoms, &step, &time,
 		       &py_box, &py_x, &prec)) {
     return NULL;
