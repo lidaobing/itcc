@@ -1,6 +1,6 @@
 itcc NEWS -- history of user-visible changes.
 
-Version 0.2.9b1
+Version 0.2.9b2
 
 * new 'itcc dmddat2mtxyz'
 * fix bug: 'make dist' maybe miss new file(s).

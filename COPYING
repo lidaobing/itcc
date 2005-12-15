@@ -1,3 +1,5 @@
  Copyright (C) 2004, 2005 LI Daobing <lidaobing@gmail.com>
  Copyright (C) 2004, 2005 WU Yundong
  All rights reserved.
+
+ itcc/Tools/_gmx_xtcio.c, itcc/Tools/dmddat2xtc should license under GPL. 
