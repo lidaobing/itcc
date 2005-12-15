@@ -30,7 +30,7 @@ class Dmddat:
         
         time_fmt = "d"
         time = struct.unpack(time_fmt,
-                             self.ifile.read(struct.calcsize(time_fmt)))
+                             self.ifile.read(struct.calcsize(time_fmt)))[0]
         
         for _ in range(self.beadnum):
             coord_fmt = "=lll"
