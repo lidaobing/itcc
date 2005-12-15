@@ -16,9 +16,11 @@ class Dmddat:
         assert struct.calcsize(header_fmt) == 64
         header_str = ifile.read(struct.calcsize(header_fmt))
         header = struct.unpack(header_fmt, header_str)
-        self.beadnum = header[0]
-        self.framenum = header[1]
-        self.boxsize = tuple([float(x)/1000.0 for x in header[2:5]])
+        self.version = header[0]
+        assert self.version == 2
+        self.beadnum = header[1]
+        self.framenum = header[2]
+        self.boxsize = tuple([float(x)/1000.0 for x in header[3:6]])
         self.nextframe = 0
 
     def next(self):
