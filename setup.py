@@ -21,7 +21,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["itcc/Tools/ctools.c"]),
              Extension('itcc.Tools._gmx_xtcio',
                        ['itcc/Tools/_gmx_xtcio.c'],
                        include_dirs=["/usr/include/gromacs"],
-                       extra_link_args=['/usr/lib/libgmx.a'])
+                       libraries=['gmx'])
              ]
 
 
