@@ -24,6 +24,7 @@ subscript = {
     'optimizes':  ('Tinker.optimizes', 'optimizes a series of xyz files(broken)'),
     'out2arch':   ('Tools.out2arch', 'Gaussian out to arch file'),
     'out2ene':    ('Tools.out2ene', 'Gaussian out to ene'),
+    'olddmddat_fix': ('Tools.olddmddat_fix', 'fix olddmddat file'),
     'parmeval':   ('Torsionfit.parmeval', 'evaluate parameter files'),
     'parmfit':    ('Torsionfit.parmfit', 'parm fit'),
     'printefit':  ('Torsionfit.printefit', 'print efit'),
@@ -38,8 +39,6 @@ subscript = {
     'xyz2gjf':    ('Tools.xyz2gjf', 'XYZ to GJF format'),
     'xyz2gro':    ('Tools.xyz2gro', 'XYZ to GRO format'),
     }
-
-path_base = '/usr/lib/python2.3/site-packages/itcc'
 
 def help():
     basename = os.path.basename(sys.argv[0])
