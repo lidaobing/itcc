@@ -8,28 +8,62 @@ import copy
 import os.path
 import shutil
 
+def get_format():
+    while True:
+        ans = raw_input("please select file format (N)ew/(O)ld, default is new: ")
+        if not ans or ans.lower() in ("n", "new"):
+            return "new"
+        elif ans.lower() in ("o", "old"):
+            return "old"
+        else:
+            continue
+
 class Olddmddat_Header:
-    header_fmt = "=5L44x"
+    header_fmt = "=6L40x"
     def __init__(self, ifile):
         header_fmt = self.header_fmt
         assert struct.calcsize(header_fmt) == 64
         header_str = ifile.read(struct.calcsize(header_fmt))
         header = struct.unpack(header_fmt, header_str)
-        self.beadnum = header[0]
-        self.framenum = header[1]
-        self.boxsize = tuple([float(x)/1000.0 for x in header[2:5]])
+
+        if header[0] == 2:
+            print 'this file seems to be in new format.'
+            self.format = get_format()
+        else:
+            print 'this file is in old format.'
+            self.format = 'old'
+
+        if self.format == 'old':
+            self.beadnum = header[0]
+            self.framenum = header[1]
+            self.boxsize = tuple([float(x)/1000.0 for x in header[2:5]])
+        else:
+            assert self.format == 'new'
+            self.beadnum = header[1]
+            self.framenum = header[2]
+            self.boxsize = tuple([float(x)/1000.0 for x in header[3:6]])
 
     def calc_framenum(self, file_size):
         self.framenum = (file_size - struct.calcsize(self.header_fmt)) // self.frame_size()
 
     def frame_size(self):
-        return self.beadnum * 3 * 4
+        if self.format == 'old':
+            return self.beadnum * 3 * 4
+        else:
+            return self.beadnum * 3 * 4 + 8
 
     def pack(self):
-        return struct.pack(self.header_fmt, self.beadnum, self.framenum, 
-                           int(self.boxsize[0] * 1000),
-                           int(self.boxsize[1] * 1000),
-                           int(self.boxsize[2] * 1000))
+        if self.format == 'old':
+            return struct.pack(self.header_fmt, self.beadnum, self.framenum,
+                               int(self.boxsize[0] * 1000),
+                               int(self.boxsize[1] * 1000),
+                               int(self.boxsize[2] * 1000),
+                               0)
+        else:
+            return struct.pack(2, self.header_fmt, self.beadnum, self.framenum,
+                               int(self.boxsize[0] * 1000),
+                               int(self.boxsize[1] * 1000),
+                               int(self.boxsize[2] * 1000))
 
     def __eq__(self, other):
         return self.beadnum == other.beadnum \
@@ -107,7 +141,6 @@ def olddmddat_fix(ifname):
     header = Olddmddat_Header(ifile)
 
     oldheader = copy.copy(header)
-    
     check_version(header)
     change_beadnum(header)
     change_framenum(header)
