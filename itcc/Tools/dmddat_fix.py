@@ -60,7 +60,7 @@ class Olddmddat_Header:
                                int(self.boxsize[2] * 1000),
                                0)
         else:
-            return struct.pack(2, self.header_fmt, self.beadnum, self.framenum,
+            return struct.pack(self.header_fmt, 2, self.beadnum, self.framenum,
                                int(self.boxsize[0] * 1000),
                                int(self.boxsize[1] * 1000),
                                int(self.boxsize[2] * 1000))
