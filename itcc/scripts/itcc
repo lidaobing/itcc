@@ -24,7 +24,7 @@ subscript = {
     'optimizes':  ('Tinker.optimizes', 'optimizes a series of xyz files(broken)'),
     'out2arch':   ('Tools.out2arch', 'Gaussian out to arch file'),
     'out2ene':    ('Tools.out2ene', 'Gaussian out to ene'),
-    'olddmddat_fix': ('Tools.olddmddat_fix', 'fix olddmddat file'),
+    'dmddat_fix': ('Tools.dmddat_fix', 'fix olddmddat file'),
     'parmeval':   ('Torsionfit.parmeval', 'evaluate parameter files'),
     'parmfit':    ('Torsionfit.parmfit', 'parm fit'),
     'printefit':  ('Torsionfit.printefit', 'print efit'),
