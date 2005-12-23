@@ -8,13 +8,23 @@ import copy
 import os.path
 import shutil
 
-def get_format():
+def get_format_new():
     while True:
         ans = raw_input("please select file format (N)ew/(O)ld, default is new: ")
         if not ans or ans.lower() in ("n", "new"):
             return "new"
         elif ans.lower() in ("o", "old"):
             return "old"
+        else:
+            continue
+
+def get_format_old():
+    while True:
+        ans = raw_input("please select file format (N)ew/(O)ld, default is old: ")
+        if not ans or ans.lower() in ("o", "old"):
+            return "old"
+        elif ans.lower() in ("n", "new"):
+            return "new"
         else:
             continue
 
@@ -28,10 +38,10 @@ class Olddmddat_Header:
 
         if header[0] == 2:
             print 'this file seems to be in new format.'
-            self.format = get_format()
+            self.format = get_format_new()
         else:
-            print 'this file is in old format.'
-            self.format = 'old'
+            print 'this file seems to be in old format.'
+            self.format = get_format_old()
 
         if self.format == 'old':
             self.beadnum = header[0]
