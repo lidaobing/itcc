@@ -1,9 +1,57 @@
 /* $Id$ */
 
 #include <Python.h>
-#include <xtcio.h>
+#include <stdio.h>
+#include <dlfcn.h>
 
-/* extern int open_xtc(char *filename,char *mode); */
+typedef float gmx_real;
+typedef gmx_real rvec[3];
+typedef gmx_real matrix[3][3];
+static int (*open_xtc)(const char *filename, const char *mode);
+static void (*close_xtc)(int fp);
+static int (*write_xtc)(int fp,
+			int natoms,int step, gmx_real time,
+			matrix box,rvec *x, gmx_real prec);
+static int load_libgmx(void)
+{
+  static int ready = 0;
+  const char* error;
+  void* handle;
+
+  if(ready) return 1;
+
+  handle = dlopen("libgmx.so.4", RTLD_LAZY);
+  if(!handle) {
+    fprintf(stderr, "%s\n", dlerror());
+    return 0;
+  }
+
+  dlerror();			// clear any existing error
+
+  *(void**)(&open_xtc) = dlsym(handle, "open_xtc");
+  if((error = dlerror()) != NULL) {
+    dlclose(handle);
+    fprintf(stderr, "%s\n", error);
+    return 0;
+  }
+
+  *(void**)(&close_xtc) = dlsym(handle, "close_xtc");
+  if((error = dlerror()) != NULL) {
+    dlclose(handle);
+    fprintf(stderr, "%s\n", error);
+    return 0;
+  }
+
+  *(void**)(&write_xtc) = dlsym(handle, "write_xtc");
+  if((error = dlerror()) != NULL) {
+    dlclose(handle);
+    fprintf(stderr, "%s\n", error);
+    return 0;
+  }
+
+  ready = 1;
+  return 1;
+}
 
 static PyObject*
 open_xtc_wrap(PyObject* self, PyObject* args)
@@ -11,6 +59,7 @@ open_xtc_wrap(PyObject* self, PyObject* args)
   char* filename;
   char* mode;
   int result;
+  if(!load_libgmx()) return NULL;
   if(!PyArg_ParseTuple(args, "ss",
 		       &filename, &mode)) {
     return NULL;
@@ -26,6 +75,7 @@ static PyObject*
 close_xtc_wrap(PyObject* self, PyObject* args)
 {
   int fp;
+  if(!load_libgmx()) return NULL;
   if(!PyArg_ParseTuple(args, "i",
 		       &fp)) {
     return NULL;
@@ -45,10 +95,10 @@ write_xtc_wrap(PyObject* self, PyObject* args)
   int fp;
   int natoms;
   int step;
-  double time;
+  float time;
   matrix box;
   rvec* x;
-  double prec;
+  float prec;
 
   int result;
 
@@ -56,8 +106,8 @@ write_xtc_wrap(PyObject* self, PyObject* args)
   PyObject* py_x;
 
   int i, j;
-  
-  if(!PyArg_ParseTuple(args, "iiidOOd",
+  if(!load_libgmx()) return NULL;
+  if(!PyArg_ParseTuple(args, "iiifOOf",
 		       &fp, &natoms, &step, &time,
 		       &py_box, &py_x, &prec)) {
     return NULL;

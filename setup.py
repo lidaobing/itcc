@@ -20,8 +20,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["itcc/Tools/ctools.c"]),
                        libraries=['lapack']),
              Extension('itcc.Tools._gmx_xtcio',
                        ['itcc/Tools/_gmx_xtcio.c'],
-                       include_dirs=["/usr/include/gromacs"],
-                       libraries=['gmx'])
+                       libraries=['dl'])
              ]
 
 
