@@ -5,6 +5,7 @@ Version 0.2.9b7
 b8
 
 * dynamic load libgmx.
+* fix bug: write_xtc's box unit is nm.
 
 b1-b7
 

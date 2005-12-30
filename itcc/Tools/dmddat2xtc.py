@@ -8,9 +8,9 @@ from itcc.Tools import dmddat
 def dmddat2xtc(ifile, ofname):
     aDmddat = dmddat.Dmddat(ifile)
     xtc = _gmx_xtcio.open_xtc(ofname, "w");
-    box = ((aDmddat.boxsize[0], 0.0, 0.0),
-           (0.0, aDmddat.boxsize[1], 0.0),
-           (0.0, 0.0, aDmddat.boxsize[2]))
+    box = ((aDmddat.boxsize[0]/10.0, 0.0, 0.0),
+           (0.0, aDmddat.boxsize[1]/10.0, 0.0),
+           (0.0, 0.0, aDmddat.boxsize[2]/10.0))
     for idx, frame in enumerate(aDmddat):
         time = frame.time
         frame = frame.coords
