@@ -6,7 +6,7 @@ import sys
 import struct
 import copy
 import os.path
-import shutil
+from itcc.Tools.backup import backup
 
 def get_format_new():
     while True:
@@ -135,16 +135,6 @@ def ask_change():
             print 'illegal input'
             continue
     return False
-
-def backup(ifname):
-    idx = 1
-    while True:
-        newfname = '%s.%i.bak' % (ifname, idx)
-        if not os.path.exists(newfname):
-            break
-        else:
-            idx += 1
-    shutil.copy(ifname, newfname)
 
 def olddmddat_fix(ifname):
     ifile = file(ifname, 'r+')
