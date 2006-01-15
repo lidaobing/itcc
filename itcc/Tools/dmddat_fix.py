@@ -146,12 +146,12 @@ def olddmddat_fix(ifname):
     change_framenum(header)
     change_boxsize(header)
 
+    if header.framenum == 0:
+        header.calc_framenum(os.path.getsize(ifname))
+
     if oldheader == header:
         print 'nothing is changed.'
         return
-
-    if header.framenum == 0:
-        header.calc_framenum(os.path.getsize(ifname))
 
     print '%16s%16s%16s' % ('', 'Old', 'New')
     print '%16s%16s%16s' % ('beadnum', oldheader.beadnum, header.beadnum)
