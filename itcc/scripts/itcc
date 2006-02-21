@@ -37,6 +37,7 @@ subscript = {
     'tor2freeene':('Tools.tor2freeene', 'torsion to free energy'),
     'xyz2gjf':    ('Tools.xyz2gjf', 'XYZ to GJF format'),
     'xyz2gro':    ('Tools.xyz2gro', 'XYZ to GRO format'),
+    'xyz2pdb':    ('Tools.xyz2pdb', 'XYZ to PDB format')
     }
 
 def help():
@@ -51,8 +52,6 @@ def help():
         print '  %s %-12s  %s' % (basename, key[0], key[1][1])
 
 def main():
-    sys.stderr.write("WARNING: this version has license problem!!!\n\n");
-
     if len(sys.argv) == 1:
         help()
         sys.exit(0)

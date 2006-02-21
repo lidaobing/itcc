@@ -3,6 +3,7 @@
 import sys
 from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import atomchr
+from itcc.Molecule.pdb import write as writepdb
 
 __revision__ = '$Rev$'
 
