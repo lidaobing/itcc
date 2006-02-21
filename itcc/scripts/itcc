@@ -15,7 +15,6 @@ subscript = {
     'constrain':  ('Tinker.constrain', 'generate a constrain tinker.key'),
     'dmddummy':   ('Tools.dmddummy', 'dmddummy'),
     'dmddat2mtxyz':('Tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
-    'dmddat2xtc': ('Tools.dmddat2xtc', 'convert dmddat file to xtc'),
     'gjf2xyz':    ('Tools.gjf2xyz', 'convert gjf to xyz'),
     'mol2top':    ('Tools.mol2top', 'mol to top'),
     'mtxyzrg':    ('Tools.mtxyzrg', 'multi tinker xyz file\'s Rg'),
@@ -49,7 +48,7 @@ def help():
     keys = subscript.items()
     keys.sort()
     for key in keys:
-        print '  %s %-11s  %s' % (basename, key[0], key[1][1])
+        print '  %s %-12s  %s' % (basename, key[0], key[1][1])
 
 def main():
     sys.stderr.write("WARNING: this version has license problem!!!\n\n");

@@ -17,10 +17,7 @@ ext_modules=[Extension("itcc.Tools.ctools", ["itcc/Tools/ctools.c"]),
                        libraries=['boost_python']),
              Extension('itcc.Molecule._rmsd',
                        ['itcc/Molecule/_rmsd.cpp'],
-                       libraries=['lapack']),
-             Extension('itcc.Tools._gmx_xtcio',
-                       ['itcc/Tools/_gmx_xtcio.c'],
-                       libraries=['dl'])
+                       libraries=['lapack'])
              ]
 
 
