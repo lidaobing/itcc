@@ -1,5 +1,9 @@
 itcc NEWS -- history of user-visible changes.
 
+Version 0.4 - 2006-02-22
+
+* new `itcc shake'
+
 Version 0.3 - 2006-02-21
 
 * new `itcc xyz2pdb'

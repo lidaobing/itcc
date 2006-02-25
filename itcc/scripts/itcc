@@ -31,6 +31,7 @@ subscript = {
     'rmsd':       ('Molecule.rmsd', 'RMSD'),
     'scalexyz':   ('Tools.scalexyz', 'scale xyz'),
     'settype':    ('Tools.settype', 'Change the types of xyz file'),
+    'shake':      ('Tools.shake', 'shake molecule'),
     'simpparam':  ('Tinker.simpparam', 'simplify parameter'),
     'sumxyz':     ('Tools.sumxyz', 'summary xyz file\'s info'),
     'sumparam':   ('Tools.sumparam', 'choose params from tinker parameter file'),

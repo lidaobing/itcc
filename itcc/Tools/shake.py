@@ -86,36 +86,48 @@ def shake3(r1, r2, new_dis):
 
 def shake2(mol, dats, err_dats):
     newmol = mol.copy()
-    for dat in err_dats:
-        if dat.type == 'BOND':
-            newmol.coords[dat.idx1], newmol.coords[dat.idx2] = \
-              shake3(newmol.coords[dat.idx1], newmol.coords[dat.idx2],
-                     random.uniform(dat.min, dat.max))
-        else:
-            newmol.coords[dat.idx1], newmol.coords[dat.idx2] = \
-              shake3(newmol.coords[dat.idx1], newmol.coords[dat.idx2],
-                     random.uniform(dat.min, dat.min+2.0))
+#     idx = 0
+    while True:
+#         print idx
+#         idx += 1
+        finished = True
+        for dat in err_dats:
+            if not dat.check(newmol):
+                finished = False
+                if dat.type == 'BOND':
+                    newmol.coords[dat.idx1], newmol.coords[dat.idx2] = \
+                      shake3(newmol.coords[dat.idx1], newmol.coords[dat.idx2],
+                             random.uniform(dat.min, dat.max))
+                else:
+                    newmol.coords[dat.idx1], newmol.coords[dat.idx2] = \
+                      shake3(newmol.coords[dat.idx1], newmol.coords[dat.idx2],
+                             random.uniform(dat.min, dat.min+2.0))
+        if finished:
+            break
     new_err_dats = get_status(newmol, dats)
-    if len(new_err_dats) <= len(err_dats):
-        return newmol, new_err_dats
-    else:
-        return mol, err_dats
+    return newmol, new_err_dats
 
-def shake(xyz_ifile, dat_ifile):
-    mol = read.readxyz(xyz_ifile)
-    dats = read_dat(dat_ifile)
+def shake1(mol, dats, ofile):
     for i in range(100):
         newmol = new_struct(mol)
         err_dats = get_status(newmol, dats)
         for j in range(500):
             if not err_dats:
-                write.writexyz(newmol)
+                write.writexyz(newmol, ofile)
                 return True
             print i, j, len(err_dats)
             random.shuffle(err_dats)
             newmol, err_dats = shake2(newmol, dats, err_dats)
     print 'failed.'
     return False
+
+def shake(xyz_ifile, dat_ifile):
+    mol = read.readxyz(xyz_ifile)
+    dats = read_dat(dat_ifile)
+    for i in range(1):
+        ofile = file('ello%03i.xyz' % i, 'w')
+        shake1(mol, dats, ofile)
+        ofile.close()
 
 def usage(ofile):
     import os.path
@@ -139,7 +151,7 @@ def main():
     else:
         dat_ifile = file(sys.argv[2])
 
-    return shake(xyz_ifile, dat_ifile)
+    shake(xyz_ifile, dat_ifile)
 
 if __name__ == '__main__':
     if not main():
