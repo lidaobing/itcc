@@ -1,8 +1,11 @@
 itcc NEWS -- history of user-visible changes.
 
-Version 0.4 - 2006-02-22
+Version 0.4 - 2006-03-10
 
+* new rotate.py
+* new stats.py
 * new `itcc shake'
+* improve dmddat2mtxyz's speed.
 
 Version 0.3 - 2006-02-21
 

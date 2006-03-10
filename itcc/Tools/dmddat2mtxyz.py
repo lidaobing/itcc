@@ -16,7 +16,7 @@ def parseframe(frame_str):
             step = int(step)
         if '-' in range_:
             begin, end = tuple([int(x) - 1 for x in range_.split('-')])
-	    end += 1
+            end += 1
         else:
             begin = int(range_) - 1
             end = begin+1
@@ -32,15 +32,12 @@ def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
     if select_frames is None:
         select_frames = range(aDmddat.framenum)
 
-    for idx, frame in enumerate(aDmddat):
-        frame = frame.coords
-        if idx in select_frames:
-            assert len(frame) == len(mol)
-            for i in range(len(frame)):
-                mol.coords[i] = molecule.CoordType(frame[i])
-            write.writexyz(mol, comment = 'frame: %i' % (idx+1))
-            if idx == max(select_frames):
-                break
+    for frame_idx in select_frames:
+        aDmddat.seek_frame(frame_idx)
+        frame = aDmddat.next().coords
+        for i in range(len(frame)):
+            mol.coords[i] = molecule.CoordType(frame[i])
+        write.writexyz(mol, comment = 'frame: %i' % (frame_idx+1))
 
 def main():
     from optparse import OptionParser
@@ -49,7 +46,7 @@ def main():
     parser = OptionParser(usage)
     parser.add_option(
     	"-f", "--frame", dest='frame_str',
-	default=None, 
+	default=None,
 	help="select frame, format is 'begin[-end[/step]](,begin[-end[/step]])*', for example '-f 2-40/3,71-91/2'")
     (options, args) = parser.parse_args()
 

@@ -29,11 +29,11 @@ class Dmddat:
         self.nextframe += 1
 
         result = []
-        
+
         time_fmt = "d"
         time = struct.unpack(time_fmt,
                              self.ifile.read(struct.calcsize(time_fmt)))[0]
-        
+
         for _ in range(self.beadnum):
             coord_fmt = "=lll"
             assert struct.calcsize(coord_fmt) == 12
@@ -41,6 +41,11 @@ class Dmddat:
             coord = struct.unpack(coord_fmt, coord_str)
             result.append(tuple([float(x)/1000.0 for x in coord]))
         return Frame(time, tuple(result))
+
+    def seek_frame(self, frame_idx):
+        header_size = 64
+        frame_size = struct.calcsize("d") + struct.calcsize("=lll") * self.beadnum
+        self.ifile.seek(header_size + frame_size * frame_idx)
 
     def __iter__(self):
         return self
