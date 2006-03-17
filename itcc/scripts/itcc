@@ -15,6 +15,7 @@ subscript = {
     'constrain':  ('Tinker.constrain', 'generate a constrain tinker.key'),
     'dmddummy':   ('Tools.dmddummy', 'dmddummy'),
     'dmddat2mtxyz':('Tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
+    'dmddat2dmddat':('Tools.dmddat2dmddat', 'convert dmddat file to dmddat'),
     'gjf2xyz':    ('Tools.gjf2xyz', 'convert gjf to xyz'),
     'mol2top':    ('Tools.mol2top', 'mol to top'),
     'mtxyzrg':    ('Tools.mtxyzrg', 'multi tinker xyz file\'s Rg'),

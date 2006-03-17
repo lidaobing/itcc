@@ -10,12 +10,13 @@ class Frame:
         self.coords = coords
 
 class Dmddat:
+    header_fmt = "=LLLLLLLLLLLLLLLL"
     def __init__(self, ifile):
         self.ifile = ifile
-        header_fmt = "=LLLLLLLLLLLLLLLL"
-        assert struct.calcsize(header_fmt) == 64
-        header_str = ifile.read(struct.calcsize(header_fmt))
-        header = struct.unpack(header_fmt, header_str)
+        assert struct.calcsize(self.header_fmt) == 64
+        header_str = ifile.read(struct.calcsize(self.header_fmt))
+        self.header = struct.unpack(self.header_fmt, header_str)
+        header = self.header
         self.version = header[0]
         assert self.version == 2
         self.beadnum = header[1]

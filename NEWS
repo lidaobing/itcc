@@ -1,5 +1,10 @@
 itcc NEWS -- history of user-visible changes.
 
+Version 0.5 - 2006-03-17
+
+* fix bug in 0.4
+* new 'itcc dmddat2dmddat'
+
 Version 0.4 - 2006-03-10
 
 * new rotate.py
