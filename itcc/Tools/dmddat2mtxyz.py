@@ -4,26 +4,7 @@ __revision__ = '$Rev$'
 
 from itcc.Tools import dmddat
 from itcc.Molecule import read, write, molecule
-
-def parseframe(frame_str):
-    if frame_str is None:
-        return None
-    frame = []
-    for range_ in frame_str.split(','):
-        step = 1
-        if '/' in range_:
-            range_, step = tuple(range_.split('/'))
-            step = int(step)
-        if '-' in range_:
-            begin, end = tuple([int(x) - 1 for x in range_.split('-')])
-            end += 1
-        else:
-            begin = int(range_) - 1
-            end = begin+1
-
-        frame.extend(range(begin, end, step))
-    frame.sort()
-    return tuple(frame)
+from itcc.Tools.frame import parseframe
 
 def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
     aDmddat = dmddat.Dmddat(file(dmddatfname))
