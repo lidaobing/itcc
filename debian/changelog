@@ -2,9 +2,7 @@ itcc (0.7) unstable; urgency=low
 
   * add debian sub-directory.
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 24 Mar 2006 22:30:15 +0800
-
-itcc NEWS -- history of user-visible changes.
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 24 Mar 2006 22:43:54 +0800
 
 Version 0.6 - 2006-03-24
 
