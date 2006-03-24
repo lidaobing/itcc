@@ -141,10 +141,13 @@ extern "C" {
       {
 	return NULL;
       }
-    assert(PyObject_HasAttrString(mol1, "coords"));
-    assert(PyObject_HasAttrString(mol2, "coords"));
-    PyObject* coords1 = PyObject_GetAttrString(mol1, "coords");
-    PyObject* coords2 = PyObject_GetAttrString(mol2, "coords");
+    
+    PyObject* coords1 = PyObject_HasAttrString(mol1, "coords")
+                           ?PyObject_GetAttrString(mol1, "coords")
+                           :mol1;
+    PyObject* coords2 = PyObject_HasAttrString(mol2, "coords")
+                           ?PyObject_GetAttrString(mol2, "coords")
+                           :mol2;
     assert(PySequence_Check(coords1));
     assert(PySequence_Check(coords2));
     int len = PySequence_Size(coords1);
