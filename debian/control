@@ -7,6 +7,6 @@ Standards-Version: 3.6.2
 
 Package: itcc
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific, gromacs
+Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific, python-scipy
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>

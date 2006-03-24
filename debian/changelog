@@ -4,39 +4,98 @@ itcc (0.7) unstable; urgency=low
 
  -- LI Daobing <lidaobing@gmail.com>  Fri, 24 Mar 2006 22:30:15 +0800
 
-itcc (0.2.8+svn5-1) unstable; urgency=low
+itcc NEWS -- history of user-visible changes.
 
-  * New upstream release
+Version 0.6 - 2006-03-24
 
- -- wusz <wusz@localhost.localdomain>  Sun, 16 Oct 2005 23:27:19 +0800
+* itcc rmsd support mtxyz file as second argument.
 
-itcc (0.2.8+svn4-1) unstable; urgency=low
+Version 0.5 - 2006-03-17
 
-  * New upstream release
+* fix bug in 0.4
+* new 'itcc dmddat2dmddat'
 
- -- wusz <wusz@localhost.localdomain>  Sat, 15 Oct 2005 23:31:00 +0800
+Version 0.4 - 2006-03-10
 
-itcc (0.2.8+svn3-1) unstable; urgency=low
+* new rotate.py
+* new stats.py
+* new `itcc shake'
+* improve dmddat2mtxyz's speed.
 
-  * New upstream release
+Version 0.3 - 2006-02-21
 
- -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 14:04:31 +0800
+* new `itcc xyz2pdb'
+* remove license problem warning
 
-itcc (0.2.8+svn2-1) unstable; urgency=low
+Version 0.2.9 - 2006-02-21
 
-  * New upstream release
+* del xtc-related part from itcc
 
- -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 13:37:17 +0800
+b9
 
-itcc (0.2.8+svn1-1) unstable; urgency=low
+* add license problem warning
+* fix bug: itcc dmddat_fix
 
-  * New upstream release
+b8
 
- -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 13:02:37 +0800
+* dynamic load libgmx.
+* fix bug: write_xtc's box unit is nm.
 
-itcc (0.2.8-1) unstable; urgency=low
+b1-b7
 
-  * Initial release.
+* new 'itcc dmddat_fix', support both dmddat format.
+* new 'itcc dmddat2mtxyz'
+* fix bug: 'make dist' maybe miss new file(s).
+* move src/ to itcc/ (it easy to write testsuite without install.)
+* new 'itcc dmddat2xtc'
+* itcc now is much faster at startup
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 11 Oct 2005 12:49:54 +0800
+Version 0.2.8
 
+* add 'itcc scalexyz'
+* add 'itcc columnmean'
+* add 'itcc mtxyzstat'
+* add 'itcc mol2top'
+* add 'itcc onecolumn'
+* [itcc.Tools.tools] add 'any', 'all'.
+* add 'itcc removepbc'
+
+Version 0.2.7
+
+* use itcc to control all scripts
+* add src/Tools/tor2freeene.py
+* src/Molecule/_rmsd.cpp
+   a better rmsd algorithm(consider transition and rotation)
+* src/Torsionfit/getscandata.py
+   rework   
+
+Version 0.2.6
+
+* add 'itcc printefit'
+
+Version 0.2.4
+   
+* parmeval.py: rewrite, become a script
+* Torsionfit: now the scandata.dat's third column is optional(default is 1.0)
+* add README
+
+Version 0.2.3
+
+* fix a bug in readidx
+* fix a bug in `make sdist'
+
+Version 0.2.2
+
+* A new version parmfit
+
+Version 0.2.1
+
+* merge torsionfit as itcc.Torsionfit and del duplicate module
+
+Version 0.2
+
+* Can do something version
+
+Version 0.1	
+
+* First can-run version.
