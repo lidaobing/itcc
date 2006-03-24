@@ -1,0 +1,12 @@
+Source: itcc
+Section: science
+Priority: optional
+Maintainer: LI Daobing <lidaobing@gmail.com>
+Build-Depends: debhelper (>= 4.0.0), python-dev, lapack3-dev, libboost-python-dev
+Standards-Version: 3.6.2
+
+Package: itcc
+Architecture: any
+Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific, gromacs
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>

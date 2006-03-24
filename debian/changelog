@@ -1,0 +1,42 @@
+itcc (0.7) unstable; urgency=low
+
+  * add debian sub-directory.
+
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 24 Mar 2006 22:30:15 +0800
+
+itcc (0.2.8+svn5-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- wusz <wusz@localhost.localdomain>  Sun, 16 Oct 2005 23:27:19 +0800
+
+itcc (0.2.8+svn4-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- wusz <wusz@localhost.localdomain>  Sat, 15 Oct 2005 23:31:00 +0800
+
+itcc (0.2.8+svn3-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 14:04:31 +0800
+
+itcc (0.2.8+svn2-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 13:37:17 +0800
+
+itcc (0.2.8+svn1-1) unstable; urgency=low
+
+  * New upstream release
+
+ -- LI Daobing <lidaobing@gmail.com>  Sat, 15 Oct 2005 13:02:37 +0800
+
+itcc (0.2.8-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 11 Oct 2005 12:49:54 +0800
+
