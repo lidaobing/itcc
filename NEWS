@@ -1,5 +1,9 @@
 itcc NEWS -- history of user-visible changes.
 
+Version 0.6 - 2006-03-24
+
+* itcc rmsd support mtxyz file as second argument.
+
 Version 0.5 - 2006-03-17
 
 * fix bug in 0.4
