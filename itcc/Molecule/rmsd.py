@@ -1,6 +1,7 @@
 # $Id$
 
 from itcc.Molecule import _rmsd
+from itcc.Molecule import mtxyz
 
 __revision__ = '$Rev$'
 __all__ = ['rmsd']
@@ -25,11 +26,11 @@ def main():
     import sys
     from itcc.Molecule import read
     if len(sys.argv) != 3:
-        print 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
+        print 'Usage: %s xyzfname1 mxyzfname2' % sys.argv[0]
         sys.exit(1)
     mol1 = read.readxyz(file(sys.argv[1]))
-    mol2 = read.readxyz(file(sys.argv[2]))
-    print rmsd(mol1, mol2)
+    for mol2 in mtxyz.Mtxyz(file(sys.argv[2])):
+        print rmsd(mol1, mol2)
 
 if __name__ == '__main__':
     main()
