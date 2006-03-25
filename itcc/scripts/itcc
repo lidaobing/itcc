@@ -29,7 +29,7 @@ subscript = {
     'parmfit':    ('Torsionfit.parmfit', 'parm fit'),
     'printefit':  ('Torsionfit.printefit', 'print efit'),
     'removepbc':  ('Molecule.removepbc', 'remove PBC'),
-    'rmsd':       ('Molecule.rmsd', 'RMSD'),
+    'rmsd':       ('Tools.rmsd', 'RMSD'),
     'scalexyz':   ('Tools.scalexyz', 'scale xyz'),
     'settype':    ('Tools.settype', 'Change the types of xyz file'),
     'shake':      ('Tools.shake', 'shake molecule'),

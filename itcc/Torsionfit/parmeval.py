@@ -2,8 +2,8 @@
 
 import sys
 import csv
-from itcc.Molecule import read, rmsd
-from itcc.Tools import tools
+from itcc.Molecule import read
+from itcc.Tools import tools, rmsd
 from itcc.Torsionfit import tools as tortools
 from itcc.Tinker import tinker
 
