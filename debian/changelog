@@ -1,3 +1,9 @@
+itcc (0.8) UNRELEASED; urgency=low
+
+  * itcc rmsd support only one argument.
+
+ -- Li Daobing <nichloas@localhost>  Sat, 25 Mar 2006 09:39:23 +0800
+
 itcc (0.7) unstable; urgency=low
 
   * add debian sub-directory.

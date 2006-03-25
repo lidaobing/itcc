@@ -1,5 +1,6 @@
 # $Id$
 
+import sys
 from itcc.Molecule import _rmsd
 from itcc.Molecule import mtxyz
 
@@ -22,14 +23,18 @@ def topeq(mol1, mol2):
             return False
     return True
 
+def usage(ofile):
+    ofile.write('Usage:\n')
+    ofile.write('    %s xyzfname1 mxyzfname2\n' % sys.argv[0])
+    ofile.write('    %s mtxyzfname\n' % sys.argv[0])
+
 def main():
-    import sys
     from itcc.Molecule import read
-    if len(sys.argv) != 3:
-        print 'Usage: %s xyzfname1 mxyzfname2' % sys.argv[0]
+    if len(sys.argv) not in (2, 3):
+        usage(sys.stderr)
         sys.exit(1)
     mol1 = read.readxyz(file(sys.argv[1]))
-    for mol2 in mtxyz.Mtxyz(file(sys.argv[2])):
+    for mol2 in mtxyz.Mtxyz(file(sys.argv[-1])):
         print rmsd(mol1, mol2)
 
 if __name__ == '__main__':
