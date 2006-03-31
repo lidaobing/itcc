@@ -11,8 +11,6 @@ class Atom(object):
 
     def __new__(cls, no, type_ = 0, symbol = None):
         if isinstance(no, int):
-            if no <= 0:
-                raise ValueError
             if symbol is None:
                 symbol = atomchr(no)
         elif isinstance(no, str):
@@ -116,7 +114,10 @@ def atomord(chr_):
     else:
         key = chr_[0]
 
-    return atomsymbol.index(key)
+    try:
+        return atomsymbol.index(key)
+    except:
+        return 0
 
 if __name__ == '__main__':
     a = Atom(1)
