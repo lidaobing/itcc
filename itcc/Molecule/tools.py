@@ -1,4 +1,6 @@
 # $Id$
+import heapq
+import sets
 import Numeric
 
 __revision__ = '$Rev$'
@@ -41,3 +43,35 @@ def neighborlist(mol):
         result.append(connectatoms(mol, atmidx))
     return result
 
+def _logic_distance_matrix_helper(connectmatrix, idx):
+    result = [-1] * len(connectmatrix)
+    queue = [(0, idx)]
+    waited_idx = sets.Set(range(len(connectmatrix)))
+    while waited_idx:
+        try:
+            dis, curidx = heapq.heappop(queue)
+        except:
+            break
+        
+        if curidx not in waited_idx:
+            continue
+        
+        result[curidx] = dis
+        waited_idx.remove(curidx)
+
+        for j in waited_idx:
+            if connectmatrix[curidx][j]:
+                heapq.heappush(queue, (dis+1, j))
+    return result
+            
+def logic_distance_matrix(mol_or_connectmatrix):
+    if hasattr(mol_or_connectmatrix, 'connect'):
+        connectmatrix = mol_or_connectmatrix.connect
+    else:
+        connectmatrix = mol_or_connectmatrix
+
+    result = Numeric.zeros((len(connectmatrix), len(connectmatrix)),
+                           Numeric.Int)
+    for i in range(len(connectmatrix)):
+        result[i] = _logic_distance_matrix_helper(connectmatrix, i)
+    return result
