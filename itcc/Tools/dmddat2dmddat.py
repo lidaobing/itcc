@@ -30,6 +30,9 @@ def main():
         "-f", "--frame", dest='frame_str', default=None,
 	help="select frame, format is 'begin[-end[/step]](,begin[-end[/step]])*', for example '-f 2-40/3,71-91/2'")
     parser.add_option(
+        "-F", "--framefile", dest='frame_file', default=None,
+	help="read frame from file")
+    parser.add_option(
         '-o', '--output', dest='output_fname', default=None,
         help="output filename")
     (options, args) = parser.parse_args()
@@ -42,9 +45,12 @@ def main():
     else:
         ifile = file(args[0])
 
-    if options.frame_str is None:
+    if options.frame_str is not None:
+        frame = parseframe(options.frame_str)
+    elif options.frame_file is not None:
+        frame = parseframe(file(options.frame_file).read())
+    else:
         return
-    frame = parseframe(options.frame_str)
 
     if options.output_fname is None:
         ofile = sys.stdout

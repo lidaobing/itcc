@@ -75,3 +75,11 @@ def logic_distance_matrix(mol_or_connectmatrix):
     for i in range(len(connectmatrix)):
         result[i] = _logic_distance_matrix_helper(connectmatrix, i)
     return result
+
+def logic_distance(mol_or_connectmatrix, idx1, idx2):
+    if hasattr(mol_or_connectmatrix, 'connect'):
+        connectmatrix = mol_or_connectmatrix.connect
+    else:
+        connectmatrix = mol_or_connectmatrix
+    
+    return _logic_distance_matrix_helper(connectmatrix, idx1)[idx2]

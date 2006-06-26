@@ -1,8 +1,11 @@
 itcc (0.8) UNRELEASED; urgency=low
 
-  * itcc rmsd support only one argument.
+  [ Li Daobing ]
+  * 'itcc rmsd' support only one argument.
+  * 'itcc dmddat2dmddat' support new '-F' option.
+  * add new function: 'itcc.Molecule.tools.logic_distance'.
 
- -- Li Daobing <nichloas@localhost>  Sat, 25 Mar 2006 09:39:23 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Mon, 26 Jun 2006 14:54:02 +0800
 
 itcc (0.7) unstable; urgency=low
 
