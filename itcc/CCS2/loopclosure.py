@@ -16,7 +16,7 @@ from itcc.Tools import tools
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
-class LoopClosure(object):
+class LoopClosure:
     def __init__(self, forcefield, keeprange, searchrange):
         self.forcefield = forcefield
         self.keeprange = keeprange
@@ -54,6 +54,12 @@ class LoopClosure(object):
         self.molnametmp = os.path.splitext(molfname)[0] + '.tmp.%03i'
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
+        if self.loopatoms is None:
+            print "this moleclue does not contain loop. exit."
+            return
+        if len(self.loopatoms) < 6:
+            print "your ring is %s-member, we can't deal with ring less than 6-member." % len(self.loopatoms)
+            return
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = typedmol.getr6s(self.loopatoms)
         printr6s(self.r6s)
@@ -135,8 +141,11 @@ class LoopClosure(object):
 
     def getloopatoms(self, mol):
         loops = loopdetect.loopdetect(mol)
-        assert len(loops) == 1
-        return loops[0]
+        if loops:
+            assert len(loops) == 1
+            return loops[0]
+        else:
+            return None
 
     def printparams(self):
         print 'Starttime: %s' % time.asctime()
