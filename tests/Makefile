@@ -1,7 +1,5 @@
-PYTHON ?= python
-
 all: check
 
 check:
-	$(PYTHON) test.py
+	./test.py
 	./test.sh

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2.4
 import test_base
 from confsearch_test import TestConfsearch
 from rmsd_test import TestRMSD
