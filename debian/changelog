@@ -3,10 +3,12 @@ itcc (0.8) UNRELEASED; urgency=low
   * 'itcc rmsd' support only one argument.
   * 'itcc dmddat2dmddat' support new '-F' option.
   * add new function: 'itcc.Molecule.tools.logic_distance'.
-  * new module: itcc.CCS2.triangle 
+  * new module: itcc.CCS2.triangle
     - new function: calc_ab
+  * new module: itcc.CCS2.inner
+    - new function: inner2xyz
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 25 Jul 2006 17:01:46 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 25 Jul 2006 19:02:19 +0800
 
 itcc (0.7) unstable; urgency=low
 
