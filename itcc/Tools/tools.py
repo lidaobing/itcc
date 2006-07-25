@@ -1,7 +1,7 @@
 # $Id$
 import random
 from math import sqrt, sin, cos, pi
-from Scientific.Geometry import Vector
+from Scientific.Geometry import Vector, isVector
 from Scientific.Statistics import mean, standardDeviation as stdev
 from itcc.Tools import ctools
 
@@ -67,6 +67,10 @@ def xyzatm(p1, p2, p3, r, theta, phi):
     ...        1, math.radians(90), 0)
     Vector(1.0,0.0,0.99999999999999989)
     '''
+
+    if not isVector(p1): p1 = Vector(p1)
+    if not isVector(p2): p2 = Vector(p2)
+    if not isVector(p3): p3 = Vector(p3)
     r12 = (p1 - p2).normal()
     r23 = (p2 - p3).normal()
     rt = r23.cross(r12)
