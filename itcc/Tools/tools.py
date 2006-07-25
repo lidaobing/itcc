@@ -151,9 +151,9 @@ def random_vector(length_=1.0):
     y = s * sin(theta)
     return (x, y, z)
 
+def _test():
+    import doctest
+    doctest.testmod()
+
 if __name__ == '__main__':
-    a_ = Vector(0, 0, 0)
-    b_ = Vector(1.0, 0.0, 0.0)
-    c_ = Vector(1.0, 1.0, 0.0)
-    d_ = Vector(1.0, 1.0, 1.0)
-    print torsionangle(a_, b_, c_, d_)
+    _test()
