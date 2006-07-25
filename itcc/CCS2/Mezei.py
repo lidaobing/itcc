@@ -13,7 +13,7 @@ from itcc.CCS2.pyramid import pyramid
 from itcc.CCS2 import sidechain
 
 __revision__ = '$Rev$'
-__all__ = ["R6"]
+__all__ = ["R6", "r6_base"]
 
 def rtbis(func, x1, x2, xacc):
     "Reference: Numerical Recipes in C, Chapter 9.1, Page 354"
@@ -104,7 +104,27 @@ class p24_Resolver:
     def switch(self, mode):
         self.mode = mode
 
-def _R6(points, len1, len2):
+def r6_base(points, len1, len2):
+    """r6_base(points, len1, len2) -> iterator
+
+    len(points) == 4
+    len(len1) == 4
+    len(len2) == 5
+
+    return all results fullfill following conditions in a iterator,
+    len(result) will be 3.
+
+    distance(points[1], result[0]) = len1[0];
+    distance(result[0], result[1]) = len1[1];
+    distance(result[1], result[2]) = len1[2];
+    distance(result[2], points[2]) = len1[3];
+    distance(points[0], result[0]) = len2[0];
+    distance(points[1], result[1]) = len2[1];
+    distance(result[0], result[2]) = len2[2];
+    distance(result[1], points[2]) = len2[3];
+    distance(result[2], points[3]) = len2[4];
+    """
+
     assert(len(points) == 4 and
            len(len1) == 4 and
            len(len2) == 5)
@@ -145,20 +165,18 @@ def _R6(points, len1, len2):
                 yield (i, angle, p24_res.p2, p24_res.p3, p24_res.p4)
 
 def __R6(coords, atmidx, dismat):
-    results = []
     assert len(atmidx) == 7
     points = [coords[atmidx[i]] for i in (0, 1, 5, 6)]
     len1idx = ((1, 2), (2, 3), (3, 4), (4, 5))
     len1 = [dismat[atmidx[i], atmidx[j]] for i, j in len1idx]
     len2idx = ((0, 2), (1, 3), (2, 4), (3, 5), (4, 6))
     len2 = [dismat[atmidx[i], atmidx[j]] for i, j in len2idx]
-    for _result in _R6(points, len1, len2):
+    for _result in r6_base(points, len1, len2):
         result = {}
         result[atmidx[2]] = _result[2]
         result[atmidx[3]] = _result[3]
         result[atmidx[4]] = _result[4]
-        results.append(result)
-    return results
+        yield result
 
 def R6(coords, atmidx, dismat, shakedata):
     '''Wrapped R6 algorithm, include R6 and shakeH'''
