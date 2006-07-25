@@ -114,7 +114,7 @@ def _R6(points, len1, len2):
 
     p3_result = _calc_p3((p0, p1, p5), d13, d35)
     if p3_result is None:
-        return []
+        return
     p3o, p3x, p3y = p3_result
 
     steps = config.get('Mezei_R6_steps', 36)
@@ -135,7 +135,6 @@ def _R6(points, len1, len2):
     d24s[2][steps] = d24s[2][0]
     d24s[3][steps] = d24s[3][0]
 
-    result = []
     p24_res = p24_Resolver(points, len1, len2, p3_result)
     for i in range(4):
         p24_res.switch(i)
@@ -143,8 +142,7 @@ def _R6(points, len1, len2):
             if d24s[i][j] and d24s[i][j+1] and \
                    (d24s[i][j] - d24)*(d24s[i][j+1] - d24) <= 0:
                 angle = rtbis(p24_res, j*step, (j+1)*step, 0.1)
-                result.append((i, angle, p24_res.p2, p24_res.p3, p24_res.p4))
-    return result
+                yield (i, angle, p24_res.p2, p24_res.p3, p24_res.p4)
 
 def __R6(coords, atmidx, dismat):
     results = []
