@@ -9,7 +9,7 @@ import itcc
 
 subscript = {
     'catordiff':  ('CCS2.catordiff', 'cyclic alkane torsion diffrent'),
-    'cmpxyztop':  ('Tools.cmpxyztop', 'Compare topology of two xyz files'),
+    'cmpxyztop':  ('molecule.cmpxyztop', 'Compare topology of two xyz files'),
     'columnmean': ('Tools.columnmean', 'mean for column'),
     'confsearch': ('CCS2.confsearch', 'Conformational search'),
     'constrain':  ('Tinker.constrain', 'generate a constrain tinker.key'),
