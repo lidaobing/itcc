@@ -1,7 +1,7 @@
 # $Id$
 
-from itcc.Molecule import relalist
-from itcc.Tinker import molparam
+from itcc.molecule import relalist
+from itcc.tinker import molparam
 
 __revision__ = '$Rev$'
 
@@ -11,11 +11,11 @@ def gettortype(mol, tor):
 
 def gettorsbytype(mol, types):
     types = [molparam.torsion_uni(type_) for type_ in types]
-    
+
     result = {}
     for typ in types:
         result[typ] = []
-        
+
     mol.confirmconnect()
     tors = relalist.genD(relalist.genconns(mol.connect))
     for tor in tors:
@@ -23,6 +23,6 @@ def gettorsbytype(mol, types):
         if typ in types:
             result[typ].append(tor)
     return result
-        
-    
-    
+
+
+
