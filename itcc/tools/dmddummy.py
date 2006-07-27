@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import read, relalist
+from itcc.molecule import read, relalist
 
 def dmddummy(xyzfname):
     mol = read.readxyz(file(xyzfname))

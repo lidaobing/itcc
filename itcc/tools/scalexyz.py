@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import read, write
+from itcc.molecule import read, write
 
 def scalexyz(ifname, scaleratio):
     mol = read.readxyz(file(ifname))

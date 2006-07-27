@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import mtxyz, molecule
+from itcc.molecule import mtxyz, molecule
 
 def rg(mol):
     center = molecule.CoordType()

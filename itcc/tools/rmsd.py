@@ -1,8 +1,8 @@
 # $Id$
 
 import sys
-from itcc.Molecule import _rmsd
-from itcc.Molecule import mtxyz
+from itcc.molecule import _rmsd
+from itcc.molecule import mtxyz
 
 __revision__ = '$Rev$'
 __all__ = ['rmsd']
@@ -29,7 +29,7 @@ def usage(ofile):
     ofile.write('    %s mtxyzfname\n' % sys.argv[0])
 
 def main():
-    from itcc.Molecule import read
+    from itcc.molecule import read
     if len(sys.argv) not in (2, 3):
         usage(sys.stderr)
         sys.exit(1)

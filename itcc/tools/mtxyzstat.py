@@ -3,7 +3,7 @@
 __revision__ = '$Rev$'
 
 import math
-from itcc.Molecule import mtxyz
+from itcc.molecule import mtxyz
 
 def readidx(ifile):
     result = []

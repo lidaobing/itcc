@@ -1,9 +1,11 @@
 # $Id$
 
 import math
+
 from Scientific import Statistics
-from itcc.Tools import tools
-from itcc.Molecule import read
+
+from itcc.tools import tools
+from itcc.molecule import read
 
 __revision__ = '$Rev$'
 

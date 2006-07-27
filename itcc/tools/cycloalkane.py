@@ -1,7 +1,11 @@
 # $Id$
 import random
 import math
+
 from Scientific.Geometry import Vector
+
+from itcc.molecule.molecule import Molecule
+from itcc.molecule.atom import Atom
 
 __revision__ = '$Rev$'
 
@@ -56,9 +60,9 @@ class CycloAlkane:
                                  r * math.sin(angle),
                                  random.random()*0.1))
 
-        mol = Molecule.Molecule()
-        C = Molecule.Atom(6, Ctype)
-        H = Molecule.Atom(1, Htype)
+        mol = Molecule()
+        C = Atom(6, Ctype)
+        H = Atom(1, Htype)
         for i in range(n):
             mol.addatom(C, coords[i])
         for i in range(2*n):

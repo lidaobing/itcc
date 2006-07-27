@@ -3,7 +3,7 @@
 __revision__ = '$Rev$'
 
 import sys
-from itcc.Molecule import read, write
+from itcc.molecule import read, write
 
 def xyz2gjf(xyzfname):
     write.writegjf(read.readxyz(file(xyzfname)), sys.stdout)

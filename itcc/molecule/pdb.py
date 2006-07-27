@@ -1,7 +1,5 @@
 # $Id$
 
-__revision__ = '$Rev$'
-
 '''
 http://www-iphicles.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html
 
@@ -36,5 +34,6 @@ def write(mol, ofile=sys.stdout, comment = None):
     for i in range(len(mol)):
         atom, coord = mol[i]
         ofile.write('%-6s%5i %4s %3s  %4i    %8.3f%8.3f%8.3f%6.2f%6.2f\n' %
-                    ('HETATM', i+1, atom.symbol, 'UNK', 1, coord.x(), coord.y(), coord.z(), 1.0, 0.0))
+                    ('HETATM', i+1, atom.symbol, 'UNK', 1,
+                     coord.x(), coord.y(), coord.z(), 1.0, 0.0))
     ofile.write('END\n')

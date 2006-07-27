@@ -6,7 +6,7 @@ angle and torsion angle's unit is radian.
 """
 
 import math
-from itcc.Tools.tools import xyzatm
+from itcc.tools.tools import xyzatm
 
 def _all(lst):
     for x in lst:

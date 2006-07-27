@@ -5,7 +5,7 @@ __revision__ = '$Rev$'
 import sys
 import random
 import math
-from itcc.Molecule import read, molecule, write
+from itcc.molecule import read, molecule, write
 
 first_offset = 10.0
 

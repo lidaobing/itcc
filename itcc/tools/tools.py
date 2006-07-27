@@ -129,8 +129,8 @@ def weightedmean(datas, weights):
 def weightedsd(datas, weights):
     assert len(datas) == len(weights)
     assert len(datas) > 1
-    mean = weightedmean(datas, weights)
-    sum_ = sum([(data - mean)**2 * weight \
+    mean_ = weightedmean(datas, weights)
+    sum_ = sum([(data - mean_)**2 * weight \
                 for data, weight in zip(datas, weights)])
     totalweight = sum(weights)
     return sqrt(sum_/totalweight)

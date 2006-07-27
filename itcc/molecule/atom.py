@@ -116,7 +116,7 @@ def atomord(chr_):
 
     try:
         return atomsymbol.index(key)
-    except:
+    except ValueError:
         return 0
 
 if __name__ == '__main__':

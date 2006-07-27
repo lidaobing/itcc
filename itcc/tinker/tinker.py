@@ -6,6 +6,7 @@ import sys
 import os.path
 import tempfile
 import itertools
+
 from itcc.molecule import read, relalist, write
 
 __revision__ = '$Rev$'
@@ -29,7 +30,7 @@ def getparam(key):
         if os.path.isfile(key):
             return key
     assert not os.path.isabs(key)
-    
+
     PRM_ROOT = os.getenv("TNK_PRM_ROOT", "")
     if PRM_ROOT:
         param = os.path.join(PRM_ROOT, key)
@@ -44,8 +45,9 @@ def getparam(key):
     param = os.path.join('/usr/share/tinker/params', key)
     if os.path.isfile(param):
         return param
-    
+
     assert False
+
 
 def constrain(ifname, param = None):
     """constrain(ifname, param = None) -> List of String
@@ -69,13 +71,16 @@ def _writemoltotempfile(mol):
     ofile.flush()
     return ofile
 
+
 def optimizemol(mol, forcefield, converge = 0.01):
     return optimize_minimize_mol('optimize', mol, forcefield, converge)
+
 
 def minimizemol(mol, forcefield, converge = 0.01):
     global minimize_count
     minimize_count += 1
     return optimize_minimize_mol('minimize', mol, forcefield, converge)
+
 
 def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
     """optimizemol(mol, forcefield, converge = 0.01) -> (Molecule, Float)
@@ -98,7 +103,7 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
 
     lines = ifile.readlines()
     ifile.close()
-    
+
     for line in lines:
         if line.find('Function') != -1:
             result = float(line.split()[-1])
@@ -118,11 +123,14 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
 
     return newmol, result
 
+
 def minimize_file(ifname, forcefield, converge = 0.01):
     return optimize_minimize_file('minimize', ifname, forcefield, converge)
 
+
 def optimize_file(ifname, forcefield, converge = 0.01):
     return optimize_minimize_file('optimize', ifname, forcefield, converge)
+
 
 def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
     ofname = ifname + '_2'
@@ -136,7 +144,7 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
     lines = ifile.readlines()
     ifile.close()
-    
+
     for line in lines:
         if line.find('Function') != -1:
             result = float(line.split()[-1])
@@ -155,10 +163,12 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
     return newmol, result
 
+
 def _vibratefloat(str_):
     if str_.endswith('I'):
         return -float(str_[:-1])
     return float(str_)
+
 
 def vibratemol(mol, forcefield):
     molfile = _writemoltotempfile(mol)
@@ -177,7 +187,7 @@ def vibratemol(mol, forcefield):
         if ifile.next().startswith(' Vibrational Frequencies (cm-1) :'):
             ifile.next()
             break
-    
+
     counter = itertools.count(1)
     for line in ifile:
         words = line.split()
@@ -193,6 +203,7 @@ def vibratemol(mol, forcefield):
     molfile.close()
 
     return result
+
 
 def isminimal(mol, forcefield):
     freqs = vibratemol(mol, forcefield)

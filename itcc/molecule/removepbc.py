@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import write, molecule, mtxyz
+from itcc.molecule import write, molecule, mtxyz
 
 def nearestmirror(coord, origin, pbc):
     result = [None] * 3
@@ -24,8 +24,8 @@ def removepbc(xyzfname, pbc):
 def main():
     import sys
     if len(sys.argv) not in (3, 5):
-        print >> sys.stderr, 'Usage: %s xyzfname pbc.x' % sys.argv[0]
-        print >> sys.stderr, '       %s xyzfname pbc.x pbc.y pbc.z' % sys.argv[0]
+        sys.stderr.write('Usage: %s xyzfname pbc.x\n' % sys.argv[0])
+        sys.stderr.write('       %s xyzfname pbc.x pbc.y pbc.z' % sys.argv[0])
         sys.exit(1)
     if len(sys.argv) == 3:
         removepbc(sys.argv[1], [float(sys.argv[2])] * 3)

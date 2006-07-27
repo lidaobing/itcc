@@ -9,6 +9,7 @@ def gettortype(mol, tor):
     assert len(tor) == 4
     return tuple([mol.atoms[idx].type for idx in tor])
 
+
 def gettorsbytype(mol, types):
     types = [molparam.torsion_uni(type_) for type_ in types]
 

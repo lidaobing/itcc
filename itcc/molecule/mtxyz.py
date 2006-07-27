@@ -5,7 +5,7 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import read
+from itcc.molecule import read
 
 class Mtxyz:
     def __init__(self, ifile):

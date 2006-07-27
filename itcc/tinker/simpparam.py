@@ -4,8 +4,9 @@
 
 import sys
 from sets import Set
-from itcc.Tinker import tinker, molparam
-from itcc.Molecule import read, tools, relalist
+
+from itcc.tinker import tinker, molparam
+from itcc.molecule import read, tools, relalist
 
 __revision__ = '$Rev$'
 
@@ -31,9 +32,12 @@ def getmoldata(molfname):
     result['typepairs'] = Set(typepairs)
 
     rela = relalist.Relalist(mol)
-    result['bondtypes'] = Set([molparam.bond_uni(gettype(bond, types)) for bond in rela.bonds])
-    result['angletypes'] = Set([molparam.angle_uni(gettype(angle, types)) for angle in rela.angles])
-    result['torsiontypes'] = Set([molparam.torsion_uni(gettype(torsion, types)) for torsion in rela.torsions])
+    result['bondtypes'] = Set([molparam.bond_uni(gettype(bond, types))
+                               for bond in rela.bonds])
+    result['angletypes'] = Set([molparam.angle_uni(gettype(angle, types))
+                                for angle in rela.angles])
+    result['torsiontypes'] = Set([molparam.torsion_uni(gettype(torsion, types))
+                                  for torsion in rela.torsions])
 
     return result
 
@@ -77,7 +81,8 @@ def checkangletypes(words, moldata):
     return False
 
 def checktorsiontypes(words, moldata):
-    key = molparam.torsion_uni([int(words[1]), int(words[2]), int(words[3]), int(words[4])])
+    key = molparam.torsion_uni([int(words[1]), int(words[2]),
+                                int(words[3]), int(words[4])])
     if key in moldata['torsiontypes']:
         return True
     return False
