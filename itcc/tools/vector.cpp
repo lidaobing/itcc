@@ -1,7 +1,7 @@
 // $Id$
+#include "vector.hpp"
 #include <boost/python.hpp>
 #include <boost/python/overloads.hpp>
-#include "Vector.hpp"
 using namespace boost::python;
 
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Vector_normal_overloads, normal, 0, 1)
