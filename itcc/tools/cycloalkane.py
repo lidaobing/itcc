@@ -1,7 +1,6 @@
 # $Id$
 import random
 import math
-from itcc import Molecule, CCS2, Tinker, Tools
 from Scientific.Geometry import Vector
 
 __revision__ = '$Rev$'
@@ -12,19 +11,19 @@ FF_OPLSAA = 'oplsaa'
 
 def gettype_MM2(n):
     if n == 3:
-        return 22,5
+        return 22, 5
     else:
-        return 1,5
+        return 1, 5
 
 def gettype_MM3(n):
     if n == 3:
-        return 22,5
+        return 22, 5
     if n == 4:
-        return 56,5
-    return 1,5
+        return 56, 5
+    return 1, 5
 
 def gettype_OPLSAA(_):
-    return 2,6
+    return 2, 6
 
 
 
@@ -53,11 +52,13 @@ class CycloAlkane:
         coords = []
         for i in range(n):
             angle = math.pi * 2.0 * i / n
-            coords.append(Vector(r * math.cos(angle), r * math.sin(angle), random.random()*0.1))
+            coords.append(Vector(r * math.cos(angle),
+                                 r * math.sin(angle),
+                                 random.random()*0.1))
 
         mol = Molecule.Molecule()
-        C = Molecule.Atom(6,Ctype)
-        H = Molecule.Atom(1,Htype)
+        C = Molecule.Atom(6, Ctype)
+        H = Molecule.Atom(1, Htype)
         for i in range(n):
             mol.addatom(C, coords[i])
         for i in range(2*n):
@@ -75,8 +76,8 @@ class CycloAlkane:
         n = len(tors) + 3
 
         Ctype, Htype = self.gettype(forcefield, n)
-        C = Molecule.Atom(6,Ctype)
-        H = Molecule.Atom(1,Htype)
+        C = Molecule.Atom(6, Ctype)
+        H = Molecule.Atom(1, Htype)
 
         coords = [None] * n
         coords[0] = Vector(self.CClen, 0.0, 0.0)

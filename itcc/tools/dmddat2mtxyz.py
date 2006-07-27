@@ -2,9 +2,9 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Tools import dmddat
-from itcc.Molecule import read, write, molecule
-from itcc.Tools.frame import parseframe
+from itcc.tools import dmddat
+from itcc.molecule import read, write, molecule
+from itcc.tools.frame import parseframe
 
 def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
     aDmddat = dmddat.Dmddat(file(dmddatfname))
@@ -28,7 +28,9 @@ def main():
     parser.add_option(
     	"-f", "--frame", dest='frame_str',
 	default=None,
-	help="select frame, format is 'begin[-end[/step]](,begin[-end[/step]])*', for example '-f 2-40/3,71-91/2'")
+	help="select frame, " \
+             "format is 'begin[-end[/step]](,begin[-end[/step]])*', " \
+             "for example '-f 2-40/3,71-91/2'")
     (options, args) = parser.parse_args()
 
     frame = parseframe(options.frame_str)

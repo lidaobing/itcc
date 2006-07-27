@@ -1,6 +1,6 @@
 # $Id$
 import sys
-from itcc.Molecule import read, atom
+from itcc.molecule import read, atom
 
 __revision__ = '$Rev$'
 

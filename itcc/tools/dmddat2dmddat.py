@@ -3,8 +3,8 @@ __revision__ = '$Rev$'
 
 import struct
 import sys
-from itcc.Tools.frame import parseframe
-from itcc.Tools.dmddat import Dmddat
+from itcc.tools.frame import parseframe
+from itcc.tools.dmddat import Dmddat
 
 def dmddat2dmddat(ifile, ofile, frames):
     aDmddat = Dmddat(ifile)
@@ -28,7 +28,9 @@ def main():
     parser = OptionParser(usage)
     parser.add_option(
         "-f", "--frame", dest='frame_str', default=None,
-	help="select frame, format is 'begin[-end[/step]](,begin[-end[/step]])*', for example '-f 2-40/3,71-91/2'")
+	help="select frame, " \
+             "format is 'begin[-end[/step]](,begin[-end[/step]])*', " \
+             "for example '-f 2-40/3,71-91/2'")
     parser.add_option(
         "-F", "--framefile", dest='frame_file', default=None,
 	help="read frame from file")

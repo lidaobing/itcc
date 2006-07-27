@@ -2,7 +2,7 @@
 '''custom function of peptide
 '''
 
-from itcc.CCS2 import base
+from itcc.ccs2 import base
 
 __revision__ = '$Rev$'
 __all__ = ['Peptide']
@@ -11,13 +11,13 @@ class Peptide(base.Base):
     def __init__(self, mol):
         base.Base.__init__(self, mol)
         self.mol = mol
-        
+
     def getr6s(self, loopatoms):
         types = gettypes(self.mol, loopatoms)
         if ispair(types[-1], types[0]):
             types = types[1:] + types[:1]
             loopatoms = loopatoms[1:] + loopatoms[:1]
-              
+
         idx = 0
         newloopatoms = []
         while idx < len(loopatoms) - 1:
@@ -35,7 +35,7 @@ class Peptide(base.Base):
             assert idx == len(loopatoms)
 
         doubleloop = newloopatoms * 2
-        
+
         return [tuple(doubleloop[i:i+7]) for i in range(len(newloopatoms))]
 
     def getcombinations(self, R6s):
@@ -58,5 +58,5 @@ def degree(mol, idx):
 
 def ispair(type1, type2):
     return (type1, type2) in [('C3', 'N3'), ('N3', 'C3')]
-        
-    
+
+

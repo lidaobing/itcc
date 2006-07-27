@@ -3,7 +3,7 @@ import random
 from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector, isVector
 from Scientific.Statistics import mean, standardDeviation as stdev
-from itcc.Tools import ctools
+from itcc.tools import ctools
 
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',

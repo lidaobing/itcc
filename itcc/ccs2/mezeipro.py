@@ -3,9 +3,9 @@
 """
 import math
 from Scientific import Geometry
-from itcc.CCS2 import pyramid, sidechain
-from itcc.CCS2 import config
-from itcc.CCS2.Mezei import rtbis
+from itcc.ccs2 import pyramid, sidechain
+from itcc.ccs2 import config
+from itcc.ccs2.mezei import rtbis
 
 __revision__ = '$Rev$'
 

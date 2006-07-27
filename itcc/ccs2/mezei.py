@@ -8,9 +8,9 @@
 
 from math import sqrt, sin, cos, pi
 import Numeric
-from itcc.CCS2.config import config
-from itcc.CCS2.pyramid import pyramid
-from itcc.CCS2 import sidechain
+from itcc.ccs2.config import config
+from itcc.ccs2.pyramid import pyramid
+from itcc.ccs2 import sidechain
 
 __revision__ = '$Rev$'
 __all__ = ["R6", "r6_base"]

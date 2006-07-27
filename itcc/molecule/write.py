@@ -1,9 +1,9 @@
 # $Id$
 
 import sys
-from itcc.Molecule.molecule import Molecule
-from itcc.Molecule.atom import atomchr
-from itcc.Molecule.pdb import write as writepdb
+from itcc.molecule.molecule import Molecule
+from itcc.molecule.atom import atomchr
+from itcc.molecule.pdb import write as writepdb
 
 __revision__ = '$Rev$'
 

@@ -6,7 +6,7 @@ import sys
 import struct
 import copy
 import os.path
-from itcc.Tools.backup import backup
+from itcc.tools.backup import backup
 
 def get_format_new():
     while True:

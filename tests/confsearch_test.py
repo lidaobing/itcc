@@ -23,7 +23,7 @@ test_cycc5_in = """    5 1.pdb                  MM2 parameters
 
 class TestConfsearch(unittest.TestCase):
     def setUp(self):
-        from itcc.CCS2 import confsearch
+        from itcc.ccs2 import confsearch
         self.confsearch = confsearch
         os.system("rm -rf subdirs")
         os.mkdir("subdirs", 0700)

@@ -6,7 +6,7 @@ import sys
 import os.path
 import tempfile
 import itertools
-from itcc.Molecule import read, relalist, write
+from itcc.molecule import read, relalist, write
 
 __revision__ = '$Rev$'
 

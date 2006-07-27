@@ -2,8 +2,8 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule.read import readxyz
-from itcc.Molecule.write import writepdb
+from itcc.molecule.read import readxyz
+from itcc.molecule.write import writepdb
 
 def xyz2pdb(ifile, ofile):
     writepdb(readxyz(ifile), ofile)

@@ -8,10 +8,13 @@ import sets
 import pprint
 import itertools
 import time
-from itcc.Tinker import tinker
-from itcc.CCS2 import loopdetect, base, peptide, R6, Mezei, catordiff, Mezeipro, sidechain
-from itcc.Molecule import read, write, tools as moltools
-from itcc.Tools import tools
+from itcc.tinker import tinker
+from itcc.ccs2 import loopdetect, base, peptide, catordiff, sidechain
+from itcc.ccs2 import r6 as R6
+from itcc.ccs2 import mezei as Mezei
+from itcc.ccs2 import mezeipro as Mezeipro
+from itcc.molecule import read, write, tools as moltools
+from itcc.tools import tools
 
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
@@ -242,7 +245,7 @@ class LoopClosure:
 
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
-    if type_ == (1,1,1,1,1,1,1):
+    if type_ == (1, 1, 1, 1, 1, 1, 1):
         idxs = tuple(itertools.chain(*r6))
         return Mezei.R6(coords, idxs, dismat, shakedata)
     elif type_ == (2, 1, 2, 1, 2, 1, 2):

@@ -1,5 +1,5 @@
 import unittest
-from itcc.Molecule import _rmsd, read
+from itcc.molecule import _rmsd, read
 
 class TestRMSD(unittest.TestCase):
     def testrmsd(self):

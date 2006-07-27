@@ -2,9 +2,9 @@
 
 __revision__ = '$Rev$'
 
-from itcc.Molecule import read
-from itcc.Molecule.relalist import Relalist
-from itcc.Tools.tools import all
+from itcc.molecule import read
+from itcc.molecule.relalist import Relalist
+from itcc.tools.tools import all
 
 def mol2top(molfname):
     mol = read.readxyz(file(molfname))

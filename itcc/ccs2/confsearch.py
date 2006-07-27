@@ -1,5 +1,5 @@
 # $Id$
-from itcc.CCS2 import loopclosure
+from itcc.ccs2 import loopclosure
 
 __revision__ = '$Rev$'
 

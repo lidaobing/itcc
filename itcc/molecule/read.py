@@ -6,8 +6,8 @@ __revision__ = '$Rev$'
 
 import re
 from Scientific.Geometry import Vector
-from itcc.Molecule.molecule import Molecule
-from itcc.Molecule.atom import Atom
+from itcc.molecule.molecule import Molecule
+from itcc.molecule.atom import Atom
 
 
 

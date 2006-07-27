@@ -1,6 +1,6 @@
 # $Id$
 
-from itcc.Molecule import read, write
+from itcc.molecule import read, write
 
 __revision__ = '$Rev$'
 

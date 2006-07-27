@@ -3,9 +3,9 @@
 
 import sys
 import math
-from itcc.Tools import periodnumber
-from itcc.Molecule import read, molecule, tools
-from itcc.CCS2 import loopdetect
+from itcc.tools import periodnumber
+from itcc.molecule import read, molecule, tools
+from itcc.ccs2 import loopdetect
 
 __revision__ = '$Rev$'
 __all__ = ['catordiff']

@@ -1,7 +1,7 @@
 # $Id$
 
-from itcc.Molecule import tools
-from itcc.CCS2 import pyramid
+from itcc.molecule import tools
+from itcc.ccs2 import pyramid
 
 __revision__ = '$Rev$'
 

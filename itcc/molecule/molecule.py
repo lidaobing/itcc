@@ -3,10 +3,10 @@
 
 import pprint
 from Numeric import zeros
-from itcc.Tools import tools
-from itcc.Molecule.atom import Atom
-from itcc.Molecule import tools as moltools
 from Scientific.Geometry import Vector as CoordType
+from itcc.tools import tools
+from itcc.molecule.atom import Atom
+from itcc.molecule import tools as moltools
 
 __all__ = ["Molecule", 'CoordType']
 __revision__ = '$Rev$'
