@@ -2,16 +2,16 @@
 
 set -e
 
-python ../itcc/Tools/mol2top.py mol2top.xyz | \
+python ../itcc/tools/mol2top.py mol2top.xyz | \
     diff mol2top.ok -
 
-python ../itcc/Tools/onecolumn.py onecolumn.xyz | \
+python ../itcc/tools/onecolumn.py onecolumn.xyz | \
     diff onecolumn.ok -
 
-python ../itcc/Tools/dmddat2mtxyz.py -f 1-3/2,4-8/3 dmddat2mtxyz.dmddat dmddat2mtxyz.mol | \
+python ../itcc/tools/dmddat2mtxyz.py -f 1-3/2,4-8/3 dmddat2mtxyz.dmddat dmddat2mtxyz.mol | \
     diff dmddat2mtxyz.ok -
 
-python ../itcc/Tools/xyz2pdb.py xyz2pdb.xyz - \
+python ../itcc/tools/xyz2pdb.py xyz2pdb.xyz - \
     | diff xyz2pdb.ok -
 
 echo OK
