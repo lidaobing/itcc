@@ -4,19 +4,29 @@
 @settitle ITCC Manual 0.2
 @c %**end of header
 
-@node Top
+@node Top, CCS2, (dir), (dir)
 @top Manual of ITCC
 
 Manual of ITCC
 
 @menu
+* CCS2::                        
 * Torsionfit::                  
+
 @end menu
 
-@node Torsionfit
+@node CCS2, Torsionfit, Top, Top
+@chapter CCS2
+
+@section confsearch
+use 'itcc confsearch' to invoke it.
+
+@node Torsionfit,  , CCS2, Top
 @chapter Torsionfit
 
 @section get data from Gaussian result
-use @file{src/Torsionfit/getscandata.py}.
+use @file{src/torsionfit/getscandata.py}.
+
+
 
 @bye
