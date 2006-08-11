@@ -2,12 +2,14 @@ Source: itcc
 Section: science
 Priority: optional
 Maintainer: LI Daobing <lidaobing@gmail.com>
-Build-Depends: cdbs (>= 0.4.23-1.1), build-essential, debhelper (>= 4.1.0), python-dev, lapack3-dev,
- libboost-python-dev
+Build-Depends: cdbs (>= 0.4.23-1.1), debhelper (>= 5), debhelper (>= 5.0.37.2), cdbs (>= 0.4.43), python-all-dev (>= 2.3.5-11), python-central (>= 0.5.0), 
+ lapack3-dev, libboost-python-dev
+XS-Python-Version: 2.4
 Standards-Version: 3.7.2
 
 Package: itcc
 Architecture: any
+XB-Python-Version: ${python:Versions}
 Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific (>= 2.4.9-5),
  python-scipy(>= 0.3.2-9)
 Description: <insert up to 60 chars description>

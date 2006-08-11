@@ -10,9 +10,9 @@ itcc (0.8) UNRELEASED; urgency=low
   * module: itcc.CCS2.Mezei:
     - new function: r6_base
   * depends on higher version of python-scientific and python-scipy
-  * swict to cdbs 
+  * swict to cdbs+pycentral
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 11 Aug 2006 09:22:52 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 11 Aug 2006 09:52:41 +0800
 
 itcc (0.7) unstable; urgency=low
 
