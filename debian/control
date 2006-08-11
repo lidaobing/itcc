@@ -8,6 +8,7 @@ Standards-Version: 3.7.2
 
 Package: itcc
 Architecture: any
-Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific, python-scipy
+Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific (>= 2.4.9-5),
+ python-scipy(>= 0.3.2-9)
 Description: <insert up to 60 chars description>
  <insert long description, indented with spaces>
