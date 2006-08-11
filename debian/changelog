@@ -9,9 +9,10 @@ itcc (0.8) UNRELEASED; urgency=low
     - new function: inner2xyz
   * module: itcc.CCS2.Mezei:
     - new function: r6_base
-  * depends on higher version of python-scientific and python-scipy 
+  * depends on higher version of python-scientific and python-scipy
+  * swict to cdbs 
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 11 Aug 2006 08:48:44 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 11 Aug 2006 09:22:52 +0800
 
 itcc (0.7) unstable; urgency=low
 
