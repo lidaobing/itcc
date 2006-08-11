@@ -61,7 +61,7 @@ def main():
     key = sys.argv[1]
 
     if key == '--version':
-        print 'Version:', itcc.__version__
+        print 'itcc', itcc.__version__
     elif key in ['-h', '--help', 'help']:
         help()
     elif key in subscript:
