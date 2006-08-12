@@ -32,7 +32,7 @@ def _delleaf(mat):
         for i in range(len(degrees)):
             if degrees[i] == 1:
                 finished = False
-                
+
                 j = [k for k in range(len(degrees)) if mat[i][k] == 1]
                 assert(len(j) == 1)
                 j = j[0]
@@ -42,7 +42,7 @@ def _delleaf(mat):
                 degrees[i] = 0
                 degrees[j] -= 1
     return degrees
-        
+
 def _countloop(mat):
     trunk_deg = sum(mat)
     deg_max = max(trunk_deg)
@@ -63,7 +63,7 @@ def _countloop2(mat):
         except ValueError:
             break
         result.append([i])
-	
+
         while True:
             j = mat[i].tolist().index(1)
 
@@ -90,7 +90,7 @@ def _connectmatrix(mol):
         raise RuntimeError
 
     return connmat
-    
+
 
 def loopdetect(mol):
     """loopdetect(mol):
