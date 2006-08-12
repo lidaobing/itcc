@@ -1,4 +1,4 @@
-# -*- coding: utf8 -*-
+# -*- coding: utf-8 -*-
 # $Id$
 import Numeric
 import math
@@ -6,7 +6,7 @@ from Scientific.Geometry import Tensor, Vector
 from Scientific.Geometry.Transformation import Translation, \
      RotationTranslation
 
-__all__ = ['pyramid']
+__all__ = ['pyramid', 'pyramid2']
 __revision__ = '$Rev$'
 
 def construct_transform_matrixA(O, Ox, Oy, Oz):

@@ -1,15 +1,24 @@
 # $Id$
+# -*- coding: utf-8 -*-
 """extend Mezei's method to protein.
 """
 import math
-from Scientific import Geometry
 from itcc.ccs2 import pyramid, sidechain
 from itcc.ccs2 import config
 from itcc.ccs2.mezei import rtbis
 
 __revision__ = '$Rev$'
 
-def wrappyramid(atmidx, coords, dismat):
+def _wrappyramid(atmidx, coords, dismat):
+    '''_wrappyramid((i1, i2, i3, i4), coords, dismat)
+
+    coords是坐标，dismat是距离矩阵，已知i2, i3, i4三个点的坐标，求i1的坐标。
+
+    一般情况下i1有两个解(r1, r2), 这时返回 (r1, r2)，
+    如果没有解，返回 (None, None)
+
+    浮点数误差部分参见 config.Mezei_p24_threshold
+    '''
     i1, i2, i3, i4 = atmidx
     A = coords[i2]
     B = coords[i3]
@@ -35,28 +44,26 @@ def wrappyramid2(atmidx, coords, dismat):
 def propyramida(atmidx, coords, dismat):
     '''resolve a fragment of protein:
     C1-C2(=O)-N3-C4-C5(=O) or
-    N5-C4-C3(-O)-N2-C1
+    N5-C4-C3(=O)-N2-C1
 
     known the coords of p1, p4, p5, and all the bond length and bond
     length and bond angles, to calculate the coords of p2 and p3
     '''
     i1, i2, i3, i4, i5 = tuple(atmidx)
-    result = []
-    for i3coord in wrappyramid((i3, i1, i4, i5), coords, dismat):
+    for i3coord in _wrappyramid((i3, i1, i4, i5), coords, dismat):
         if i3coord is None:
-            result.append((None, None))
-            result.append((None, None))
+            yield (None, None)
+            yield (None, None)
             continue
         newcoords = coords[:]
         newcoords[i3] = i3coord
-        i2coords = wrappyramid((i2, i1, i3, i4), newcoords, dismat)
+        i2coords = _wrappyramid((i2, i1, i3, i4), newcoords, dismat)
         if i2coords[0] is None:
-            result.append((None, None))
-            result.append((None, None))
+            yield (None, None)
+            yield (None, None)
             continue
-        result.append((i2coords[0], i3coord))
-        result.append((i2coords[1], i3coord))
-    return result
+        yield (i2coords[0], i3coord)
+        yield (i2coords[1], i3coord)
 
 def safeop(op, *args):
     for arg in args:
@@ -70,23 +77,24 @@ class R6sub:
         self.atmidx = atmidx
         self.dismat = dismat
         i1, i2, i3, i4, i5, i6, i7, i8, i9 = atmidx
-        self.p5o, self.p5x, self.p5y = wrappyramid2((i5, i2, i8), coords, dismat)
+        self.p5o, self.p5x, self.p5y = wrappyramid2((i5, i2, i8),
+                                                    coords, dismat)
     def __call__(self, angle):
         i1, i2, i3, i4, i5, i6, i7, i8, i9 = self.atmidx
         p5 = self.p5o + self.p5x * math.cos(angle) + self.p5y * math.sin(angle)
         newcoords = self.coords[:]
         newcoords[i5] = p5
-        results = []
-        resultsa = tuple(propyramida((i5, i4, i3, i2, i1), newcoords, self.dismat))
-        resultsb = tuple(propyramida((i5, i6, i7, i8, i9), newcoords, self.dismat))
+        resultsa = propyramida((i5, i4, i3, i2, i1),
+                               newcoords, self.dismat)
+        resultsb = propyramida((i5, i6, i7, i8, i9),
+                               newcoords, self.dismat)
 
         for p4, p3 in resultsa:
             for p6, p7 in resultsb:
                 if p4 is None or p6 is None:
-                    results.append((None,) * 5)
+                    yield (None,) * 5
                 else:
-                    results.append((p3,p4,p5,p6,p7))
-        return results
+                    yield (p3, p4, p5, p6, p7)
 
 def R6a(coords, atmidx, dismat):
     '''resolve a fragment of protein:
@@ -101,10 +109,8 @@ def R6a(coords, atmidx, dismat):
     steps = config.config.get('Mezei_R6_steps', 36)
     stepsize = 2 * math.pi / steps
 
-    results = []
-    for i in range(steps):
-        angle = i * stepsize
-        results.append(r6sub(angle))
+    results = [r6sub(i*stepsize) for i in range(steps)]
+    results[0] = tuple(results[0])
     results.append(results[0])
 
     d46ref = dismat[i4, i6]
@@ -117,7 +123,7 @@ def R6a(coords, atmidx, dismat):
             if d46mat[i][j] is not None \
               and d46mat[i+1][j] is not None \
               and d46mat[i][j] * d46mat[i+1][j] <= 0:
-                try:   
+                try:
                     angle = rtbis(d46_Resolver(r6sub, j, d46ref),
                                   i * stepsize,
                                   (i+1) * stepsize,
@@ -154,5 +160,6 @@ def R6(coords, atmidx, dismat, shakedata):
         for idx, newcoord in baseresult.items():
             newcoords[idx] = newcoord
         for refidxs, sidechain_ in shakes:
-            baseresult.update(sidechain.movesidechain(coords, newcoords, refidxs, sidechain_))
+            baseresult.update(sidechain.movesidechain(coords, newcoords,
+                                                      refidxs, sidechain_))
         yield baseresult
