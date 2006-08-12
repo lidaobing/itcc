@@ -114,19 +114,22 @@ def R6a(coords, atmidx, dismat):
     results = []
     for i in range(steps):
         for j in range(16):
-            if d46mat[i][j] is not None and \
-               d46mat[i+1][j] is not None and \
-               d46mat[i][j] * d46mat[i+1][j] <= 0:
-                angle = rtbis(d46_Resolver(r6sub, j, d46ref),
-                              i * stepsize,
-                              (i+1) * stepsize,
-                              0.1)
-                result = r6sub(angle)[j]
-                yield {i3: result[0],
-                       i4: result[1],
-                       i5: result[2],
-                       i6: result[3],
-                       i7: result[4]}
+            if d46mat[i][j] is not None \
+              and d46mat[i+1][j] is not None \
+              and d46mat[i][j] * d46mat[i+1][j] <= 0:
+                try:   
+                    angle = rtbis(d46_Resolver(r6sub, j, d46ref),
+                                  i * stepsize,
+                                  (i+1) * stepsize,
+                                  0.1)
+                    result = r6sub(angle)[j]
+                    yield {i3: result[0],
+                           i4: result[1],
+                           i5: result[2],
+                           i6: result[3],
+                           i7: result[4]}
+                except:
+                    pass
 
 def getd46rela(p4, p6, d46ref):
     if p4 is None or p6 is None:
