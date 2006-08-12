@@ -32,10 +32,7 @@ def _delleaf(mat):
         for i in range(len(degrees)):
             if degrees[i] == 1:
                 finished = False
-
-                j = [k for k in range(len(degrees)) if mat[i][k] == 1]
-                assert(len(j) == 1)
-                j = j[0]
+                j = mat[i].tolist().index(1)
 
                 mat[i][j] = 0
                 mat[j][i] = 0
@@ -52,7 +49,7 @@ def _countloop(mat):
     elif deg_max == 2:
         return _countloop2(mat)
     else:
-        raise RuntimeError, "I can't deal with molecule with complex cycle."
+        raise RuntimeError("I can't deal with molecule with complex cycle.")
 
 def _countloop2(mat):
     trunk_deg = sum(mat).tolist()
