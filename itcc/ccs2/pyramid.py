@@ -75,7 +75,9 @@ def pyramid(A, B, C, rAX, rBX, rCX):
     return ((result1, result2), X22)
 
 def pyramid2(A, B, rAX, rBX):
-    '''known the coords of A, B and rAX, rBX, then X will be on a
+    '''pyramid2(A, B, rAX, rBX) -> (O, OXx, OXy)
+
+    known the coords of A, B and rAX, rBX, then X will be on a
     circle. return the circle center and 2 vertical axis.
     '''
     AB = B - A
