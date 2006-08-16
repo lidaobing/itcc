@@ -50,12 +50,12 @@ def _logic_distance_matrix_helper(connectmatrix, idx):
     while waited_idx:
         try:
             dis, curidx = heapq.heappop(queue)
-        except:
+        except IndexError:
             break
-        
+
         if curidx not in waited_idx:
             continue
-        
+
         result[curidx] = dis
         waited_idx.remove(curidx)
 
@@ -63,7 +63,7 @@ def _logic_distance_matrix_helper(connectmatrix, idx):
             if connectmatrix[curidx][j]:
                 heapq.heappush(queue, (dis+1, j))
     return result
-            
+
 def logic_distance_matrix(mol_or_connectmatrix):
     if hasattr(mol_or_connectmatrix, 'connect'):
         connectmatrix = mol_or_connectmatrix.connect
@@ -81,5 +81,5 @@ def logic_distance(mol_or_connectmatrix, idx1, idx2):
         connectmatrix = mol_or_connectmatrix.connect
     else:
         connectmatrix = mol_or_connectmatrix
-    
+
     return _logic_distance_matrix_helper(connectmatrix, idx1)[idx2]
