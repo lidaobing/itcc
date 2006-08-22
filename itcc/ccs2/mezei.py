@@ -11,33 +11,10 @@ import Numeric
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
 from itcc.ccs2 import sidechain
+from itcc.ccs2.rtbis import rtbis
 
 __revision__ = '$Rev$'
 __all__ = ["R6", "r6_base"]
-
-def rtbis(func, x1, x2, xacc):
-    "Reference: Numerical Recipes in C, Chapter 9.1, Page 354"
-    f = func(x1)
-    fmid = func(x2)
-    if f * fmid >= 0:
-        raise RuntimeError
-
-    if f < 0.0:
-        dx = x2 - x1
-        rtb = x1
-    else:
-        dx = x1 - x2
-        rtb = x2
-
-    while True:
-        dx *= 0.5
-        xmid = rtb + dx
-        fmid = func(xmid)
-        if fmid <= 0.0:
-            rtb = xmid
-        if abs(dx) < xacc or fmid == 0.0:
-            return rtb
-    return None                         # never get here
 
 def _calc_p3(points, d13, d35):
     p0 = points[0]
