@@ -18,7 +18,7 @@ clean:
 	rm -rf build dist MANIFEST
 	-find . -name *.pyc -exec rm -f {} \;
 	-find . -name *.o -exec rm -f {} \;
-check:
+check: all
 	(cd tests && $(MAKE) check)
 TAGS:
 	rm -f TAGS
