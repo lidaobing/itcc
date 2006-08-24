@@ -1,10 +1,10 @@
 import math
 import sys
 from random import random
-from itcc.Molecule import molecule, atom, write
-from itcc.Tinker import tinker
-from itcc import CCS2
 from Scientific.Geometry import Vector
+from itcc.molecule import molecule, atom, write
+from itcc.tinker import tinker
+from itcc import ccs2
 
 
 CClen = 1.523
