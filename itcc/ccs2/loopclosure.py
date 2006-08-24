@@ -12,6 +12,7 @@ from itcc.tinker import tinker
 from itcc.molecule import read, write, tools as moltools
 from itcc.tools import tools
 from itcc.ccs2 import loopdetect, base, peptide, catordiff, sidechain
+from itcc.ccs2 import mezeipro2
 from itcc.ccs2 import r6 as R6
 from itcc.ccs2 import mezei as Mezei
 from itcc.ccs2 import mezeipro as Mezeipro
@@ -251,6 +252,9 @@ def getr6result(coords, r6, dismat, shakedata):
     elif type_ == (2, 1, 2, 1, 2, 1, 2):
         idxs = tuple(itertools.chain(*r6))[1:-1]
         return Mezeipro.R6(coords, idxs, dismat, shakedata)
+    elif type_ == (1, 2, 1, 2, 1, 2, 1):
+        idxs = tuple(itertools.chain(*r6))
+        return mezeipro2.R6(coords, idxs, dismat, shakedata)
     assert False, r6type(r6)
 
 def r6type(r6):

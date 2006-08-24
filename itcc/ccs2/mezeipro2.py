@@ -26,7 +26,7 @@ for each N2 on the circle of N2
 
 import math
 import exceptions
-from itcc.ccs2 import pyramid
+from itcc.ccs2 import pyramid, sidechain
 from itcc.ccs2.rtbis import rtbis
 
 class Error(exceptions.Exception):
@@ -37,6 +37,7 @@ class Mezeipro2:
         self.coords = coords
         self.dismatrix = dismatrix
         self.idxs = idxs
+        assert len(self.idxs) == 10
         self.steps = 36
         self.threshold = -0.01 * 0.01
         self.acc = math.radians(0.1)
@@ -209,6 +210,22 @@ def _print_result(ofile, result):
         else:
             ofile.write(str(None) + '\n')
 
+def R6(coords, atmidx, dismat, shakedata):
+    '''Wrapped R6 algorithm, include R6 and shakeH'''
+    shakes = [shakedata[idx] for idx in atmidx[1:-1]]
+    mezeipro2 = Mezeipro2(coords, dismat, atmidx)
+    for result in mezeipro2():
+        baseresult = {}
+        for i in range(2,8):
+            baseresult[atmidx[i]] = result[i-2]
+        newcoords = coords[:]
+        for idx, newcoord in baseresult.items():
+            newcoords[idx] = newcoord
+        for refidxs, sidechain_ in shakes:
+            baseresult.update(sidechain.movesidechain(coords, newcoords,
+                                                      refidxs, sidechain_))
+        yield baseresult
+
 def _test():
     mol = '''    17  molden generated tinker .xyz (mm3 param.)
      1  N+     0.000000    0.000000    0.000000    39     2
@@ -257,7 +274,3 @@ def _test():
 
 if __name__ == '__main__':
     _test()
-
-
-
-
