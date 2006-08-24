@@ -58,7 +58,7 @@ class TestConfsearch(unittest.TestCase):
         sys.argv = ['', 'test_cycc5.in']
         self.confsearch.main()
 
-    def test_cycc5(self):
+    def test_cycc7(self):
         ofile = file("test_cycc7.in", "w");
         ofile.write(test_cycc7_in)
         ofile.close()
