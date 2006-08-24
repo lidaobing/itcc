@@ -36,16 +36,15 @@ class Peptide(base.Base):
 
         doubleloop = newloopatoms * 2
 
-        return [tuple(doubleloop[i:i+7]) for i in range(len(newloopatoms))]
+        for i in range(len(newloopatoms)):
+            yield tuple(doubleloop[i:i+7])
 
     def getcombinations(self, R6s):
-        result = []
         for R6 in R6s:
             if len(R6[3]) == 2:
                 continue
             assert tuple([len(x) for x in R6]) == (2, 1, 2, 1, 2, 1, 2)
-            result.append((R6,))
-        return result
+            yield (R6,)
 
 def gettypes(mol, idxs):
     result = []

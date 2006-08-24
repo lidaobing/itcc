@@ -9,12 +9,12 @@ import pprint
 import itertools
 import time
 from itcc.tinker import tinker
+from itcc.molecule import read, write, tools as moltools
+from itcc.tools import tools
 from itcc.ccs2 import loopdetect, base, peptide, catordiff, sidechain
 from itcc.ccs2 import r6 as R6
 from itcc.ccs2 import mezei as Mezei
 from itcc.ccs2 import mezeipro as Mezeipro
-from itcc.molecule import read, write, tools as moltools
-from itcc.tools import tools
 
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
@@ -64,9 +64,9 @@ class LoopClosure:
             print "your ring is %s-member, we can't deal with ring less than 6-member." % len(self.loopatoms)
             return
         self.shakedata = getshakedata(mol, self.loopatoms)
-        self.r6s = typedmol.getr6s(self.loopatoms)
+        self.r6s = tuple(typedmol.getr6s(self.loopatoms))
         printr6s(self.r6s)
-        self.combinations = typedmol.getcombinations(self.r6s)
+        self.combinations = tuple(typedmol.getcombinations(self.r6s))
         self.r6s = tuple(sets.Set(itertools.chain(*self.combinations)))
         printcombinations(self.combinations)
 
