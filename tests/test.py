@@ -4,6 +4,7 @@ from confsearch_test import TestConfsearch
 from rmsd_test import TestRMSD
 from sidechain_test import TestSidechain
 from test_xyz2pdb import TestXyz2pdb
+from test_mol2top import *
 import unittest
 
 if __name__ == '__main__':

@@ -4,9 +4,6 @@ set -e
 
 PYTHON=python2.4
 
-$PYTHON ../itcc/molecule/mol2top.py mol2top.xyz | \
-    diff mol2top.ok -
-
 $PYTHON ../itcc/tools/onecolumn.py onecolumn.xyz | \
     diff onecolumn.ok -
 
