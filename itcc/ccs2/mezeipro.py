@@ -119,7 +119,7 @@ def R6a(coords, atmidx, dismat):
 
     results = []
     for i in range(steps):
-        for j in range(16):
+        for j in range(4):
             if d46mat[i][j] is not None \
               and d46mat[i+1][j] is not None \
               and d46mat[i][j] * d46mat[i+1][j] <= 0:
