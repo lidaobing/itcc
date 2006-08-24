@@ -1,18 +1,22 @@
 # $Id$
 
+'''convert "1 2\\n3 4\\n" to "1\\n2\\n3\\n4\\n"
+'''
+
 __revision__ = '$Rev$'
 
-def onecolumn(ifname):
-    for line in file(ifname):
+def onecolumn(ifile, ofile):
+    for line in ifile:
         for word in line.split():
-            print word
+            ofile.write("%s\n" % word)
 
 def main():
     import sys
     if len(sys.argv) != 2:
+        sys.stderr.write(__doc__)
         sys.stderr.write('Usage: %s ifname\n' % sys.argv[0])
         sys.exit(1)
-    onecolumn(sys.argv[1])
+    onecolumn(file(sys.argv[1]), sys.stdout)
 
 if __name__ == '__main__':
     main()

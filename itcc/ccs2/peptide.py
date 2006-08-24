@@ -41,9 +41,6 @@ class Peptide(base.Base):
 
     def getcombinations(self, R6s):
         for R6 in R6s:
-            if len(R6[3]) == 2:
-                continue
-            assert tuple([len(x) for x in R6]) == (2, 1, 2, 1, 2, 1, 2)
             yield (R6,)
 
 def gettypes(mol, idxs):

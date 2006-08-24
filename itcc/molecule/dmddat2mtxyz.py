@@ -6,9 +6,9 @@ from itcc.tools import dmddat
 from itcc.molecule import read, write, molecule
 from itcc.tools.frame import parseframe
 
-def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
-    aDmddat = dmddat.Dmddat(file(dmddatfname))
-    mol = read.readxyz(file(molfname))
+def dmddat2mtxyz(dmddatfile, molfile, ofile, select_frames=None):
+    aDmddat = dmddat.Dmddat(dmddatfile)
+    mol = read.readxyz(molfile)
 
     if select_frames is None:
         select_frames = range(aDmddat.framenum)
@@ -18,9 +18,10 @@ def dmddat2mtxyz(dmddatfname, molfname, select_frames=None):
         frame = aDmddat.next().coords
         for i in range(len(frame)):
             mol.coords[i] = molecule.CoordType(frame[i])
-        write.writexyz(mol, comment = 'frame: %i' % (frame_idx+1))
+        write.writexyz(mol, ofile, comment = 'frame: %i' % (frame_idx+1))
 
 def main():
+    import sys
     from optparse import OptionParser
 
     usage = "usage: %prog [-h|options] dmddatfname molfname"
@@ -38,7 +39,7 @@ def main():
     if len(args) != 2:
         parser.error("incorrect number of arguments")
 
-    dmddat2mtxyz(args[0], args[1], frame)
+    dmddat2mtxyz(file(args[0]), file(args[1]), sys.stdout, frame)
 
 
 if __name__ == '__main__':
