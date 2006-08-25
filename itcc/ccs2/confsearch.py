@@ -27,7 +27,7 @@ def main():
     parser.add_option('-m', "--maxsteps", dest="maxsteps",
                       default=0, type='int',
                       help='max optimization steps, default is '
-                           'infinite(not implemented)')
+                           'infinite')
     parser.add_option('-t', "--moltype", dest="moltype",
                       default=None, help='you can set it to peptide')
     (options, args) = parser.parse_args()

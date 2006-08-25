@@ -26,6 +26,7 @@ class LoopClosure:
         self.keeprange = keeprange
         self.searchrange = searchrange
         self.maxsteps = None
+        self._step_count = 0
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
         self.moltypekey = None
@@ -36,7 +37,6 @@ class LoopClosure:
         self.molnametmp = None
         self.newmolnametmp = None
         self.lowestene = None
-        self.step = 0
         self.shakedata = None
 
     def getkeepbound(self):
@@ -53,6 +53,10 @@ class LoopClosure:
 
     def __call__(self, molfname):
         self.printparams()
+        self._call(molfname)
+        self.printend()
+
+    def _call(self, molfname):
         mol = read.readxyz(file(molfname))
         self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
         self.molnametmp = os.path.splitext(molfname)[0] + '.tmp.%03i'
@@ -72,12 +76,16 @@ class LoopClosure:
         printcombinations(self.combinations)
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
+        self._step_count += 1
         self.lowestene = ene
         self.addtask(mol, ene)
-        for taskidx in self.taskqueue():
+        while self.maxsteps is None or self._step_count < self.maxsteps:
+            try:
+                taskidx = self.taskqueue().next()
+            except StopIteration:
+                break
             self.runtask(taskidx)
         self.reorganizeresults()
-        self.printend()
 
     def runtask(self, taskidx):
         mol, ene = self.tasks[taskidx]
@@ -196,14 +204,16 @@ class LoopClosure:
                 rmol, rene = tinker.minimizemol(newmol,
                                                 self.forcefield,
                                                 self.minconverge)
-                self.step += 1
+                self._step_count += 1
                 if tinker.isminimal(rmol, self.forcefield):
                     print '  Step %5i   Comb %02i-%02i %42.4f' % \
-                          (self.step, cmbidx, molidx, rene),
+                          (self._step_count, cmbidx, molidx, rene),
                     yield rmol, rene
                 else:
                     print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
-                          (self.step, cmbidx, molidx, rene)
+                          (self._step_count, cmbidx, molidx, rene)
+                if self._step_count >= self.maxsteps:
+                    return
 
     def reorganizeresults(self):
         if self.keeprange is None:
