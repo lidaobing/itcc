@@ -117,7 +117,7 @@ class TestConfsearch(unittest.TestCase):
         ofile.write(test_cycg5_in)
         ofile.close()
 
-        sys.argv = ['', '-f', 'oplsaa', '-t', 'peptide', '-m', '20', 'test_cycg5.in']
+        sys.argv = ['', '-f', 'oplsaa', '-t', 'peptide', '-m', '2', 'test_cycg5.in']
         self.confsearch.main()
         
     def tearDown(self):
