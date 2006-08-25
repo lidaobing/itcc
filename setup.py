@@ -1,6 +1,23 @@
 #!/usr/bin/env python2.4
 # $Id$
 from distutils.core import setup, Extension
+import os
+
+if os.system('which svnversion > /dev/null') != 0:
+    svnversion = 'exported'
+else:
+    svnversion = os.popen('svnversion').read().strip()
+
+ofile = file('itcc/__init__.py', 'w')
+if svnversion == 'exported':
+    ofile.write("__version__ = '%s'\n" %
+                  file('version.in').read().strip())
+else:
+    ofile.write("__version__ = '%s (SVN%s)'\n" % 
+                  (file('version.in').read().strip(),
+                   svnversion))
+ofile.close()
+
 import itcc
 
 __revision__ = '$Rev$'
