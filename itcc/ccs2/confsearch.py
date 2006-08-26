@@ -25,7 +25,7 @@ def main():
                       default=None, type='float',
                       help='search boundary(kcal/mol), default is no boundary')
     parser.add_option('-m', "--maxsteps", dest="maxsteps",
-                      default=0, type='int',
+                      default=None, type='int',
                       help='max optimization steps, default is '
                            'infinite')
     parser.add_option('-t', "--moltype", dest="moltype",
