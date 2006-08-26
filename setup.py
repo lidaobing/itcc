@@ -6,7 +6,7 @@ import os
 if os.system('which svnversion > /dev/null') != 0:
     svnversion = 'exported'
 else:
-    svnversion = os.popen('svnversion').read().strip()
+    svnversion = os.popen('svnversion .').read().strip()
 
 ofile = file('itcc/__init__.py', 'w')
 if svnversion == 'exported':
