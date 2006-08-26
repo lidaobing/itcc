@@ -8,6 +8,7 @@ import sets
 import pprint
 import itertools
 import time
+import itcc
 from itcc.tinker import tinker
 from itcc.molecule import read, write, tools as moltools
 from itcc.tools import tools
@@ -161,6 +162,7 @@ class LoopClosure:
 
     def printparams(self):
         print 'Starttime: %s' % time.asctime()
+        print 'Program Version: itcc %s' %  itcc.__version__
         print 'Forcefield: %s' % self.forcefield
         print 'KeepRange: %s' % self.keeprange
         print 'SearchRange: %s' % self.searchrange
