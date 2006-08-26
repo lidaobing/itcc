@@ -214,7 +214,7 @@ class LoopClosure:
                 else:
                     print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
                           (self._step_count, cmbidx, molidx, rene)
-                if self._step_count >= self.maxsteps:
+                if self.maxsteps is not None and self._step_count >= self.maxsteps:
                     return
 
     def reorganizeresults(self):
