@@ -27,7 +27,7 @@ for each N2 on the circle of N2
 import math
 import exceptions
 from itcc.ccs2 import pyramid, sidechain
-from itcc.ccs2.rtbis import rtbis
+from itcc.ccs2 import rtbis
 
 class Error(exceptions.Exception):
     pass
@@ -79,14 +79,14 @@ class Mezeipro2:
                 if result[i][j+1] is None: continue
                 if result[i][j] * result[i][j+1] > 0: continue
                 try:
-                    tmp = rtbis(func, j*stepsize, (j+1)*stepsize, self.acc)
+                    tmp = rtbis.rtbis(func, j*stepsize, (j+1)*stepsize, self.acc)
                     p2 = self._theta_to_p2(tmp)
                     tmp2 = self.get_p34567(p2)
                     for k in range(i+1):
                         tmp3 = tmp2.next()
                     yield tuple([p2,] + list(tmp3))
-                except:
-                    raise
+                except rtbis.Error:
+                    pass
 
     def _theta_to_p2(self, theta):
         return self.p2o \
