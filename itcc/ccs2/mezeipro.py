@@ -29,9 +29,11 @@ def _wrappyramid(atmidx, coords, dismat):
     results, error = pyramid.pyramid(A, B, C, rAX, rBX, rCX)
     threshold = config.config.get('Mezei_p24_threshold', -0.01*0.01)
     if error < threshold:
-        return (None, None)
+        yield None
+        yield None
     else:
-        return results
+        yield results[0]
+        yield results[1]
 
 def wrappyramid2(atmidx, coords, dismat):
     i1, i2, i3 = atmidx
@@ -57,7 +59,8 @@ def propyramida(atmidx, coords, dismat):
             continue
         newcoords = coords[:]
         newcoords[i3] = i3coord
-        i2coords = _wrappyramid((i2, i1, i3, i4), newcoords, dismat)
+        i2coords = tuple(_wrappyramid((i2, i1, i3, i4), 
+                                      newcoords, dismat))
         if i2coords[0] is None:
             yield (None, None)
             yield (None, None)
