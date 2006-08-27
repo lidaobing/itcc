@@ -86,8 +86,8 @@ class R6sub:
         newcoords[i5] = p5
         resultsa = propyramida((i5, i4, i3, i2, i1),
                                newcoords, self.dismat)
-        resultsb = propyramida((i5, i6, i7, i8, i9),
-                               newcoords, self.dismat)
+        resultsb = tuple(propyramida((i5, i6, i7, i8, i9),
+                                     newcoords, self.dismat))
 
         for p4, p3 in resultsa:
             for p6, p7 in resultsb:
@@ -119,7 +119,7 @@ def R6a(coords, atmidx, dismat):
 
     results = []
     for i in range(steps):
-        for j in range(4):
+        for j in range(16):
             if d46mat[i][j] is not None \
               and d46mat[i+1][j] is not None \
               and d46mat[i][j] * d46mat[i+1][j] <= 0:
