@@ -4,8 +4,7 @@
 """
 import math
 from itcc.ccs2 import pyramid, sidechain
-from itcc.ccs2 import config
-from itcc.ccs2.rtbis import rtbis
+from itcc.ccs2 import config, rtbis
 
 __revision__ = '$Rev$'
 
@@ -127,17 +126,17 @@ def R6a(coords, atmidx, dismat):
               and d46mat[i+1][j] is not None \
               and d46mat[i][j] * d46mat[i+1][j] <= 0:
                 try:
-                    angle = rtbis(d46_Resolver(r6sub, j, d46ref),
+                    angle = rtbis.rtbis(d46_Resolver(r6sub, j, d46ref),
                                   i * stepsize,
                                   (i+1) * stepsize,
-                                  0.1)
-                    result = r6sub(angle)[j]
+                                  math.radians(1.0))
+                    result = tuple(r6sub(angle))[j]
                     yield {i3: result[0],
                            i4: result[1],
                            i5: result[2],
                            i6: result[3],
                            i7: result[4]}
-                except:
+                except rtbis.Error:
                     pass
 
 def getd46rela(p4, p6, d46ref):
@@ -151,7 +150,7 @@ class d46_Resolver:
         self.d46ref = d46ref
         self.mode = mode
     def __call__(self, angle):
-        result = self.r6sub(angle)[self.mode]
+        result = tuple(self.r6sub(angle))[self.mode]
         return (result[1] - result[3]).length() - self.d46ref
 
 
