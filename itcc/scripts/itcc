@@ -52,6 +52,8 @@ def help():
     keys.sort()
     for key in keys:
         print '  %s %-12s  %s' % (basename, key[0], key[1][1])
+    print
+    print 'report bugs to <lidaobing@gmail.com>'
 
 def main():
     if len(sys.argv) == 1:
