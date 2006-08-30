@@ -4,13 +4,11 @@ from itcc.molecule import read, atom
 
 __revision__ = '$Rev$'
 
-def cmpxyztop(ifname1, ifname2):
-    mol1 = read.readxyz(file(ifname1))
-    mol2 = read.readxyz(file(ifname2))
+def cmpxyztop(mol1, mol2):
     if cmpatoms(mol1, mol2):
         if cmpconnect(mol1, mol2):
-            sys.exit(0)
-    sys.exit(1)
+            return True
+    return False
 
 def cmpatoms(mol1, mol2):
     if len(mol1) != len(mol2):
@@ -50,7 +48,12 @@ def main():
     if len(sys.argv) != 3:
         print >> sys.stderr, 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
         sys.exit(1)
-    cmpxyztop(sys.argv[1], sys.argv[2])
+    mol1 = read.readxyz(file(sys.argv[1]))
+    mol2 = read.readxyz(file(sys.argv[2]))
+    if cmpxyztop(mol1, mol2):
+        sys.exit(0)
+    else:
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()
