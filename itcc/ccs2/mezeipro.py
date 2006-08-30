@@ -151,6 +151,7 @@ class d46_Resolver:
         self.mode = mode
     def __call__(self, angle):
         result = tuple(self.r6sub(angle))[self.mode]
+        if result[1] is None: return None
         return (result[1] - result[3]).length() - self.d46ref
 
 
