@@ -18,10 +18,10 @@ Solution:
 detect circle of N2
 for each N2 on the circle of N2
   calculate C3 from p0, p1, p2
-  calculate C6 from p3, p8, p9
-  calculate C4 from p2, p3, p6
-  calculate N5 from p3, p4, p6
-  calculate C7 from p6, p8, p9
+  calculate C6 from p3, p8, p9 (dupe)
+  calculate C4 from p2, p3, p6 (dupe)
+  calculate N5 from p3, p4, p6 (dupe)
+  calculate C7 from p6, p8, p9 (dupe)
 '''
 
 import math
@@ -52,7 +52,7 @@ class Mezeipro2:
             raise Error()
 
     def __call__(self):
-        result = [[], [], [], []]
+        result = [[] for i in range(16)]
         realresult = []
 
         stepsize = math.pi * 2 / self.steps
@@ -62,17 +62,17 @@ class Mezeipro2:
                  + self.p2x * math.cos(stepsize * i) \
                  + self.p2y * math.sin(stepsize * i)
             tmps = list(self.get_p34567(p2))
-            assert len(tmps) == 4
+            assert len(tmps) == 16
             for idx, tmp in enumerate(tmps):
                 if tmp[0] is None:
                     result[idx].append(None)
                 else:
                     result[idx].append((tmp[2] - tmp[4]).length() - ref)
 
-        for i in range(4):
+        for i in range(16):
             result[i].append(result[i][0])
 
-        for i in range(4):
+        for i in range(16):
             func = lambda x: tuple(self.get_r57_from_theta(x))[i] - ref
             for j in range(self.steps):
                 if result[i][j] is None: continue
@@ -110,21 +110,23 @@ class Mezeipro2:
     def get_p34567(self, p2):
         for p3 in self.get_p3(p2):
             if p3 is None:
-                for i in range(4):
+                for i in range(16):
                     yield (None,) * 5
                 continue
             for p6 in self.get_p6(p3):
                 if p6 is None:
-                    for i in range(2):
+                    for i in range(8):
                         yield (None,) * 5
                     continue
                 for p4 in self.get_p4(p2, p3, p6):
                     if p4 is None:
-                        yield (None,) * 5
+                        for i in range(4):
+                            yield (None,) * 5
                         continue
                     for p5 in self.get_p5(p3, p4, p6):
                         if p5 is None:
-                            yield (None,) * 5
+                            for i in range(2):
+                                yield (None,) * 5
                             continue
                         for p7 in self.get_p7(p6):
                             if p7 is None:
@@ -187,8 +189,10 @@ class Mezeipro2:
                                          self._dismatrix(5, 4),
                                          self._dismatrix(5, 6))
         if error >= self.threshold:
-            yield (results[0] + results[1]) / 2.0
+            yield results[0]
+            yield results[1]
         else:
+            yield None
             yield None
 
     def get_p7(self, p6):
@@ -199,8 +203,10 @@ class Mezeipro2:
                                          self._dismatrix(7, 8),
                                          self._dismatrix(7, 9))
         if error >= self.threshold:
-            yield (results[0] + results[1]) / 2.0
+            yield results[0]
+            yield results[1]
         else:
+            yield None
             yield None
 
 def _print_result(ofile, result):
