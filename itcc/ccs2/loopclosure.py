@@ -89,7 +89,7 @@ class LoopClosure:
     def runtask(self, taskidx, r6):
         mol, ene = self.tasks[taskidx]
         print
-        head = ' CCS2 Local Search(%i/%i)' % self.getprogress()
+        head = ' CCS2 Local Search'
         print '%-31s Minimum %6i %21.4f' \
               % (head, taskidx + 1, ene)
         print
@@ -237,6 +237,7 @@ class LoopClosure:
         print
 
     def getprogress(self):
+        return "out of work"
         finishedtasknum = len(self.tasks) - len(self.taskheap)
         if self.searchrange is None:
             waitingtasknum = len(self.taskheap)
