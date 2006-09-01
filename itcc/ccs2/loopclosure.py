@@ -4,10 +4,11 @@ import os.path
 import math
 import bisect
 import heapq
-import sets
 import pprint
 import itertools
 import time
+import random
+
 import itcc
 from itcc.tinker import tinker
 from itcc.molecule import read, write, tools as moltools
@@ -32,7 +33,7 @@ class LoopClosure:
         self.torerror = 10              # unit: degree
         self.moltypekey = None
         self.tasks = []                 # List of (mol, ene)
-        self.taskheap = []              # Heap of (ene, taskidx)
+        self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
         self.minconverge = 0.001
         self.molnametmp = None
@@ -72,9 +73,6 @@ class LoopClosure:
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = tuple(typedmol.getr6s(self.loopatoms))
         printr6s(self.r6s)
-        self.combinations = tuple(typedmol.getcombinations(self.r6s))
-        self.r6s = tuple(sets.Set(itertools.chain(*self.combinations)))
-        printcombinations(self.combinations)
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self._step_count += 1
@@ -82,13 +80,13 @@ class LoopClosure:
         self.addtask(mol, ene)
         while self.maxsteps is None or self._step_count < self.maxsteps:
             try:
-                taskidx = self.taskqueue().next()
+                taskidx, r6 = self.taskqueue().next()
             except StopIteration:
                 break
-            self.runtask(taskidx)
+            self.runtask(taskidx, r6)
         self.reorganizeresults()
 
-    def runtask(self, taskidx):
+    def runtask(self, taskidx, r6):
         mol, ene = self.tasks[taskidx]
         print
         head = ' CCS2 Local Search(%i/%i)' % self.getprogress()
@@ -96,7 +94,7 @@ class LoopClosure:
               % (head, taskidx + 1, ene)
         print
 
-        for newmol, newene in self.findneighbor(mol):
+        for newmol, newene in self.findneighbor(mol, r6):
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
                 print '(%i)' % (idx + 1)
@@ -138,19 +136,22 @@ class LoopClosure:
     def addtask(self, mol, ene):
         self.tasks.append((mol, ene))
         taskidx = len(self.tasks) - 1
-        heapq.heappush(self.taskheap, (ene, taskidx))
         bisect.insort(self.enes, (ene, taskidx))
         print '    Potential Surface Map       Minimum ' \
               '%6i %21.4f' % (taskidx+1, ene)
         self.writemol(taskidx+1, mol, ene)
 
+        r6s = list(self.r6s)
+        random.shuffle(r6s)
+        for r6idx, r6 in enumerate(r6s):
+            heapq.heappush(self.taskheap, (r6idx, ene, taskidx, r6))
+
     def taskqueue(self):
         while self.taskheap:
-            ene, taskidx = heapq.heappop(self.taskheap)
+            r6idx, ene, taskidx, r6 = heapq.heappop(self.taskheap)
             if self.searchbound is not None and ene > self.searchbound:
-                print self.searchbound
-                return
-            yield taskidx
+                continue
+            yield taskidx, r6
 
     def getloopatoms(self, mol):
         loops = loopdetect.loopdetect(mol)
@@ -186,36 +187,27 @@ class LoopClosure:
         write.writexyz(mol, ofile, '%.4f' % ene)
         ofile.close()
 
-    def findneighbor(self, mol):
+    def findneighbor(self, mol, r6):
         coords = mol.coords
         dismat = moltools.distmat(mol)
-        r6results = {}
-        for r6 in self.r6s:
-            r6results[r6] = getr6result(coords, r6, dismat, self.shakedata)
-        for cmbidx, combine in enumerate(self.combinations):
-            r6s = [r6results[r6] for r6 in combine]
-            needshakeatoms = []
-            for r6 in combine:
-                needshakeatoms.extend(R6.R6(r6).needshakenodes())
-            result = list(tools.combinecombine(r6s))
-            for molidx, molresult in enumerate(result):
-                newmol = mol.copy()
-                for r6result in molresult:
-                    for idx, coord in r6result.items():
-                        newmol.coords[idx] = coord
-                rmol, rene = tinker.minimizemol(newmol,
-                                                self.forcefield,
-                                                self.minconverge)
-                self._step_count += 1
-                if tinker.isminimal(rmol, self.forcefield):
-                    print '  Step %5i   Comb %02i-%02i %42.4f' % \
-                          (self._step_count, cmbidx, molidx, rene),
-                    yield rmol, rene
-                else:
-                    print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
-                          (self._step_count, cmbidx, molidx, rene)
-                if self.maxsteps is not None and self._step_count >= self.maxsteps:
-                    return
+        r6results = getr6result(coords, r6, dismat, self.shakedata)
+        for molidx, molresult in enumerate(r6results):
+            newmol = mol.copy()
+            for idx, coord in molresult.items():
+                newmol.coords[idx] = coord
+            rmol, rene = tinker.minimizemol(newmol,
+                                            self.forcefield,
+                                            self.minconverge)
+            self._step_count += 1
+            if tinker.isminimal(rmol, self.forcefield):
+                print '  Step %5i   Comb %02i-%02i %42.4f' % \
+                      (self._step_count, 0, molidx, rene),
+                yield rmol, rene
+            else:
+                print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
+                      (self._step_count, 0, molidx, rene)
+            if self.maxsteps is not None and self._step_count >= self.maxsteps:
+                return
 
     def reorganizeresults(self):
         if self.keeprange is None:
