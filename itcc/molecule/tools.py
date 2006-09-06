@@ -1,6 +1,5 @@
 # $Id$
 import heapq
-import sets
 import Numeric
 
 __revision__ = '$Rev$'
@@ -46,7 +45,7 @@ def neighborlist(mol):
 def _logic_distance_matrix_helper(connectmatrix, idx):
     result = [-1] * len(connectmatrix)
     queue = [(0, idx)]
-    waited_idx = sets.Set(range(len(connectmatrix)))
+    waited_idx = set(range(len(connectmatrix)))
     while waited_idx:
         try:
             dis, curidx = heapq.heappop(queue)

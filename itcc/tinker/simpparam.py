@@ -3,7 +3,6 @@
 '''output a param file that only include the param useful for one mol'''
 
 import sys
-from sets import Set
 
 from itcc.tinker import tinker, molparam
 from itcc.molecule import read, tools, relalist
@@ -23,20 +22,20 @@ def getmoldata(molfname):
     types = tools.gettypes(mol)
 
     result = {}
-    result['atomtypes'] = Set(types)
+    result['atomtypes'] = set(types)
     subtypes = list(result['atomtypes'])
     typepairs = []
     for i, type_1 in enumerate(subtypes):
         for type_2 in subtypes[i:]:
             typepairs.append(molparam.bond_uni([type_1, type_2]))
-    result['typepairs'] = Set(typepairs)
+    result['typepairs'] = set(typepairs)
 
     rela = relalist.Relalist(mol)
-    result['bondtypes'] = Set([molparam.bond_uni(gettype(bond, types))
+    result['bondtypes'] = set([molparam.bond_uni(gettype(bond, types))
                                for bond in rela.bonds])
-    result['angletypes'] = Set([molparam.angle_uni(gettype(angle, types))
+    result['angletypes'] = set([molparam.angle_uni(gettype(angle, types))
                                 for angle in rela.angles])
-    result['torsiontypes'] = Set([molparam.torsion_uni(gettype(torsion, types))
+    result['torsiontypes'] = set([molparam.torsion_uni(gettype(torsion, types))
                                   for torsion in rela.torsions])
 
     return result

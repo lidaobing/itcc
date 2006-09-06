@@ -1,7 +1,6 @@
 # -*- coding: utf8 -*-
 # $Id$
 
-from sets import Set
 from itcc.Molecule.relalist import Relalist
 
 __revision__ = '$Rev$'
@@ -101,10 +100,10 @@ def molparam(mol, prmfile):
     classes = [param.typcls[str(x)] for x in types]
 
     
-    types_set = list(Set(types))
+    types_set = list(set(types))
     types_set.sort(lambda x, y: cmp(int(x), int(y)))
                
-    classes_set = list(Set(classes))
+    classes_set = list(set(classes))
     classes_set.sort(lambda x, y: cmp(int(x), int(y)))
     
     head = param.param.get('head', '')
@@ -125,7 +124,7 @@ def molparam(mol, prmfile):
 
     rl = Relalist(mol)
 
-    bonds = Set()
+    bonds = set()
     for x in rl.bonds:
         bonds.add(tuple(bond_uni([int(classes[y-1]) for y in x])))
     bonds = list(bonds)
@@ -134,7 +133,7 @@ def molparam(mol, prmfile):
         print param.param['bond-%s-%s' % x],
     print
     
-    angles = Set()
+    angles = set()
     for x in rl.angles:
         angles.add(tuple(angle_uni([int(classes[y-1]) for y in x])))
     angles = list(angles)
@@ -148,7 +147,7 @@ def molparam(mol, prmfile):
         print param.param['angle-%s-%s-%s' % x],
     print
 
-    torsions = Set()
+    torsions = set()
     for x in rl.torsions:
         cls = [int(classes[y-1]) for y in x]
         if cls[1] > cls[2] or (cls[1] == cls[2] and cls[0] > cls[3]):
@@ -170,7 +169,7 @@ def molparam(mol, prmfile):
         print param.param['torsion-%s-%s-%s-%s' % x],
     print
 
-    imptors = Set()
+    imptors = set()
     for x in rl.imptors:
         imptors.add(tuple(imptor_uni([int(classes[y-1]) for y in x])))
     imptors = list(imptors)
