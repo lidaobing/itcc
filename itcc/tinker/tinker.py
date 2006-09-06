@@ -6,6 +6,7 @@ import sys
 import os.path
 import tempfile
 import itertools
+import subprocess
 
 from itcc.molecule import read, relalist, write
 
@@ -97,7 +98,8 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
     ofname = ifname + '.xyz'
 
     command = '%s %s %s %f' % (progpath, ifname, forcefield, converge)
-    ifile = os.popen(command)
+    ifile = subprocess.Popen(command, shell=True,
+                             stdout=subprocess.PIPE).stdout
 
     result = None
 
@@ -138,7 +140,8 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
     command = '%s %s %s %f' % (progpath, ifname, forcefield, converge)
     if debug:
         print >> sys.stderr, command
-    ifile = os.popen(command)
+    ifile = subprocess.Popen(command, shell=True,
+                             stdout=subprocess.PIPE).stdout
 
     result = None
 
@@ -179,7 +182,8 @@ def vibratemol(mol, forcefield):
     forcefield = getparam(forcefield)
 
     command = '%s %s %s<<EOF\n\nEOF' % (progpath, molfname, forcefield)
-    ifile = os.popen(command)
+    ifile = subprocess.Popen(command, shell=True,
+                             stdout=subprocess.PIPE).stdout
 
     result = []
 
