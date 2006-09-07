@@ -39,7 +39,7 @@ subscript = {
     'tor2freeene':('tools.tor2freeene', 'torsion to free energy'),
     'xyz2gjf':    ('tools.xyz2gjf', 'xyz to gjf format'),
     'xyz2gro':    ('tools.xyz2gro', 'xyz to gro format'),
-    'xyz2pdb':    ('tools.xyz2pdb', 'xyz to pdb format')
+    'xyz2pdb':    ('molecule.xyz2pdb', 'xyz to pdb format')
     }
 
 def help():
