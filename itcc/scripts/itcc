@@ -67,9 +67,10 @@ def main():
     elif key in ['-h', '--help', 'help']:
         help()
     elif key in subscript:
-        del sys.argv[0]
-        __import__('itcc.' + subscript[key][0])
-        exec('itcc.' + subscript[key][0] + '.main()')
+        del sys.argv[0:2]
+        os.execv('/usr/bin/python2.4', 
+                 ['python', '-m', 'itcc/' + subscript[key][0].replace('.', '/')] +
+                   sys.argv)
     else:
         sys.stderr.write('Unknown option: %s\n' % key)
         sys.stderr.write("Type 'itcc help' for usage.\n")
