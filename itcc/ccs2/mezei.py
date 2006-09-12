@@ -10,8 +10,7 @@ from math import sqrt, sin, cos, pi
 import Numeric
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
-from itcc.ccs2 import sidechain
-from itcc.ccs2.rtbis import rtbis
+from itcc.ccs2 import sidechain, rtbis
 
 __revision__ = '$Rev$'
 __all__ = ["R6", "r6_base"]
@@ -138,8 +137,11 @@ def r6_base(points, len1, len2):
         for j in range(steps):
             if d24s[i][j] and d24s[i][j+1] and \
                    (d24s[i][j] - d24)*(d24s[i][j+1] - d24) <= 0:
-                angle = rtbis(p24_res, j*step, (j+1)*step, 0.1)
-                yield (i, angle, p24_res.p2, p24_res.p3, p24_res.p4)
+                try:
+                    angle = rtbis.rtbis(p24_res, j*step, (j+1)*step, 0.1)
+                    yield (i, angle, p24_res.p2, p24_res.p3, p24_res.p4)
+                except rtbis.Error:
+                    pass
 
 def __R6(coords, atmidx, dismat):
     assert len(atmidx) == 7
