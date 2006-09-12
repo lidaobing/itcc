@@ -164,7 +164,7 @@ class LoopClosure:
     def printparams(self):
         print 'Starttime: %s' % time.asctime()
         print 'Program Version: itcc %s' %  itcc.__version__
-        print 'Forcefield: %s' % self.forcefield
+        print 'Forcefield: %s' % tinker.getparam(self.forcefield)
         print 'KeepRange: %s' % self.keeprange
         print 'SearchRange: %s' % self.searchrange
         print
