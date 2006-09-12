@@ -25,27 +25,27 @@ minimize_count = 0
 
 def getparam(key):
     if os.path.isfile(key):
-        return key
+        return os.path.abspath(key)
     if not key.endswith('.prm'):
         key += '.prm'
         if os.path.isfile(key):
-            return key
+            return os.path.abspath(key)
     assert not os.path.isabs(key)
 
     PRM_ROOT = os.getenv("TNK_PRM_ROOT", "")
     if PRM_ROOT:
         param = os.path.join(PRM_ROOT, key)
         if os.path.isfile(param):
-            return param
+            return os.path.abspath(param)
 
     if TNK_ROOT:
         param = os.path.join(TNK_ROOT, 'params', key)
         if os.path.isfile(param):
-            return param
+            return os.path.abspath(param)
 
     param = os.path.join('/usr/share/tinker/params', key)
     if os.path.isfile(param):
-        return param
+        return os.path.abspath(param)
 
     assert False
 
