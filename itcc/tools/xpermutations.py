@@ -16,10 +16,11 @@ See also: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66463
 See also: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/66465
 """
 
+from __future__ import generators
+
 __revision__ = '$Rev$'
 __version__ = "1.0"
 
-from __future__ import generators
 
 def xcombinations(items, n):
     if n == 0: yield []
