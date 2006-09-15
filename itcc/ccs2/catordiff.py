@@ -51,8 +51,6 @@ def varytors(tors):
             yield subvartors[idx:idx+len(tors)]
 
 def main():
-    global debug
-    debug = True
     if len(sys.argv) != 3:
         print 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
         sys.exit(1)
