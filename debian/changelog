@@ -1,6 +1,9 @@
-itcc (0.8~pre) unstable; urgency=low
+itcc (0.8~pre) UNRELEASED; urgency=low
 
-  * 'itcc rmsd' support only one argument.
+  * itcc rmsd
+    - support only one argument.
+    - add options: '--atoms', '--atomsfile', '--atoms1', '--atoms1file',
+      '--atoms2', '--atoms2file'.
   * 'itcc dmddat2dmddat' support new '-F' option.
   * add new function: 'itcc.Molecule.tools.logic_distance'.
   * new module: itcc.CCS2.triangle
@@ -12,7 +15,7 @@ itcc (0.8~pre) unstable; urgency=low
   * depends on higher version of python-scientific and python-scipy
   * swicth to cdbs+pycentral
 
- -- LI Daobing <lidaobing@gmail.com>  Sat, 26 Aug 2006 20:35:45 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 22 Sep 2006 22:45:29 +0800
 
 itcc (0.7) unstable; urgency=low
 
