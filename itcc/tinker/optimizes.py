@@ -1,6 +1,6 @@
 # $Id$
 import getopt, sys
-from itcc.Tinker import tinker
+from itcc.tinker import tinker
 
 __revision__ = '$Rev$'
 
