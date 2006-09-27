@@ -31,7 +31,7 @@ subscript = {
     'removepbc':  ('molecule.removepbc', 'remove pbc'),
     'rmsd':       ('molecule.rmsd', 'rmsd'),
     'scalexyz':   ('tools.scalexyz', 'scale xyz'),
-    'settype':    ('tools.settype', 'change the types of xyz file'),
+    'settype':    ('molecule.settype', 'change the types of xyz file'),
     'shake':      ('tools.shake', 'shake molecule'),
     'simpparam':  ('tinker.simpparam', 'simplify parameter'),
     'sumxyz':     ('tools.sumxyz', 'summary xyz file\'s info'),
