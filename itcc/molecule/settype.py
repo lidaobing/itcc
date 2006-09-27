@@ -6,15 +6,13 @@ from itcc.molecule import read, write
 __revision__ = '$Rev$'
 
 def gettypes(typefname):
-    result = []
     for line in file(typefname):
-        types = [int(x) for x in line.split()]
-        result.extend(types)
-    return result
+        for word in line.split():
+            yield int(word)
 
 def settype(xyzfname, typefname):
     mol = read.readxyz(file(xyzfname))
-    types = gettypes(typefname)
+    types = tuple(gettypes(typefname))
     assert len(mol) == len(types)
     for idx, atype in enumerate(types):
         mol.settype(idx, atype)
