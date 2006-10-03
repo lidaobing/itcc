@@ -177,11 +177,10 @@ def vibratemol(mol, forcefield):
     molfile = _writemoltotempfile(mol)
     molfname = molfile.name
 
-    if os.path.exists(os.path.join(TINKERDIR, 'vibrate.tinker')):
-        cmdname = 'vibrate.tinker'
-    else:
-        cmdname = 'vibrate'
+    cmdname = 'vibrate'
     progpath = os.path.join(TINKERDIR, cmdname)
+    if os.path.exists('/usr/bin/vibrate.tinker'):
+        progpath = '/usr/bin/vibrate.tinker'
     forcefield = getparam(forcefield)
 
     command = '%s %s %s<<EOF\n\nEOF' % (progpath, molfname, forcefield)
