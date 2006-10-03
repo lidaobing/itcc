@@ -73,7 +73,12 @@ class Mezeipro2:
             result[i].append(result[i][0])
 
         for i in range(16):
-            func = lambda x: tuple(self.get_r57_from_theta(x))[i] - ref
+            def _Func(x):
+                try:
+                    return tuple(self.get_r57_from_theta(x))[i] - ref
+                except TypeError:
+                    return None
+            func = _Func
             for j in range(self.steps):
                 if result[i][j] is None: continue
                 if result[i][j+1] is None: continue
