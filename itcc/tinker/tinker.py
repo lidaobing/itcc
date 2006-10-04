@@ -168,9 +168,14 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
 
 def _vibratefloat(str_):
+    assert len(str_) == 10, str_
+    if str_[0] == '*':
+        ret = 99999.999
+    else:
+        ret = float(str_[:-1])
     if str_.endswith('I'):
-        return -float(str_[:-1])
-    return float(str_)
+        return -ret
+    return ret
 
 
 def vibratemol(mol, forcefield):
@@ -196,14 +201,13 @@ def vibratemol(mol, forcefield):
     counter = itertools.count(1)
     result = []
     for line in lines:
-        words = line.split()
-        if not words:
-            break
-        assert len(words) % 2 == 0, lines
-
-        for i in range(0, len(words), 2):
-            assert int(words[i]) == counter.next()
-            result.append(_vibratefloat(words[i+1]))
+        if not line.strip(): break
+        line = line[:-1]
+        assert len(line) % 15 == 0, line
+        # format (5(i5,f9.3,a1))
+        for i in range(0, len(line), 15):
+            assert int(line[i:i+5]) == counter.next(), line
+            result.append(_vibratefloat(line[i+5:i+15]))
 
     ifile.close()
     molfile.close()
