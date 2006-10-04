@@ -186,20 +186,20 @@ def vibratemol(mol, forcefield):
     command = '%s %s %s<<EOF\n\nEOF' % (progpath, molfname, forcefield)
     ifile = subprocess.Popen(command, shell=True,
                              stdout=subprocess.PIPE).stdout
+    lines = ifile.readlines()
 
-    result = []
-
-    while True:
-        if ifile.next().startswith(' Vibrational Frequencies (cm-1) :'):
-            ifile.next()
+    for idx, line in enumerate(lines):
+        if line.startswith(' Vibrational Frequencies (cm-1) :'):
+            lines = lines[idx+2:]
             break
 
     counter = itertools.count(1)
-    for line in ifile:
+    result = []
+    for line in lines:
         words = line.split()
         if not words:
             break
-        assert len(words) % 2 == 0
+        assert len(words) % 2 == 0, lines
 
         for i in range(0, len(words), 2):
             assert int(words[i]) == counter.next()
