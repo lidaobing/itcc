@@ -31,7 +31,7 @@ def angle(a, b, c):
 def torsionangle(a, b, c, d):
     """torsionangle(a, b, c, d) -> angle
     a, b, c, d are 4 Scientific.Geometry.Vector
-    return the torsionangle of a-b-c-d"""
+    return the torsionangle of a-b-c-d in radian, range is (-pi, pi]"""
 
     return ctools.torsionangle(tuple(a.array), tuple(b.array),
                                tuple(c.array), tuple(d.array))
