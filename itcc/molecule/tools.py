@@ -82,3 +82,11 @@ def logic_distance(mol_or_connectmatrix, idx1, idx2):
         connectmatrix = mol_or_connectmatrix
 
     return _logic_distance_matrix_helper(connectmatrix, idx1)[idx2]
+
+def neighbours(mol, idx):
+    '''neighbours(mol, idx) -> [idx1, ...]
+    return neighbours of the idx-th atom of mol.
+    '''
+    if mol.connect is None:
+        return None
+    return [i for i in range(len(mol)) if mol.connect[idx][i]]

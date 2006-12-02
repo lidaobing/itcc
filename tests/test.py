@@ -7,6 +7,7 @@ from test_xyz2pdb import TestXyz2pdb
 from test_mol2top import *
 from test_onecolumn import *
 from test_dmddat2mtxyz import *
+from test_molecule_tools import *
 import unittest
 
 if __name__ == '__main__':
