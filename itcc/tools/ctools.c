@@ -123,7 +123,7 @@ torsionangle(PyObject *self, PyObject *args)
 
 static PyMethodDef CtoolsMethods[] = {
   {"torsionangle",  torsionangle, METH_VARARGS,
-   "Caculate torsion angle, return in radian"},
+   "Caculate torsion angle, return in radian, range is (-pi, pi]"},
   {"angle", angle, METH_VARARGS,
    "Caculate angle, return in radian"},
   {NULL, NULL, 0, NULL}       
