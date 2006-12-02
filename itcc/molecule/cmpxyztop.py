@@ -4,11 +4,24 @@ from itcc.molecule import read, atom
 
 __revision__ = '$Rev$'
 
-def cmpxyztop(mol1, mol2):
+def cmpxyztop(mol1, mol2, chiral=False):
     if cmpatoms(mol1, mol2):
         if cmpconnect(mol1, mol2):
-            return True
+            if not chiral: return True
+            return bool(_cmp_chiral(mol1, mol2))
     return False
+
+def _cmp_chiral(mol1, mol2):
+    result = True
+    for i in range(len(mol1)):
+        if sum(mol1.connect[i]) != 4: continue
+        idxs = [idx for idx, x in enumerate(mol1.connect[i]) if x]
+        torang1 = mol1.calctor(*idxs)
+        torang2 = mol2.calctor(*idxs)
+        if torang1 * torang2 < 0:
+            print 'the chirality on %i atom is different' % (i+1)
+            result = False
+    return result
 
 def cmpatoms(mol1, mol2):
     if len(mol1) != len(mol2):
@@ -45,12 +58,20 @@ def cmpconnect(mol1, mol2):
     return result
 
 def main():
-    if len(sys.argv) != 3:
-        print >> sys.stderr, 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
-        sys.exit(1)
+    from optparse import OptionParser
+    parser = OptionParser(usage="\n\t%prog [options] xyzfname1 xyzfname2\n\t%prog -h")
+    parser.set_defaults(chiral=False)
+    parser.add_option("-c", "--chiral",
+                      action="store_true",
+                      dest="chiral",
+                      help="also check chiral")
+    (options, args) = parser.parse_args()
+    if len(args) != 2:
+        parser.error("incorrect number of arguments")
+        
     mol1 = read.readxyz(file(sys.argv[1]))
     mol2 = read.readxyz(file(sys.argv[2]))
-    if cmpxyztop(mol1, mol2):
+    if cmpxyztop(mol1, mol2, options.chiral):
         sys.exit(0)
     else:
         sys.exit(1)
