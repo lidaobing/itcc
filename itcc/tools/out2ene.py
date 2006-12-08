@@ -27,21 +27,18 @@ def out2ene(ifname):
     for x in lines:
         if x.startswith('HF='):
             x = x[3:]
-            return [float(y) for y in x.split(',')]
-
-    return None
+            for y in x.split(','):
+                yield float(y)
 
 def main():
     import sys
-    if len(sys.argv) == 2:
-        result = out2ene(sys.argv[1])
-        if result:
-            for x in result:
-                print x
-        else:
-            print >> sys.stderr, "NO data found"
+
+    if len(sys.argv) >= 2:
+        for fname in sys.argv[1:]:
+            for result in out2ene(fname):
+                print fname, result
     else:
-        print >> sys.stderr, "Usage: %s outfname" % sys.argv[0]
+        print >> sys.stderr, "Usage: %s outfname..." % sys.argv[0]
 
 if __name__ == '__main__':
     main()
