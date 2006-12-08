@@ -22,8 +22,8 @@ class TestSidechain(unittest.TestCase):
         newcoords = sidechain.movesidechain(coords1, coords2,
                                             (0, 1, 2),
                                             (3, 4))
-        self.assert_((newcoords[3] - coords2[3]).length() < 0.001)
-        self.assert_((newcoords[4] - coords2[4]).length() < 0.001)
+        self.assertAlmostEqual((newcoords[3] - coords2[3]).length(), 0, 4)
+        self.assertAlmostEqual((newcoords[4] - coords2[4]).length(), 0, 4)
 
 def main():
     unittest.main()

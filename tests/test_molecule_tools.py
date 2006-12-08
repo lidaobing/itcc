@@ -17,7 +17,7 @@ class TestNeighbours(unittest.TestCase):
         neighbours = tools.neighbours(mol, 0)
         neighbours.sort()
         neighbours = tuple(neighbours)
-        assert neighbours == (1,2,3,4), neighbours
+        self.assertEqual(neighbours, (1,2,3,4))
 
 def _test():
     unittest.main()

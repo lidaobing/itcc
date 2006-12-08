@@ -59,7 +59,7 @@ class TestNeighbours(unittest.TestCase):
     def test_hbond(self):
         mol = read.readxyz(StringIO.StringIO(test_in))
         hbonds = set(hbond.detect_hbond(mol))
-        assert hbonds == set(((33, 4, 0), (43, 14, 10), (3, 24, 20), (23, 44, 40)))
+        self.assertEqual(hbonds, set(((33, 4, 0), (43, 14, 10), (3, 24, 20), (23, 44, 40))))
 
 def _test():
     unittest.main()
