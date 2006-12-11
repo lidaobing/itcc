@@ -47,8 +47,11 @@ class FormatError(Exception):
 #             mol.appendconnect(data['bonded'])
 #     return mol
 
-def readgjf(ifname):
-    ifile = file(ifname)
+def readgjf(ifile_or_ifname):
+    if isinstance(ifile_or_ifname, str):
+        ifile = file(ifile_or_ifname)
+    else:
+        ifile = ifile_or_ifname
 
     blanklines = 0
     mol = Molecule()

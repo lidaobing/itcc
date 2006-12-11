@@ -16,7 +16,7 @@ subscript = {
     'dmddummy':   ('tools.dmddummy', 'dmddummy'),
     'dmddat2mtxyz':('tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
     'dmddat2dmddat':('tools.dmddat2dmddat', 'convert dmddat file to dmddat'),
-    'gjf2xyz':    ('tools.gjf2xyz', 'convert gjf to xyz'),
+    'gjf2xyz':    ('molecule.gjf2xyz', 'convert gjf to xyz'),
     'mol2top':    ('molecule.mol2top', 'mol to top'),
     'mtxyzrg':    ('tools.mtxyzrg', 'multi tinker xyz file\'s rg'),
     'mtxyzstat':  ('tools.mtxyzstat', 'multi tinker xyz stat'),
