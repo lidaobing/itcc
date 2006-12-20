@@ -12,5 +12,5 @@ Architecture: any
 XB-Python-Version: ${python:Versions}
 Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific (>= 2.4.9-5),
  python-scipy(>= 0.3.2-9)
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: collection of scripts for itcc
+ for example: itcc confsearch
