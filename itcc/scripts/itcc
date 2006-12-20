@@ -7,7 +7,19 @@ import sys
 import os.path
 import itcc
 
-subscript = {
+subscript = [
+    ('Gaussian', {
+    'out2arch':   ('tools.out2arch', 'gaussian out to arch file'),
+    'out2ene':    ('tools.out2ene', 'gaussian out to ene')
+    }),
+    ('Tinker', {
+    'gjf2xyz':    ('molecule.gjf2xyz', 'convert gjf to xyz'),
+    'xyz2gjf':    ('tools.xyz2gjf', 'xyz to gjf format'),
+    'xyz2gro':    ('tools.xyz2gro', 'xyz to gro format'),
+    'xyz2pdb':    ('molecule.xyz2pdb', 'xyz to pdb format'),
+    'optimizes':  ('tinker.optimizes', 'optimizes a series of xyz files(broken)'),
+    }),
+    ('Other', {
     'catordiff':  ('ccs2.catordiff', 'cyclic alkane torsion diffrent'),
     'cmpxyztop':  ('molecule.cmpxyztop', 'compare topology of two xyz files'),
     'columnmean': ('tools.columnmean', 'mean for column'),
@@ -16,14 +28,10 @@ subscript = {
     'dmddummy':   ('tools.dmddummy', 'dmddummy'),
     'dmddat2mtxyz':('tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
     'dmddat2dmddat':('tools.dmddat2dmddat', 'convert dmddat file to dmddat'),
-    'gjf2xyz':    ('molecule.gjf2xyz', 'convert gjf to xyz'),
     'mol2top':    ('molecule.mol2top', 'mol to top'),
     'mtxyzrg':    ('tools.mtxyzrg', 'multi tinker xyz file\'s rg'),
     'mtxyzstat':  ('tools.mtxyzstat', 'multi tinker xyz stat'),
     'onecolumn':  ('tools.onecolumn', 'change multi columns file to one colum'),
-    'optimizes':  ('tinker.optimizes', 'optimizes a series of xyz files(broken)'),
-    'out2arch':   ('tools.out2arch', 'gaussian out to arch file'),
-    'out2ene':    ('tools.out2ene', 'gaussian out to ene'),
     'dmddat_fix': ('tools.dmddat_fix', 'fix olddmddat file'),
     'parmeval':   ('torsionfit.parmeval', 'evaluate parameter files'),
     'parmfit':    ('torsionfit.parmfit', 'parm fit'),
@@ -37,10 +45,8 @@ subscript = {
     'sumxyz':     ('tools.sumxyz', 'summary xyz file\'s info'),
     'sumparam':   ('tools.sumparam', 'choose params from tinker parameter file'),
     'tor2freeene':('tools.tor2freeene', 'torsion to free energy'),
-    'xyz2gjf':    ('tools.xyz2gjf', 'xyz to gjf format'),
-    'xyz2gro':    ('tools.xyz2gro', 'xyz to gro format'),
-    'xyz2pdb':    ('molecule.xyz2pdb', 'xyz to pdb format')
-    }
+    })
+    ]
 
 def help():
     basename = os.path.basename(sys.argv[0])
@@ -48,11 +54,13 @@ def help():
     print 'Version:', itcc.__version__
     print
     print 'Sub-commands:'
-    keys = subscript.items()
-    keys.sort()
-    for key in keys:
-        print '  %s %-12s  %s' % (basename, key[0], key[1][1])
-    print
+    for section_key, section in subscript:
+        print ' ' + section_key
+        keys = section.items()
+        keys.sort()
+        for key in keys:
+            print '  %s %-12s  %s' % (basename, key[0], key[1][1])
+        print
     print 'report bugs to <lidaobing@gmail.com>'
 
 def main():
@@ -61,15 +69,18 @@ def main():
         sys.exit(0)
 
     key = sys.argv[1]
+    subcmd_dict = {}
+    for _, section in subscript:
+        subcmd_dict.update(section)
 
     if key == '--version':
         print 'itcc', itcc.__version__
     elif key in ['-h', '--help', 'help']:
         help()
-    elif key in subscript:
+    elif key in subcmd_dict:
         del sys.argv[0:2]
         os.execv('/usr/bin/python2.4', 
-                 ['python', '-m', 'itcc/' + subscript[key][0].replace('.', '/')] +
+                 ['python', '-m', 'itcc/' + subcmd_dict[key][0].replace('.', '/')] +
                    sys.argv)
     else:
         sys.stderr.write('Unknown option: %s\n' % key)
