@@ -16,7 +16,7 @@ itcc (0.8) unstable; urgency=low
   * swicth to cdbs+pycentral
   * itcc cmpxyztop support '-c' option
 
- -- LI Daobing <lidaobing@gmail.com>  Wed, 20 Dec 2006 09:39:25 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 20 Dec 2006 09:45:09 +0800
 
 itcc (0.7) unstable; urgency=low
 
