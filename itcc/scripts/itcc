@@ -56,10 +56,8 @@ def help():
     print 'Sub-commands:'
     for section_key, section in subscript:
         print ' ' + section_key
-        keys = section.items()
-        keys.sort()
-        for key in keys:
-            print '  %s %-12s  %s' % (basename, key[0], key[1][1])
+        for k, v in sorted(section.iteritems()):
+            print '  %s %-12s  %s' % (basename, k, v[1])
         print
     print 'report bugs to <lidaobing@gmail.com>'
 
