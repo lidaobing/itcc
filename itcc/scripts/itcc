@@ -19,6 +19,9 @@ subscript = [
     'xyz2pdb':    ('molecule.xyz2pdb', 'xyz to pdb format'),
     'optimizes':  ('tinker.optimizes', 'optimizes a series of xyz files(broken)'),
     }),
+    ('Molecule', {
+        'chiral': ('molecule.chiral', 'calculate chirality'),
+        }),
     ('Other', {
     'catordiff':  ('ccs2.catordiff', 'cyclic alkane torsion diffrent'),
     'cmpxyztop':  ('molecule.cmpxyztop', 'compare topology of two xyz files'),
