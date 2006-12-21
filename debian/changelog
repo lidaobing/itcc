@@ -1,9 +1,10 @@
 itcc (0.8.1) unstable; urgency=low
 
   * separate itcc sub commands into sections.
-  * add 'itcc chiral'
+  * add 'itcc chiral'.
+  * add bash_completion support.
 
- -- LI Daobing <lidaobing@gmail.com>  Thu, 21 Dec 2006 10:59:52 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Thu, 21 Dec 2006 11:24:24 +0800
 
 itcc (0.8) unstable; urgency=low
 

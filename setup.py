@@ -58,5 +58,6 @@ setup(name="itcc",
                 'itcc.torsionfit'],
       ext_modules = ext_modules,
       scripts=scripts,
+      data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])]
       )
 

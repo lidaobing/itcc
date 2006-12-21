@@ -1,0 +1,23 @@
+# $Id$
+
+_itcc()
+{
+	local cur prev commands options command
+
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+
+	commands='out2arch out2ene gjf2xyz optimizes xyz2gjf xyz2gro \
+                  xyz2pdb catordiff cmpxyztop columnmean confsearch \
+                  constrain dmddat2dmddat dmddat2mtxyz dmddat_fix \
+                  dmddummy mol2top mtxyzrg mtxyzstat onecolumn parmeval \
+                  parmfit printefit removepbc rmsd scalexyz settype \
+                  shake simpparam sumparam sumxyz tor2freeene'
+
+	if [[ $COMP_CWORD -eq 1 ]] ; then
+	   COMPREPLY=( $( compgen -W "$commands" -- $cur ) )
+	fi
+
+	return 0
+}
+complete -F _itcc -o default itcc
