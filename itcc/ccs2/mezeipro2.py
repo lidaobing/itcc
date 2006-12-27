@@ -53,7 +53,6 @@ class Mezeipro2:
 
     def __call__(self):
         result = [[] for i in range(16)]
-        realresult = []
 
         stepsize = math.pi * 2 / self.steps
         ref = self._dismatrix(5, 7)
@@ -87,7 +86,7 @@ class Mezeipro2:
                     tmp = rtbis.rtbis(func, j*stepsize, (j+1)*stepsize, self.acc)
                     p2 = self._theta_to_p2(tmp)
                     tmp2 = self.get_p34567(p2)
-                    for k in range(i+1):
+                    for _k in range(i+1):
                         tmp3 = tmp2.next()
                     yield tuple([p2,] + list(tmp3))
                 except rtbis.Error:
@@ -115,22 +114,22 @@ class Mezeipro2:
     def get_p34567(self, p2):
         for p3 in self.get_p3(p2):
             if p3 is None:
-                for i in range(16):
+                for _i in range(16):
                     yield (None,) * 5
                 continue
             for p6 in self.get_p6(p3):
                 if p6 is None:
-                    for i in range(8):
+                    for _i in range(8):
                         yield (None,) * 5
                     continue
                 for p4 in self.get_p4(p2, p3, p6):
                     if p4 is None:
-                        for i in range(4):
+                        for _i in range(4):
                             yield (None,) * 5
                         continue
                     for p5 in self.get_p5(p3, p4, p6):
                         if p5 is None:
-                            for i in range(2):
+                            for _i in range(2):
                                 yield (None,) * 5
                             continue
                         for p7 in self.get_p7(p6):
@@ -273,7 +272,6 @@ def _test():
     for x in idxs[2:-2]:
         sys.stdout.write('%10.6f %10.6f %10.6f\n' % tuple(mol.coords[x]))
 
-    import pprint
     mezeipro2 = Mezeipro2(mol.coords, distmat, idxs)
 
     results = list(mezeipro2())

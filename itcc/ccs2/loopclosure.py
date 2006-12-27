@@ -22,7 +22,7 @@ from itcc.ccs2 import mezeipro as Mezeipro
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
-class LoopClosure:
+class LoopClosure(object):
     def __init__(self, forcefield, keeprange, searchrange):
         self.forcefield = forcefield
         self.keeprange = keeprange
@@ -40,6 +40,7 @@ class LoopClosure:
         self.newmolnametmp = None
         self.lowestene = None
         self.shakedata = None
+        self.start_time = None
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -162,24 +163,37 @@ class LoopClosure:
             return None
 
     def printparams(self):
-        print 'Starttime: %s' % time.asctime()
+        self.start_time = time.time()
+        print 'Starttime: %s' % time.ctime(self.start_time)
         print 'Program Version: itcc %s' %  itcc.__version__
         print 'Forcefield: %s' % tinker.getparam(self.forcefield)
         print 'KeepRange: %s' % self.keeprange
         print 'SearchRange: %s' % self.searchrange
+        print 'MaxSteps: %s' % self.maxsteps
+        print 'MolType: %s' % self.moltypekey
         print
 
     def printend(self):
+        import datetime
+
+        print 'Starttime: %s' % time.ctime(self.start_time)
+        end_time = time.time()
         print 'Endtime: %s' % time.asctime()
+        print 'Total time: %s' % datetime.timedelta(0, end_time - self.start_time)
+
         try:
             import resource
         except ImportError:
             pass
         else:
-            res = resource.getrusage(resource.RUSAGE_CHILDREN)
-            print 'Time used by external program: %.1fs(%.1f+%.1f)' % (res[0]+res[1], res[0], res[1])
-            res = resource.getrusage(resource.RUSAGE_SELF)
-            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' % (res[0]+res[1], res[0], res[1])
+            res_c = resource.getrusage(resource.RUSAGE_CHILDREN)
+            res_s = resource.getrusage(resource.RUSAGE_SELF)
+            res_c_t = res_c[0] + res_c[1]
+            res_s_t = res_s[0] + res_s[1]
+            res_t = res_c_t + res_s_t
+            print 'Total CPU time: %s' % datetime.timedelta(0, res_t)
+            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' % (res_s_t, res_s[0], res_s[1])
+            print 'Time used by external program: %.1fs(%.1f+%.1f)' % (res_c_t, res_c[0], res_c[1])
 
     def writemol(self, idx, mol, ene):
         ofname = self.molnametmp % idx
@@ -235,19 +249,6 @@ class LoopClosure:
         for newidx, oldidx in enumerate(newidxs):
             print '%6i %6i %.4f' % (oldidx+1, newidx+1, self.tasks[oldidx][1])
         print
-
-    def getprogress(self):
-        return "out of work"
-        finishedtasknum = len(self.tasks) - len(self.taskheap)
-        if self.searchrange is None:
-            waitingtasknum = len(self.taskheap)
-        else:
-            waitingtasknum = 0
-            searchbound = self.searchbound
-            for ene, _ in self.taskheap:
-                if ene <= searchbound:
-                    waitingtasknum += 1
-        return finishedtasknum, waitingtasknum
 
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
