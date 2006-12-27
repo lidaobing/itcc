@@ -52,7 +52,8 @@ def varytors(tors):
 
 def main():
     if len(sys.argv) != 3:
-        print 'Usage: %s xyzfname1 xyzfname2' % sys.argv[0]
+        import os.path
+        print 'Usage: %s xyzfname1 xyzfname2' % os.path.basename(sys.argv[0])
         sys.exit(1)
     mol1 = read.readxyz(file(sys.argv[1]))
     mol2 = read.readxyz(file(sys.argv[2]))
