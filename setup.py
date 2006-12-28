@@ -13,9 +13,9 @@ if svnversion == 'exported':
     ofile.write("__version__ = '%s'\n" %
                   file('version.in').read().strip())
 else:
-    ofile.write("__version__ = '%s (SVN%s)'\n" % 
+    ofile.write("__version__ = '%s.svn%s'\n" % 
                   (file('version.in').read().strip(),
-                   svnversion))
+                      svnversion.split(':')[-1]))
 ofile.close()
 
 import itcc
