@@ -20,9 +20,20 @@ clean:
 	-find . -name *.o -exec rm -f {} \;
 check: all
 	(cd tests && $(MAKE) check)
+
+deb:
+	DH_ALWAYS_EXCLUDE=.svn debuild
+
+help:
+	@echo "you can use following commands:"
+	@echo " make; sudo make install"
+	@echo " make dist"
+	@echo " make bdist"
+	@echo " make deb"
+
 TAGS:
 	rm -f TAGS
 	find ./ -name "*.c" -type f -exec etags -a {} \;
 	find ./ -name "*.py" -type f -exec etags -a {} \;
 
-.PHONY: test clean
+.PHONY: test clean deb
