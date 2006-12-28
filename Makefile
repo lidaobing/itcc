@@ -15,7 +15,7 @@ sdist:
 bdist:
 	$(PYTHON) setup.py bdist
 clean:
-	rm -rf build dist MANIFEST
+	rm -rf build dist MANIFEST itcc/__init__.py tests/subdirs
 	-find . -name *.pyc -exec rm -f {} \;
 	-find . -name *.o -exec rm -f {} \;
 check: all
