@@ -15,15 +15,16 @@ def mol2top(molfname, ofile=sys.stdout):
     mol = read.readxyz(ifile)
     tors = Relalist(mol).torsions
     for tor in tors:
-        if all([mol.atoms[idx].type != 5 for idx in tor]):
+        if all([mol.atoms[idx].no != 1 for idx in tor]):
             ofile.write('%s\n' % ' '.join([str(idx+1) for idx in tor]))
 
 def main():
     import sys
     if len(sys.argv) != 2:
+        import os.path
         sys.stderr.write("output all the torsions(except the torsion "
-                         "include H), we assume H's type is 5\n") 
-        sys.stderr.write("Usage: %s xyzfname\n" % sys.argv[0])
+                         "include H)\n") 
+        sys.stderr.write("Usage: %s xyzfname\n" % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
     mol2top(sys.argv[1])
