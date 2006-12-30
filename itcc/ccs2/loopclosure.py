@@ -8,10 +8,11 @@ import pprint
 import itertools
 import time
 import random
+import tempfile
 
 import itcc
 from itcc.tinker import tinker
-from itcc.molecule import read, write, tools as moltools
+from itcc.molecule import read, write, mtxyz, tools as moltools
 from itcc.tools import tools
 from itcc.ccs2 import loopdetect, base, peptide, catordiff, sidechain
 from itcc.ccs2 import mezeipro2
@@ -36,7 +37,7 @@ class LoopClosure(object):
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
         self.minconverge = 0.001
-        self.molnametmp = None
+        self.tmp_mtxyz_file = None
         self.newmolnametmp = None
         self.lowestene = None
         self.shakedata = None
@@ -62,7 +63,7 @@ class LoopClosure(object):
     def _call(self, molfname):
         mol = read.readxyz(file(molfname))
         self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
-        self.molnametmp = os.path.splitext(molfname)[0] + '.tmp.%03i'
+        self.tmp_mtxyz_file = tempfile.TemporaryFile()
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
         if self.loopatoms is None:
@@ -140,7 +141,7 @@ class LoopClosure(object):
         bisect.insort(self.enes, (ene, taskidx))
         print '    Potential Surface Map       Minimum ' \
               '%6i %21.4f' % (taskidx+1, ene)
-        self.writemol(taskidx+1, mol, ene)
+        self.writemol(mol, ene)
 
         r6s = list(self.r6s)
         random.shuffle(r6s)
@@ -195,11 +196,8 @@ class LoopClosure(object):
             print 'Time used by   this   program: %.1fs(%.1f+%.1f)' % (res_s_t, res_s[0], res_s[1])
             print 'Time used by external program: %.1fs(%.1f+%.1f)' % (res_c_t, res_c[0], res_c[1])
 
-    def writemol(self, idx, mol, ene):
-        ofname = self.molnametmp % idx
-        ofile = file(ofname, 'w+')
-        write.writexyz(mol, ofile, '%.4f' % ene)
-        ofile.close()
+    def writemol(self, mol, ene):
+        write.writexyz(mol, self.tmp_mtxyz_file, '%.4f' % ene)
 
     def findneighbor(self, mol, r6):
         coords = mol.coords
@@ -224,6 +222,9 @@ class LoopClosure(object):
                 return
 
     def reorganizeresults(self):
+        self.tmp_mtxyz_file.seek(0)
+        oldmols = mtxyz.Mtxyz(self.tmp_mtxyz_file)
+
         if self.keeprange is None:
             newidxs = [ene[1] for ene in self.enes]
         else:
@@ -231,17 +232,15 @@ class LoopClosure(object):
 
         print
         print 'Oldidx Newidx Ene(sort by Oldidx)'
-        for oldidx in range(len(self.tasks)):
+        for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
             ene = self.tasks[oldidx][1]
-            oldfname = self.molnametmp % (oldidx + 1)
             try:
                 newidx = newidxs.index(oldidx)
             except ValueError:
-                os.unlink(oldfname)
                 print '%6i %6s %.4f' % (oldidx+1, '', ene)
             else:
                 newfname = self.newmolnametmp % (newidx + 1)
-                os.rename(oldfname, newfname)
+                file(newfname, 'w').write(oldmol)
                 print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
 
         print
