@@ -11,22 +11,26 @@ def chiral_type(mol, idx):
 
 def main():
     import sys
-    if len(sys.argv) < 3:
+    if len(sys.argv) < 4:
         import os.path
-        sys.stderr.write('Usage: %s filename idx...\n' % os.path.basename(sys.argv[0]))
+        sys.stderr.write('Usage: %s --idx INDEX FILENAME...\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
-    from itcc.molecule import read        
-    mol = read.readxyz(file(sys.argv[1]))
-    for x in sys.argv[2:]:
-        t = chiral_type(mol, int(x) - 1)
-        if t is True:
-            sys.stdout.write('A')
-        elif t is False:
-            sys.stdout.write('B')
-        else:
-            sys.stdout.write('C')
-    sys.stdout.write('\n')
+    idx = [int(x) - 1 for x in sys.argv[2].split()]
+
+    from itcc.molecule import read
+    for fname in sys.argv[3:]:
+        sys.stdout.write("%s " % fname)
+        mol = read.readxyz(file(fname))
+        for x in idx:
+            t = chiral_type(mol, x)
+            if t is True:
+                sys.stdout.write('A')
+            elif t is False:
+                sys.stdout.write('B')
+            else:
+                sys.stdout.write('C')
+        sys.stdout.write('\n')
 
 if __name__ == '__main__':
     main()
