@@ -1,3 +1,4 @@
+# -*- shell-script -*-
 # $Id$
 
 _itcc()
@@ -12,7 +13,7 @@ _itcc()
                   constrain dmddat2dmddat dmddat2mtxyz dmddat_fix \
                   dmddummy mol2top mtxyzrg mtxyzstat onecolumn parmeval \
                   parmfit printefit removepbc rmsd scalexyz settype \
-                  shake simpparam sumparam sumxyz tor2freeene'
+                  shake simpparam sumparam sumxyz tor2freeene chiral'
 
 	if [[ $COMP_CWORD -eq 1 ]] ; then
 	   COMPREPLY=( $( compgen -W "$commands" -- $cur ) )
