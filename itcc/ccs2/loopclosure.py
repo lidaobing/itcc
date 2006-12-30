@@ -70,7 +70,8 @@ class LoopClosure(object):
         os.chdir(newdir)
 
         file('tinker.key', 'w').write('ENFORCE-CHIRALITY\n')
-        
+        tinker.curdir = True
+
         self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
         self.tmp_mtxyz_file = tempfile.TemporaryFile()
         typedmol = getmoltype(self.moltypekey)(mol)
