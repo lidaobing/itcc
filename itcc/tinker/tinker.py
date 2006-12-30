@@ -13,6 +13,7 @@ from itcc.molecule import read, relalist, write
 __revision__ = '$Rev$'
 
 debug = False
+curdir = False
 
 TNK_ROOT = os.getenv("TNK_ROOT", '')    # use same environment with molden
 
@@ -90,15 +91,18 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
     progpath = os.path.join(TINKERDIR, cmdname)
     forcefield = getparam(forcefield)
 
-    ofile = tempfile.NamedTemporaryFile()
-    ifname = ofile.name
+    if curdir:
+        ofile = file('tinker.xyz', 'w')
+        ifname = 'tinker.xyz'
+    else:
+        ofile = tempfile.NamedTemporaryFile(suffix='.xyz')
+        ifname = ofile.name
     write.writexyz(mol, ofile)
     ofile.flush()
 
-    ofname = ifname + '.xyz'
+    ofname = ifname + '_2'
 
-    command = '%s %s %s %f' % (progpath, ifname, forcefield, converge)
-    ifile = subprocess.Popen(command, shell=True,
+    ifile = subprocess.Popen([progpath, ifname, forcefield, str(converge)],
                              stdout=subprocess.PIPE).stdout
 
     result = None
@@ -122,6 +126,8 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
         raise
     ofile.close()
     os.remove(ofname)
+    if curdir:
+        os.remove('tinker.xyz')
 
     return newmol, result
 

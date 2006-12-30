@@ -9,6 +9,7 @@ import itertools
 import time
 import random
 import tempfile
+import shutil
 
 import itcc
 from itcc.tinker import tinker
@@ -42,6 +43,7 @@ class LoopClosure(object):
         self.lowestene = None
         self.shakedata = None
         self.start_time = None
+        self.olddir = None
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -62,6 +64,13 @@ class LoopClosure(object):
 
     def _call(self, molfname):
         mol = read.readxyz(file(molfname))
+
+        olddir = os.getcwd()
+        newdir = tempfile.mkdtemp('itcc')
+        os.chdir(newdir)
+
+        file('tinker.key', 'w').write('ENFORCE-CHIRALITY\n')
+        
         self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
         self.tmp_mtxyz_file = tempfile.TemporaryFile()
         typedmol = getmoltype(self.moltypekey)(mol)
@@ -86,6 +95,8 @@ class LoopClosure(object):
             except StopIteration:
                 break
             self.runtask(taskidx, r6)
+        os.chdir(olddir)
+        shutil.rmtree(newdir)
         self.reorganizeresults()
 
     def runtask(self, taskidx, r6):
