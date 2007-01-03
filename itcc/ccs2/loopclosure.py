@@ -25,6 +25,7 @@ __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
 class LoopClosure(object):
+    legal_min_ene = -100000
     def __init__(self, forcefield, keeprange, searchrange):
         self.forcefield = forcefield
         self.keeprange = keeprange

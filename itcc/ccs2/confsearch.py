@@ -9,6 +9,8 @@ def testcyc(ifname, options):
                                     options.searchbound)
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
+    if options.legal_min_ene is not None:
+        loopc.legal_min_ene = options.legal_min_ene
     loopc(ifname)
 
 def main():
@@ -30,6 +32,14 @@ def main():
                            'infinite')
     parser.add_option('-t', "--moltype", dest="moltype",
                       default=None, help='you can set it to peptide')
+    parser.add_option('-l', '--legal-min-ene', dest='legal_min_ene',
+                      default=None, help='in some forcefield (e.g. OPLSAA), '
+                      'there some illegal structure with extremely '
+                      'low energy (e.g. -13960945.7658 kcal/mol), so '
+                      'we treat all structure with energy lower than '
+                      'LEGAL_MIN_ENE is illegal, default is %f kcal/mol'
+                      % loopclosure.LoopClosure.legal_min_ene)
+
     (options, args) = parser.parse_args()
     if len(args) != 1:
         parser.error("incorrect number of arguments")
