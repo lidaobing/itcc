@@ -25,7 +25,12 @@ __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
 class LoopClosure(object):
+    # in some forcefield (e.g. OPLSAA), there some illegal structure
+    # with extremely low energy (e.g. -13960945.7658 kcal/mol), so we
+    # treat all structure with energy lower than self.legal_min_ene is
+    # illegal.
     legal_min_ene = -100000
+
     def __init__(self, forcefield, keeprange, searchrange):
         self.forcefield = forcefield
         self.keeprange = keeprange
@@ -34,12 +39,6 @@ class LoopClosure(object):
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
         self.moltypekey = None
-
-        # in some forcefield (e.g. OPLSAA), there some illegal structure
-        # with extremely low energy (e.g. -13960945.7658 kcal/mol), so
-        # we treat all structure with energy lower than
-        # self.legal_min_ene is illegal.
-        self.legal_min_ene = -100000
 
         self._step_count = 0
         self.tasks = []                 # List of (mol, ene)
