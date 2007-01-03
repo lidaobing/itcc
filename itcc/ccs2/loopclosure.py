@@ -30,10 +30,17 @@ class LoopClosure(object):
         self.keeprange = keeprange
         self.searchrange = searchrange
         self.maxsteps = None
-        self._step_count = 0
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
         self.moltypekey = None
+
+        # in some forcefield (e.g. OPLSAA), there some illegal structure
+        # with extremely low energy (e.g. -13960945.7658 kcal/mol), so
+        # we treat all structure with energy lower than
+        # self.legal_min_ene is illegal.
+        self.legal_min_ene = -100000
+
+        self._step_count = 0
         self.tasks = []                 # List of (mol, ene)
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
@@ -109,6 +116,8 @@ class LoopClosure(object):
         print
 
         for newmol, newene in self.findneighbor(mol, r6):
+            if newene < self.legal_min_ene:
+                continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
                 print '(%i)' % (idx + 1)
