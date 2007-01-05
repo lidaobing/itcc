@@ -56,17 +56,18 @@ def sumxyz_torsion(list_, filelist):
 def main():
     import sys
     import os.path
-    if len(sys.argv) >= 3:
-        fnamelist = sys.argv[2:]
-        atmidx = [int(x)-1 for x in sys.argv[1].split(',')]
-        assert 2 <= len(atmidx) <= 4
-        if len(atmidx) < 4:
-            sumxyz(atmidx, fnamelist)
-        else:
-            sumxyz_torsion(atmidx, fnamelist)
+    if len(sys.argv) < 3:
+        sys.stderr.write('Usage: %s i,j[,k[,l]] filename ...\n' % \
+                           os.path.basename(sys.argv[0]))
+        sys.stderr.write('  index begin with 1\n')
+        sys.exit(1)
+    fnamelist = sys.argv[2:]
+    atmidx = [int(x)-1 for x in sys.argv[1].split(',')]
+    assert 2 <= len(atmidx) <= 4
+    if len(atmidx) < 4:
+        sumxyz(atmidx, fnamelist)
     else:
-        print 'Usage: %s i,j[,k[,l]] filename ...' % \
-        os.path.basename(sys.argv[0])
+        sumxyz_torsion(atmidx, fnamelist)
 
 
 if __name__ == '__main__':
