@@ -7,7 +7,9 @@ export DH_ALWAYS_EXCLUDE=.svn
 
 DEB_PYTHON_SYSTEM = pycentral
 VDEF := $(strip $(shell dpkg-parsechangelog | awk -F: '/^Version:/ {print $$NF}'))
-DEB_DH_GENCONTROL_ARGS = -u-v$(VDEF)$(shell if which svnversion > /dev/null; then svnversion | sed s/^.*:// | sed s/^/.svn/ | sed s/.svnexported// ; fi)
+VSVN := $(shell if which svnversion > /dev/null; then svnversion | sed s/^.*:// \
+         | sed s/^/.svn/ | sed s/.svnexported// ; fi)
+DEB_DH_GENCONTROL_ARGS = -u-v$(VDEF)$(VSVN)
 
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/python-distutils.mk
