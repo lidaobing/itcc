@@ -24,7 +24,8 @@ def findatom2(ifname, atmtype, conns):
 def main():
     import sys
     if len(sys.argv) != 4:
-        print >> sys.stderr, 'Usage: %s ifname atmtype connnum' % sys.argv[0]
+        import os.path
+        print >> sys.stderr, 'Usage: %s ifname atmtype connnum' % os.path.basename(sys.argv[0])
         sys.exit(1)
     findatom2(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
 
