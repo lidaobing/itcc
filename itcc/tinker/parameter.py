@@ -1,7 +1,7 @@
 # $Id$
 '''Deal with the tinker .prm file'''
 
-from itcc.Tinker import molparam
+from itcc.tinker import molparam
 
 __revision__ = '$Rev$'
 __all__ = ['Parameter', 'Torsionparameter', 'Parameters']

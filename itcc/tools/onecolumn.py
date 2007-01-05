@@ -13,8 +13,9 @@ def onecolumn(ifile, ofile):
 def main():
     import sys
     if len(sys.argv) != 2:
+        import os.path
         sys.stderr.write(__doc__)
-        sys.stderr.write('Usage: %s ifname\n' % sys.argv[0])
+        sys.stderr.write('Usage: %s ifname\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     onecolumn(file(sys.argv[1]), sys.stdout)
 

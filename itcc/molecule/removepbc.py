@@ -24,8 +24,10 @@ def removepbc(xyzfname, pbc):
 def main():
     import sys
     if len(sys.argv) not in (3, 5):
-        sys.stderr.write('Usage: %s xyzfname pbc.x\n' % sys.argv[0])
-        sys.stderr.write('       %s xyzfname pbc.x pbc.y pbc.z' % sys.argv[0])
+        import os.path
+        basename = os.path.basename(sys.argv[0])
+        sys.stderr.write('Usage: %s xyzfname pbc.x\n' % basename)
+        sys.stderr.write('       %s xyzfname pbc.x pbc.y pbc.z\n' % basename)
         sys.exit(1)
     if len(sys.argv) == 3:
         removepbc(sys.argv[1], [float(sys.argv[2])] * 3)

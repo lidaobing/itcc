@@ -16,7 +16,8 @@ def dmddummy(xyzfname):
 def main():
     import sys
     if len(sys.argv) != 2:
-        print >> sys.stderr, "Usage: %s xyzfname" % sys.argv[0]
+        import os.path
+        print >> sys.stderr, "Usage: %s xyzfname" % os.path.basename(sys.argv[0])
         sys.exit(1)
     dmddummy(sys.argv[1])
 

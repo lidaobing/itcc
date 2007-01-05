@@ -3,9 +3,9 @@
 __revision__ = '$Rev$'
 
 import sys
-from itcc.Molecule import read
-from itcc.Tinker import parameter, analyze, tinker, molparam
-from itcc.Torsionfit import tools, parmfit
+from itcc.molecule import read
+from itcc.tinker import parameter, analyze, tinker, molparam
+from itcc.torsionfit import tools, parmfit
 
 def printefit(datfname, idxfname, param):
     '''Only print E_fit'''

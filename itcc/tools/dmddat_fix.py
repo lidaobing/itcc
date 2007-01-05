@@ -171,7 +171,8 @@ def olddmddat_fix(ifname):
 
 def main():
     if len(sys.argv) != 2:
-        sys.stderr.write("Usage: %s dmddatfname\n" % sys.argv[0])
+        import os.path
+        sys.stderr.write("Usage: %s dmddatfname\n" % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
     olddmddat_fix(sys.argv[1])

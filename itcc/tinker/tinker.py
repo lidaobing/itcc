@@ -57,7 +57,7 @@ def constrain(ifname, param = None):
     restrain all torsions on mol.
     """
 
-    mol = read.readxyz(ifname)
+    mol = read.readxyz(file(ifname))
     rel = relalist.Relalist(mol)
     lines = ['restrain-torsion %d %d %d %d\n' % x for x in rel.torsions]
 

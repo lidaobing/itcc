@@ -31,7 +31,7 @@ subscript = [
         'columnmean': ('tools.columnmean', 'mean for column'),
         'constrain':  ('tinker.constrain', 'generate a constrain tinker.key'),
         'dmddummy':   ('tools.dmddummy', 'dmddummy'),
-        'dmddat2mtxyz':('tools.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
+        'dmddat2mtxyz':('molecule.dmddat2mtxyz', 'convert dmddat file to mtxyz'),
         'dmddat2dmddat':('tools.dmddat2dmddat', 'convert dmddat file to dmddat'),
         'mol2top':    ('molecule.mol2top', 'mol to top'),
         'mtxyzrg':    ('tools.mtxyzrg', 'multi tinker xyz file\'s rg'),

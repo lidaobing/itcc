@@ -1,7 +1,7 @@
 # -*- coding: utf8 -*-
 # $Id$
 
-from itcc.Molecule.relalist import Relalist
+from itcc.molecule.relalist import Relalist
 
 __revision__ = '$Rev$'
 

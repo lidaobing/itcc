@@ -11,7 +11,9 @@ def main():
         for x in lines:
             print x,
     else:
-        print >> sys.stderr, 'Usage: %s xyzfname [param]' % sys.argv[0]
+        import os.path
+        print >> sys.stderr, 'Usage: %s xyzfname [param]' % os.path.basename(sys.argv[0])
+        sys.exit(1)
 
 if __name__ == '__main__':
     main()

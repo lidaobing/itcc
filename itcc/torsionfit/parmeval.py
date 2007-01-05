@@ -2,10 +2,10 @@
 
 import sys
 import csv
-from itcc.Molecule import read
-from itcc.Tools import tools, rmsd
-from itcc.Torsionfit import tools as tortools
-from itcc.Tinker import tinker
+from itcc.molecule import read, rmsd
+from itcc.tools import tools
+from itcc.torsionfit import tools as tortools
+from itcc.tinker import tinker
 
 __revision__ = '$Rev$'
 
