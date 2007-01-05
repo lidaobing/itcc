@@ -4,9 +4,10 @@ from itcc.ccs2 import loopclosure
 __revision__ = '$Rev$'
 
 def testcyc(ifname, options):
-    loopc = loopclosure.LoopClosure(options.forcefield,
-                                    options.keepbound,
-                                    options.searchbound)
+    loopc = loopclosure.LoopClosure()
+    loopc.forcefield = options.forcefield
+    loopc.keeprange = options.keepbound
+    loopc.searchrange = options.searchbound
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
     if options.legal_min_ene is not None:

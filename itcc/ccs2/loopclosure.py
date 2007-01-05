@@ -1,4 +1,5 @@
 # $Id$
+import sys
 import os
 import os.path
 import math
@@ -31,10 +32,10 @@ class LoopClosure(object):
     # illegal.
     legal_min_ene = -100000
 
-    def __init__(self, forcefield, keeprange, searchrange):
-        self.forcefield = forcefield
-        self.keeprange = keeprange
-        self.searchrange = searchrange
+    def __init__(self):
+        self.forcefield = None
+        self.keeprange = None
+        self.searchrange = None
         self.maxsteps = None
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
@@ -51,6 +52,7 @@ class LoopClosure(object):
         self.shakedata = None
         self.start_time = None
         self.olddir = None
+        self.log_level = 1
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -65,6 +67,7 @@ class LoopClosure(object):
     searchbound = property(getsearchbound)
 
     def __call__(self, molfname):
+        assert self.forcefield is not None
         self.printparams()
         self._call(molfname)
         self.printend()
@@ -233,12 +236,14 @@ class LoopClosure(object):
                                             self.minconverge)
             self._step_count += 1
             if tinker.isminimal(rmol, self.forcefield):
-                print '  Step %5i   Comb %02i-%02i %42.4f' % \
-                      (self._step_count, 0, molidx, rene),
+                self.log('  Step %5i   Comb %02i-%02i %42.4f '
+                           % (self._step_count, 0, molidx, rene), 
+                         1)
                 yield rmol, rene
             else:
-                print '  Step %5i   Comb %02i-%02i Not a minimum %28.4f' % \
-                      (self._step_count, 0, molidx, rene)
+                self.log('  Step %5i   Comb %02i-%02i Not a minimum %28.4f'
+                           % (self._step_count, 0, molidx, rene),
+                         1)
             if self.maxsteps is not None and self._step_count >= self.maxsteps:
                 return
 
@@ -269,6 +274,10 @@ class LoopClosure(object):
         for newidx, oldidx in enumerate(newidxs):
             print '%6i %6i %.4f' % (oldidx+1, newidx+1, self.tasks[oldidx][1])
         print
+
+    def log(self, str, lvl):
+        if lvl <= self.log_level:
+            sys.stdout.write(str)
 
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
