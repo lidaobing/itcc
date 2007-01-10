@@ -13,7 +13,8 @@ _itcc()
                   constrain dmddat2dmddat dmddat2mtxyz dmddat_fix \
                   dmddummy mol2top mtxyzrg mtxyzstat onecolumn parmeval \
                   parmfit printefit removepbc rmsd scalexyz settype \
-                  shake simpparam sumparam sumxyz tor2freeene chiral'
+                  shake simpparam sumparam sumxyz tor2freeene chiral \
+		  almostequaldiff'
 
 	if [[ $COMP_CWORD -eq 1 ]] ; then
 	   COMPREPLY=( $( compgen -W "$commands" -- $cur ) )
@@ -22,3 +23,5 @@ _itcc()
 	return 0
 }
 complete -F _itcc -o default itcc
+
+# vim:ft=sh:

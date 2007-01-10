@@ -27,6 +27,7 @@ subscript = [
         'confsearch': ('ccs2.confsearch', 'conformational search'),
         }),
     ('Other', {
+        'almostequaldiff': ('tools.almostequaldiff', 'almost equal diff'),
         'cmpxyztop':  ('molecule.cmpxyztop', 'compare topology of two xyz files'),
         'columnmean': ('tools.columnmean', 'mean for column'),
         'constrain':  ('tinker.constrain', 'generate a constrain tinker.key'),
