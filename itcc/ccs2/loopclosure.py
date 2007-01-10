@@ -95,6 +95,7 @@ class LoopClosure(object):
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = tuple(typedmol.getr6s(self.loopatoms))
         printr6s(self.r6s)
+        sys.stdout.flush()
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self._step_count += 1
