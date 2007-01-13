@@ -12,7 +12,7 @@ def main():
     import sys
     if len(sys.argv) != 2:
         import os.path
-        print 'usage: %s ifile > ofile' % os.path.basenaem(sys.argv[0])
+        print 'usage: %s ifile > ofile' % os.path.basename(sys.argv[0])
         sys.exit(1)
     log2enestep(file(sys.argv[1]), sys.stdout)    
 
