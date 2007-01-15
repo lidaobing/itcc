@@ -23,6 +23,7 @@ subscript = [
         'chiral': ('molecule.chiral', 'calculate chirality'),
         }),
     ('CCS2', {
+        'detectloop': ('ccs2.detectloop', 'detect loop'),
         'catordiff':  ('ccs2.catordiff', 'cyclic alkane torsion diffrent'),
         'confsearch': ('ccs2.confsearch', 'conformational search'),
         }),

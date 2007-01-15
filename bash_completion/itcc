@@ -14,7 +14,7 @@ _itcc()
                   dmddummy mol2top mtxyzrg mtxyzstat onecolumn parmeval \
                   parmfit printefit removepbc rmsd scalexyz settype \
                   shake simpparam sumparam sumxyz tor2freeene chiral \
-		  almostequaldiff'
+		  almostequaldiff detectloop'
 
 	if [[ $COMP_CWORD -eq 1 ]] ; then
 	   COMPREPLY=( $( compgen -W "$commands" -- $cur ) )
