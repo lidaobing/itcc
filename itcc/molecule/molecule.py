@@ -54,6 +54,9 @@ class Molecule(object):
         self.connect = None
 
     # connect system
+    def is_connect(self, i, j):
+        return bool(self.connect[i,j])
+
     def makeconnect(self):
         distmat = moltools.distmat(self)
         self.connect = distmat < self.__maxbondlen
