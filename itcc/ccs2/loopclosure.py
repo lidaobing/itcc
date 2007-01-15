@@ -181,12 +181,11 @@ class LoopClosure(object):
             yield taskidx, r6
 
     def getloopatoms(self, mol):
-        loops = loopdetect.loopdetect(mol)
-        if loops:
-            assert len(loops) == 1
+        looptype, loops = loopdetect.loopdetect(mol)
+        if looptype == loopdetect.SIMPLELOOPS \
+           and len(loops) == 1:
             return loops[0]
-        else:
-            return None
+        return None
 
     def printparams(self):
         self.start_time = time.time()

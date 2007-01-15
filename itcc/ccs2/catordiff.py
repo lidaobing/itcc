@@ -22,7 +22,7 @@ def catordiff(mol1, mol2):
     return tordiff(tors1, tors2)
 
 def getlooptor(mol):
-    loops = loopdetect.loopdetect(mol)
+    loops = loopdetect.loopdetect(mol)[1]
     assert len(loops) == 1
     loop = loops[0]
     return tools.calclooptor(mol, loop)

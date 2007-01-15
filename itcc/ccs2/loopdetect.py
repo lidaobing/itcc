@@ -1,7 +1,13 @@
 # $Id$
 
-__all__ = ["loopdetect"]
+__all__ = ["loopdetect", 'NOLOOP',
+           'SIMPLELOOPS', 'COMPLEXLOOPS']
 __revision__ = '$Rev$'
+
+# loop types
+NOLOOP = 0
+SIMPLELOOPS = 1
+COMPLEXLOOPS = 2
 
 def _symmatp(mat):
     """_symmatp(mat) -> Bool
@@ -45,11 +51,24 @@ def _countloop(mat):
     deg_max = max(trunk_deg)
     assert(deg_max != 1)
     if deg_max == 0:
-        return []
+        return (NOLOOP, [])
     elif deg_max == 2:
-        return _countloop2(mat)
-    else:
-        raise RuntimeError("I can't deal with molecule with complex cycle.")
+        return (SIMPLELOOPS, _countloop2(mat))
+
+    tasks = set()
+    ends = set()
+    for i in range(len(mat)):
+        if trunk_deg[i] > 2:
+            ends.add(i)
+            for j,v in enumerate(mat[i]):
+                if v: tasks.add((i,j))
+
+    res = []
+    while tasks:
+        i,j = tasks.pop()
+        res.append(_countloop3(mat, i, j, ends))
+        tasks.remove(tuple(res[-1][:-3:-1]))
+    return (COMPLEXLOOPS, res)
 
 def _countloop2(mat):
     trunk_deg = sum(mat).tolist()
@@ -77,6 +96,14 @@ def _countloop2(mat):
             i = j
     return result
 
+def _countloop3(mat, beg, next, ends):
+    last = beg
+    res = [beg, next]
+    while next not in ends:
+        last, next = next, [i for i in range(len(mat)) if mat[i][next] and i != last][0]
+        res.append(next)
+    return res
+
 def _connectmatrix(mol):
     """_connectmatrix(mol) -> Matrix
     build the connectmatrix of mol.
@@ -91,11 +118,23 @@ def _connectmatrix(mol):
 
 def loopdetect(mol):
     """loopdetect(mol):
-    return the loops in mol
+    return (looptype, loops)
     """
     connmat = _connectmatrix(mol)
     _delleaf(connmat)
     return _countloop(connmat)
+
+def std_simple_loop(loop):
+    if len(loop) < 2: return loop[:]
+    idx = loop.index(min(loop))
+    res = loop[idx:] + loop[:idx]
+    if res[1] > res[-1]:
+        res = res[:1] + reversed(res[1:])
+    return res
+
+def std_complex_loop(loop):
+    if loop[0] < loop[-1]: return loop[:]
+    return reversed(loop)
 
 def main():
     import sys
@@ -104,7 +143,17 @@ def main():
         sys.stderr.write('Usage: %s xyzfname\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     from itcc.molecule import read
-    print loopdetect(read.readxyz(file(sys.argv[1])))
+    res = loopdetect(read.readxyz(file(sys.argv[1])))
+    if res[0] == NOLOOP:
+        print 'NOLOOP'
+    elif res[0] == SIMPLELOOPS:
+        print 'SIMPLELOOPS'
+        for loop in res[1]:
+            print ' '.join(str(x+1) for x in std_simple_loop(loop))
+    else:
+        print 'COMPLEXLOOPS'
+        for loop in res[1]:
+            print ' '.join(str(x+1) for x in std_complex_loop(loop))
 
 if __name__ == '__main__':
     main()

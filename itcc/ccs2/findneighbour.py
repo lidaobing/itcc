@@ -8,7 +8,7 @@ from itcc.ccs2 import loopdetect, loopclosure, peptide
 
 def main():
     mol = read.readxyz(file(sys.argv[1]))
-    loop  = loopdetect.loopdetect(mol)[0]
+    loop  = loopdetect.loopdetect(mol)[1][0]
     loopc = loopclosure.LoopClosure()
 
     shakedata = loopclosure.getshakedata(mol, loop)
