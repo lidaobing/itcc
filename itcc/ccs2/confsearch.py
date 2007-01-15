@@ -10,6 +10,10 @@ def testcyc(ifname, options):
     loopc.searchrange = options.searchbound
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
+    if options.loop is None and options.loopfile is not None:
+        options.loop = file(options.loopfile).read()
+    if options.loop is not None:
+        loopc.loop = [int(x)-1 for x in options.loop.split()]
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
     loopc(ifname)
@@ -40,6 +44,12 @@ def main():
                       'we treat all structure with energy lower than '
                       'LEGAL_MIN_ENE is illegal, default is %f kcal/mol'
                       % loopclosure.LoopClosure.legal_min_ene)
+    parser.add_option('--loop', dest='loop',
+                      default=None, help='specify loop instead of auto-detect')
+    parser.add_option('--loopfile', dest='loopfile',
+                      default=None, 
+                      help='specify loop instead of auto-detect, '
+                           'this option will be ignored if used with --loop.')
 
     (options, args) = parser.parse_args()
     if len(args) != 1:

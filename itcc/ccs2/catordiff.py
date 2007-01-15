@@ -14,17 +14,18 @@ debug = False
 
 Angle = periodnumber.genPNclass(-math.pi, math.pi)
 
-def catordiff(mol1, mol2):
+def catordiff(mol1, mol2, loop=None):
     assert isinstance(mol1, molecule.Molecule)
     assert isinstance(mol2, molecule.Molecule)
-    tors1 = getlooptor(mol1)
-    tors2 = getlooptor(mol2)
+    tors1 = getlooptor(mol1, loop)
+    tors2 = getlooptor(mol2, loop)
     return tordiff(tors1, tors2)
 
-def getlooptor(mol):
-    loops = loopdetect.loopdetect(mol)[1]
-    assert len(loops) == 1
-    loop = loops[0]
+def getlooptor(mol, loop):
+    if loop is None:
+        loops = loopdetect.loopdetect(mol)[1]
+        assert len(loops) == 1
+        loop = loops[0]
     return tools.calclooptor(mol, loop)
 
 def tordiff(tors1, tors2):

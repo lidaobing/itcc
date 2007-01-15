@@ -16,7 +16,7 @@ import itcc
 from itcc.tinker import tinker
 from itcc.molecule import read, write, mtxyz, tools as moltools
 from itcc.tools import tools
-from itcc.ccs2 import loopdetect, base, peptide, catordiff, sidechain
+from itcc.ccs2 import detectloop, base, peptide, catordiff, sidechain
 from itcc.ccs2 import mezeipro2
 from itcc.ccs2 import r6 as R6
 from itcc.ccs2 import mezei as Mezei
@@ -40,6 +40,7 @@ class LoopClosure(object):
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
         self.moltypekey = None
+        self.loop = None
 
         self._step_count = 0
         self.tasks = []                 # List of (mol, ene)
@@ -148,7 +149,7 @@ class LoopClosure(object):
                 break
             taskidx = self.enes[idx][1]
             mol2 = self.tasks[taskidx][0]
-            if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
+            if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
                 return taskidx
         for idx in range(initidx, len(self.enes)):
             ene2 = self.enes[idx][0]
@@ -156,7 +157,7 @@ class LoopClosure(object):
                 break
             taskidx = self.enes[idx][1]
             mol2 = self.tasks[taskidx][0]
-            if catordiff.catordiff(mol, mol2) <= math.radians(self.torerror):
+            if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
                 return taskidx
         return -1
 
@@ -181,11 +182,16 @@ class LoopClosure(object):
             yield taskidx, r6
 
     def getloopatoms(self, mol):
-        looptype, loops = loopdetect.loopdetect(mol)
-        if looptype == loopdetect.SIMPLELOOPS \
+        if self.loop is not None:
+            for i in range(len(self.loop)):
+                assert mol.is_connect(self.loop[i], self.loop[i-1])
+            return self.loop
+
+        looptype, loops = detectloop.loopdetect(mol)
+        if looptype == detectloop.SIMPLELOOPS \
            and len(loops) == 1:
-            return loops[0]
-        return None
+               self.loop = loops[0]
+        return self.loop
 
     def printparams(self):
         self.start_time = time.time()
@@ -196,6 +202,10 @@ class LoopClosure(object):
         print 'SearchRange: %s' % self.searchrange
         print 'MaxSteps: %s' % self.maxsteps
         print 'MolType: %s' % self.moltypekey
+        if self.loop is None:
+            print 'Loop: auto'
+        else:
+            print 'Loop: %s' % ' '.join(str(x+1) for x in self.loop)
         print
 
     def printend(self):
@@ -241,7 +251,7 @@ class LoopClosure(object):
                          1)
                 yield rmol, rene
             else:
-                self.log('  Step %5i   Comb %02i-%02i Not a minimum %28.4f'
+                self.log('  Step %5i   Comb %02i-%02i Not a minimum %28.4f\n'
                            % (self._step_count, 0, molidx, rene),
                          1)
             if self.maxsteps is not None and self._step_count >= self.maxsteps:
