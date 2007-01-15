@@ -96,3 +96,15 @@ def loopdetect(mol):
     connmat = _connectmatrix(mol)
     _delleaf(connmat)
     return _countloop(connmat)
+
+def main():
+    import sys
+    if len(sys.argv) != 2:
+        import os.path
+        sys.stderr.write('Usage: %s xyzfname\n' % os.path.basename(sys.argv[0]))
+        sys.exit(1)
+    from itcc.molecule import read
+    print loopdetect(read.readxyz(file(sys.argv[1])))
+
+if __name__ == '__main__':
+    main()
