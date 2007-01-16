@@ -16,7 +16,8 @@ def getsidechain(mol, loop, idx):
         for atomidx in neighborlist[search]:
             if atomidx == idx:
                 continue
-            assert atomidx not in loop
+            if atomidx in loop:
+                continue
             if atomidx not in results:
                 results.append(atomidx)
                 searchs.append(atomidx)

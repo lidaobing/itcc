@@ -1,4 +1,3 @@
-.PHONY: TAGS test
 
 PYTHON?=python2.4
 
@@ -8,7 +7,7 @@ debug: clean
 	$(PYTHON) setup.py build --debug
 	$(PYTHON) setup.py install
 install:
-	$(PYTHON) setup.py install --root $(DESTDIR)/
+	$(PYTHON) setup.py install --prefix=/usr/local
 dist: sdist
 sdist:
 	$(PYTHON) setup.py sdist -f
@@ -36,4 +35,4 @@ TAGS:
 	find ./ -name "*.c" -type f -exec etags -a {} \;
 	find ./ -name "*.py" -type f -exec etags -a {} \;
 
-.PHONY: test clean deb
+.PHONY: TAGS test clean deb

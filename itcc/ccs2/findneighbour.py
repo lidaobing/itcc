@@ -4,7 +4,7 @@ import sys
 import pprint
 
 from itcc.molecule import read
-from itcc.ccs2 import loopdetect, loopclosure, peptide
+from itcc.ccs2 import detectloop, loopclosure, peptide
 
 def main():
     mol = read.readxyz(file(sys.argv[1]))

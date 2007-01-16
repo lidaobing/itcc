@@ -5,7 +5,7 @@ import sys
 import math
 from itcc.tools import periodnumber
 from itcc.molecule import read, molecule, tools
-from itcc.ccs2 import loopdetect
+from itcc.ccs2 import detectloop
 
 __revision__ = '$Rev$'
 __all__ = ['catordiff']
@@ -23,7 +23,7 @@ def catordiff(mol1, mol2, loop=None):
 
 def getlooptor(mol, loop):
     if loop is None:
-        loops = loopdetect.loopdetect(mol)[1]
+        loops = detectloop.loopdetect(mol)[1]
         assert len(loops) == 1
         loop = loops[0]
     return tools.calclooptor(mol, loop)
