@@ -31,6 +31,7 @@ def main():
             else:
                 sys.stdout.write('C')
         sys.stdout.write('\n')
+        sys.stdout.flush()
 
 if __name__ == '__main__':
     main()
