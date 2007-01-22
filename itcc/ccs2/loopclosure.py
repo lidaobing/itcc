@@ -55,6 +55,10 @@ class LoopClosure(object):
         self.olddir = None
         self.log_level = 1
 
+        self.m_check_minimal = True
+        self.m_check_chiral = False
+        self.m_chirals = []
+
     def getkeepbound(self):
         if self.keeprange is None:
             return None
@@ -96,7 +100,6 @@ class LoopClosure(object):
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = tuple(typedmol.getr6s(self.loopatoms))
         printr6s(self.r6s)
-        sys.stdout.flush()
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self._step_count += 1
@@ -121,7 +124,7 @@ class LoopClosure(object):
         print
 
         for newmol, newene in self.findneighbor(mol, r6):
-            if newene < self.legal_min_ene:
+            if not self.is_valid(newmol, newene):
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
@@ -236,8 +239,7 @@ class LoopClosure(object):
     def findneighbor(self, mol, r6):
         coords = mol.coords
         dismat = moltools.distmat(mol)
-        r6results = getr6result(coords, r6, dismat, self.shakedata)
-        for molidx, molresult in enumerate(r6results):
+        for molidx, molresult in enumerate(getr6result(coords, r6, dismat, self.shakedata)):
             newmol = mol.copy()
             for idx, coord in molresult.items():
                 newmol.coords[idx] = coord
@@ -245,15 +247,10 @@ class LoopClosure(object):
                                             self.forcefield,
                                             self.minconverge)
             self._step_count += 1
-            if tinker.isminimal(rmol, self.forcefield):
-                self.log('  Step %5i   Comb %02i-%02i %42.4f '
-                           % (self._step_count, 0, molidx, rene), 
-                         1)
-                yield rmol, rene
-            else:
-                self.log('  Step %5i   Comb %02i-%02i Not a minimum %28.4f\n'
-                           % (self._step_count, 0, molidx, rene),
-                         1)
+            self.log('  Step %5i   Comb %02i-%02i %42.4f '
+                       % (self._step_count, 0, molidx, rene), 
+                     1)
+            yield rmol, rene
             if self.maxsteps is not None and self._step_count >= self.maxsteps:
                 return
 
@@ -289,6 +286,15 @@ class LoopClosure(object):
         if lvl <= self.log_level:
             sys.stdout.write(str)
 
+    def is_valid(self, mol, ene):
+        if ene < self.legal_min_ene:
+            return False
+        if self.m_check_chiral:
+            return False
+        if self.m_check_minimal and not tinker.isminimal(mol, self.forcefield):
+            return False
+        return True
+
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
     if type_ == (1, 1, 1, 1, 1, 1, 1):
@@ -322,6 +328,7 @@ def printr6s(r6s):
     print "This loop has %i R6 blocks:" % len(r6s)
     pprint.pprint(r6s)
     print
+    sys.stdout.flush()
 
 def printcombinations(combinations):
     print "These R6 blocks have %i kinds of combination:" % len(combinations)
