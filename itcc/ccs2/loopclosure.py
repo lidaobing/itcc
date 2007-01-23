@@ -220,6 +220,12 @@ class LoopClosure(object):
             print 'Loop: auto'
         else:
             print 'Loop: %s' % ' '.join(str(x+1) for x in self.loop)
+
+        if not self.check_chiral:
+            print 'Chiral: none'
+        else:
+            print 'Chiral: %s' % ' '.join(str(x+1) for x in self.chiral_idxs)
+
         print
 
     def printend(self):
