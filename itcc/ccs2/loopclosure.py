@@ -118,7 +118,7 @@ class LoopClosure(object):
         return True
 
     def _init_chiral(self, mol):
-        self.chirals = chiral.chiral_types(mol, self.chiral_idxs)
+        self.chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
 
     def _cleanup(self):
         os.chdir(self.olddir)
@@ -225,7 +225,6 @@ class LoopClosure(object):
             print 'Chiral: none'
         else:
             print 'Chiral: %s' % ' '.join(str(x+1) for x in self.chiral_idxs)
-
         print
 
     def printend(self):
@@ -306,8 +305,8 @@ class LoopClosure(object):
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
             return False
-        if self.check_chiral and chiral.chiral_types(mol, self.chiral_idxs) != self.chirals:
-                return False
+        if self.check_chiral and tuple(chiral.chiral_types(mol, self.chiral_idxs)) != self.chirals:
+            return False
         if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
             return False
         return True
