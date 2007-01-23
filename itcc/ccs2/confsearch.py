@@ -10,10 +10,18 @@ def testcyc(ifname, options):
     loopc.searchrange = options.searchbound
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
+
     if options.loop is None and options.loopfile is not None:
         options.loop = file(options.loopfile).read()
     if options.loop is not None:
         loopc.loop = [int(x)-1 for x in options.loop.split()]
+
+    if options.chiral_index_file is not None and options.chiral_index is None:
+        options.chiral_index = file(options.chiral_index_file).read()
+    if options.chiral_index is not None:
+        loopc.check_chiral = True
+        loopc.chirals = [int(x)-1 for x in options.chiral_index.split()]
+        
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
     loopc(ifname)
@@ -45,11 +53,19 @@ def main():
                       'LEGAL_MIN_ENE is illegal, default is %f kcal/mol'
                       % loopclosure.LoopClosure.legal_min_ene)
     parser.add_option('--loop', dest='loop',
-                      default=None, help='specify loop instead of auto-detect')
+                      default=None, help='specify loop instead of auto-detect, begin with 1')
     parser.add_option('--loopfile', dest='loopfile',
                       default=None, 
                       help='specify loop instead of auto-detect, '
                            'this option will be ignored if used with --loop.')
+    parser.add_option('--chiral-index',
+                      dest='chiral_index',
+                      default=None,
+                      help='keep chiral and provide chiral indexes, begin with 1')
+    parser.add_option('--chiral-index-file',
+                      dest='chiral_index_file',
+                      default=None,
+                      help='similar with --chiral-index, read from a file, ignored if used with --chiral-index')
 
     (options, args) = parser.parse_args()
     if len(args) != 1:

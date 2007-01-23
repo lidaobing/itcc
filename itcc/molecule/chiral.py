@@ -9,6 +9,10 @@ def chiral_type(mol, idx):
     if tor < 0.0: return False
     return None
 
+def chiral_types(mol, idxs):
+    for idx in idxs:
+        yield chiral_type(mol, idx)
+
 def main():
     import sys
     if len(sys.argv) < 4:

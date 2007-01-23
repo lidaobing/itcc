@@ -14,7 +14,7 @@ import shutil
 
 import itcc
 from itcc.tinker import tinker
-from itcc.molecule import read, write, mtxyz, tools as moltools
+from itcc.molecule import read, write, mtxyz, chiral, tools as moltools
 from itcc.tools import tools
 from itcc.ccs2 import detectloop, base, peptide, catordiff, sidechain
 from itcc.ccs2 import mezeipro2
@@ -55,9 +55,10 @@ class LoopClosure(object):
         self.olddir = None
         self.log_level = 1
 
-        self.m_check_minimal = True
-        self.m_check_chiral = False
-        self.m_chirals = []
+        self.check_minimal = True
+        self.check_chiral = False
+        self.chiral_idxs = []
+        self.chirals = []
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -73,16 +74,25 @@ class LoopClosure(object):
 
     def __call__(self, molfname):
         assert self.forcefield is not None
-        self.printparams()
-        self._call(molfname)
-        self.printend()
+        if not self._prepare(molfname): return
+        while self.maxsteps is None or self._step_count < self.maxsteps:
+            try:
+                taskidx, r6 = self.taskqueue().next()
+            except StopIteration:
+                break
+            self.runtask(taskidx, r6)
+        self._cleanup()
 
-    def _call(self, molfname):
+    def _prepare(self, molfname):
+        self.printparams()
         mol = read.readxyz(file(molfname))
 
-        olddir = os.getcwd()
-        newdir = tempfile.mkdtemp('itcc')
-        os.chdir(newdir)
+        if self.check_chiral:
+            self._init_chiral(mol)
+
+        self.olddir = os.getcwd()
+        self.newdir = tempfile.mkdtemp('itcc')
+        os.chdir(self.newdir)
 
         file('tinker.key', 'w').write('ENFORCE-CHIRALITY\n')
         tinker.curdir = True
@@ -93,10 +103,10 @@ class LoopClosure(object):
         self.loopatoms = self.getloopatoms(mol)
         if self.loopatoms is None:
             print "this moleclue does not contain loop. exit."
-            return
+            return False
         if len(self.loopatoms) < 6:
             print "your ring is %s-member, we can't deal with ring less than 6-member." % len(self.loopatoms)
-            return
+            return False
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = tuple(typedmol.getr6s(self.loopatoms))
         printr6s(self.r6s)
@@ -105,15 +115,16 @@ class LoopClosure(object):
         self._step_count += 1
         self.lowestene = ene
         self.addtask(mol, ene)
-        while self.maxsteps is None or self._step_count < self.maxsteps:
-            try:
-                taskidx, r6 = self.taskqueue().next()
-            except StopIteration:
-                break
-            self.runtask(taskidx, r6)
-        os.chdir(olddir)
-        shutil.rmtree(newdir)
+        return True
+
+    def _init_chiral(self, mol):
+        self.chirals = chiral.chiral_types(mol, self.chiral_idxs)
+
+    def _cleanup(self):
+        os.chdir(self.olddir)
+        shutil.rmtree(self.newdir)
         self.reorganizeresults()
+        self.printend()
 
     def runtask(self, taskidx, r6):
         mol, ene = self.tasks[taskidx]
@@ -289,9 +300,9 @@ class LoopClosure(object):
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
             return False
-        if self.m_check_chiral:
-            return False
-        if self.m_check_minimal and not tinker.isminimal(mol, self.forcefield):
+        if self.check_chiral and chiral.chiral_types(mol, self.chiral_idxs) != self.chirals:
+                return False
+        if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
             return False
         return True
 
