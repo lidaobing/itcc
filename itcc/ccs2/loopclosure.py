@@ -26,20 +26,6 @@ from itcc.ccs2 import mezeipro as Mezeipro
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
-_interrupted = False
-
-def _interrupt_handler(signum, frame):
-    global _interrupted
-    _interrupted = True
-
-def _init_interrupt_handler():
-    signal.signal(signal.SIGINT, _interrupt_handler)
-    signal.signal(signal.SIGTERM, _interrupt_handler)
-
-def _clean_interrupt_handler():
-    signal.signal(signal.SIGINT, signal.SIG_DFL)
-    signal.signal(signal.SIGTERM, signal.SIG_DFL)
-
 class LoopClosure(object):
     # in some forcefield (e.g. OPLSAA), there some illegal structure
     # with extremely low energy (e.g. -13960945.7658 kcal/mol), so we
@@ -90,8 +76,8 @@ class LoopClosure(object):
     def __call__(self, molfname):
         assert self.forcefield is not None
         if not self._prepare(molfname): return
-        while not _interrupted and (self.maxsteps is None 
-                                    or self._step_count < self.maxsteps):
+        while self.maxsteps is None \ 
+              or self._step_count < self.maxsteps):
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
@@ -131,7 +117,6 @@ class LoopClosure(object):
         self._step_count += 1
         self.lowestene = ene
         self.addtask(mol, ene)
-        _init_interrupt_handler()
         return True
 
     def _init_chiral(self, mol):
@@ -140,11 +125,8 @@ class LoopClosure(object):
     def _cleanup(self):
         os.chdir(self.olddir)
         shutil.rmtree(self.newdir)
-        if _interrupted:
-            print 'this program is interrupted'
         self.reorganizeresults()
         self.printend()
-        _clean_interrupt_handler()
 
     def runtask(self, taskidx, r6):
         mol, ene = self.tasks[taskidx]
