@@ -5,21 +5,6 @@ from setuptools import setup, find_packages
 from distutils.core import Extension
 import os
 
-if os.system('which svnversion > /dev/null') != 0:
-    svnversion = 'exported'
-else:
-    svnversion = os.popen('svnversion .').read().strip()
-
-ofile = file('itcc/__init__.py', 'w')
-if svnversion == 'exported':
-    ofile.write("__version__ = '%s'\n" %
-                  file('version.in').read().strip())
-else:
-    ofile.write("__version__ = '%s.svn%s'\n" % 
-                  (file('version.in').read().strip(),
-                      svnversion.split(':')[-1]))
-ofile.close()
-
 import itcc
 
 __revision__ = '$Rev$'
@@ -46,7 +31,7 @@ setup(
     version=version,
     author='LI Daobing',
     author_email='lidaobing@gmail.com',
-    url='http://219.223.205.41/~lidb',
+    url='http://www.chemgen.szpku.edu.cn',
     packages = find_packages(),
     ext_modules = ext_modules,
     scripts=scripts,
