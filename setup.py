@@ -51,5 +51,6 @@ setup(
     ext_modules = ext_modules,
     scripts=scripts,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
-    install_requires = ['Numeric', 'Scientific']
+    test_suite = 'itcc.tests',
+#    install_requires = ['Numeric', 'Scientific']
 )
