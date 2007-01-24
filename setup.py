@@ -40,7 +40,6 @@ ext_modules=[Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
                        libraries=['lapack'])
              ]
 
-
 setup(
     name="itcc",
     version=version,
@@ -52,10 +51,5 @@ setup(
     scripts=scripts,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
     test_suite = 'itcc.tests',
-    entry_points = {
-        'console_scripts': [
-            'itcc_confsearch = itcc.ccs2.confsearch:main',
-            ],
-        },
 #    install_requires = ['Numeric', 'Scientific']
 )
