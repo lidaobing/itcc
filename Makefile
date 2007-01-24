@@ -17,8 +17,8 @@ clean:
 	rm -rf build dist MANIFEST itcc/__init__.py tests/subdirs
 	-find . -name *.pyc -exec rm -f {} \;
 	-find . -name *.o -exec rm -f {} \;
-check: all
-	(cd tests && $(MAKE) check)
+check:
+	python setup.py test
 
 deb:
 	DH_ALWAYS_EXCLUDE=.svn debuild

@@ -3,7 +3,6 @@
 import sys
 import os
 import unittest
-import test_base
 
 test_methane_in = """ 5 molden generated tinker .xyz (mm3 param.)
 1  C     0.000000    0.000000    0.000000      1     2    3    4    5

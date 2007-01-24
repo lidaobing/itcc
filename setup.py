@@ -10,15 +10,15 @@ if os.system('which svnversion > /dev/null') != 0:
 else:
     svnversion = os.popen('svnversion .').read().strip()
 
-ofile = file('itcc/__init__.py', 'w')
-if svnversion == 'exported':
-    ofile.write("__version__ = '%s'\n" %
-                  file('version.in').read().strip())
-else:
-    ofile.write("__version__ = '%s.svn%s'\n" % 
-                  (file('version.in').read().strip(),
-                      svnversion.split(':')[-1]))
-ofile.close()
+#ofile = file('itcc/__init__.py', 'w')
+#if svnversion == 'exported':
+#    ofile.write("__version__ = '%s'\n" %
+#                  file('version.in').read().strip())
+#else:
+#    ofile.write("__version__ = '%s.svn%s'\n" % 
+#                  (file('version.in').read().strip(),
+#                      svnversion.split(':')[-1]))
+#ofile.close()
 
 import itcc
 

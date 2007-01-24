@@ -2,7 +2,6 @@
 
 import unittest
 import StringIO
-import test_base
 from itcc.molecule.mol2top import mol2top
 
 test_in = '''    51  19.0934

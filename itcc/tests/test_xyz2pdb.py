@@ -2,7 +2,6 @@
 
 import unittest
 from StringIO import StringIO
-import test_base
 from itcc.molecule import xyz2pdb
 
 test_in = ''' 1  19.0934

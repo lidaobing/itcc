@@ -1,7 +1,6 @@
 # $Id$
 
 import unittest
-import test_base
 import StringIO
 from itcc.tools import onecolumn
 

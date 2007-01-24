@@ -1,7 +1,6 @@
 # $Id$
 
 import unittest
-import test_base
 
 test_in_dmddat_base64 = '''\
 AgAAAA4AAAALAAAAQA0DAEANAwBADQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
