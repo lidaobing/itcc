@@ -11,7 +11,7 @@ import time
 import random
 import tempfile
 import shutil
-import signal
+import cPickle
 
 import itcc
 from itcc.tinker import tinker
@@ -33,6 +33,9 @@ class LoopClosure(object):
     # illegal.
     legal_min_ene = -100000
 
+    S_NONE = 0
+    S_INITED = 1
+
     def __init__(self):
         self.forcefield = None
         self.keeprange = None
@@ -40,6 +43,7 @@ class LoopClosure(object):
         self.maxsteps = None
         self.eneerror = 0.0001          # unit: kcal/mol
         self.torerror = 10              # unit: degree
+        self.minconverge = 0.001
         self.moltypekey = None
         self.loop = None
 
@@ -47,7 +51,7 @@ class LoopClosure(object):
         self.tasks = []                 # List of (mol, ene)
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
-        self.minconverge = 0.001
+        self.tmp_mtxyz_fname = None
         self.tmp_mtxyz_file = None
         self.newmolnametmp = None
         self.lowestene = None
@@ -55,11 +59,27 @@ class LoopClosure(object):
         self.start_time = None
         self.olddir = None
         self.log_level = 1
+        self.state = self.S_NONE
 
         self.check_minimal = True
         self.check_chiral = False
         self.chiral_idxs = []
         self._chirals = []
+        self.dump_steps = 100
+
+    def __getstate__(self):
+        odict = self.__dict__.copy()
+        del odict['tmp_mtxyz_file']
+        return odict
+
+    def __setstate__(self,dict):
+        tmp_mtxyz_fname = dict['tmp_mtxyz_fname']
+        if tmp_mtxyz_fname is None:
+            tmp_mtxyz_file = None
+        else:
+            tmp_mtxyz_file = file(tmp_mtxyz_fname, 'ab+')
+        self.__dict__.update(dict)
+        self.tmp_mtxyz_file = tmp_mtxyz_file
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -78,6 +98,8 @@ class LoopClosure(object):
         if not self._prepare(molfname): return
         while self.maxsteps is None \
               or self._step_count < self.maxsteps:
+            if self._step_count % self.dump_steps == 0:
+                self.dump()
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
@@ -85,7 +107,16 @@ class LoopClosure(object):
             self.runtask(taskidx, r6)
         self._cleanup()
 
+    def dump(self):
+        ofname = os.path.join(self.olddir, 'checkfile.part')
+        ofile = file(ofname, 'w')
+        cPickle.dump(self, ofile)
+        ofile.close()
+
+        os.rename(ofname, os.path.join(self.olddir, 'checkfile'))
+
     def _prepare(self, molfname):
+        if self.state != self.S_NONE: return True
         self.printparams()
         mol = read.readxyz(file(molfname))
 
@@ -100,7 +131,8 @@ class LoopClosure(object):
         tinker.curdir = True
 
         self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
-        self.tmp_mtxyz_file = tempfile.TemporaryFile()
+        fd, self.tmp_mtxyz_fname = tempfile.mkstemp(dir=self.olddir)
+        self.tmp_mtxyz_file = os.fdopen(fd, 'wb+')
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
         if self.loopatoms is None:
@@ -117,6 +149,7 @@ class LoopClosure(object):
         self._step_count += 1
         self.lowestene = ene
         self.addtask(mol, ene)
+        self.state = self.S_INITED
         return True
 
     def _init_chiral(self, mol):

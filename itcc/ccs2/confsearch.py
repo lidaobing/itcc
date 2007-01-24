@@ -4,6 +4,12 @@ from itcc.ccs2 import loopclosure
 __revision__ = '$Rev$'
 
 def testcyc(ifname, options):
+    if options.resume is not None:
+        import cPickle
+        loopc = cPickle.load(file(options.resume))
+        loopc(ifname)
+        return
+
     loopc = loopclosure.LoopClosure()
     loopc.forcefield = options.forcefield
     loopc.keeprange = options.keepbound
@@ -29,7 +35,8 @@ def testcyc(ifname, options):
 def main():
     from optparse import OptionParser
 
-    usage = "usage: %prog [-h|options] xyzfile"
+    usage = "usage: %prog [-h|options] xyzfile\n" \
+            "       %prog --resume checkfile"
     parser = OptionParser(usage)
     parser.add_option("-f", "--forcefield", dest='forcefield',
                       default='mm2', help="default is mm2")
@@ -66,12 +73,20 @@ def main():
                       dest='chiral_index_file',
                       default=None,
                       help='similar with --chiral-index, read from a file, ignored if used with --chiral-index')
+    parser.add_option('--resume',
+                      dest='resume',
+                      default=None,
+                      help='resume')
 
     (options, args) = parser.parse_args()
-    if len(args) != 1:
-        parser.error("incorrect number of arguments")
-
-    testcyc(args[0], options)
+    if options.resume is None:
+        if len(args) != 1:
+            parser.error("incorrect number of arguments")
+        testcyc(args[0], options)
+    else:
+        if len(args) != 0:
+            parser.error("incorrect number of arguments")
+        testcyc(None, options)
 
 if __name__ == '__main__':
     main()
