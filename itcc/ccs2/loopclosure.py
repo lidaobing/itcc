@@ -138,6 +138,7 @@ class LoopClosure(object):
 
         for newmol, newene in self.findneighbor(mol, r6):
             if not self.is_valid(newmol, newene):
+                print
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
