@@ -1,10 +1,7 @@
 #!/usr/bin/env python2.4
 # $Id$
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup, find_packages
 from distutils.core import Extension
 import os
 
@@ -44,25 +41,15 @@ ext_modules=[Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
              ]
 
 
-setup(name="itcc",
-      version=version,
-      author='LI Daobing',
-      author_email='lidaobing@gmail.com',
-      url='http://219.223.205.41/~lidb',
-      package_dir={'itcc':'itcc',
-                   'itcc.ccs2':'itcc/ccs2',
-                   'itcc.molecule':'itcc/molecule',
-                   'itcc.tinker':'itcc/tinker',
-                   'itcc.tools':'itcc/tools',
-                   'itcc.torsionfit': 'itcc/torsionfit'},
-      packages=["itcc",
-                'itcc.ccs2',
-                'itcc.molecule',
-                'itcc.tinker',
-                'itcc.tools',
-                'itcc.torsionfit'],
-      ext_modules = ext_modules,
-      scripts=scripts,
-      data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])]
-      )
-
+setup(
+    name="itcc",
+    version=version,
+    author='LI Daobing',
+    author_email='lidaobing@gmail.com',
+    url='http://219.223.205.41/~lidb',
+    packages = find_packages(),
+    ext_modules = ext_modules,
+    scripts=scripts,
+    data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
+    install_requires = ['Numeric', 'Scientific']
+)
