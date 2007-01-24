@@ -1,5 +1,16 @@
 # $Id$
 
+__all__ = ['chiral_type']
+
+def elementwise(fn):
+    def newfn(arg):
+        if hasattr(arg,'__getitem__'):  # is a Sequence
+            return type(arg)(map(fn, arg))
+        else:
+            return fn(arg)
+    return newfn
+
+@elementwise
 def chiral_type(mol, idx):
     if mol.connect is None: return None
     connects = [i for i in range(len(mol)) if mol.connect[idx, i]]
@@ -9,9 +20,7 @@ def chiral_type(mol, idx):
     if tor < 0.0: return False
     return None
 
-def chiral_types(mol, idxs):
-    for idx in idxs:
-        yield chiral_type(mol, idx)
+chiral_types = chiral_type
 
 def main():
     import sys
