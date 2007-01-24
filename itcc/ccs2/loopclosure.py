@@ -59,7 +59,7 @@ class LoopClosure(object):
         self.check_minimal = True
         self.check_chiral = False
         self.chiral_idxs = []
-        self.chirals = []
+        self._chirals = []
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -76,8 +76,8 @@ class LoopClosure(object):
     def __call__(self, molfname):
         assert self.forcefield is not None
         if not self._prepare(molfname): return
-        while self.maxsteps is None \ 
-              or self._step_count < self.maxsteps):
+        while self.maxsteps is None \
+              or self._step_count < self.maxsteps:
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
@@ -120,7 +120,7 @@ class LoopClosure(object):
         return True
 
     def _init_chiral(self, mol):
-        self.chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
+        self._chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
 
     def _cleanup(self):
         os.chdir(self.olddir)
@@ -307,7 +307,7 @@ class LoopClosure(object):
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
             return False
-        if self.check_chiral and tuple(chiral.chiral_types(mol, self.chiral_idxs)) != self.chirals:
+        if self.check_chiral and tuple(chiral.chiral_types(mol, self.chiral_idxs)) != self._chirals:
             return False
         if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
             return False

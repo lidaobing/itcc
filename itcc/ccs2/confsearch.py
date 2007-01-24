@@ -20,7 +20,7 @@ def testcyc(ifname, options):
         options.chiral_index = file(options.chiral_index_file).read()
     if options.chiral_index is not None:
         loopc.check_chiral = True
-        loopc.chirals = [int(x)-1 for x in options.chiral_index.split()]
+        loopc.chirals_idxs = [int(x)-1 for x in options.chiral_index.split()]
         
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
