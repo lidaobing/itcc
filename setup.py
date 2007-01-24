@@ -1,6 +1,11 @@
 #!/usr/bin/env python2.4
 # $Id$
-from distutils.core import setup, Extension
+
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+from distutils.core import Extension
 import os
 
 if os.system('which svnversion > /dev/null') != 0:
@@ -29,7 +34,7 @@ ext_modules=[Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
              Extension("itcc.tools.cpptools",
                        ["itcc/tools/cpptools.cpp"],
                        depends=['itcc/tools/vector.hpp']),
-             Extension('itcc.vools.vector',
+             Extension('itcc.tools.vector',
                        ['itcc/tools/vector.cpp'],
                        depends=['itcc/tools/vector.hpp'],
                        libraries=['boost_python']),
