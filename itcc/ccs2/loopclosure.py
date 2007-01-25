@@ -58,6 +58,7 @@ class LoopClosure(object):
         self.shakedata = None
         self.start_time = None
         self.olddir = None
+        self.newdir = None
         self.log_level = 1
         self.state = self.S_NONE
 
@@ -73,13 +74,18 @@ class LoopClosure(object):
         return odict
 
     def __setstate__(self,dict):
-        tmp_mtxyz_fname = dict['tmp_mtxyz_fname']
-        if tmp_mtxyz_fname is None:
-            tmp_mtxyz_file = None
-        else:
-            tmp_mtxyz_file = file(tmp_mtxyz_fname, 'ab+')
         self.__dict__.update(dict)
-        self.tmp_mtxyz_file = tmp_mtxyz_file
+        self.olddir = os.getcwd()
+        self.newdir = tempfile.mkdtemp('itcc')
+        os.chdir(self.newdir)
+        if self.tmp_mtxyz_fname is not None:
+            self.tmp_mtxyz_fname = os.path.join(self.olddir, os.path.basename(self.tmp_mtxyz_fname))
+            self.tmp_mtxyz_file = file(self.tmp_mtxyz_fname, 'ab+')
+            for i in range(len(self.tasks)):
+                read.readxyz(self.tmp_mtxyz_file)
+            self.tmp_mtxyz_file.truncate()
+        else:
+            self.tmp_mtxyz_file = None
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -96,10 +102,12 @@ class LoopClosure(object):
     def __call__(self, molfname):
         assert self.forcefield is not None
         if not self._prepare(molfname): return
+        last_dump_step = self._step_count
         while self.maxsteps is None \
               or self._step_count < self.maxsteps:
-            if self._step_count % self.dump_steps == 0:
+            if self._step_count - last_dump_step >= self.dump_steps:
                 self.dump()
+                last_dump_step = self._step_count
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
@@ -110,7 +118,7 @@ class LoopClosure(object):
     def dump(self):
         ofname = os.path.join(self.olddir, 'checkfile.part')
         ofile = file(ofname, 'w')
-        cPickle.dump(self, ofile)
+        cPickle.dump(self, ofile, 1)
         ofile.close()
 
         os.rename(ofname, os.path.join(self.olddir, 'checkfile'))

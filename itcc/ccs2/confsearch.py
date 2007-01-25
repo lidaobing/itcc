@@ -1,4 +1,5 @@
 # $Id$
+import itcc
 from itcc.ccs2 import loopclosure
 
 __revision__ = '$Rev$'
@@ -16,6 +17,7 @@ def testcyc(ifname, options):
     loopc.searchrange = options.searchbound
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
+    loopc.dump_steps = options.dump_interaval
 
     if options.loop is None and options.loopfile is not None:
         options.loop = file(options.loopfile).read()
@@ -37,7 +39,10 @@ def main():
 
     usage = "usage: %prog [-h|options] xyzfile\n" \
             "       %prog --resume checkfile"
-    parser = OptionParser(usage)
+    parser = OptionParser(usage,
+                          version = itcc.__version__
+                          )
+    parser.set_defaults(dump_interaval=100)
     parser.add_option("-f", "--forcefield", dest='forcefield',
                       default='mm2', help="default is mm2")
     parser.add_option('-k', "--keep", dest="keepbound",
@@ -61,8 +66,10 @@ def main():
                       % loopclosure.LoopClosure.legal_min_ene)
     parser.add_option('--loop', dest='loop',
                       default=None, help='specify loop instead of auto-detect, begin with 1')
-    parser.add_option('--loopfile', dest='loopfile',
-                      default=None, 
+    parser.add_option('--loopfile', 
+                      dest='loopfile',
+                      default=None,
+                      metavar='FILE',
                       help='specify loop instead of auto-detect, '
                            'this option will be ignored if used with --loop.')
     parser.add_option('--chiral-index',
@@ -72,11 +79,18 @@ def main():
     parser.add_option('--chiral-index-file',
                       dest='chiral_index_file',
                       default=None,
+                      metavar='FILE',
                       help='similar with --chiral-index, read from a file, ignored if used with --chiral-index')
     parser.add_option('--resume',
                       dest='resume',
                       default=None,
+                      metavar='FILE',
                       help='resume')
+    parser.add_option('--dump-interval',
+                      dest='dump_interaval',
+                      type='int',
+                      metavar='INT',
+                      help='dump interval, default is 100 steps')
 
     (options, args) = parser.parse_args()
     if options.resume is None:
