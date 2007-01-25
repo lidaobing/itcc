@@ -2,15 +2,6 @@
 
 __all__ = ['chiral_type']
 
-def elementwise(fn):
-    def newfn(arg):
-        if hasattr(arg,'__getitem__'):  # is a Sequence
-            return type(arg)(map(fn, arg))
-        else:
-            return fn(arg)
-    return newfn
-
-@elementwise
 def chiral_type(mol, idx):
     if mol.connect is None: return None
     connects = [i for i in range(len(mol)) if mol.connect[idx, i]]
@@ -20,11 +11,12 @@ def chiral_type(mol, idx):
     if tor < 0.0: return False
     return None
 
-chiral_types = chiral_type
+def chiral_types(mol, idxs):
+    return type(idxs)([chiral_type(mol, idx) for idx in idxs])
 
 def main():
     import sys
-    if len(sys.argv) < 4:
+    if len(sys.argv) < 4 or sys.argv[1] != "--idx":
         import os.path
         sys.stderr.write('Usage: %s --idx INDEX FILENAME...\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
