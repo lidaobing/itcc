@@ -12,6 +12,10 @@ import random
 import tempfile
 import shutil
 import cPickle
+try:
+    import threading
+except ImportError:
+    import dummy_threading as threading
 
 import itcc
 from itcc.tinker import tinker
@@ -68,6 +72,10 @@ class LoopClosure(object):
         self._chirals = []
         self.dump_steps = 100
 
+        self.np = 1
+        self.multithread = False
+        self.mutex = threading.Lock()
+
     def __getstate__(self):
         odict = self.__dict__.copy()
         del odict['tmp_mtxyz_file']
@@ -102,6 +110,14 @@ class LoopClosure(object):
     def __call__(self, molfile):
         assert self.forcefield is not None
         if not self._prepare(molfile): return
+
+        if self.np > 1:
+            self._run_multi_thread()
+        else:
+            self._run_single_thread()
+
+    def _run_single_thread(self):
+        self.multithread = False
         last_dump_step = self._step_count
         while self.maxsteps is None \
               or self._step_count < self.maxsteps:
@@ -113,6 +129,60 @@ class LoopClosure(object):
             except StopIteration:
                 break
             self.runtask(taskidx, r6)
+        self._cleanup()
+
+    def _run_multi_thread(self):
+        self.multithread = True
+
+        threads = []
+        last_dump_step = self._step_count
+
+        def clear_threads():
+            threads[:] = [x for x in threads if x.isAlive()]
+
+        def is_finished():
+            self.mutex.acquire() # r self._step_count
+            res = (not threads and not self.taskheap) \
+                    or (self.maxsteps is not None and self._step_count >= self.maxsteps)
+            self.mutex.release()
+            return res
+
+        def need_dump():
+            self.mutex.acquire()
+            res = self._step_count - last_dump_step >= self.dump_steps
+            self.mutex.release()
+            return res
+
+        class Task:
+            def __init__(self, parent, taskidx, r6):
+                self.parent = parent
+                self.taskidx = taskidx
+                self.r6 = r6
+            def __call__(self):
+                self.parent.runtask(self.taskidx, self.r6) 
+
+        while True:
+            clear_threads()
+            if is_finished(): 
+                for thread in threads:
+                    thread.join()
+                break
+            if need_dump():
+                for thread in threads:
+                    thread.join()
+                self.dump()
+                last_dump_step = self._step_count
+            self.mutex.acquire() # r/w self.taskheap
+            while len(threads) < self.np and self.taskheap:
+                r6idx, ene, taskidx, r6 = heapq.heappop(self.taskheap)
+                if self.searchbound is not None and ene > self.searchbound:
+                    continue
+                task = Task(self, taskidx, r6)
+                thread = threading.Thread(target = task)
+                threads.append(thread)
+                thread.start()
+            self.mutex.release()
+            time.sleep(30)
         self._cleanup()
 
     def dump(self):
@@ -170,7 +240,9 @@ class LoopClosure(object):
         self.printend()
 
     def runtask(self, taskidx, r6):
+        self.mutex.acquire() # r self.tasks
         mol, ene = self.tasks[taskidx]
+        self.mutex.release()
         print
         head = ' CCS2 Local Search'
         print '%-31s Minimum %6i %21.4f' \
@@ -189,37 +261,49 @@ class LoopClosure(object):
             if idx == -1:
                 self.addtask(newmol, newene)
             if newene < self.lowestene:
+                self.mutex.acquire()
                 self.lowestene = newene
-                if self.searchbound is not None and ene >= self.searchbound:
-                    return
+                finished = self.searchbound is not None and ene >= self.searchbound
+                self.mutex.release()
+                if finished: return
 
     def eneidx(self, mol, ene):
         '''return the taskidx, if is new ene, return -1, if is out of range, return -2'''
+        res = None
+        self.mutex.acquire()
         if self.keeprange is not None and \
            self.searchrange is not None:
             if ene > max(self.keepbound, self.searchbound):
-                return -2
+                res = -2
 
-        initidx = bisect.bisect(self.enes, (ene,))
-        for idx in range(initidx-1, -1, -1):
-            ene2 = self.enes[idx][0]
-            if round(ene - ene2, 4) > self.eneerror:
-                break
-            taskidx = self.enes[idx][1]
-            mol2 = self.tasks[taskidx][0]
-            if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
-                return taskidx
-        for idx in range(initidx, len(self.enes)):
-            ene2 = self.enes[idx][0]
-            if round(ene2 - ene, 4) > self.eneerror:
-                break
-            taskidx = self.enes[idx][1]
-            mol2 = self.tasks[taskidx][0]
-            if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
-                return taskidx
-        return -1
+        if res is None:
+            initidx = bisect.bisect(self.enes, (ene,))
+            for idx in range(initidx-1, -1, -1):
+                ene2 = self.enes[idx][0]
+                if round(ene - ene2, 4) > self.eneerror:
+                    break
+                taskidx = self.enes[idx][1]
+                mol2 = self.tasks[taskidx][0]
+                if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
+                    res = taskidx
+
+        if res is None:                
+            for idx in range(initidx, len(self.enes)):
+                ene2 = self.enes[idx][0]
+                if round(ene2 - ene, 4) > self.eneerror:
+                    break
+                taskidx = self.enes[idx][1]
+                mol2 = self.tasks[taskidx][0]
+                if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
+                    res = taskidx
+
+        if res is None:
+            res = -1
+        self.mutex.release()
+        return res
 
     def addtask(self, mol, ene):
+        self.mutex.acquire()
         self.tasks.append((mol, ene))
         taskidx = len(self.tasks) - 1
         bisect.insort(self.enes, (ene, taskidx))
@@ -231,6 +315,7 @@ class LoopClosure(object):
         random.shuffle(r6s)
         for r6idx, r6 in enumerate(r6s):
             heapq.heappush(self.taskheap, (r6idx, ene, taskidx, r6))
+        self.mutex.release()
 
     def taskqueue(self):
         while self.taskheap:
