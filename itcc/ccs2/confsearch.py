@@ -1,4 +1,6 @@
 # $Id$
+import sys
+
 import itcc
 from itcc.ccs2 import loopclosure
 
@@ -32,12 +34,16 @@ def testcyc(ifname, options):
         
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
-    loopc(ifname)
+
+    if ifname == '-':
+        loopc(sys.stdin)
+    else:
+        loopc(file(ifname))
 
 def main():
     from optparse import OptionParser
 
-    usage = "usage: %prog [-h|options] xyzfile\n" \
+    usage = "usage: %prog [-h|options] xyzfile|-\n" \
             "       %prog --resume checkfile"
     parser = OptionParser(usage,
                           version = itcc.__version__

@@ -99,9 +99,9 @@ class LoopClosure(object):
         return self.lowestene + self.searchrange
     searchbound = property(getsearchbound)
 
-    def __call__(self, molfname):
+    def __call__(self, molfile):
         assert self.forcefield is not None
-        if not self._prepare(molfname): return
+        if not self._prepare(molfile): return
         last_dump_step = self._step_count
         while self.maxsteps is None \
               or self._step_count < self.maxsteps:
@@ -123,10 +123,10 @@ class LoopClosure(object):
 
         os.rename(ofname, os.path.join(self.olddir, 'checkfile'))
 
-    def _prepare(self, molfname):
+    def _prepare(self, molfile):
         if self.state != self.S_NONE: return True
         self.printparams()
-        mol = read.readxyz(file(molfname))
+        mol = read.readxyz(molfile)
 
         if self.check_chiral:
             self._init_chiral(mol)
@@ -138,7 +138,7 @@ class LoopClosure(object):
         file('tinker.key', 'w').write('ENFORCE-CHIRALITY\n')
         tinker.curdir = True
 
-        self.newmolnametmp = os.path.splitext(molfname)[0] + '.%03i'
+        self.newmolnametmp = os.path.splitext(molfile.name)[0] + '.%03i'
         fd, self.tmp_mtxyz_fname = tempfile.mkstemp(dir=self.olddir)
         self.tmp_mtxyz_file = os.fdopen(fd, 'wb+')
         typedmol = getmoltype(self.moltypekey)(mol)
