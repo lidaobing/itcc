@@ -20,6 +20,7 @@ def testcyc(ifname, options):
     loopc.maxsteps = options.maxsteps
     loopc.moltypekey = options.moltype
     loopc.dump_steps = options.dump_interaval
+    loopc.np = options.np
 
     if options.loop is None and options.loopfile is not None:
         options.loop = file(options.loopfile).read()
@@ -48,7 +49,11 @@ def main():
     parser = OptionParser(usage,
                           version = itcc.__version__
                           )
-    parser.set_defaults(dump_interaval=100)
+    parser.set_defaults(
+            dump_interaval=100,
+            np = 1,
+            )
+                       
     parser.add_option("-f", "--forcefield", dest='forcefield',
                       default='mm2', help="default is mm2")
     parser.add_option('-k', "--keep", dest="keepbound",
@@ -97,6 +102,11 @@ def main():
                       type='int',
                       metavar='INT',
                       help='dump interval, default is 100 steps')
+    parser.add_option('--np',
+                      dest='np',
+                      type='int',
+                      metavar='INT',
+                      help='number of processor, default is 1')
 
     (options, args) = parser.parse_args()
     if options.resume is None:
