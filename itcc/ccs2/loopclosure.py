@@ -79,6 +79,7 @@ class LoopClosure(object):
     def __getstate__(self):
         odict = self.__dict__.copy()
         del odict['tmp_mtxyz_file']
+        del odict['mutex']
         return odict
 
     def __setstate__(self,dict):
@@ -94,6 +95,7 @@ class LoopClosure(object):
             self.tmp_mtxyz_file.truncate()
         else:
             self.tmp_mtxyz_file = None
+        self.mutex = threading.Lock()
 
     def getkeepbound(self):
         if self.keeprange is None:
@@ -182,7 +184,7 @@ class LoopClosure(object):
                 threads.append(thread)
                 thread.start()
             self.mutex.release()
-            time.sleep(30)
+            time.sleep(1)
         self._cleanup()
 
     def dump(self):
@@ -390,7 +392,8 @@ class LoopClosure(object):
                 newmol.coords[idx] = coord
             rmol, rene = tinker.minimizemol(newmol,
                                             self.forcefield,
-                                            self.minconverge)
+                                            self.minconverge,
+                                            prefix=threading.currentThread().getName())
             self._step_count += 1
             self.log('  Step %5i   Comb %02i-%02i %42.4f '
                        % (self._step_count, 0, molidx, rene), 

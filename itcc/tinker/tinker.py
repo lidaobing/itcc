@@ -22,8 +22,6 @@ if TNK_ROOT:
 else:
     TINKERDIR = ""
 
-minimize_count = 0
-
 def getparam(key):
     if os.path.isfile(key):
         return os.path.abspath(key)
@@ -74,17 +72,15 @@ def _writemoltotempfile(mol):
     return ofile
 
 
-def optimizemol(mol, forcefield, converge = 0.01):
-    return optimize_minimize_mol('optimize', mol, forcefield, converge)
+def optimizemol(*args, **kwargs):
+    return optimize_minimize_mol('optimize', *args, **kwargs)
 
 
-def minimizemol(mol, forcefield, converge = 0.01):
-    global minimize_count
-    minimize_count += 1
-    return optimize_minimize_mol('minimize', mol, forcefield, converge)
+def minimizemol(*args, **kwargs):
+    return optimize_minimize_mol('minimize', *args, **kwargs)
 
 
-def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
+def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01, prefix=None):
     """optimizemol(mol, forcefield, converge = 0.01) -> (Molecule, Float)
     optimized the mol, and return the optimized energy
     """
@@ -92,8 +88,11 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
     forcefield = getparam(forcefield)
 
     if curdir:
-        ofile = file('tinker.xyz', 'w')
-        ifname = 'tinker.xyz'
+        if prefix is None:
+            ifname = 'tinker.xyz'
+        else:
+            ifname = prefix + '.xyz'
+        ofile = file(ifname, 'w')
     else:
         ofile = tempfile.NamedTemporaryFile(suffix='.xyz')
         ifname = ofile.name
@@ -127,7 +126,7 @@ def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01):
     ofile.close()
     os.remove(ofname)
     if curdir:
-        os.remove('tinker.xyz')
+        os.remove(ifname)
 
     return newmol, result
 
