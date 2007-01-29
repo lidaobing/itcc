@@ -51,5 +51,5 @@ setup(
     scripts=scripts,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
     test_suite = 'itcc.tests',
-#    install_requires = ['Numeric', 'Scientific']
+#    install_requires = ['numpy', 'Scientific']
 )

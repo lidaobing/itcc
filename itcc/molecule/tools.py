@@ -1,12 +1,12 @@
 # $Id$
 import heapq
-import Numeric
+import numpy
 
 __revision__ = '$Rev$'
 
 def distmat(mol):
     size = len(mol)
-    result = Numeric.zeros((size, size), Numeric.Float)
+    result = numpy.zeros((size, size), numpy.float)
 
     for i in range(size):
         for j in range(i):
@@ -69,8 +69,8 @@ def logic_distance_matrix(mol_or_connectmatrix):
     else:
         connectmatrix = mol_or_connectmatrix
 
-    result = Numeric.zeros((len(connectmatrix), len(connectmatrix)),
-                           Numeric.Int)
+    result = numpy.zeros((len(connectmatrix), len(connectmatrix)),
+                         numpy.int)
     for i in range(len(connectmatrix)):
         result[i] = _logic_distance_matrix_helper(connectmatrix, i)
     return result

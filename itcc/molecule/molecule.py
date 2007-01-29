@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import pprint
-from Numeric import zeros
+from numpy import zeros
 from Scientific.Geometry import Vector as CoordType
 from itcc.tools import tools
 from itcc.molecule.atom import Atom
@@ -68,7 +68,7 @@ class Molecule(object):
             self.makeconnect()
 
     def buildconnect(self, i, j):
-        if not self.connect:
+        if self.connect is None:
             self.connect = zeros((len(self), len(self)))
         self.connect[i, j] = self.connect[j, i] = 1
 

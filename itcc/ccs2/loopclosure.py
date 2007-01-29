@@ -11,6 +11,7 @@ import time
 import random
 import tempfile
 import shutil
+import signal
 import cPickle
 try:
     import threading
@@ -150,10 +151,12 @@ class LoopClosure(object):
             return res
 
         def need_dump():
-            self.mutex.acquire()
+            self.mutex.acquire() # r self._step_count
             res = self._step_count - last_dump_step >= self.dump_steps
             self.mutex.release()
             return res
+
+        some_threads_finished_condition = threading.Condition(self.mutex, verbose=True)
 
         class Task:
             def __init__(self, parent, taskidx, r6):
@@ -162,29 +165,42 @@ class LoopClosure(object):
                 self.r6 = r6
             def __call__(self):
                 self.parent.runtask(self.taskidx, self.r6) 
+                self.parent.mutex.acquire()
+                some_threads_finished_condition.notify()
+                self.parent.mutex.release()
 
         while True:
+            some_threads_finished_condition.acquire()
             clear_threads()
-            if is_finished(): 
+            if (not threads and not self.taskheap) \
+              or (self.maxsteps is not None and self._step_count >= self.maxsteps) :
+                some_threads_finished_condition.release()
                 for thread in threads:
                     thread.join()
                 break
-            if need_dump():
+            if self._step_count - last_dump_step >= self.dump_steps:
+                some_threads_finished_condition.release()
                 for thread in threads:
                     thread.join()
                 self.dump()
                 last_dump_step = self._step_count
-            self.mutex.acquire() # r/w self.taskheap
+                continue
+
+            need_wait = False
             while len(threads) < self.np and self.taskheap:
                 r6idx, ene, taskidx, r6 = heapq.heappop(self.taskheap)
                 if self.searchbound is not None and ene > self.searchbound:
                     continue
                 task = Task(self, taskidx, r6)
-                thread = threading.Thread(target = task)
+                thread = threading.Thread(target = task, verbose = True)
                 threads.append(thread)
                 thread.start()
-            self.mutex.release()
-            time.sleep(1)
+                need_wait = True
+
+            if need_wait:
+                some_threads_finished_condition.wait()
+
+            some_threads_finished_condition.release()
         self._cleanup()
 
     def dump(self):
@@ -394,10 +410,12 @@ class LoopClosure(object):
                                             self.forcefield,
                                             self.minconverge,
                                             prefix=threading.currentThread().getName())
+            self.mutex.acquire() # r/w _step_count
             self._step_count += 1
             self.log('  Step %5i   Comb %02i-%02i %42.4f '
                        % (self._step_count, 0, molidx, rene), 
                      1)
+            self.mutex.release()
             yield rmol, rene
             if self.maxsteps is not None and self._step_count >= self.maxsteps:
                 return

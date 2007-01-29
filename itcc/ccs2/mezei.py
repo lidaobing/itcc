@@ -7,7 +7,7 @@
 # Journal of Chemical Physics, 2003, 118(8):3874-3879
 
 from math import sqrt, sin, cos, pi
-import Numeric
+import numpy
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
 from itcc.ccs2 import sidechain, rtbis
@@ -116,7 +116,7 @@ def r6_base(points, len1, len2):
     steps = config.get('Mezei_R6_steps', 36)
     step = 2 * pi / steps
 
-    d24s = Numeric.zeros((4, steps+1), Numeric.Float)
+    d24s = numpy.zeros((4, steps+1), numpy.float)
     for i in range(steps):
         angle = i * step
         p24_result = _calc_p2_p4(points, len1, len2, p3_result, angle)

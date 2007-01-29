@@ -4,8 +4,7 @@ __revision__ = '$Rev$'
 
 import sys
 import math
-import Numeric
-import LinearAlgebra
+import numpy
 from itcc.molecule import read
 from itcc.tinker import parameter, analyze, tinker, molparam
 from itcc.torsionfit import tools
@@ -101,12 +100,12 @@ def parmfit(datfname, idxfname, param):
         weight = math.sqrt(weight)
         B.append(E_fit * weight)
         A.append([x*weight for x in getA(newmol, idxs, folds, tors)])
-    A = Numeric.array(A)
-    B = Numeric.array(B)
+    A = numpy.array(A)
+    B = numpy.array(B)
 
-    result = LinearAlgebra.linear_least_squares(A, B)
+    result = numpy.linalg.lstsq(A, B)
     newparam = list(result[0][:-1])
-    errors = Numeric.matrixmultiply(A, result[0]) - B
+    errors = numpy.dot(A, result[0]) - B
     errors = [error/math.sqrt(weight) for error, weight in zip(errors, weights)]
     error = extra_tools.weightedsd(errors, weights)
     printprm(newparam, idxs, folds)
