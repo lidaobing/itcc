@@ -204,6 +204,7 @@ class LoopClosure(object):
         self._cleanup()
 
     def dump(self):
+        self.tmp_mtxyz_fname.flush()
         ofname = os.path.join(self.olddir, 'checkfile.part')
         ofile = file(ofname, 'w')
         cPickle.dump(self, ofile, 1)
