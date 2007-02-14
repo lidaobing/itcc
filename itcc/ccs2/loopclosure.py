@@ -11,7 +11,6 @@ import time
 import random
 import tempfile
 import shutil
-import signal
 import cPickle
 try:
     import threading
@@ -143,19 +142,6 @@ class LoopClosure(object):
         def clear_threads():
             threads[:] = [x for x in threads if x.isAlive()]
 
-        def is_finished():
-            self.mutex.acquire() # r self._step_count
-            res = (not threads and not self.taskheap) \
-                    or (self.maxsteps is not None and self._step_count >= self.maxsteps)
-            self.mutex.release()
-            return res
-
-        def need_dump():
-            self.mutex.acquire() # r self._step_count
-            res = self._step_count - last_dump_step >= self.dump_steps
-            self.mutex.release()
-            return res
-
         some_threads_finished_condition = threading.Condition(self.mutex, verbose=True)
 
         class Task:
@@ -204,7 +190,7 @@ class LoopClosure(object):
         self._cleanup()
 
     def dump(self):
-        self.tmp_mtxyz_fname.flush()
+        self.tmp_mtxyz_file.flush()
         ofname = os.path.join(self.olddir, 'checkfile.part')
         ofile = file(ofname, 'w')
         cPickle.dump(self, ofile, 1)
