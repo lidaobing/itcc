@@ -3,7 +3,7 @@ Section: science
 Priority: optional
 Maintainer: LI Daobing <lidaobing@gmail.com>
 Build-Depends: @cdbs@, 
- lapack3-dev, libboost-python-dev
+ lapack3-dev, libboost-python-dev, python-setuptools
 XS-Python-Version: 2.4
 Standards-Version: 3.7.2
 
