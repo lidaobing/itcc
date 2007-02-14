@@ -61,7 +61,7 @@ def pyramid(A, B, C, rAX, rBX, rCX):
     rBX2 = rBX * rBX
     rCX2 = rCX * rCX
 
-    X = numpy.zeros(3, numpy.float)
+    X = numpy.zeros(3, float)
     X[0] = (rAX2 - rBX2 + B[0]*B[0]) / (2 * B[0])
     X[1] = (rAX2 - rCX2 + C[1]*C[1] + C[0]*C[0] - 2*C[0]*X[0]) / (2 * C[1])
 

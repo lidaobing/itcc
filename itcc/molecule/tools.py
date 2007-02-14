@@ -6,7 +6,7 @@ __revision__ = '$Rev$'
 
 def distmat(mol):
     size = len(mol)
-    result = numpy.zeros((size, size), numpy.float)
+    result = numpy.zeros((size, size), float)
 
     for i in range(size):
         for j in range(i):
@@ -70,7 +70,7 @@ def logic_distance_matrix(mol_or_connectmatrix):
         connectmatrix = mol_or_connectmatrix
 
     result = numpy.zeros((len(connectmatrix), len(connectmatrix)),
-                         numpy.int)
+                         int)
     for i in range(len(connectmatrix)):
         result[i] = _logic_distance_matrix_helper(connectmatrix, i)
     return result

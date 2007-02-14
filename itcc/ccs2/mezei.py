@@ -116,7 +116,7 @@ def r6_base(points, len1, len2):
     steps = config.get('Mezei_R6_steps', 36)
     step = 2 * pi / steps
 
-    d24s = numpy.zeros((4, steps+1), numpy.float)
+    d24s = numpy.zeros((4, steps+1), float)
     for i in range(steps):
         angle = i * step
         p24_result = _calc_p2_p4(points, len1, len2, p3_result, angle)
