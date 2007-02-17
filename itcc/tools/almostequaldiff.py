@@ -33,11 +33,21 @@ def main():
     import sys
     if len(sys.argv) != 5 or sys.argv[1] != "-d":
         import os.path
-        sys.stderr.write('Usage: %s -d DIFF FILE1 FILE2\n'
+        sys.stderr.write('Usage: %s -d DIFF FILE1|- FILE2|-\n'
                            % os.path.basename(sys.argv[0]))
         sys.exit(1)
-    almost_equal_diff(file(sys.argv[3]), 
-                      file(sys.argv[4]),
+    if sys.argv[3] == '-':
+        ifile1 = sys.stdin
+    else:
+        ifile1 = file(sys.argv[3])
+
+    if sys.argv[4] == '-':
+        ifile2 = sys.stdin
+    else:
+        ifile2 = file(sys.argv[4])
+
+    almost_equal_diff(ifile1,
+                      ifile2,
                       float(sys.argv[2]))
 
 if __name__ == '__main__':
