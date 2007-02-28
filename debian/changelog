@@ -1,3 +1,10 @@
+itcc (0.8.2) unreleased; urgency=low
+
+  * debian/rules: use 0.1.2~svn123 instead of 0.1.2.svn123
+  * Makefile: change default python from 'python2.4' to python
+
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 28 Feb 2007 14:00:33 +0800
+
 itcc (0.8.1) unstable; urgency=low
 
   * separate itcc sub commands into sections.

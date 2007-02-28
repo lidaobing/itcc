@@ -1,5 +1,5 @@
 
-PYTHON?=python2.4
+PYTHON?=python
 
 all:
 	$(PYTHON) setup.py build bdist_egg
@@ -14,9 +14,10 @@ sdist:
 bdist:
 	$(PYTHON) setup.py bdist
 clean:
-	rm -rf build dist MANIFEST itcc/__init__.py tests/subdirs
+	rm -rf build dist MANIFEST itcc/__init__.py subdirs itcc.egg-info
 	-find . -name *.pyc -exec rm -f {} \;
 	-find . -name *.o -exec rm -f {} \;
+	-find . -name *.so -exec rm -f {} \;
 check:
 	python setup.py test
 
