@@ -15,7 +15,7 @@ if svnversion == 'exported':
     ofile.write("__version__ = '%s'\n" %
                   file('version.in').read().strip())
 else:
-    ofile.write("__version__ = '%s.dev-svn%s'\n" % 
+    ofile.write("__version__ = '%s.dev-r%s'\n" % 
                   (file('version.in').read().strip(),
                       svnversion.split(':')[-1]))
 ofile.close()
