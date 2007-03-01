@@ -44,8 +44,9 @@ def testcyc(ifname, options):
 def main():
     from optparse import OptionParser
 
-    usage = "usage: %prog [-h|options] xyzfile|-\n" \
-            "       %prog --resume checkfile"
+    usage = "usage: %prog [options] xyzfile|-\n" \
+            "       %prog --resume checkfile\n" \
+            "       %prog -h"
     parser = OptionParser(usage,
                           version = itcc.__version__
                           )
