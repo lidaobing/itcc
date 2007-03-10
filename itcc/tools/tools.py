@@ -1,4 +1,5 @@
 # $Id$
+import sys
 import random
 from math import sqrt, sin, cos, pi
 from Scientific.Geometry import Vector, isVector
@@ -8,8 +9,8 @@ from itcc.tools import ctools
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
-           'weightedmean', 'weightedsd', 'datafreq', 'any', 'all',
-           'random_vector', 'mean', 'stdev']
+           'weightedmean', 'weightedsd', 'datafreq',
+           'random_vector', 'mean', 'stdev', 'all', 'any']
 
 def datafreq(data, min_, max_, num):
     result = [0] * num
@@ -154,6 +155,12 @@ def random_vector(length_=1.0):
     x = s * cos(theta)
     y = s * sin(theta)
     return (x, y, z)
+
+def open_file_or_stdin(ifname):
+    if ifname == '-':
+        return sys.stdin
+    else:
+        return file(ifname)
 
 def _test():
     import doctest
