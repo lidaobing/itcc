@@ -1,4 +1,4 @@
-itcc (0.8.2) unreleased; urgency=low
+itcc (0.8.2~dev) unstable; urgency=low
 
   * debian/rules: use 0.1.2~svn123 instead of 0.1.2.svn123
   * Makefile: change default python from 'python2.4' to python
