@@ -13,7 +13,7 @@ def _gettypes(typefile):
 def settype(xyzfile, typefile):
     mol = read.readxyz(xyzfile)
     types = tuple(_gettypes(typefile))
-    assert len(mol) == len(types)
+    assert len(mol) == len(types), "%s - %s" % (len(mol), len(types))
     for idx, atype in enumerate(types):
         mol.settype(idx, atype)
     write.writexyz(mol, sys.stdout)
