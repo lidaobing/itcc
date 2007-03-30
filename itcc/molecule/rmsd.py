@@ -46,6 +46,10 @@ def main():
             "    %prog [options] mtxyzfname\n" \
             "    %prog -h"
     parser = OptionParser(usage=usage)
+    parser.set_default("no_h", False)
+    parser.add_option("--no-h", dest="no_h",
+                      action="store_true",
+                      help="does not include hydrogen")
     parser.add_option("--atoms", dest="atoms",
                       help="only compare selected atoms, 1-based",
                       metavar="STRING")
@@ -81,7 +85,6 @@ def main():
     if options.atoms:
         atoms1 = list(frame.parseframe(options.atoms))
         atoms2 = atoms1[:]
-        
     if options.atoms1file:
         options.atoms1 = file(options.atoms1file).read()
     if options.atoms1:
@@ -94,8 +97,20 @@ def main():
 
     from itcc.molecule import read
     mol1 = read.readxyz(file(args[0]))
+    if options.no_h:
+        if atoms1 is None:
+            atoms1 = range(len(mol1))
+        atoms1 = [x for x in atoms1 if mol1.atoms[x].no != 1]
     for mol2 in mtxyz.Mtxyz(file(sys.argv[-1])):
-        print rmsd(mol1, mol2, atoms1, atoms2)
+        if options.no_h:
+            if atoms2 is None:
+                atoms2_new = range(len(mol2))
+            else:
+                atoms2_new = atoms2
+            atoms2_new = [x for x in atoms2_new if mol2.atoms[x].no != 1]
+        else:
+            atoms2_new = atoms2
+        print rmsd(mol1, mol2, atoms1, atoms2_new)
 
 if __name__ == '__main__':
     main()

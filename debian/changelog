@@ -2,9 +2,11 @@ itcc (0.8.2~dev) unstable; urgency=low
 
   * debian/rules: use 0.1.2~svn123 instead of 0.1.2.svn123
   * Makefile: change default python from 'python2.4' to python
-  * use the version scheme proposed by python-setuptools 
+  * use the version scheme proposed by python-setuptools
+  * itcc rmsd
+    - new "--no-h" option.
 
- -- LI Daobing <lidaobing@gmail.com>  Wed, 28 Feb 2007 14:28:45 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:20:49 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

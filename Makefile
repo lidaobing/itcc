@@ -2,7 +2,7 @@
 PYTHON?=python
 
 all:
-	$(PYTHON) setup.py build bdist_egg
+	$(PYTHON) setup.py build
 debug: clean
 	$(PYTHON) setup.py build --debug
 	$(PYTHON) setup.py install
