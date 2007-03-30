@@ -37,6 +37,7 @@ def out2arch(ifile, full = 0):
 
     if idx == len(lines):
         print >> sys.stderr, "Invalid gaussian outfile"
+        return False
 
     result = ''
 
@@ -55,6 +56,8 @@ def out2arch(ifile, full = 0):
     result = result.split('\\')
     for x in result:
         print x
+
+    return True
 
 def usage(ofile):
     import os.path
@@ -87,7 +90,7 @@ def main():
         sys.exit(2)
 
     ifile = open(args[0])
-    out2arch(ifile, full)
+    sys.exit(out2arch(ifile, full) == False)
 
 if __name__ == "__main__":
     main()
