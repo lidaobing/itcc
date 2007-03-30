@@ -96,12 +96,21 @@ def main():
         atoms2 = frame.parseframe(options.atoms2)
 
     from itcc.molecule import read
-    mol1 = read.readxyz(file(args[0]))
+    ifiles = []
+    for arg in args:
+        if arg == '-':
+            ifile = sys.stdin
+        else:
+            ifile = file(arg)
+        ifiles.append(ifile)
+    mol1 = read.readxyz(ifiles[0])
     if options.no_h:
         if atoms1 is None:
             atoms1 = range(len(mol1))
         atoms1 = [x for x in atoms1 if mol1.atoms[x].no != 1]
-    for mol2 in mtxyz.Mtxyz(file(sys.argv[-1])):
+
+            
+    for mol2 in mtxyz.Mtxyz(ifiles[-1]):
         if options.no_h:
             if atoms2 is None:
                 atoms2_new = range(len(mol2))

@@ -5,12 +5,13 @@ itcc (0.8.2~dev) unstable; urgency=low
   * use the version scheme proposed by python-setuptools
   * itcc rmsd
     - new "--no-h" option.
+    - support read from stdin.
   * itcc out2arch
     - exit 1 when meet with invalid gaussian log file.
   * itcc gjf2xyz
-    - support send output to stdout 
+    - support send output to stdout
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:31:15 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:37:21 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
