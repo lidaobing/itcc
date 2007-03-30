@@ -6,9 +6,11 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc rmsd
     - new "--no-h" option.
   * itcc out2arch
-    - exit 1 when meet with invalid gaussian log file. 
+    - exit 1 when meet with invalid gaussian log file.
+  * itcc gjf2xyz
+    - support send output to stdout 
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:25:39 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:31:15 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
