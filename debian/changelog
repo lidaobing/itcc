@@ -10,8 +10,10 @@ itcc (0.8.2~dev) unstable; urgency=low
     - exit 1 when meet with invalid gaussian log file.
   * itcc gjf2xyz
     - support send output to stdout
+  * itcc out2ene
+    - still print the filename if does not find the ene.
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 30 Mar 2007 22:37:21 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Sat, 31 Mar 2007 09:04:03 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

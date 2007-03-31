@@ -35,8 +35,7 @@ def main():
 
     if len(sys.argv) >= 2:
         for fname in sys.argv[1:]:
-            for result in out2ene(fname):
-                print fname, result
+            print fname, ' '.join(str(x) for x in out2ene(fname))
     else:
         print >> sys.stderr, "Usage: %s outfname..." % sys.argv[0]
 
