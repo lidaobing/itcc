@@ -29,17 +29,22 @@ def writexyz(mol, ofile=sys.stdout, comment=None):
         tmpstr += '\n'
         ofile.write(tmpstr)
 
-gjfheader ='#p b3lyp/6-31g* opt\n'
-gjfcomment = 'notitle\n'
-gjfchargespin = '0 1\n'
+gjfheader = '''\
+#p b3lyp/6-31g* opt
 
-def writegjf(mol, ofile):
+notitle
+
+0 1
+'''
+
+def writegjf(mol, 
+             ofile = sys.stdout,
+             header = None
+             ):
+    if header is None:
+        header = gjfheader
     assert(isinstance(mol, Molecule))
     ofile.write(gjfheader)
-    ofile.write('\n')
-    ofile.write(gjfcomment)
-    ofile.write('\n')
-    ofile.write(gjfchargespin)
     for i in range(len(mol)):
         atom, coord = mol[i]
         ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord.x(),
