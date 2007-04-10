@@ -90,7 +90,9 @@ def readxyz(ifile):
     line = ifile.readline()
     match = re.compile(r'^ *(\d+) *(.*)$').match(line)
     atmnum = int(match.group(1))
-    mol.comment = match.group(2)
+    comment = match.group(2).strip()
+    if comment:
+        mol.comment = comment
 
     for i in range(atmnum):
         words = ifile.readline().split()

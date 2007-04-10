@@ -15,7 +15,7 @@ def writexyz(mol, ofile=sys.stdout, comment=None):
     ofile.write('%6i' % len(mol))
     if comment is not None:
         ofile.write('  %s' % comment)
-    elif hasattr(mol, 'comment'):
+    elif hasattr(mol, 'comment') and mol.comment:
         ofile.write('  %s' % mol.comment)
     ofile.write('\n')
 
