@@ -17,9 +17,10 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc sumxyz
     - support read from stdin
   * add itcc-stats
-  * add itcc-mirrormol 
+  * add itcc-mirrormol
+  * add itcc-calcangle 
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:39:50 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:44:29 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

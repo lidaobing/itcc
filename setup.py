@@ -54,7 +54,8 @@ setup(
     entry_points = {
         'console_scripts': [
             'itcc-stats = itcc.tools.stats:main',
-            'itcc-mirrormol = itcc.molecule.utils:mirrormol'
+            'itcc-mirrormol = itcc.molecule.utils:mirrormol',
+            'itcc-calcangle = itcc.tools.calcangle:main',
         ]
     }
 #    install_requires = ['numpy', 'Scientific']
