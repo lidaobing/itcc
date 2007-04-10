@@ -53,7 +53,8 @@ setup(
     test_suite = 'itcc.tests',
     entry_points = {
         'console_scripts': [
-            'itcc-stats = itcc.tools.stats:main'
+            'itcc-stats = itcc.tools.stats:main',
+            'itcc-mirrormol = itcc.molecule.utils:mirrormol'
         ]
     }
 #    install_requires = ['numpy', 'Scientific']
