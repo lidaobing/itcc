@@ -10,8 +10,11 @@ def stat_helper(ifile):
 
 def stat(ifile):
     data = tuple(stat_helper(ifile))
-    print 'mean=%s' % stats.mean(data),
-    print 'std=%s' % stats.std(data)
+    print 'min', min(data)
+    print 'max', max(data)
+    print 'median', stats.median(data)
+    print 'mean', stats.mean(data)
+    print 'stdev', stats.std(data)
 
 def main():
     import sys
