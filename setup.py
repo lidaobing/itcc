@@ -57,6 +57,7 @@ setup(
             'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-calcangle = itcc.tools.calcangle:main',
             'itcc-ene2agr = itcc.tools.ene2agr:main',
+            'itcc-enestep2countstep = itcc.tools.enestep2countstep:main',
         ]
     }
 #    install_requires = ['numpy', 'Scientific']
