@@ -15,9 +15,10 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc xyz2gjf
     - support custom header
   * itcc sumxyz
-    - support read from stdin 
+    - support read from stdin
+  * add itcc-stats 
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 17:07:04 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:26:00 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

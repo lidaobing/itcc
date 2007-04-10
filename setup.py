@@ -51,5 +51,10 @@ setup(
     scripts=scripts,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
     test_suite = 'itcc.tests',
+    entry_points = {
+        'console_scripts': [
+            'itcc-stats = itcc.tools.stats:main'
+        ]
+    }
 #    install_requires = ['numpy', 'Scientific']
 )
