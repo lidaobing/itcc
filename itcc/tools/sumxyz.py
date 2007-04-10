@@ -1,6 +1,7 @@
 # $Id$
 
 import math
+import sys
 
 from Scientific import Statistics
 
@@ -16,7 +17,11 @@ def sumxyz(seq, filelist):
     result = []
 
     for x in filelist:
-        mol = read.readxyz(file(x))
+        if x == '-':
+            ifile = sys.stdin
+        else:
+            ifile = file(x)
+        mol = read.readxyz(ifile)
         if len(seq) == 2:
             result.append(mol.calclen(seq[0], seq[1]))
         elif len(seq) == 3:
@@ -36,7 +41,11 @@ def sumxyz_torsion(list_, filelist):
     result = []
 
     for x in filelist:
-        mol = read.readxyz(file(x))
+        if x == '-':
+            ifile = sys.stdin
+        else:
+            ifile = file(x)
+        mol = read.readxyz(ifile)
         result.append(math.degrees(mol.calctor(list_[0], list_[1],
             list_[2], list_[3])))
 
@@ -54,7 +63,6 @@ def sumxyz_torsion(list_, filelist):
 
 
 def main():
-    import sys
     import os.path
     if len(sys.argv) < 3:
         sys.stderr.write('Usage: %s i,j[,k[,l]] filename ...\n' % \

@@ -13,9 +13,11 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc out2ene
     - still print the filename if does not find the ene.
   * itcc xyz2gjf
-    - support custom header 
+    - support custom header
+  * itcc sumxyz
+    - support read from stdin 
 
- -- LI Daobing <lidaobing@gmail.com>  Thu,  5 Apr 2007 18:04:07 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 17:07:04 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
