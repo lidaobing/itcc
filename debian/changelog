@@ -18,9 +18,10 @@ itcc (0.8.2~dev) unstable; urgency=low
     - support read from stdin
   * add itcc-stats
   * add itcc-mirrormol
-  * add itcc-calcangle 
+  * add itcc-calcangle
+  * add itcc-ene2agr 
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:44:29 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:47:43 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
