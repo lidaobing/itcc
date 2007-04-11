@@ -8,6 +8,7 @@ itcc (0.8.2~dev) unstable; urgency=low
     - support read from stdin.
   * itcc out2arch
     - exit 1 when meet with invalid gaussian log file.
+    - support "-a" option
   * itcc gjf2xyz
     - support send output to stdout
   * itcc out2ene
@@ -20,9 +21,9 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-mirrormol
   * add itcc-calcangle
   * add itcc-ene2agr
-  * add itcc-enestep2countstep 
+  * add itcc-enestep2countstep
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 10 Apr 2007 21:50:12 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 11 Apr 2007 16:38:14 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

@@ -64,14 +64,14 @@ def usage(ofile):
     ofile.write('Usage: %s [options] outfname\n' % os.path.basename(sys.argv[0]))
     ofile.write('\n')
     ofile.write('Options:\n')
-    ofile.write('    -f           output full data\n')
+    ofile.write('    -a, -f       output all data\n')
     ofile.write('    -h, --help   show help message\n')
 
 def main():
     import getopt
 
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "fh", ["help"])
+        opts, args = getopt.getopt(sys.argv[1:], "afh", ["help"])
     except getopt.GetoptError:
         usage(sys.stderr)
         sys.exit(2)
@@ -82,7 +82,7 @@ def main():
         if o in ("-h", "--help"):
             usage(sys.stdout)
             sys.exit()
-        if o in ("-f"):
+        if o in ("-f", "-a"):
             full = 1
 
     if len(args) != 1:
