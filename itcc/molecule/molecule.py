@@ -13,6 +13,7 @@ __revision__ = '$Rev$'
 
 class Molecule(object):
     __maxbondlen = 1.6
+    __maxbondlen_h = 1.3
 
     def __init__(self, atoms = None, coords = None, connect = None):
         self.atoms = atoms or []
@@ -59,9 +60,14 @@ class Molecule(object):
 
     def makeconnect(self):
         distmat = moltools.distmat(self)
-        self.connect = distmat < self.__maxbondlen
+        self.connect = zeros((len(self), len(self)),
+                             False)
         for i in range(len(self)):
-            self.connect[i, i] = False
+            for j in range(i):
+                if self.atoms[i].no == 1 or self.atoms[j].no == 1:
+                    self.connect[i][j] = self.connect[j][i] = distmat[i][j] < self.__maxbondlen_h
+                else:
+                    self.connect[i][j] = self.connect[j][i] = distmat[i][j] < self.__maxbondlen
 
     def confirmconnect(self):
         if self.connect is None:
