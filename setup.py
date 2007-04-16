@@ -25,7 +25,6 @@ import itcc
 __revision__ = '$Rev$'
 
 version = itcc.__version__
-scripts = ['itcc/scripts/itcc']
 
 ext_modules=[Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
              Extension("itcc.tools.cpptools",
@@ -48,11 +47,11 @@ setup(
     url='http://www.chemgen.szpku.edu.cn',
     packages = find_packages(),
     ext_modules = ext_modules,
-    scripts=scripts,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
     test_suite = 'itcc.tests',
     entry_points = {
         'console_scripts': [
+            'itcc = itcc.itcc:main',
             'itcc-stats = itcc.tools.stats:main',
             'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-calcangle = itcc.tools.calcangle:main',

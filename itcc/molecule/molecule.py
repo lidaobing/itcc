@@ -61,7 +61,7 @@ class Molecule(object):
     def makeconnect(self):
         distmat = moltools.distmat(self)
         self.connect = zeros((len(self), len(self)),
-                             False)
+                             bool)
         for i in range(len(self)):
             for j in range(i):
                 if self.atoms[i].no == 1 or self.atoms[j].no == 1:

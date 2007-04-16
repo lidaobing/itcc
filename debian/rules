@@ -6,7 +6,7 @@
 export DH_ALWAYS_EXCLUDE=.svn
 
 
-DEB_PYTHON_SYSTEM = pycentral
+DEB_PYTHON_SYSTEM = pysupport
 VDEF := $(strip $(shell dpkg-parsechangelog | awk -F: '/^Version:/ {print $$NF}'))
 VSVN := $(shell if which svnversion > /dev/null; then svnversion | sed s/^.*:// \
          | sed s/^/.r/ | sed s/.rexported// ; fi)
