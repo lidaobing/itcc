@@ -1,0 +1,4 @@
+2007-04-16  LI Daobing  <lidaobing@gmail.com>
+
+	* rename itcc/itcc.py to itcc/itcc_main.py, also update setup.py
+

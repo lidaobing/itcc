@@ -51,7 +51,7 @@ setup(
     test_suite = 'itcc.tests',
     entry_points = {
         'console_scripts': [
-            'itcc = itcc.itcc:main',
+            'itcc = itcc.itcc_main:main',
             'itcc-stats = itcc.tools.stats:main',
             'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-calcangle = itcc.tools.calcangle:main',
