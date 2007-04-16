@@ -1,5 +1,9 @@
 2007-04-16  LI Daobing  <lidaobing@gmail.com>
 
+	* add itcc-makecyclicalkane:
+	  - itcc/tools/makecyclicalkane.py: added
+	  - setup.py: updated
+
 	* delete itcc/scripts
 
 	* rename itcc/itcc.py to itcc/itcc_main.py, also update setup.py

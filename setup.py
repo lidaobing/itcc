@@ -15,7 +15,7 @@ if svnversion == 'exported':
     ofile.write("__version__ = '%s'\n" %
                   file('version.in').read().strip())
 else:
-    ofile.write("__version__ = '%s.dev-r%s'\n" % 
+    ofile.write("__version__ = '%s.dev-r%s'\n" %
                   (file('version.in').read().strip(),
                       svnversion.split(':')[-1]))
 ofile.close()
@@ -52,6 +52,7 @@ setup(
     entry_points = {
         'console_scripts': [
             'itcc = itcc.itcc_main:main',
+            'itcc-makecyclicalkane = itcc.tools.makecyclicalkane:main',
             'itcc-stats = itcc.tools.stats:main',
             'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-calcangle = itcc.tools.calcangle:main',
