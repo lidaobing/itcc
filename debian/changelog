@@ -22,11 +22,15 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-calcangle
   * add itcc-ene2agr
   * add itcc-enestep2countstep
+  * depends on python-setuptools
 
   [ library ]
   * itcc/molecule/molecule: the bond contain H has a different manbondlen
 
- -- LI Daobing <lidaobing@gmail.com>  Fri, 13 Apr 2007 23:38:06 +0800
+  [ LI Daobing ]
+  * 
+
+ -- LI Daobing <lidaobing@gmail.com>  Tue, 17 Apr 2007 07:11:33 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
