@@ -3,6 +3,8 @@
 	* itcc/molecule/write.py (writegjf): fix a bug about header was
 	not used.
 
+	* itcc/molecule/gjf2xyz.py: default send to stdout
+
 2007-04-16  LI Daobing  <lidaobing@gmail.com>
 
 	* add itcc-makecyclicalkane:
