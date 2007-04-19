@@ -4,6 +4,10 @@
 	not used.
 
 	* itcc/molecule/gjf2xyz.py: default send to stdout
+	
+	* itcc/tools/makecyclicalkane.py: cycC3 and cycC4 have different atom
+	type.
+
 
 2007-04-16  LI Daobing  <lidaobing@gmail.com>
 

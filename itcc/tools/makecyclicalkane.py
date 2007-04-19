@@ -8,6 +8,12 @@ from Scientific.Geometry import Vector
 
 CClen = 1.523
 
+def get_c_type(n):
+    if n == 3:
+        return 22
+    if n == 4:
+        return 56
+    return 1
 
 def makecyclicalkane(n):
     assert n >= 3
@@ -20,7 +26,7 @@ def makecyclicalkane(n):
           random()*0.1))
 
     mol = molecule.Molecule()
-    C = atom.Atom(6,1)
+    C = atom.Atom(6, get_c_type(n))
     H = atom.Atom(1,5)
     for i in range(n):
         mol.addatom(C, coords[i])
