@@ -37,14 +37,14 @@ notitle
 0 1
 '''
 
-def writegjf(mol, 
+def writegjf(mol,
              ofile = sys.stdout,
              header = None
              ):
     if header is None:
         header = gjfheader
     assert(isinstance(mol, Molecule))
-    ofile.write(gjfheader)
+    ofile.write(header)
     for i in range(len(mol)):
         atom, coord = mol[i]
         ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord.x(),

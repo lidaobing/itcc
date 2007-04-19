@@ -1,3 +1,8 @@
+2007-04-19  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/molecule/write.py (writegjf): fix a bug about header was
+	not used.
+
 2007-04-16  LI Daobing  <lidaobing@gmail.com>
 
 	* add itcc-makecyclicalkane:
