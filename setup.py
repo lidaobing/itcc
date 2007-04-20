@@ -59,6 +59,7 @@ setup(
             'itcc-ene2agr = itcc.tools.ene2agr:main',
             'itcc-enestep2countstep = itcc.tools.enestep2countstep:main',
             'itcc-printbonds = itcc.molecule.utils:printbonds',
+            'itcc-detailcmp = itcc.molecule.utils:detailcmp'
         ]
     }
 #    install_requires = ['numpy', 'Scientific']
