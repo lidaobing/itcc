@@ -52,7 +52,8 @@ class LoopClosure(object):
         self.loop = None
 
         self._step_count = 0
-        self.tasks = []                 # List of (mol, ene)
+        self.seedmol = None
+        self.tasks = []                 # List of (coords, ene)
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
         self.tmp_mtxyz_fname = None
@@ -202,6 +203,7 @@ class LoopClosure(object):
         if self.state != self.S_NONE: return True
         self.printparams()
         mol = read.readxyz(molfile)
+        self.seedmol = mol
 
         if self.check_chiral:
             self._init_chiral(mol)
@@ -246,7 +248,9 @@ class LoopClosure(object):
 
     def runtask(self, taskidx, r6):
         self.mutex.acquire() # r self.tasks
-        mol, ene = self.tasks[taskidx]
+        coords, ene = self.tasks[taskidx]
+        mol = self.seedmol.copy()
+        mol.coords = coords
         self.mutex.release()
         print
         head = ' CCS2 Local Search'
@@ -288,7 +292,9 @@ class LoopClosure(object):
                 if round(ene - ene2, 4) > self.eneerror:
                     break
                 taskidx = self.enes[idx][1]
-                mol2 = self.tasks[taskidx][0]
+                coords2 = self.tasks[taskidx][0]
+                mol2 = self.seedmol.copy()
+                mol2.coords = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
                     res = taskidx
 
@@ -298,7 +304,9 @@ class LoopClosure(object):
                 if round(ene2 - ene, 4) > self.eneerror:
                     break
                 taskidx = self.enes[idx][1]
-                mol2 = self.tasks[taskidx][0]
+                coords2 = self.tasks[taskidx][0]
+                mol2 = self.seedmol.copy()
+                mol2.coords = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
                     res = taskidx
 
@@ -309,7 +317,7 @@ class LoopClosure(object):
 
     def addtask(self, mol, ene):
         self.mutex.acquire()
-        self.tasks.append((mol, ene))
+        self.tasks.append((mol.coords, ene))
         taskidx = len(self.tasks) - 1
         bisect.insort(self.enes, (ene, taskidx))
         print '    Potential Surface Map       Minimum ' \
