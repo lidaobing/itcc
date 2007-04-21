@@ -13,6 +13,7 @@ python-numeric-ext
 python-scientific
 lapack3-dev
 tinker(optional)
+python-psyco(optional)
 
 ====
 Help
