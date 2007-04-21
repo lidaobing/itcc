@@ -1,3 +1,4 @@
+import sys
 from cPickle import loads, dumps
 from cStringIO import StringIO
 from  unittest import TestCase
@@ -58,9 +59,8 @@ test_in = '''    50  -125.3756
 '''
 
 def main():
-    mol = read.readxyz(file(sys.argv[1]))
-    mol = loads(dumps(mol))
-    write.writexyz(mol, sys.stdout)
+    import unittest
+    unittest.main()
 
 class TestPickle(TestCase):
     def test(self):

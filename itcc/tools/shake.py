@@ -6,6 +6,7 @@ import sys
 import random
 import math
 from itcc.molecule import read, molecule, write
+from itcc.tools import tools
 
 first_offset = 10.0
 
@@ -81,7 +82,7 @@ def get_status(mol, dats):
 
 def shake3(r1, r2, new_dis):
     dr = r2 - r1
-    dr = (new_dis / dr.length() - 1.0) / 2.0 * dr
+    dr = (new_dis / tools.length(dr) - 1.0) / 2.0 * dr
     return r1 - dr, r2 + dr
 
 def shake2(mol, dats, err_dats):

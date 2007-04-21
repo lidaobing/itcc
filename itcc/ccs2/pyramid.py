@@ -1,13 +1,26 @@
 # -*- coding: utf-8 -*-
 # $Id$
 import numpy
+from numpy import *
 import math
-from Scientific.Geometry import Tensor, Vector
-from Scientific.Geometry.Transformation import Translation, \
-     RotationTranslation
+from Scientific.Geometry import Tensor, Vector, isVector
+from Scientific.Geometry.Transformation import RotationTranslation
+from itcc.tools import tools
 
 __all__ = ['pyramid', 'pyramid2']
 __revision__ = '$Rev$'
+
+_normal = tools.normal
+
+class TransWrapper:
+    def __init__(self, trans):
+        self.trans = trans
+
+    def __call__(self, vec):
+        return numpy.array(list(self.trans(Vector(vec))))
+
+    def __mul__(self, rhs):
+        return TransWrapper(self.trans * rhs.trans)
 
 def construct_transform_matrixA(O, Ox, Oy, Oz):
     """建坐标变换矩阵，新的坐标系的原点位于O, x轴在Ox上，
@@ -15,9 +28,9 @@ def construct_transform_matrixA(O, Ox, Oy, Oz):
     tensor = Tensor([[Ox[0], Oy[0], Oz[0]],
                      [Ox[1], Oy[1], Oz[1]],
                      [Ox[2], Oy[2], Oz[2]]])
-    vector = O
+    vector = Vector(O)
     trans = RotationTranslation(tensor, vector)
-    return trans
+    return TransWrapper(trans)
 
 def construct_both_transform_matrix(A, B, C):
     """建坐标变换矩阵，新的坐标系的原点位于A,
@@ -25,19 +38,22 @@ def construct_both_transform_matrix(A, B, C):
     result[1] = frame->WC
     result[0] = WC->frame"""
 
+    assert A.shape == (3,) and A.dtype == float, A
+    assert B.shape == (3,) and B.dtype == float, B
+    assert C.shape == (3,) and C.dtype == float, C
+
     O = A
-    Ox = (B-A).normal()
-    Oz = Ox.cross(C-A).normal()
-    Oy = Oz.cross(Ox)
+    Ox = _normal(B-A)
+    Oz = _normal(cross(Ox, (C-A)))
+    Oy = cross(Oz, Ox)
 
     result1 = construct_transform_matrixA(O, Ox, Oy, Oz)
-    result2 = result1.inverse()
+    result2 = TransWrapper(result1.trans.inverse())
+
     return (result2, result1)
 
 def pyramid(A, B, C, rAX, rBX, rCX):
     # 新坐标系，原点在A, x轴在AB上， z轴垂直于ABC平面
-    trans = Translation(-A)
-
     trans, revtrans = construct_both_transform_matrix(A, B, C)
 
     A = trans(A)
@@ -68,10 +84,10 @@ def pyramid(A, B, C, rAX, rBX, rCX):
     X22 = rAX2 - X[0]*X[0] - X[1]*X[1]
 
     X[2] = math.sqrt(max(0.0, X22))
-    result1 = revtrans(Vector(X))
+    result1 = revtrans(X)
 
     X[2] = -X[2]
-    result2 = revtrans(Vector(X))
+    result2 = revtrans(X)
     return ((result1, result2), X22)
 
 def pyramid2(A, B, rAX, rBX):
@@ -81,7 +97,7 @@ def pyramid2(A, B, rAX, rBX):
     circle. return the circle center and 2 vertical axis.
     '''
     AB = B - A
-    rAB = AB.length()
+    rAB = tools.length(AB)
     if rAX + rBX < rAB or abs(rAX - rBX) > rAB:
         return (None, None, None)
 
@@ -90,12 +106,12 @@ def pyramid2(A, B, rAX, rBX):
     rXO = math.sqrt(rAX * rAX - rAO * rAO)
     O = A + c * AB
 
-    ABn = AB.normal()
-    if abs(ABn.x()) < 0.7071:
-        OXx = ABn.cross(Vector(1.0, 0.0, 0.0)).normal() * rXO
+    ABn = _normal(AB)
+    if abs(ABn[0]) < 0.7071:
+        OXx = _normal(cross(ABn, numpy.array([1.0, 0.0, 0.0]))) * rXO
     else:
-        OXx = ABn.cross(Vector(0.0, 1.0, 0.0)).normal() * rXO
-    OXy = OXx.cross(ABn)
+        OXx = _normal(cross(ABn, numpy.array([0.0, 1.0, 0.0]))) * rXO
+    OXy = cross(OXx, ABn)
     return (O, OXx, OXy)
 
 

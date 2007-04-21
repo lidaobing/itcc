@@ -5,7 +5,6 @@ __all__ = ['readxyz', 'readgjf', 'FormatError']
 __revision__ = '$Rev$'
 
 import re
-from Scientific.Geometry import Vector
 from itcc.molecule.molecule import Molecule
 from itcc.molecule.atom import Atom
 
@@ -74,8 +73,8 @@ def readgjf(ifile_or_ifname):
             x.extend(word.split(','))
         atom = Atom(x[0])
         #Can deal with two types gjf file: 'H 0.1 0.2 0.3' and 'H 0 0.1 0.2 0.3'
-        coords = Vector([float(coord) for coord in x[-3:]])   
-        mol.addatom(atom, coords)
+        coord = [float(coord) for coord in x[-3:]]   
+        mol.addatom(atom, coord)
     ifile.close()
     return mol
 
@@ -97,7 +96,7 @@ def readxyz(ifile):
     for i in range(atmnum):
         words = ifile.readline().split()
         atom = Atom(words[1], int(words[5]))
-        coord = Vector([float(x) for x in words[2:5]])
+        coord = [float(x) for x in words[2:5]]
         mol.addatom(atom, coord)
         connects.append(words[6:])
 

@@ -1,8 +1,8 @@
 # $Id$
 import re
+import numpy
 from itcc.Molecule.molecule import Molecule
 from itcc.Molecule.atom import Atom
-from Scientific.Geometry import Vector
 
 __revision__ = '$Rev$'
 
@@ -37,7 +37,7 @@ def getxyz_202(ifile):
         if len(words) != 6:
             break
         atom = Atom(int(words[1]))
-        coords = Vector([float(x) for x in words[3:6]])
+        coords = numpy.array([float(x) for x in words[3:6]])
         mol.addatom(atom, coords)
 
     return mol

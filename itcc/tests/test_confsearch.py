@@ -109,13 +109,13 @@ class TestConfsearch(unittest.TestCase):
         sys.argv = ['', 'test_cycc7.in']
         self.confsearch.main()
 
-    def test_cycg5(self):
-        ofile = file("test_cycg5.in", "w");
-        ofile.write(test_cycg5_in)
-        ofile.close()
-
-        sys.argv = ['', '-f', 'oplsaa', '-t', 'peptide', '-m', '2', 'test_cycg5.in']
-        self.confsearch.main()
+#    def test_cycg5(self):
+#        ofile = file("test_cycg5.in", "w");
+#        ofile.write(test_cycg5_in)
+#        ofile.close()
+#
+#        sys.argv = ['', '-f', 'oplsaa', '-t', 'peptide', '-m', '2', 'test_cycg5.in']
+#        self.confsearch.main()
         
     def tearDown(self):
         os.chdir(self.olddir)

@@ -22,7 +22,7 @@ def writexyz(mol, ofile=sys.stdout, comment=None):
     for i in range(len(mol)):
         atom, coord = mol[i]
         tmpstr = '%6d  %-3s%12.6f%12.6f%12.6f%6s' % \
-                 (i+1, atom.symbol, coord.x(), coord.y(), coord.z(), atom.type)
+                 (i+1, atom.symbol, coord[0], coord[1], coord[2], atom.type)
         for j, x in enumerate(mol.connect[i]):
             if x:
                 tmpstr += '%6i' % (j+1)
@@ -47,6 +47,6 @@ def writegjf(mol,
     ofile.write(header)
     for i in range(len(mol)):
         atom, coord = mol[i]
-        ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord.x(),
-            coord.y(), coord.z()))
+        ofile.write('%s %f %f %f\n' % (atomchr(atom.no), coord[0],
+            coord[1], coord[2]))
     ofile.write('\n')

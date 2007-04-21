@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import pprint
-from numpy import zeros
-from Scientific.Geometry import Vector as CoordType
+import math
+import numpy
 from itcc.tools import tools
 from itcc.molecule.atom import Atom
 from itcc.molecule import tools as moltools
@@ -11,17 +11,28 @@ from itcc.molecule import tools as moltools
 __all__ = ["Molecule", 'CoordType']
 __revision__ = '$Rev$'
 
+CoordType = numpy.array
+
 class Molecule(object):
     __maxbondlen = 1.6
     __maxbondlen_h = 1.3
 
     def __init__(self, atoms = None, coords = None, connect = None):
-        self.atoms = atoms or []
-        self.coords = coords or []
+        if atoms is None:
+            self.atoms = []
+        else:
+            self.atoms = atoms[:]
+        if coords is not None:
+            self.coords = numpy.array(coords)
+        else:
+            self.coords = numpy.zeros((0, 3), float)
+        assert len(self.coords.shape) == 2, (coords, self.coords, self.coords.shape)
+        assert self.coords.shape[1] == 3, self.coords
+        assert len(self.atoms) == len(self.coords)
         self.connect = connect
 
     def __copy__(self):
-        return Molecule(self.atoms[:], self.coords[:], self.connect.copy())
+        return Molecule(self.atoms[:], self.coords.copy(), self.connect.copy())
 
     __deepcopy__ = __copy__
     copy = __copy__
@@ -51,7 +62,10 @@ class Molecule(object):
         if pos is None:
             pos = len(self)
         self.atoms.insert(pos, atom)
-        self.coords.insert(pos, coord)
+        # FIXME, do this directly in numpy
+        t = self.coords.tolist()
+        t.insert(pos, coord)
+        self.coords = numpy.array(t)
         self.connect = None
 
     # connect system
@@ -60,8 +74,8 @@ class Molecule(object):
 
     def makeconnect(self):
         distmat = moltools.distmat(self)
-        self.connect = zeros((len(self), len(self)),
-                             bool)
+        self.connect = numpy.zeros((len(self), len(self)),
+                                   bool)
         for i in range(len(self)):
             for j in range(i):
                 if self.atoms[i].no == 1 or self.atoms[j].no == 1:
@@ -75,7 +89,7 @@ class Molecule(object):
 
     def buildconnect(self, i, j):
         if self.connect is None:
-            self.connect = zeros((len(self), len(self)))
+            self.connect = numpy.zeros((len(self), len(self)), int)
         self.connect[i, j] = self.connect[j, i] = 1
 
     def delconnect(self, j, i):
@@ -93,12 +107,17 @@ class Molecule(object):
 
     def calclen(self, i, j):
         coords = self.coords
-        return (coords[i] - coords[j]).length()
+        t = coords[i] - coords[j]
+        return math.sqrt(sum(t*t))
 
+    # FIXME, consider coords[i] == coords[j]
     def calcang(self, i, j, k):
         "return in radian"
         coords = self.coords
-        return (coords[k] - coords[j]).angle(coords[i]-coords[j])
+        t1 = coords[k] - coords[j]
+        t2 = coords[i] - coords[j]
+        cos_ = sum(t1*t2)/math.sqrt(sum(t1*t1) * sum(t2*t2))
+        return math.acos(cos_)
 
     def calctor(self, i, j, k, l):
         "return in radian"

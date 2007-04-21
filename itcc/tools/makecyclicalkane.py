@@ -1,10 +1,9 @@
 import math
 import sys
 from random import random
+import numpy
 from itcc.molecule import molecule, atom, write
 from itcc import tinker, ccs2
-from Scientific.Geometry import Vector
-
 
 CClen = 1.523
 
@@ -22,8 +21,9 @@ def makecyclicalkane(n):
     coords = []
     for i in range(n):
         angle = math.pi * 2.0 * i / n
-        coords.append(Vector(r * math.cos(angle), r * math.sin(angle),
-          random()*0.1))
+        coords.append([r * math.cos(angle),
+                       r * math.sin(angle),
+                       random()*0.1])
 
     mol = molecule.Molecule()
     C = atom.Atom(6, get_c_type(n))
@@ -31,10 +31,10 @@ def makecyclicalkane(n):
     for i in range(n):
         mol.addatom(C, coords[i])
     for i in range(n):
-        mol.addatom(H, mol.coords[i] + Vector(random()*0.5,
-            random()*0.5, random()*0.5))
-        mol.addatom(H, mol.coords[i] + Vector(random()*0.5,
-            random()*0.5, random()*0.5))
+        mol.addatom(H, mol.coords[i] 
+                       + numpy.array([random()*0.5,random()*0.5, random()*0.5]))
+        mol.addatom(H, mol.coords[i] 
+                       + numpy.array([random()*0.5,random()*0.5, random()*0.5]))
     for i in range(n):
         mol.buildconnect(i, (i+1)%n)
         mol.buildconnect(i, n+i*2)

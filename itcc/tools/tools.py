@@ -1,9 +1,8 @@
 # $Id$
 import sys
 import random
-from math import sqrt, sin, cos, pi
-from Scientific.Geometry import Vector, isVector
-from Scientific.Statistics import mean, standardDeviation as stdev
+import math
+import numpy
 from itcc.tools import ctools
 
 __revision__ = '$Rev$'
@@ -11,6 +10,9 @@ __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
            'weightedmean', 'weightedsd', 'datafreq',
            'random_vector', 'mean', 'stdev', 'all', 'any']
+
+def normal(a):
+    return a / length(a)
 
 def datafreq(data, min_, max_, num):
     result = [0] * num
@@ -23,8 +25,11 @@ def datafreq(data, min_, max_, num):
 
     return result
 
-def length(a, b):
-    return (a-b).length()
+def distance(a, b):
+    return length(a-b)
+
+def length(a):
+    return math.sqrt(sum(a*a))
 
 def angle(a, b, c):
     return (a-b).angle(c-b)
@@ -48,7 +53,7 @@ def imptor(a, b, c, d):
     ad = d - a
     ab = b - a
     ac = c - a
-    abc = ab.cross(ac)
+    abc = numpy.cross(ab, ac)
     angle_ = ad.angle(abc)
     return pi - angle_
 
@@ -69,16 +74,13 @@ def xyzatm(p1, p2, p3, r, theta, phi):
     Vector(1.0,0.0,0.99999999999999989)
     '''
 
-    if not isVector(p1): p1 = Vector(p1)
-    if not isVector(p2): p2 = Vector(p2)
-    if not isVector(p3): p3 = Vector(p3)
-    r12 = (p1 - p2).normal()
-    r23 = (p2 - p3).normal()
-    rt = r23.cross(r12)
+    r12 = normal(p1 - p2)
+    r23 = normal(p2 - p3)
+    rt = numpy.cross(r23, r12)
     cosine = r12 * r23
     sine = sqrt(max(1.0 - cosine*cosine, 0.0))
     rt /= sine
-    ru = rt.cross(r12)
+    ru = numpy.cross(rt, r12)
     ts = sin(theta)
     tc = cos(theta)
     ps = sin(phi)

@@ -3,6 +3,7 @@
 __revision__ = '$Rev$'
 
 from itcc.molecule import mtxyz, molecule
+from itcc.tools import tools
 
 def rg(mol):
     center = molecule.CoordType()
@@ -15,7 +16,7 @@ def rg(mol):
 
     result = 0.0
     for i in range(len(mol)):
-        result += (mol.coords[i] - center).length() ** 2 * mol.atoms[i].mass
+        result += tools.length(mol.coords[i] - center) ** 2 * mol.atoms[i].mass
     result /= mass
     return result
 

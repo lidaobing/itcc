@@ -3,8 +3,7 @@
 import math
 import sys
 
-from Scientific import Statistics
-
+import numpy
 from itcc.tools import tools
 from itcc.molecule import read
 
@@ -29,10 +28,11 @@ def sumxyz(seq, filelist):
                                                    seq[2])))
 
     print 'n = %d' % len(result)
-    print 'average = %f' % Statistics.mean(result)
+    print 'average = %f' % numpy.mean(result)
     if len(filelist) >= 2:
-        print 'stdev = %f' % Statistics.standardDeviation(result)
-    print result
+        print 'stdev = %f' % numpy.std(result)
+    for fname, r in zip(filelist, result):
+        print fname, r
 
 def sumxyz_torsion(list_, filelist):
     if len(list_) != 4:

@@ -8,6 +8,7 @@
 
 from math import sqrt, sin, cos, pi
 import numpy
+from itcc.tools import tools
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
 from itcc.ccs2 import sidechain, rtbis
@@ -20,7 +21,7 @@ def _calc_p3(points, d13, d35):
     p1 = points[1]
     p5 = points[2]
     V15 = p5 - p1
-    d15 = V15.length()
+    d15 = tools.length(V15)
 
     if d13 + d35 < d15 or d13 + d15 < d35 or d15 + d35 < d13:
         return None
@@ -29,9 +30,9 @@ def _calc_p3(points, d13, d35):
     r = sqrt(d13 * d13 - c * c * d15 * d15)
     p3o = p1 + c * V15
 
-    Oz = V15.normal()
-    p3y = Oz.cross(p0-p1).normal() * r
-    p3x = p3y.cross(Oz)
+    Oz = tools.normal(V15)
+    p3y = tools.normal(numpy.cross(Oz, p0-p1)) * r
+    p3x = numpy.cross(p3y, Oz)
     return (p3o, p3x, p3y)
 
 def _calc_p2_p4(points, len1, len2, p3_result, angle):
@@ -76,7 +77,7 @@ class p24_Resolver:
             i4 = self.mode % 2
             self.p2 = p2s[i2]
             self.p4 = p4s[i4]
-            return (self.p2-self.p4).length() - self.d24
+            return tools.length(self.p2-self.p4) - self.d24
     def switch(self, mode):
         self.mode = mode
 
@@ -122,10 +123,10 @@ def r6_base(points, len1, len2):
         p24_result = _calc_p2_p4(points, len1, len2, p3_result, angle)
         if p24_result:
             p2s, p4s = p24_result
-            d24s[0][i] = (p2s[0] - p4s[0]).length()
-            d24s[1][i] = (p2s[0] - p4s[1]).length()
-            d24s[2][i] = (p2s[1] - p4s[0]).length()
-            d24s[3][i] = (p2s[1] - p4s[1]).length()
+            d24s[0][i] = tools.length(p2s[0] - p4s[0])
+            d24s[1][i] = tools.length(p2s[0] - p4s[1])
+            d24s[2][i] = tools.length(p2s[1] - p4s[0])
+            d24s[3][i] = tools.length(p2s[1] - p4s[1])
     d24s[0][steps] = d24s[0][0]
     d24s[1][steps] = d24s[1][0]
     d24s[2][steps] = d24s[2][0]

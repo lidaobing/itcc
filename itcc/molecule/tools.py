@@ -10,7 +10,7 @@ def distmat(mol):
 
     for i in range(size):
         for j in range(i):
-            distance = (mol.coords[i] - mol.coords[j]).length()
+            distance = mol.calclen(i, j)
             result[i, j] = distance
             result[j, i] = distance
     return result

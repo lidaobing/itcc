@@ -26,8 +26,8 @@ for each N2 on the circle of N2
 
 import math
 import exceptions
-from itcc.ccs2 import pyramid, sidechain
-from itcc.ccs2 import rtbis
+from itcc.ccs2 import pyramid, sidechain, rtbis
+from itcc.tools import tools
 
 class Error(exceptions.Exception):
     pass
@@ -66,7 +66,7 @@ class Mezeipro2:
                 if tmp[0] is None:
                     result[idx].append(None)
                 else:
-                    result[idx].append((tmp[2] - tmp[4]).length() - ref)
+                    result[idx].append(tools.length(tmp[2] - tmp[4]) - ref)
 
         for i in range(16):
             result[i].append(result[i][0])
@@ -109,7 +109,7 @@ class Mezeipro2:
             if p3 is None:
                 yield None
             else:
-                yield (p5 - p7).length()
+                yield tools.length(p5 - p7)
 
     def get_p34567(self, p2):
         for p3 in self.get_p3(p2):
@@ -279,7 +279,7 @@ def _test():
     for result in results:
         _print_result(sys.stdout, result)
         if result[3] is not None:
-            print (result[3]-result[5]).length(), mezeipro2._dismatrix(5, 7)
+            print tools.length(result[3]-result[5]), mezeipro2._dismatrix(5, 7)
 
 if __name__ == '__main__':
     _test()

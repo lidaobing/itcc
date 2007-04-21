@@ -3,6 +3,7 @@
 """extend Mezei's method to protein.
 """
 import math
+from itcc.tools import tools
 from itcc.ccs2 import pyramid, sidechain
 from itcc.ccs2 import config, rtbis
 
@@ -142,7 +143,7 @@ def R6a(coords, atmidx, dismat):
 def getd46rela(p4, p6, d46ref):
     if p4 is None or p6 is None:
         return None
-    return (p4 - p6).length() - d46ref
+    return tools.length(p4 - p6) - d46ref
 
 class d46_Resolver:
     def __init__(self, r6sub, mode, d46ref):
@@ -152,7 +153,7 @@ class d46_Resolver:
     def __call__(self, angle):
         result = tuple(self.r6sub(angle))[self.mode]
         if result[1] is None: return None
-        return (result[1] - result[3]).length() - self.d46ref
+        return tools.length(result[1] - result[3]) - self.d46ref
 
 
 def R6(coords, atmidx, dismat, shakedata):
