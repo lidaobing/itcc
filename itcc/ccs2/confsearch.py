@@ -4,6 +4,12 @@ import sys
 import itcc
 from itcc.ccs2 import loopclosure
 
+try:
+    import psyco
+    psyco.full()
+except ImportError:
+    pass
+
 __revision__ = '$Rev$'
 
 def testcyc(ifname, options):
