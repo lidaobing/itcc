@@ -1,9 +1,10 @@
 #!/usr/bin/env python2.4
 # $Id$
 
+import os
+import glob
 from setuptools import setup, find_packages
 from distutils.core import Extension
-import os
 
 if os.system('which svnversion > /dev/null') != 0:
     svnversion = 'exported'
@@ -47,7 +48,9 @@ setup(
     url='http://www.chemgen.szpku.edu.cn',
     packages = find_packages(),
     ext_modules = ext_modules,
-    data_files = [('/etc/bash_completion.d', ['bash_completion/itcc'])],
+    data_files = [('/etc/bash_completion.d', ['bash_completion/itcc']),
+                  ('/usr/share/itcc/caflisch', glob.glob('data/caflisch/*'))
+        ],
     test_suite = 'itcc.tests',
     entry_points = {
         'console_scripts': [
