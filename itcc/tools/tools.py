@@ -9,7 +9,8 @@ __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
            'weightedmean', 'weightedsd', 'datafreq',
-           'random_vector', 'mean', 'stdev', 'all', 'any']
+           'random_vector', 'mean', 'stdev', 'all', 'any',
+           'dissq', 'lensq']
 
 def normal(a):
     return a / length(a)
@@ -28,8 +29,14 @@ def datafreq(data, min_, max_, num):
 def distance(a, b):
     return length(a-b)
 
+def dissq(a, b):
+    return lensq(a-b)
+
 def length(a):
     return math.sqrt(sum(a*a))
+
+def lensq(a):
+    return sum(a*a)
 
 def angle(a, b, c):
     return (a-b).angle(c-b)
