@@ -3,6 +3,7 @@
 
 import os
 import glob
+import sys
 from setuptools import setup, find_packages
 from distutils.core import Extension
 
@@ -49,7 +50,6 @@ setup(
     packages = find_packages(),
     ext_modules = ext_modules,
     data_files = [('/etc/bash_completion.d', ['bash_completion/itcc']),
-                  ('/usr/share/itcc/caflisch', glob.glob('data/caflisch/*'))
         ],
     test_suite = 'itcc.tests',
     entry_points = {
@@ -62,8 +62,11 @@ setup(
             'itcc-ene2agr = itcc.tools.ene2agr:main',
             'itcc-enestep2countstep = itcc.tools.enestep2countstep:main',
             'itcc-printbonds = itcc.molecule.utils:printbonds',
-            'itcc-detailcmp = itcc.molecule.utils:detailcmp'
+            'itcc-detailcmp = itcc.molecule.utils:detailcmp',
+            'itcc-caflisch = itcc.ccs2.solvent_caflisch:main',
         ]
-    }
+    },
+    include_package_data = True
+
 #    install_requires = ['numpy', 'Scientific']
 )

@@ -26,7 +26,8 @@ class Molecule(object):
             self.coords = numpy.array(coords)
         else:
             self.coords = numpy.zeros((0, 3), float)
-        assert len(self.coords.shape) == 2, (coords, self.coords, self.coords.shape)
+        assert len(self.coords.shape) == 2, \
+            (coords, self.coords, self.coords.shape)
         assert self.coords.shape[1] == 3, self.coords
         assert len(self.atoms) == len(self.coords)
         self.connect = connect
