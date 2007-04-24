@@ -2,48 +2,49 @@
 # $Id$
 
 import os
-import glob
-import sys
 from setuptools import setup, find_packages
 from distutils.core import Extension
 
-if os.system('which svnversion > /dev/null') != 0:
-    svnversion = 'exported'
-else:
-    svnversion = os.popen('svnversion .').read().strip()
+def get_ver():
+    if os.system('which svnversion > /dev/null') != 0:
+        svnversion = 'exported'
+    else:
+        # some old subversion require use "svnversion ."
+        svnversion = os.popen('svnversion .').read().strip()
 
-ofile = file('itcc/__init__.py', 'w')
-if svnversion == 'exported':
-    ofile.write("__version__ = '%s'\n" %
-                  file('version.in').read().strip())
-else:
-    ofile.write("__version__ = '%s.dev-r%s'\n" %
-                  (file('version.in').read().strip(),
-                      svnversion.split(':')[-1]))
-ofile.close()
+    version = file('version.in').read().strip()
+    
+    if svnversion == 'exported':
+        return version
+    else:
+        return "%s.dev-r%s" % (version, svnversion.split(':')[-1])
 
-import itcc
+__version__ = None
+if os.path.exists('itcc/__init__.py'):
+    execfile('itcc/__init__.py')
+
+if __version__ != get_ver():
+    __version__ = get_ver()
+    file('itcc/__init__.py', 'w').write("__version__ = '%s'\n" % __version__)
 
 __revision__ = '$Rev$'
 
-version = itcc.__version__
-
-ext_modules=[Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
-             Extension("itcc.tools.cpptools",
-                       ["itcc/tools/cpptools.cpp"],
-                       depends=['itcc/tools/vector.hpp']),
-             Extension('itcc.tools.vector',
-                       ['itcc/tools/vector.cpp'],
-                       depends=['itcc/tools/vector.hpp'],
-                       libraries=['boost_python']),
-             Extension('itcc.molecule._rmsd',
-                       ['itcc/molecule/_rmsd.cpp'],
-                       libraries=['lapack'])
-             ]
+ext_modules = [Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
+               Extension("itcc.tools.cpptools",
+                         ["itcc/tools/cpptools.cpp"],
+                         depends=['itcc/tools/vector.hpp']),
+               Extension('itcc.tools.vector',
+                         ['itcc/tools/vector.cpp'],
+                         depends=['itcc/tools/vector.hpp'],
+                         libraries=['boost_python']),
+               Extension('itcc.molecule._rmsd',
+                         ['itcc/molecule/_rmsd.cpp'],
+                         libraries=['lapack'])
+               ]
 
 setup(
     name="itcc",
-    version=version,
+    version=__version__,
     author='LI Daobing',
     author_email='lidaobing@gmail.com',
     url='http://www.chemgen.szpku.edu.cn',

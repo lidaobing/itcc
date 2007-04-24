@@ -56,7 +56,7 @@ def init_ff(forcefield):
         else:
             res[ff_type] = None
 
-def solvent_caflisch(mol, forcefield):
+def solvent_caflisch(mol, forcefield, debug=0):
     if mol.connect is None:
         raise RuntimeError("can't deal with mol without connective information")
     
@@ -65,6 +65,10 @@ def solvent_caflisch(mol, forcefield):
     
     data = []
     for i in range(len(mol)):
+        if mol.atoms[i].type not in ff:
+            raise RuntimeError(
+                "no corresponding caflisch type for type %i of %s"
+                % (mol.atoms[i].type, forcefield))
         if ff[mol.atoms[i].type] is not None:
             data.append((ff[mol.atoms[i].type], mol.coords[i], i))
 
@@ -92,12 +96,12 @@ def solvent_caflisch(mol, forcefield):
             else:
                 pij = pij_nonbonded
 
-            
-                
-            
             area *= 1 - data[i][0].p * pij * bij / S
         areas.append(area * S)
 
+    if debug >= 1:
+        for i in range(len(data)):
+            print data[i][2]+1, areas[i]
     return sum(areas[i] * data[i][0].sigma for i in range(len(data)))
 
 def read_caflisch(ifile):
@@ -123,7 +127,7 @@ def main():
         sys.exit(1)
     from itcc.molecule import read
     mol = read.readxyz(file(sys.argv[1]))
-    print solvent_caflisch(mol, sys.argv[2])
+    print solvent_caflisch(mol, sys.argv[2], 1)
     
 
 if __name__ == '__main__':
