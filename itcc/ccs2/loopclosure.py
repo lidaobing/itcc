@@ -20,10 +20,8 @@ except ImportError:
 import itcc
 from itcc.tinker import tinker
 from itcc.molecule import read, write, mtxyz, chiral, tools as moltools
-from itcc.tools import tools
 from itcc.ccs2 import detectloop, base, peptide, catordiff, sidechain
 from itcc.ccs2 import mezeipro2
-from itcc.ccs2 import r6 as R6
 from itcc.ccs2 import mezei as Mezei
 from itcc.ccs2 import mezeipro as Mezeipro
 
@@ -76,6 +74,7 @@ class LoopClosure(object):
         self.np = 1
         self.multithread = False
         self.mutex = threading.Lock()
+        self.solvate = None
 
     def __getstate__(self):
         odict = self.__dict__.copy()
@@ -83,13 +82,15 @@ class LoopClosure(object):
         del odict['mutex']
         return odict
 
-    def __setstate__(self,dict):
+    def __setstate__(self, dict):
         self.__dict__.update(dict)
         self.olddir = os.getcwd()
         self.newdir = tempfile.mkdtemp('itcc')
         os.chdir(self.newdir)
         if self.tmp_mtxyz_fname is not None:
-            self.tmp_mtxyz_fname = os.path.join(self.olddir, os.path.basename(self.tmp_mtxyz_fname))
+            self.tmp_mtxyz_fname = \
+                os.path.join(self.olddir,
+                             os.path.basename(self.tmp_mtxyz_fname))
             self.tmp_mtxyz_file = file(self.tmp_mtxyz_fname, 'ab+')
             for i in range(len(self.tasks)):
                 read.readxyz(self.tmp_mtxyz_file)
@@ -112,7 +113,8 @@ class LoopClosure(object):
 
     def __call__(self, molfile):
         assert self.forcefield is not None
-        if not self._prepare(molfile): return
+        if not self._prepare(molfile):
+            return
 
         if self.np > 1:
             self._run_multi_thread()
@@ -143,7 +145,8 @@ class LoopClosure(object):
         def clear_threads():
             threads[:] = [x for x in threads if x.isAlive()]
 
-        some_threads_finished_condition = threading.Condition(self.mutex, verbose=True)
+        some_threads_finished_condition = \
+            threading.Condition(self.mutex, verbose=True)
 
         class Task:
             def __init__(self, parent, taskidx, r6):
@@ -160,7 +163,8 @@ class LoopClosure(object):
             some_threads_finished_condition.acquire()
             clear_threads()
             if (not threads and not self.taskheap) \
-              or (self.maxsteps is not None and self._step_count >= self.maxsteps) :
+              or (self.maxsteps is not None
+                  and self._step_count >= self.maxsteps) :
                 some_threads_finished_condition.release()
                 for thread in threads:
                     thread.join()
@@ -199,8 +203,16 @@ class LoopClosure(object):
 
         os.rename(ofname, os.path.join(self.olddir, 'checkfile'))
 
+    def _get_tinker_key(self):
+        res = 'ENFORCE-CHIRALITY\n'
+        if self.solvate is not None:
+            res += 'SOLVATE %s\n' % self.solvate
+        return res
+        
+        
     def _prepare(self, molfile):
-        if self.state != self.S_NONE: return True
+        if self.state != self.S_NONE:
+            return True
         self.printparams()
         mol = read.readxyz(molfile)
         self.seedmol = mol
@@ -212,7 +224,7 @@ class LoopClosure(object):
         self.newdir = tempfile.mkdtemp('itcc')
         os.chdir(self.newdir)
 
-        file('tinker.key', 'w').write('ENFORCE-CHIRALITY\n')
+        file('tinker.key', 'w').write(self._get_tinker_key())
         tinker.curdir = True
 
         self.newmolnametmp = os.path.splitext(molfile.name)[0] + '.%03i'
@@ -224,7 +236,9 @@ class LoopClosure(object):
             print "this moleclue does not contain loop. exit."
             return False
         if len(self.loopatoms) < 6:
-            print "your ring is %s-member, we can't deal with ring less than 6-member." % len(self.loopatoms)
+            print "your ring is %s-member, " \
+                "we can't deal with ring less than 6-member." \
+                % len(self.loopatoms)
             return False
         self.shakedata = getshakedata(mol, self.loopatoms)
         self.r6s = tuple(typedmol.getr6s(self.loopatoms))
@@ -272,12 +286,16 @@ class LoopClosure(object):
             if newene < self.lowestene:
                 self.mutex.acquire()
                 self.lowestene = newene
-                finished = self.searchbound is not None and ene >= self.searchbound
+                finished = self.searchbound is not None \
+                    and ene >= self.searchbound
                 self.mutex.release()
-                if finished: return
+                if finished:
+                    return
 
     def eneidx(self, mol, ene):
-        '''return the taskidx, if is new ene, return -1, if is out of range, return -2'''
+        '''return the taskidx
+        if is new ene, return -1,
+        if is out of range, return -2'''
         res = None
         self.mutex.acquire()
         if self.keeprange is not None and \
@@ -295,7 +313,8 @@ class LoopClosure(object):
                 coords2 = self.tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords = coords2
-                if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
+                if catordiff.catordiff(mol, mol2, self.loop) \
+                        <= math.radians(self.torerror):
                     res = taskidx
 
         if res is None:                
@@ -307,7 +326,8 @@ class LoopClosure(object):
                 coords2 = self.tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords = coords2
-                if catordiff.catordiff(mol, mol2, self.loop) <= math.radians(self.torerror):
+                if catordiff.catordiff(mol, mol2, self.loop) \
+                        <= math.radians(self.torerror):
                     res = taskidx
 
         if res is None:
@@ -346,7 +366,7 @@ class LoopClosure(object):
         looptype, loops = detectloop.loopdetect(mol)
         if looptype == detectloop.SIMPLELOOPS \
            and len(loops) == 1:
-               self.loop = loops[0]
+            self.loop = loops[0]
         return self.loop
 
     def printparams(self):
@@ -375,7 +395,8 @@ class LoopClosure(object):
         print 'Starttime: %s' % time.ctime(self.start_time)
         end_time = time.time()
         print 'Endtime: %s' % time.asctime()
-        print 'Total time: %s' % datetime.timedelta(0, end_time - self.start_time)
+        print 'Total time: %s' \
+            % datetime.timedelta(0, end_time - self.start_time)
 
         try:
             import resource
@@ -388,8 +409,10 @@ class LoopClosure(object):
             res_s_t = res_s[0] + res_s[1]
             res_t = res_c_t + res_s_t
             print 'Total CPU time: %s' % datetime.timedelta(0, res_t)
-            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' % (res_s_t, res_s[0], res_s[1])
-            print 'Time used by external program: %.1fs(%.1f+%.1f)' % (res_c_t, res_c[0], res_c[1])
+            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' \
+                % (res_s_t, res_s[0], res_s[1])
+            print 'Time used by external program: %.1fs(%.1f+%.1f)' \
+                % (res_c_t, res_c[0], res_c[1])
 
     def writemol(self, mol, ene):
         write.writexyz(mol, self.tmp_mtxyz_file, '%.4f' % ene)
@@ -397,14 +420,16 @@ class LoopClosure(object):
     def findneighbor(self, mol, r6):
         coords = mol.coords
         dismat = moltools.distmat(mol)
-        for molidx, molresult in enumerate(getr6result(coords, r6, dismat, self.shakedata)):
+        for molidx, molresult \
+                in enumerate(getr6result(coords, r6, dismat, self.shakedata)):
             newmol = mol.copy()
             for idx, coord in molresult.items():
                 newmol.coords[idx] = coord
-            rmol, rene = tinker.minimizemol(newmol,
-                                            self.forcefield,
-                                            self.minconverge,
-                                            prefix=threading.currentThread().getName())
+            rmol, rene = \
+                tinker.minimizemol(newmol,
+                                   self.forcefield,
+                                   self.minconverge,
+                                   prefix=threading.currentThread().getName())
             self.mutex.acquire() # r/w _step_count
             self._step_count += 1
             self.log('  Step %5i   Comb %02i-%02i %42.4f '
@@ -450,7 +475,9 @@ class LoopClosure(object):
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
             return False
-        if self.check_chiral and tuple(chiral.chiral_types(mol, self.chiral_idxs)) != self._chirals:
+        if self.check_chiral \
+                and tuple(chiral.chiral_types(mol, self.chiral_idxs)) \
+                != self._chirals:
             return False
         if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
             return False
@@ -472,9 +499,9 @@ def getr6result(coords, r6, dismat, shakedata):
 def r6type(r6):
     return tuple([len(x) for x in r6])
 
-moltypedict = {'peptide': peptide.Peptide}
+_moltypedict = {'peptide': peptide.Peptide}
 def getmoltype(key):
-    return moltypedict.get(key, base.Base)
+    return _moltypedict.get(key, base.Base)
 
 def getshakedata(mol, loop):
     result = {}

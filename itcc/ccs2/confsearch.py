@@ -27,6 +27,7 @@ def testcyc(ifname, options):
     loopc.moltypekey = options.moltype
     loopc.dump_steps = options.dump_interaval
     loopc.np = options.np
+    loopc.solvate = options.solvate
 
     if options.loop is None and options.loopfile is not None:
         options.loop = file(options.loopfile).read()
@@ -114,7 +115,13 @@ def main():
                       type='int',
                       metavar='INT',
                       help='number of processor, default is 1')
-
+    parser.add_option('--solvate',
+                      dest='solvate',
+                      type='choice',
+                      choices=('asp', 'sasa', 'onion', 'still',
+                               'hct', 'ace', 'gbsa'),
+                      metavar='NAME',
+                      help='set solvate model')
     (options, args) = parser.parse_args()
     if options.resume is None:
         if len(args) != 1:
