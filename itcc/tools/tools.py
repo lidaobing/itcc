@@ -43,8 +43,11 @@ def angle(a, b, c):
 
 def torsionangle(a, b, c, d):
     """torsionangle(a, b, c, d) -> angle
-    a, b, c, d are 4 Scientific.Geometry.Vector
-    return the torsionangle of a-b-c-d in radian, range is (-pi, pi]"""
+    a, b, c, d are 4 numpy.array
+    return the torsionangle of a-b-c-d in radian, range is (-pi, pi].
+    if torsionangle is invalid, for example, a == b or b == c or c == d
+    or a == c or b == d, then return float("nan").
+    """
 
     return ctools.torsionangle(tuple(a), tuple(b),
                                tuple(c), tuple(d))
