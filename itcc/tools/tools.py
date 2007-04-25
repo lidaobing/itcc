@@ -46,8 +46,8 @@ def torsionangle(a, b, c, d):
     a, b, c, d are 4 Scientific.Geometry.Vector
     return the torsionangle of a-b-c-d in radian, range is (-pi, pi]"""
 
-    return ctools.torsionangle(tuple(a.array), tuple(b.array),
-                               tuple(c.array), tuple(d.array))
+    return ctools.torsionangle(tuple(a), tuple(b),
+                               tuple(c), tuple(d))
 
 def imptor(a, b, c, d):
     '''imptor(a, b, c, d) -> angle
