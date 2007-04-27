@@ -129,6 +129,7 @@ class LoopClosure(object):
             if self._step_count - last_dump_step >= self.dump_steps:
                 self.dump()
                 last_dump_step = self._step_count
+                os.system("ps -p %s -o rss" % os.getpid())
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
