@@ -61,6 +61,7 @@ setup(
             'itcc-printbonds = itcc.molecule.utils:printbonds',
             'itcc-detailcmp = itcc.molecule.utils:detailcmp',
             'itcc-caflisch = itcc.ccs2.solvent_caflisch:main',
+            'itcc-random-protein-input = itcc.tools.random_protein_input:main',
         ]
     },
     include_package_data = True
