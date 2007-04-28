@@ -51,7 +51,6 @@ class LoopClosure(object):
 
         self._step_count = 0
         self.seedmol = None
-        # FIXME: how to make coords immutable
         self._tasks = []                # List of (coords, ene)
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
@@ -266,7 +265,7 @@ class LoopClosure(object):
         self.mutex.acquire() # r self.tasks
         ene = self._tasks[taskidx][1]
         mol = self.seedmol.copy()
-        mol.coords = self._tasks[taskidx][0].copy()
+        mol.coords[:] = self._tasks[taskidx][0]
         self.mutex.release()
         print
         head = ' CCS2 Local Search'
@@ -314,7 +313,7 @@ class LoopClosure(object):
                 taskidx = self.enes[idx][1]
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
-                mol2.coords = coords2
+                mol2.coords[:] = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) \
                         <= math.radians(self.torerror):
                     res = taskidx
@@ -327,7 +326,7 @@ class LoopClosure(object):
                 taskidx = self.enes[idx][1]
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
-                mol2.coords = coords2
+                mol2.coords[:] = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) \
                         <= math.radians(self.torerror):
                     res = taskidx

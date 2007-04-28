@@ -19,22 +19,39 @@ class Molecule(object):
 
     def __init__(self, atoms = None, coords = None, connect = None):
         if atoms is None:
-            self.atoms = []
+            self._atoms = []
         else:
-            self.atoms = atoms[:]
+            self._atoms = atoms[:]
+            
         if coords is not None:
-            self.coords = numpy.array(coords)
+            self._coords = numpy.array(coords)
         else:
-            self.coords = numpy.zeros((0, 3), float)
+            self._coords = numpy.zeros((0, 3), float)
         assert len(self.coords.shape) == 2, \
             (coords, self.coords, self.coords.shape)
         assert self.coords.shape[1] == 3, self.coords
         assert len(self.atoms) == len(self.coords)
-        self.connect = connect
 
-    # FIXME: can't copy if self.connect is None
+        if connect is None:
+            self._connect = None
+        else:
+            self._connect = numpy.array(connect)
+            assert self.connect.shape == (len(atoms), len(atoms)), self.connect.shape
+
+    def get_atoms(self):
+        return self._atoms
+    atoms = property(get_atoms)
+
+    def get_coords(self):
+        return self._coords
+    coords = property(get_coords)
+
+    def get_connect(self):
+        return self._connect
+    connect = property(get_connect)
+
     def __copy__(self):
-        return Molecule(self.atoms[:], self.coords.copy(), self.connect.copy())
+        return Molecule(self.atoms, self.coords, self.connect)
 
     __deepcopy__ = __copy__
     copy = __copy__
@@ -67,8 +84,8 @@ class Molecule(object):
         # FIXME, do this directly in numpy
         t = self.coords.tolist()
         t.insert(pos, coord)
-        self.coords = numpy.array(t)
-        self.connect = None
+        self._coords = numpy.array(t)
+        self._connect = None
 
     # connect system
     def is_connect(self, i, j):
@@ -76,7 +93,7 @@ class Molecule(object):
 
     def makeconnect(self):
         distmat = moltools.distmat(self)
-        self.connect = numpy.zeros((len(self), len(self)),
+        self._connect = numpy.zeros((len(self), len(self)),
                                    bool)
         for i in range(len(self)):
             for j in range(i):
@@ -91,7 +108,7 @@ class Molecule(object):
 
     def buildconnect(self, i, j):
         if self.connect is None:
-            self.connect = numpy.zeros((len(self), len(self)), int)
+            self._connect = numpy.zeros((len(self), len(self)), int)
         self.connect[i, j] = self.connect[j, i] = 1
 
     def delconnect(self, j, i):
