@@ -32,6 +32,7 @@ class Molecule(object):
         assert len(self.atoms) == len(self.coords)
         self.connect = connect
 
+    # FIXME: can't copy if self.connect is None
     def __copy__(self):
         return Molecule(self.atoms[:], self.coords.copy(), self.connect.copy())
 

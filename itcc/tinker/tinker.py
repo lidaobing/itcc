@@ -22,6 +22,7 @@ if TNK_ROOT:
 else:
     TINKERDIR = ""
 
+# FIXME: cache result
 def getparam(key):
     if os.path.isfile(key):
         return os.path.abspath(key)

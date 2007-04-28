@@ -51,7 +51,8 @@ class LoopClosure(object):
 
         self._step_count = 0
         self.seedmol = None
-        self.tasks = []                 # List of (coords, ene)
+        # FIXME: how to make coords immutable
+        self._tasks = []                # List of (coords, ene)
         self.taskheap = []              # Heap of (r6idx, ene, taskidx, r6)
         self.enes = []                  # Sorted List of (ene, taskidx)
         self.tmp_mtxyz_fname = None
@@ -92,7 +93,7 @@ class LoopClosure(object):
                 os.path.join(self.olddir,
                              os.path.basename(self.tmp_mtxyz_fname))
             self.tmp_mtxyz_file = file(self.tmp_mtxyz_fname, 'ab+')
-            for i in range(len(self.tasks)):
+            for i in range(len(self._tasks)):
                 read.readxyz(self.tmp_mtxyz_file)
             self.tmp_mtxyz_file.truncate()
         else:
@@ -263,9 +264,9 @@ class LoopClosure(object):
 
     def runtask(self, taskidx, r6):
         self.mutex.acquire() # r self.tasks
-        coords, ene = self.tasks[taskidx]
+        ene = self._tasks[taskidx][1]
         mol = self.seedmol.copy()
-        mol.coords = coords
+        mol.coords = self._tasks[taskidx][0].copy()
         self.mutex.release()
         print
         head = ' CCS2 Local Search'
@@ -311,7 +312,7 @@ class LoopClosure(object):
                 if round(ene - ene2, 4) > self.eneerror:
                     break
                 taskidx = self.enes[idx][1]
-                coords2 = self.tasks[taskidx][0]
+                coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) \
@@ -324,7 +325,7 @@ class LoopClosure(object):
                 if round(ene2 - ene, 4) > self.eneerror:
                     break
                 taskidx = self.enes[idx][1]
-                coords2 = self.tasks[taskidx][0]
+                coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords = coords2
                 if catordiff.catordiff(mol, mol2, self.loop) \
@@ -338,8 +339,8 @@ class LoopClosure(object):
 
     def addtask(self, mol, ene):
         self.mutex.acquire()
-        self.tasks.append((mol.coords, ene))
-        taskidx = len(self.tasks) - 1
+        self._tasks.append((mol.coords, ene))
+        taskidx = len(self._tasks) - 1
         bisect.insort(self.enes, (ene, taskidx))
         print '    Potential Surface Map       Minimum ' \
               '%6i %21.4f' % (taskidx+1, ene)
@@ -453,7 +454,7 @@ class LoopClosure(object):
         print
         print 'Oldidx Newidx Ene(sort by Oldidx)'
         for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
-            ene = self.tasks[oldidx][1]
+            ene = self._tasks[oldidx][1]
             try:
                 newidx = newidxs.index(oldidx)
             except ValueError:
@@ -466,7 +467,7 @@ class LoopClosure(object):
         print
         print 'Oldidx Newidx Ene(sort by Newidx)'
         for newidx, oldidx in enumerate(newidxs):
-            print '%6i %6i %.4f' % (oldidx+1, newidx+1, self.tasks[oldidx][1])
+            print '%6i %6i %.4f' % (oldidx+1, newidx+1, self._tasks[oldidx][1])
         print
 
     def log(self, str, lvl):
