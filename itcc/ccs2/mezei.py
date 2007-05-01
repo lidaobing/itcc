@@ -81,14 +81,21 @@ class p24_Resolver:
     def switch(self, mode):
         self.mode = mode
 
-def r6_base(points, len1, len2):
+# FIXME: can't find all 6 results of following input:
+#        points = numpy.array(((0.0, 0.0, 0.0),
+#                              (1.0, 0.0, 0.0),
+#                              (2.0, 2.0, 1.0),
+#                              (2.0, 2.0, 2.0)))
+#        len1 = numpy.array((1.0, 1.0, 1.0, 1.0))
+#        len2 = numpy.array((math.sqrt(2.0),)*5)
+def r6_base(points, len1, len2, error=0.1):
     """r6_base(points, len1, len2) -> iterator
 
     len(points) == 4
     len(len1) == 4
     len(len2) == 5
 
-    return all results fullfill following conditions in a iterator,
+    return all results fulfill following conditions in a iterator,
     len(result) will be 3.
 
     distance(points[1], result[0]) = len1[0];
@@ -139,7 +146,7 @@ def r6_base(points, len1, len2):
             if d24s[i][j] and d24s[i][j+1] and \
                    (d24s[i][j] - d24)*(d24s[i][j+1] - d24) <= 0:
                 try:
-                    angle = rtbis.rtbis(p24_res, j*step, (j+1)*step, 0.1)
+                    angle = rtbis.rtbis(p24_res, j*step, (j+1)*step, error)
                     yield (i, angle, p24_res.p2, p24_res.p3, p24_res.p4)
                 except rtbis.Error:
                     pass
