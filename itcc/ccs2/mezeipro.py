@@ -57,7 +57,7 @@ def propyramida(atmidx, coords, dismat):
             yield (None, None)
             yield (None, None)
             continue
-        newcoords = coords[:]
+        newcoords = coords.copy()
         newcoords[i3] = i3coord
         i2coords = tuple(_wrappyramid((i2, i1, i3, i4), 
                                       newcoords, dismat))
@@ -85,7 +85,7 @@ class R6sub:
     def __call__(self, angle):
         i1, i2, i3, i4, i5, i6, i7, i8, i9 = self.atmidx
         p5 = self.p5o + self.p5x * math.cos(angle) + self.p5y * math.sin(angle)
-        newcoords = self.coords[:]
+        newcoords = self.coords.copy()
         newcoords[i5] = p5
         resultsa = propyramida((i5, i4, i3, i2, i1),
                                newcoords, self.dismat)
@@ -160,7 +160,7 @@ def R6(coords, atmidx, dismat, shakedata):
     '''Wrapped R6 algorithm, include R6 and shakeH'''
     shakes = [shakedata[idx] for idx in atmidx[1:-1]]
     for baseresult in R6a(coords, atmidx, dismat):
-        newcoords = coords[:]
+        newcoords = coords.copy()
         for idx, newcoord in baseresult.items():
             newcoords[idx] = newcoord
         for refidxs, sidechain_ in shakes:

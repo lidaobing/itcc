@@ -228,7 +228,7 @@ def R6(coords, atmidx, dismat, shakedata):
         baseresult = {}
         for i in range(2,8):
             baseresult[atmidx[i]] = result[i-2]
-        newcoords = coords[:]
+        newcoords = coords.copy()
         for idx, newcoord in baseresult.items():
             newcoords[idx] = newcoord
         for refidxs, sidechain_ in shakes:

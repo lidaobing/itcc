@@ -169,7 +169,7 @@ def R6(coords, atmidx, dismat, shakedata):
     '''Wrapped R6 algorithm, include R6 and shakeH'''
     shakes = [shakedata[idx] for idx in atmidx[1:-1]]
     for baseresult in __R6(coords, atmidx, dismat):
-        newcoords = coords[:]
+        newcoords = coords.copy()
         for idx, newcoord in baseresult.items():
             newcoords[idx] = newcoord
         for refidxs, sidechain_ in shakes:
