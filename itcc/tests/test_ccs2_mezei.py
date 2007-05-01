@@ -32,7 +32,9 @@ class Test(unittest.TestCase):
             self.assertAlmostEqual(distance(x[3], points[2]), math.sqrt(2.0))
             self.assertAlmostEqual(distance(x[4], points[3]), math.sqrt(2.0))
 
-        
+        for i in range(len(a)):
+            for j in range(i):
+                self.assert_(sum(distance(a[i][k], a[j][k]) for k in range(2,5)) > 0.5)
 
 def _test():
     unittest.main()
