@@ -242,8 +242,11 @@ class LoopClosure(object):
                 % len(self.loopatoms)
             return False
         self.shakedata = getshakedata(mol, self.loopatoms)
-        self.r6s = tuple(typedmol.getr6s(self.loopatoms))
-        printr6s(self.r6s)
+        r6s = tuple(typedmol.getr6s(self.loopatoms))
+        self.r6s = {}
+        for idx, x in enumerate(r6s):
+            self.r6s[x] = idx
+        printr6s(r6s)
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self._step_count += 1
@@ -345,7 +348,7 @@ class LoopClosure(object):
               '%6i %21.4f' % (taskidx+1, ene)
         self.writemol(mol, ene)
 
-        r6s = list(self.r6s)
+        r6s = self.r6s.keys()
         random.shuffle(r6s)
         for r6idx, r6 in enumerate(r6s):
             heapq.heappush(self.taskheap, (r6idx, ene, taskidx, r6))
@@ -434,7 +437,7 @@ class LoopClosure(object):
             self.mutex.acquire() # r/w _step_count
             self._step_count += 1
             self.log('  Step %5i   Comb %02i-%02i %42.4f '
-                       % (self._step_count, 0, molidx, rene), 
+                       % (self._step_count, self.r6s[r6], molidx, rene), 
                      1)
             self.mutex.release()
             yield rmol, rene
