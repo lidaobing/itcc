@@ -10,7 +10,6 @@ python
 python-dev
 python-numeric
 python-numeric-ext
-python-scientific
 lapack3-dev
 tinker(optional)
 python-psyco(optional)

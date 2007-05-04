@@ -3,8 +3,7 @@
 import numpy
 from numpy import *
 import math
-from Scientific.Geometry import Tensor, Vector, isVector
-from Scientific.Geometry.Transformation import RotationTranslation
+from itcc.ccs2.transformation import RotationTranslation
 from itcc.tools import tools
 
 __all__ = ['pyramid', 'pyramid2']
@@ -12,25 +11,14 @@ __revision__ = '$Rev$'
 
 _normal = tools.normal
 
-class TransWrapper:
-    def __init__(self, trans):
-        self.trans = trans
-
-    def __call__(self, vec):
-        return numpy.array(list(self.trans(Vector(vec))))
-
-    def __mul__(self, rhs):
-        return TransWrapper(self.trans * rhs.trans)
-
 def construct_transform_matrixA(O, Ox, Oy, Oz):
     """建坐标变换矩阵，新的坐标系的原点位于O, x轴在Ox上，
     ..., 坐标变换从frame->WC"""
-    tensor = Tensor([[Ox[0], Oy[0], Oz[0]],
-                     [Ox[1], Oy[1], Oz[1]],
-                     [Ox[2], Oy[2], Oz[2]]])
-    vector = Vector(O)
-    trans = RotationTranslation(tensor, vector)
-    return TransWrapper(trans)
+    tensor = numpy.array([[Ox[0], Oy[0], Oz[0]],
+                          [Ox[1], Oy[1], Oz[1]],
+                          [Ox[2], Oy[2], Oz[2]]])
+    vector = O
+    return RotationTranslation(tensor, vector)
 
 def construct_both_transform_matrix(A, B, C):
     """建坐标变换矩阵，新的坐标系的原点位于A,
@@ -48,7 +36,7 @@ def construct_both_transform_matrix(A, B, C):
     Oy = cross(Oz, Ox)
 
     result1 = construct_transform_matrixA(O, Ox, Oy, Oz)
-    result2 = TransWrapper(result1.trans.inverse())
+    result2 = result1.inverse()
 
     return (result2, result1)
 

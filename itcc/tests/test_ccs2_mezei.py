@@ -17,7 +17,7 @@ class Test(unittest.TestCase):
 
         a = tuple(mezei.r6_base(points, len1, len2, 1e-9))
 
-        self.assert_(len(a) >= 4)
+        self.assert_(len(a) >= 4, str(a))
         if len(a) != 6:
             warnings.warn("this testcase should return 6 result")
 

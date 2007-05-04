@@ -9,7 +9,7 @@ Standards-Version: 3.7.2
 Package: itcc
 Architecture: any
 Provides: ${python:Provides}
-Depends: ${shlibs:Depends}, ${python:Depends}, python-scientific (>= 2.4.9-5),
- python-scipy(>= 0.3.2-9), python-setuptools
+Depends: ${shlibs:Depends}, ${python:Depends}, python-scipy(>= 0.3.2-9),
+ python-setuptools
 Description: collection of scripts for itcc
  for example: itcc confsearch
