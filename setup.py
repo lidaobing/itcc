@@ -54,14 +54,15 @@ setup(
             'itcc = itcc.itcc_main:main',
             'itcc-makecyclicalkane = itcc.tools.makecyclicalkane:main',
             'itcc-stats = itcc.tools.stats:main',
-            'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-calcangle = itcc.tools.calcangle:main',
             'itcc-ene2agr = itcc.tools.ene2agr:main',
             'itcc-enestep2countstep = itcc.tools.enestep2countstep:main',
+            'itcc-random-protein-input = itcc.tools.random_protein_input:main',
+            'itcc-mirrormol = itcc.molecule.utils:mirrormol',
             'itcc-printbonds = itcc.molecule.utils:printbonds',
             'itcc-detailcmp = itcc.molecule.utils:detailcmp',
             'itcc-caflisch = itcc.ccs2.solvent_caflisch:main',
-            'itcc-random-protein-input = itcc.tools.random_protein_input:main',
+            'itcc-loopdetect = itcc.ccs2.detectloop:main',
         ]
     },
     include_package_data = True
