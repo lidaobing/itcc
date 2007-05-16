@@ -81,10 +81,9 @@ class Molecule(object):
         if pos is None:
             pos = len(self)
         self.atoms.insert(pos, atom)
-        # FIXME, do this directly in numpy
-        t = self.coords.tolist()
-        t.insert(pos, coord)
-        self._coords = numpy.array(t)
+        self._coords = numpy.resize(self.coords, (len(self.atoms), 3))
+        self.coords[pos+1:,:] = self.coords[pos:-1,:]
+        self.coords[pos] = numpy.array(coord)
         self._connect = None
 
     # connect system
