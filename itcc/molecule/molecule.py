@@ -128,7 +128,6 @@ class Molecule(object):
         t = coords[i] - coords[j]
         return math.sqrt(sum(t*t))
 
-    # FIXME, consider coords[i] == coords[j]
     def calcang(self, i, j, k):
         "return in radian"
         coords = self.coords
