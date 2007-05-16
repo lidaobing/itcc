@@ -22,8 +22,13 @@ if TNK_ROOT:
 else:
     TINKERDIR = ""
 
-# FIXME: cache result
+_getparam_cache = {}
 def getparam(key):
+    if not _getparam_cache.has_key(key):
+        _getparam_cache[key] = getparam_real(key)
+    return _getparam_cache[key]
+
+def getparam_real(key):    
     if os.path.isfile(key):
         return os.path.abspath(key)
     if not key.endswith('.prm'):
