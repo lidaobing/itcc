@@ -100,6 +100,7 @@ setup(
             'itcc-dmddat2mtxyz = itcc.molecule.dmddat2mtxyz:main',
             'itcc-printefit = itcc.torsionfit.printefit:main',
             'itcc-constrain = itcc.tinker.constrain:main',
+            'itcc-loop2looptor = itcc.tools.loop2looptor:main',
         ]
     },
     include_package_data = True
