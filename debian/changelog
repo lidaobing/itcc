@@ -24,12 +24,13 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-enestep2countstep
   * add itcc-count
   * add itcc-loop2looptor
+  * add itcc-idx-verify
   * depends on python-setuptools
 
   [ library ]
   * itcc/molecule/molecule: the bond contain H has a different manbondlen
 
- -- LI Daobing <lidaobing@gmail.com>  Thu, 17 May 2007 21:16:37 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Fri, 18 May 2007 13:26:54 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

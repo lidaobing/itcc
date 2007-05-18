@@ -101,6 +101,7 @@ setup(
             'itcc-printefit = itcc.torsionfit.printefit:main',
             'itcc-constrain = itcc.tinker.constrain:main',
             'itcc-loop2looptor = itcc.tools.loop2looptor:main',
+            'itcc-idx-verify = itcc.tools.idx_verify:main',
         ]
     },
     include_package_data = True
