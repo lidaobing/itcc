@@ -45,7 +45,7 @@ class _Prepare:
         if self.iscurdir:
             return
         os.chdir(self.olddir)
-        shutil.rmtree(self.olddir)
+        shutil.rmtree(self.newdir)
 
 _GETPARAM_CACHE = {}
 def getparam(key):
