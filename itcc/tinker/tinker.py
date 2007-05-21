@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 # $Id$
 
+__revision__ = '$Rev$'
+
 import os
 import sys
 import os.path
 import tempfile
 import itertools
 import subprocess
+import shutil
 
 from itcc.molecule import read, relalist, write
-
-__revision__ = '$Rev$'
 
 debug = False
 curdir = False
@@ -22,11 +23,35 @@ if TNK_ROOT:
 else:
     TINKERDIR = ""
 
-_getparam_cache = {}
+def _which(cmdname):
+    if subprocess.call(['which', cmdname],
+                       stdout=file('/dev/null', 'w')) == 0:
+        return True
+    else:
+        return False
+
+class Error(RuntimeError):
+    pass
+
+class _Prepare:
+    def __init__(self, curdir_):
+        self.iscurdir = curdir_
+        if not self.iscurdir:
+            self.olddir = os.getcwd()
+            self.newdir = tempfile.mkdtemp()
+            os.chdir(self.newdir)
+
+    def __del__(self):
+        if self.iscurdir:
+            return
+        os.chdir(self.olddir)
+        shutil.rmtree(self.olddir)
+
+_GETPARAM_CACHE = {}
 def getparam(key):
-    if not _getparam_cache.has_key(key):
-        _getparam_cache[key] = getparam_real(key)
-    return _getparam_cache[key]
+    if not _GETPARAM_CACHE.has_key(key):
+        _GETPARAM_CACHE[key] = getparam_real(key)
+    return _GETPARAM_CACHE[key]
 
 def getparam_real(key):    
     if os.path.isfile(key):
@@ -86,7 +111,8 @@ def minimizemol(*args, **kwargs):
     return optimize_minimize_mol('minimize', *args, **kwargs)
 
 
-def optimize_minimize_mol(cmdname, mol, forcefield, converge = 0.01, prefix=None):
+def optimize_minimize_mol(cmdname, mol, forcefield,
+                          converge = 0.01, prefix=None):
     """optimizemol(mol, forcefield, converge = 0.01) -> (Molecule, Float)
     optimized the mol, and return the optimized energy
     """
@@ -147,11 +173,7 @@ def optimize_file(ifname, forcefield, converge = 0.01):
 
 def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
     ofname = ifname + '_2'
-    progpath = os.path.join(TINKERDIR, cmdname)
-    command = '%s %s %s %f' % (progpath, ifname, forcefield, converge)
-    if debug:
-        print >> sys.stderr, command
-    ifile = subprocess.Popen(command, shell=True,
+    ifile = subprocess.Popen([cmdname, ifname, forcefield, str(converge)],
                              stdout=subprocess.PIPE).stdout
 
     result = None
@@ -193,14 +215,19 @@ def vibratemol(mol, forcefield):
     molfile = _writemoltotempfile(mol)
     molfname = molfile.name
 
-    cmdname = 'vibrate'
-    progpath = os.path.join(TINKERDIR, cmdname)
-    if os.path.exists('/usr/bin/vibrate.tinker'):
-        progpath = '/usr/bin/vibrate.tinker'
+    cmdnames = ('vibrate.tinker', 'vibrate')
+    cmdname = None
+    for x in cmdnames:
+        if _which(x):
+            cmdname = x
+            break
+
+    if cmdname is None:
+        raise Error()
+    
     forcefield = getparam(forcefield)
 
-    command = '%s %s %s<<EOF\n\nEOF' % (progpath, molfname, forcefield)
-    ifile = subprocess.Popen(command, shell=True,
+    ifile = subprocess.Popen([cmdname, molfname, forcefield],
                              stdout=subprocess.PIPE).stdout
     lines = ifile.readlines()
 
@@ -212,7 +239,8 @@ def vibratemol(mol, forcefield):
     counter = itertools.count(1)
     result = []
     for line in lines:
-        if not line.strip(): break
+        if not line.strip():
+            break
         line = line[:-1]
         assert len(line) % 15 == 0, line
         # format (5(i5,f9.3,a1))
@@ -233,3 +261,27 @@ def isminimal(mol, forcefield):
     if freqs[6] <= 0:
         return False
     return abs(freqs[0]) < abs(freqs[6])
+
+def analyze(mol, forcefield):
+    '''return the energy of mol'''
+
+    prepare = _Prepare(curdir)
+    
+    molfile = _writemoltotempfile(mol)
+    molfname = molfile.name
+
+    cmdname = 'analyze'
+    forcefield = getparam(forcefield)
+    ifile = subprocess.Popen([cmdname, molfname, forcefield, 'E'],
+                             stdout=subprocess.PIPE).stdout
+    lines = ifile.readlines()
+    for line in lines:
+        if 'Total' in line:
+            try:
+                return float(line.split()[4])
+            except StandardError, e:
+                if isinstance(e, (IndexError, ValueError)):
+                    raise Error(''.join(lines))
+                else:
+                    raise
+    raise Error(''.join(lines))
