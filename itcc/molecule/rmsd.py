@@ -47,25 +47,25 @@ def main():
             "    %prog -h"
     parser = OptionParser(usage=usage)
     parser.set_default("no_h", False)
-    parser.add_option("--no-h", dest="no_h",
+    parser.add_option('-H', "--no-h", dest="no_h",
                       action="store_true",
                       help="does not include hydrogen")
-    parser.add_option("--atoms", dest="atoms",
+    parser.add_option('-a', "--atoms", dest="atoms",
                       help="only compare selected atoms, 1-based",
                       metavar="STRING")
-    parser.add_option("--atomsfile", dest="atomsfile",
+    parser.add_option('-A', "--atomsfile", dest="atomsfile",
                       help="read the selected atoms from file",
                       metavar="FILE")
-    parser.add_option("--atoms1", dest="atoms1",
+    parser.add_option('-b', "--atoms1", dest="atoms1",
                       help="the selected atoms for molecule 1",
                       metavar="STRING")
-    parser.add_option("--atoms1file", dest="atoms1file",
+    parser.add_option('-B', "--atoms1file", dest="atoms1file",
                       help="read the selected atoms from file",
                       metavar="FILE")
-    parser.add_option("--atoms2", dest="atoms2",
+    parser.add_option('-c', "--atoms2", dest="atoms2",
                       help="the selected atoms for molecule 2",
                       metavar="STRING")
-    parser.add_option("--atoms2file", dest="atoms2file",
+    parser.add_option('-C', "--atoms2file", dest="atoms2file",
                       help="read the selected atoms from file",
                       metavar="FILE")
     (options, args) = parser.parse_args()

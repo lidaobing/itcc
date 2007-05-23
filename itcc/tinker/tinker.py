@@ -103,6 +103,30 @@ def _writemoltotempfile(mol):
     return ofile
 
 
+def analyze(mol, forcefield):
+    '''return the energy of mol'''
+
+    prepare = _Prepare(curdir)
+    
+    molfile = _writemoltotempfile(mol)
+    molfname = molfile.name
+
+    cmdname = 'analyze'
+    forcefield = getparam(forcefield)
+    ifile = subprocess.Popen([cmdname, molfname, forcefield, 'E'],
+                             stdout=subprocess.PIPE).stdout
+    lines = ifile.readlines()
+    for line in lines:
+        if 'Total' in line:
+            try:
+                return float(line.split()[4])
+            except StandardError, e:
+                if isinstance(e, (IndexError, ValueError)):
+                    raise Error(''.join(lines))
+                else:
+                    raise
+    raise Error(''.join(lines))
+
 def optimizemol(*args, **kwargs):
     return optimize_minimize_mol('optimize', *args, **kwargs)
 
@@ -262,26 +286,3 @@ def isminimal(mol, forcefield):
         return False
     return abs(freqs[0]) < abs(freqs[6])
 
-def analyze(mol, forcefield):
-    '''return the energy of mol'''
-
-    prepare = _Prepare(curdir)
-    
-    molfile = _writemoltotempfile(mol)
-    molfname = molfile.name
-
-    cmdname = 'analyze'
-    forcefield = getparam(forcefield)
-    ifile = subprocess.Popen([cmdname, molfname, forcefield, 'E'],
-                             stdout=subprocess.PIPE).stdout
-    lines = ifile.readlines()
-    for line in lines:
-        if 'Total' in line:
-            try:
-                return float(line.split()[4])
-            except StandardError, e:
-                if isinstance(e, (IndexError, ValueError)):
-                    raise Error(''.join(lines))
-                else:
-                    raise
-    raise Error(''.join(lines))
