@@ -453,24 +453,22 @@ class LoopClosure(object):
         else:
             newidxs = [ene[1] for ene in self.enes if ene[0] <= self.keepbound]
 
-        print
-        print 'Oldidx Newidx Ene(sort by Oldidx)'
+        self.log('\nOldidx Newidx Ene(sort by Oldidx)\n')
         for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
             ene = self._tasks[oldidx][1]
             try:
                 newidx = newidxs.index(oldidx)
             except ValueError:
-                print '%6i %6s %.4f' % (oldidx+1, '', ene)
+                self.log('%6i %6s %.4f\n' % (oldidx+1, '', ene))
             else:
                 newfname = self.newmolnametmp % (newidx + 1)
                 file(newfname, 'w').write(oldmol)
-                print '%6i %6i %.4f' % (oldidx+1, newidx+1, ene)
+                self.log('%6i %6i %.4f\n' % (oldidx+1, newidx+1, ene))
 
-        print
-        print 'Oldidx Newidx Ene(sort by Newidx)'
+        self.log('\nOldidx Newidx Ene(sort by Newidx)\n')
         for newidx, oldidx in enumerate(newidxs):
-            print '%6i %6i %.4f' % (oldidx+1, newidx+1, self._tasks[oldidx][1])
-        print
+            self.log('%6i %6i %.4f\n' % (oldidx+1, newidx+1, self._tasks[oldidx][1]))
+        self.log('\n')
 
     def log(self, str, lvl=None):
         if lvl is None or lvl <= self.log_level:
@@ -523,9 +521,3 @@ def r6s2str(r6s):
     res += ofile.read()
     res += '\n'
     return res
-
-def printcombinations(combinations):
-    print "These R6 blocks have %i kinds of combination:" % len(combinations)
-    for i, combination in enumerate(combinations):
-        print "Combination-%i: %s" % (i, combination)
-    print
