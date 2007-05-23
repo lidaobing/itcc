@@ -415,7 +415,7 @@ class LoopClosure(object):
             self.log('Time used by   this   program: %.1fs(%.1f+%.1f)\n'
                      % (res_s_t, res_s[0], res_s[1]))
             self.log('Time used by external program: %.1fs(%.1f+%.1f)\n'
-                     % (res_c_t, res_c[0], res_c[1])
+                     % (res_c_t, res_c[0], res_c[1]))
 
     def writemol(self, mol, ene):
         write.writexyz(mol, self.tmp_mtxyz_file, '%.4f' % ene)
