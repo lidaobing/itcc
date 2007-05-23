@@ -1,5 +1,4 @@
 include version.in
 include itcc/tools/vector.hpp
-include bash_completion/itcc
 include Makefile
 include AUTHORS COPYING THANKS TODO
