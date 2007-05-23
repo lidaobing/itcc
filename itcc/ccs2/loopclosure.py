@@ -12,6 +12,7 @@ import random
 import tempfile
 import shutil
 import cPickle
+from cStringIO import StringIO
 try:
     import threading
 except ImportError:
@@ -246,7 +247,7 @@ class LoopClosure(object):
         self.r6s = {}
         for idx, x in enumerate(r6s):
             self.r6s[x] = idx
-        printr6s(r6s)
+        self.log(r6s2str(r6s))
 
         mol, ene = tinker.minimizemol(mol, self.forcefield, self.minconverge)
         self._step_count += 1
@@ -515,11 +516,13 @@ def getshakedata(mol, loop):
         result[atomidx] = (refidxs, sidechain_)
     return result
 
-def printr6s(r6s):
-    print "This loop has %i R6 blocks:" % len(r6s)
-    pprint.pprint(r6s)
-    print
-    sys.stdout.flush()
+def r6s2str(r6s):
+    res = "This loop has %i R6 blocks:\n" % len(r6s)
+    ofile = StringIO()
+    pprint.pprint(r6s, ofile)
+    res += ofile.read()
+    res += '\n'
+    return res
 
 def printcombinations(combinations):
     print "These R6 blocks have %i kinds of combination:" % len(combinations)
