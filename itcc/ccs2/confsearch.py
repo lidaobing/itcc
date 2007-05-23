@@ -131,9 +131,6 @@ def main():
         if len(args) != 0:
             parser.error("incorrect number of arguments")
         testcyc(None, options)
-    import gc
-    print 'gc.garbage'
-    print gc.garbage
 
 if __name__ == '__main__':
     main()
