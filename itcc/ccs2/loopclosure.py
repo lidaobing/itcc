@@ -234,12 +234,12 @@ class LoopClosure(object):
         typedmol = getmoltype(self.moltypekey)(mol)
         self.loopatoms = self.getloopatoms(mol)
         if self.loopatoms is None:
-            print "this moleclue does not contain loop. exit."
+            self.log("this moleclue does not contain loop. exit.\n")
             return False
         if len(self.loopatoms) < 6:
-            print "your ring is %s-member, " \
-                "we can't deal with ring less than 6-member." \
-                % len(self.loopatoms)
+            self.log("your ring is %s-member, "
+                "we can't deal with ring less than 6-member.\n"
+                % len(self.loopatoms))
             return False
         self.shakedata = getshakedata(mol, self.loopatoms)
         r6s = tuple(typedmol.getr6s(self.loopatoms))
@@ -270,21 +270,20 @@ class LoopClosure(object):
         mol = self.seedmol.copy()
         mol.coords[:] = self._tasks[taskidx][0]
         self.mutex.release()
-        print
+        self.log('\n')
         head = ' CCS2 Local Search'
-        print '%-31s Minimum %6i %21.4f' \
-              % (head, taskidx + 1, ene)
-        print
+        self.log('%-31s Minimum %6i %21.4f\n\n'
+              % (head, taskidx + 1, ene))
 
         for newmol, newene in self.findneighbor(mol, r6):
             if not self.is_valid(newmol, newene):
-                print
+                self.log('\n')
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
-                print '(%i)' % (idx + 1)
+                self.log('(%i)\n' % (idx + 1))
             else:
-                print
+                self.log('\n')
             if idx == -1:
                 self.addtask(newmol, newene)
             if newene < self.lowestene:
@@ -344,8 +343,8 @@ class LoopClosure(object):
         self._tasks.append((mol.coords, ene))
         taskidx = len(self._tasks) - 1
         bisect.insort(self.enes, (ene, taskidx))
-        print '    Potential Surface Map       Minimum ' \
-              '%6i %21.4f' % (taskidx+1, ene)
+        self.log('    Potential Surface Map       Minimum '
+              '%6i %21.4f\n' % (taskidx+1, ene))
         self.writemol(mol, ene)
 
         r6s = self.r6s.keys()
@@ -375,32 +374,32 @@ class LoopClosure(object):
 
     def printparams(self):
         self.start_time = time.time()
-        print 'Starttime: %s' % time.ctime(self.start_time)
-        print 'Program Version: itcc %s' %  itcc.__version__
-        print 'Forcefield: %s' % tinker.getparam(self.forcefield)
-        print 'KeepRange: %s' % self.keeprange
-        print 'SearchRange: %s' % self.searchrange
-        print 'MaxSteps: %s' % self.maxsteps
-        print 'MolType: %s' % self.moltypekey
+        self.log('Starttime: %s\n' % time.ctime(self.start_time)
+                 + 'Program Version: itcc %s\n' %  itcc.__version__
+                 + 'Forcefield: %s\n' % tinker.getparam(self.forcefield)
+                 + 'KeepRange: %s\n' % self.keeprange
+                 + 'SearchRange: %s\n' % self.searchrange
+                 + 'MaxSteps: %s\n' % self.maxsteps
+                 + 'MolType: %s\n' % self.moltypekey)
         if self.loop is None:
-            print 'Loop: auto'
+            self.log('Loop: auto\n')
         else:
-            print 'Loop: %s' % ' '.join(str(x+1) for x in self.loop)
+            self.log('Loop: %s\n' % ' '.join(str(x+1) for x in self.loop))
 
         if not self.check_chiral:
-            print 'Chiral: none'
+            self.log('Chiral: none\n')
         else:
-            print 'Chiral: %s' % ' '.join(str(x+1) for x in self.chiral_idxs)
-        print
+            self.log('Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs))
+        self.log('\n')
 
     def printend(self):
         import datetime
 
-        print 'Starttime: %s' % time.ctime(self.start_time)
+        self.log('Starttime: %s\n' % time.ctime(self.start_time))
         end_time = time.time()
-        print 'Endtime: %s' % time.asctime()
-        print 'Total time: %s' \
-            % datetime.timedelta(0, end_time - self.start_time)
+        self.log('Endtime: %s\n' % time.asctime())
+        self.log('Total time: %s\n'
+                 % datetime.timedelta(0, end_time - self.start_time))
 
         try:
             import resource
@@ -412,11 +411,11 @@ class LoopClosure(object):
             res_c_t = res_c[0] + res_c[1]
             res_s_t = res_s[0] + res_s[1]
             res_t = res_c_t + res_s_t
-            print 'Total CPU time: %s' % datetime.timedelta(0, res_t)
-            print 'Time used by   this   program: %.1fs(%.1f+%.1f)' \
-                % (res_s_t, res_s[0], res_s[1])
-            print 'Time used by external program: %.1fs(%.1f+%.1f)' \
-                % (res_c_t, res_c[0], res_c[1])
+            self.log('Total CPU time: %s\n' % datetime.timedelta(0, res_t))
+            self.log('Time used by   this   program: %.1fs(%.1f+%.1f)\n'
+                     % (res_s_t, res_s[0], res_s[1]))
+            self.log('Time used by external program: %.1fs(%.1f+%.1f)\n'
+                     % (res_c_t, res_c[0], res_c[1])
 
     def writemol(self, mol, ene):
         write.writexyz(mol, self.tmp_mtxyz_file, '%.4f' % ene)
@@ -472,8 +471,8 @@ class LoopClosure(object):
             print '%6i %6i %.4f' % (oldidx+1, newidx+1, self._tasks[oldidx][1])
         print
 
-    def log(self, str, lvl):
-        if lvl <= self.log_level:
+    def log(self, str, lvl=None):
+        if lvl is None or lvl <= self.log_level:
             sys.stdout.write(str)
 
     def is_valid(self, mol, ene):
