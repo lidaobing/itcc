@@ -18,8 +18,7 @@ class Atom(object):
                 symbol = no
             no = atomord(no)
         else:
-            raise TypeError
-
+            raise ValueError
 
         key = (no, type_, symbol)
         if key in _knownAtoms:
