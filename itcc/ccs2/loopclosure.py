@@ -148,7 +148,7 @@ class LoopClosure(object):
             threads[:] = [x for x in threads if x.isAlive()]
 
         some_threads_finished_condition = \
-            threading.Condition(self.mutex, verbose=True)
+            threading.Condition(self.mutex)
 
         class Task:
             def __init__(self, parent, taskidx, r6):
@@ -185,7 +185,7 @@ class LoopClosure(object):
                 if self.searchbound is not None and ene > self.searchbound:
                     continue
                 task = Task(self, taskidx, r6)
-                thread = threading.Thread(target = task, verbose = True)
+                thread = threading.Thread(target = task)
                 threads.append(thread)
                 thread.start()
                 need_wait = True
@@ -276,15 +276,15 @@ class LoopClosure(object):
         self.log('%-31s Minimum %6i %21.4f\n\n'
               % (head, taskidx + 1, ene))
 
-        for newmol, newene in self.findneighbor(mol, r6):
+        for newmol, newene, logstr in self.findneighbor(mol, r6):
             if not self.is_valid(newmol, newene):
-                self.log('\n')
+                self.log(logstr + '\n')
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
-                self.log('(%i)\n' % (idx + 1))
+                self.log(logstr + '(%i)\n' % (idx + 1))
             else:
-                self.log('\n')
+                self.log(logstr + '\n')
             if idx == -1:
                 self.addtask(newmol, newene)
             if newene < self.lowestene:
@@ -436,11 +436,10 @@ class LoopClosure(object):
                                    prefix=threading.currentThread().getName())
             self.mutex.acquire() # r/w _step_count
             self._step_count += 1
-            self.log('  Step %5i   Comb %02i-%02i %42.4f '
-                       % (self._step_count, self.r6s[r6], molidx, rene), 
-                     1)
             self.mutex.release()
-            yield rmol, rene
+            logstr = '  Step %5i   Comb %02i-%02i %42.4f ' \
+                % (self._step_count, self.r6s[r6], molidx, rene)
+            yield rmol, rene, logstr
             if self.maxsteps is not None and self._step_count >= self.maxsteps:
                 return
 
@@ -473,6 +472,7 @@ class LoopClosure(object):
     def log(self, str, lvl=None):
         if lvl is None or lvl <= self.log_level:
             sys.stdout.write(str)
+            sys.stdout.flush()
 
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
