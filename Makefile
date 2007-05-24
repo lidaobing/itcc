@@ -7,7 +7,7 @@ debug: clean
 	$(PYTHON) setup.py build --debug
 	$(PYTHON) setup.py install
 install:
-	$(PYTHON) setup.py install --prefix=/usr/local --single-version-externally-managed --root=/
+	$(PYTHON) setup.py install --prefix=/usr/local
 dist: sdist
 sdist:
 	$(PYTHON) setup.py sdist -f
