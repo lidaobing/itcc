@@ -251,8 +251,9 @@ def vibratemol(mol, forcefield):
     
     forcefield = getparam(forcefield)
 
-    ifile = subprocess.Popen([cmdname, molfname, forcefield],
+    ifile = subprocess.Popen([cmdname, molfname, forcefield, '0'],
                              stdout=subprocess.PIPE).stdout
+
     lines = ifile.readlines()
 
     for idx, line in enumerate(lines):
