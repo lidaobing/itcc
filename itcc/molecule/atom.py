@@ -1,5 +1,7 @@
 # $Id$
 
+import itcc.bodr
+
 __all__ = ["Atom", 'atomsymbol', 'atommass', 'atomchr', 'atomord']
 __revision__ = '$Rev$'
 
@@ -94,14 +96,7 @@ atomsymbol = ['',
               'Md', 'No', 'Lr', 'Unq','Unp',  #101-105
               'Unh','Uns','Uno','Une']        #106-109
 
-atommass = [0,
-            1.0079, 4.0026,  6.941,   9.01218,   10.81,  # 1- 5
-            12.011, 14.0067, 15.9994, 18.998403, 20.179, # 6-10
-            0,0,0,0,0,                                   # 11-15
-            32.066,0,0,0,0,                                   # 16-20
-            0,0,0,0,0,                                   # 21-25
-            0,0,0,0,65.38,                                   # 26-30
-            ] # 6-10
+atommass = itcc.bodr.mass
 
 def atomchr(i):
     if not i:
