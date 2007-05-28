@@ -8,8 +8,7 @@ these packages first:
 libboost-python-dev
 python
 python-dev
-python-numeric
-python-numeric-ext
+python-numpy
 lapack3-dev
 tinker(optional)
 python-psyco(optional)
@@ -18,11 +17,11 @@ python-psyco(optional)
 Help
 ====
 
-itcc parmeval -- evaluate a parameter
+itcc-parmeval -- evaluate a parameter
 
 Usage:
 
-itcc parmeval scandata.dat param > result.csv
+itcc-parmeval scandata.dat param > result.csv
 
 a scandata.dat example is
 
