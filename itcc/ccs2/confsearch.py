@@ -42,6 +42,12 @@ def testcyc(ifname, options):
         
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
+        
+    if hasattr(options, 'check_energy_before_minimization'):
+        loopc.check_energy_before_minimization = options.check_energy_before_minimization
+        
+    if hasattr(options, 'minimal_invalid_energy_before_minimization'):
+        loopc.minimal_invalid_energy_before_minimization = options.minimal_invalid_energy_before_minimization
 
     if ifname == '-':
         loopc(sys.stdin)
@@ -81,7 +87,7 @@ def main():
                       'there some illegal structure with extremely '
                       'low energy (e.g. -13960945.7658 kcal/mol), so '
                       'we treat all structure with energy lower than '
-                      'LEGAL_MIN_ENE is illegal, default is %f kcal/mol'
+                      'LEGAL_MIN_ENE is illegal, default is %.1f kcal/mol'
                       % loopclosure.LoopClosure.legal_min_ene)
     parser.add_option('--loop', dest='loop',
                       default=None, help='specify loop instead of auto-detect, begin with 1')
@@ -122,7 +128,26 @@ def main():
                                'hct', 'ace', 'gbsa'),
                       metavar='NAME',
                       help='set solvate model')
+    parser.add_option('-c', '--check-energy-before-minimization',
+                      dest='check_energy_before_minimization',
+                      action='store_true',
+                      help='check energy before minimization' \
+                          + ('', ', this is the default')[loopclosure.LoopClosure.check_energy_before_minimization]
+                                     )
+    parser.add_option('-C', '--no-check-energy-before-minimization',
+                      dest='check_energy_before_minimization',
+                      action='store_false',
+                      help="don't check energy before minimization"
+                          + (', this is the default', '')[loopclosure.LoopClosure.check_energy_before_minimization])
+    parser.add_option('-e', '--minimal-invalid-energy-before-minimization',
+                      dest='minimal_invalid_energy_before_minimization',
+                      type='float',
+                      metavar='ENE',
+                      help="minimal invalid energy before minimization, unit is kcal/mol, default is %.1f"
+                           % loopclosure.LoopClosure.minimal_invalid_energy_before_minimization)
+                      
     (options, args) = parser.parse_args()
+    print options
     if options.resume is None:
         if len(args) != 1:
             parser.error("incorrect number of arguments")

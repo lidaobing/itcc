@@ -35,6 +35,9 @@ class LoopClosure(object):
     # treat all structure with energy lower than self.legal_min_ene is
     # illegal.
     legal_min_ene = -100000
+    
+    check_energy_before_minimization = True
+    minimal_invalid_energy_before_minimization = 100000
 
     S_NONE = 0
     S_INITED = 1
@@ -429,11 +432,9 @@ class LoopClosure(object):
             newmol = mol.copy()
             for idx, coord in molresult.items():
                 newmol.coords[idx] = coord
-            rmol, rene = \
-                tinker.minimizemol(newmol,
-                                   self.forcefield,
-                                   self.minconverge,
-                                   prefix=threading.currentThread().getName())
+            rmol, rene = self._minimizemol(newmol)
+            if rmol is None:
+                continue
             self.mutex.acquire() # r/w _step_count
             self._step_count += 1
             self.mutex.release()
@@ -484,6 +485,17 @@ class LoopClosure(object):
         if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
             return False
         return True
+    
+    # FIXME: we only need write mol once
+    def _minimizemol(self, newmol):
+        if self.check_energy_before_minimization:
+            ene = tinker.analyze(newmol, self.forcefield)
+            if ene >= self.minimal_invalid_energy_before_minimization:
+                return None, None
+        return tinker.minimizemol(newmol,
+                                  self.forcefield,
+                                  self.minconverge,
+                                  prefix=threading.currentThread().getName())
 
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
