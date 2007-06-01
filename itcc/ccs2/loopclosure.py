@@ -252,7 +252,7 @@ class LoopClosure(object):
             self.r6s[x] = idx
         self.log(r6s2str(r6s))
 
-        mol, ene = tinker._minimizemol(mol)
+        mol, ene = self._minimizemol(mol)
 	if mol is None:
             self.log("weird input molecule\n")
             return False
@@ -493,7 +493,6 @@ class LoopClosure(object):
     def _minimizemol(self, newmol):
         if self.check_energy_before_minimization:
             ene = tinker.analyze(newmol, self.forcefield)
-	    self.log('%s\n' % ene)
             if ene >= self.minimal_invalid_energy_before_minimization:
                 return None, None
         return tinker.minimizemol(newmol,

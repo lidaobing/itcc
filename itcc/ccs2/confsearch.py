@@ -43,11 +43,12 @@ def testcyc(ifname, options):
     if options.legal_min_ene is not None:
         loopc.legal_min_ene = options.legal_min_ene
         
-    if hasattr(options, 'check_energy_before_minimization'):
+    if options.check_energy_before_minimization is not None:
         loopc.check_energy_before_minimization = options.check_energy_before_minimization
         
-    if hasattr(options, 'minimal_invalid_energy_before_minimization'):
-        loopc.minimal_invalid_energy_before_minimization = options.minimal_invalid_energy_before_minimization
+    if options.minimal_invalid_energy_before_minimization is not None:
+        loopc.minimal_invalid_energy_before_minimization \
+		= options.minimal_invalid_energy_before_minimization
 
     if ifname == '-':
         loopc(sys.stdin)
@@ -147,7 +148,6 @@ def main():
                            % loopclosure.LoopClosure.minimal_invalid_energy_before_minimization)
                       
     (options, args) = parser.parse_args()
-    print options
     if options.resume is None:
         if len(args) != 1:
             parser.error("incorrect number of arguments")
