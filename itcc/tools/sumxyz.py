@@ -46,21 +46,8 @@ def sumxyz_torsion(list_, filelist):
         else:
             ifile = file(x)
         mol = read.readxyz(ifile)
-        result.append(math.degrees(mol.calctor(list_[0], list_[1],
-            list_[2], list_[3])))
-
-    print 'n = %d' % len(result)
-
-    i = 0
-    while i < len(result):
-        print '%02i-%02i' % (i+1, i+5),
-        print ' '.join(['%7.2f' % x for x in result[i:i+5]])
-        i += 5
-
-    dataf = tools.datafreq(result, -180, 180, 36)
-    print '\n'.join(['%4d - %4d: %d' % (-180+i*10, -170+i*10, dataf[i])
-                     for i in range(36)])
-
+        print ifile.name, math.degrees(mol.calctor(list_[0], list_[1],
+            list_[2], list_[3]))
 
 def main():
     import os.path

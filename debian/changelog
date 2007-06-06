@@ -20,6 +20,7 @@ itcc (0.8.2~dev) unstable; urgency=low
     - support custom header
   * itcc sumxyz
     - support read from stdin
+    - change output format
   * add itcc-stats
   * add itcc-mirrormol
   * add itcc-calcangle
@@ -31,9 +32,8 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-molcenter
   * depends on python-setuptools
   * itcc/molecule/molecule: the bond contain H has a different manbondlen
-  * 
 
- -- LI Daobing <lidaobing@gmail.com>  Tue, 29 May 2007 22:42:57 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 06 Jun 2007 20:34:10 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
