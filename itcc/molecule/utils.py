@@ -1,4 +1,5 @@
 import sys
+import os.path
 import math
 from itcc.molecule import read, write
 
@@ -99,5 +100,19 @@ def detailcmp():
     print 'torsions:'
     for x in sorted(torsions_data):
         print x
+
+def rg():
+    if len(sys.argv) < 2:
+        sys.stderr.write('Usage: %s XYZFNAME...\n' % os.path.basename(sys.argv[0]))
+        sys.exit(1)
+    from itcc.molecule import radius_of_gyration
+    for fname in sys.argv[1:]:
+        ifile = sys.stdin
+        if fname != '-':
+            ifile = file(fname)
+        mol = read.readxyz(ifile)
+        print ifile.name, radius_of_gyration(mol)
+        
+    
         
 
