@@ -21,7 +21,7 @@ def usage(ofile):
     prog = os.path.basename(sys.argv[0])
     ofile.write('Usage: %s -i|--idx IDX FILENAME...\n'
                 '       %s -I|--idx-file IDX-FILE FILENAME...\n'
-                '       %s -h|--help\n')
+                '       %s -h|--help\n' % (prog, prog, prog))
 
 def main():
     import sys
