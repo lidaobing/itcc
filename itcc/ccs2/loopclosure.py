@@ -495,7 +495,7 @@ class LoopClosure(object):
             ene = tinker.analyze(newmol, self.forcefield)
             if ene >= self.minimal_invalid_energy_before_minimization:
                 return None, None
-        return tinker.minimizemol(newmol,
+        return tinker.newton_mol(newmol,
                                   self.forcefield,
                                   self.minconverge,
                                   prefix=threading.currentThread().getName())
