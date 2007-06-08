@@ -223,6 +223,32 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
     return newmol, result
 
+def newton_file(ifname, forcefield, converge = 0.01):
+    ofname = ifname + '_2'
+    ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
+                             stdout=subprocess.PIPE).stdout
+
+    result = None
+
+    lines = ifile.readlines()
+    ifile.close()
+
+    for line in lines:
+        if line.find('Function') != -1:
+            result = float(line.split()[-1])
+            break
+
+    if result is None:
+        sys.stdout.writelines(lines)
+        raise RuntimeError, ifname
+    try:
+        newmol = read.readxyz(file(ofname))
+    except:
+        print ifname, ofname
+        raise
+    os.remove(ofname)
+
+    return newmol, result
 
 def _vibratefloat(str_):
     assert len(str_) == 10, str_
@@ -287,3 +313,52 @@ def isminimal(mol, forcefield):
         return False
     return abs(freqs[0]) < abs(freqs[6])
 
+def newton_mol(mol, forcefield,
+               converge = 0.01, prefix=None):
+    """newton_mol(mol, forcefield, converge = 0.01, prefix=None) -> (Molecule, Float)
+    optimized the mol with newton, and return the optimized energy
+    """
+    forcefield = getparam(forcefield)
+
+    if curdir:
+        if prefix is None:
+            ifname = 'tinker.xyz'
+        else:
+            ifname = prefix + '.xyz'
+        ofile = file(ifname, 'w')
+    else:
+        ofile = tempfile.NamedTemporaryFile(suffix='.xyz')
+        ifname = ofile.name
+    write.writexyz(mol, ofile)
+    ofile.flush()
+
+    ofname = ifname + '_2'
+
+    ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
+                             stdout=subprocess.PIPE).stdout
+
+    result = None
+
+    lines = ifile.readlines()
+    ifile.close()
+
+    for line in lines:
+        if line.find('Function') != -1:
+            result = float(line.split()[-1])
+            break
+
+
+    if result is None:
+        sys.stdout.writelines(lines)
+        raise RuntimeError, ifname
+    try:
+        newmol = read.readxyz(file(ofname))
+    except:
+        print ifname, ofname
+        raise
+    ofile.close()
+    os.remove(ofname)
+    if curdir:
+        os.remove(ifname)
+
+    return newmol, result
