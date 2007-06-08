@@ -3,6 +3,7 @@
 __revision__ = '$Rev$'
 
 import math
+import sys
 from itcc.molecule import mtxyz
 
 def readidx(ifile):
@@ -31,6 +32,7 @@ def mol_calc_wrap(mol, idx):
 def molstat(mol, idxs):
     result = [mol_calc_wrap(mol, idx) for idx in idxs]
     print '\t'.join([str(x) for x in result])
+    sys.stdout.flush()
 
 def mtxyzstat(mtxyzfname, idxs, print_header=False):
     if(print_header):
@@ -39,7 +41,6 @@ def mtxyzstat(mtxyzfname, idxs, print_header=False):
         molstat(mol, idxs)
 
 def main():
-    import sys
     from optparse import OptionParser
 
     usage = 'usage: %prog [-H|--header] mtxyzfname {-|idxfname}'
