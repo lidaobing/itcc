@@ -3,6 +3,7 @@
 __all__ = ['chiral_type']
 
 import sys
+from itcc.molecule import mtxyz
 
 def chiral_type(mol, idx):
     if mol.connect is None: return None
@@ -52,20 +53,19 @@ def main():
         
     idx = [int(x) - 1 for x in idx.split()]
 
-    from itcc.molecule import read
     for fname in sys.argv[3:]:
-        sys.stdout.write("%s " % fname)
-        mol = read.readxyz(file(fname))
-        for x in idx:
-            t = chiral_type(mol, x)
-            if t is True:
-                sys.stdout.write('A')
-            elif t is False:
-                sys.stdout.write('B')
-            else:
-                sys.stdout.write('C')
-        sys.stdout.write('\n')
-        sys.stdout.flush()
+        for mol in mtxyz.Mtxyz(file(fname)):
+            sys.stdout.write("%s " % fname)
+            for x in idx:
+                t = chiral_type(mol, x)
+                if t is True:
+                    sys.stdout.write('A')
+                elif t is False:
+                    sys.stdout.write('B')
+                else:
+                    sys.stdout.write('C')
+            sys.stdout.write('\n')
+            sys.stdout.flush()
 
 if __name__ == '__main__':
     main()
