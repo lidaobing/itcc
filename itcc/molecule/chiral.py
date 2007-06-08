@@ -2,6 +2,8 @@
 
 __all__ = ['chiral_type']
 
+import sys
+
 def chiral_type(mol, idx):
     if mol.connect is None: return None
     connects = [i for i in range(len(mol)) if mol.connect[idx, i]]
@@ -14,14 +16,41 @@ def chiral_type(mol, idx):
 def chiral_types(mol, idxs):
     return type(idxs)([chiral_type(mol, idx) for idx in idxs])
 
+def usage(ofile):
+    import os.path
+    prog = os.path.basename(sys.argv[0])
+    ofile.write('Usage: %s -i|--idx IDX FILENAME...\n'
+                '       %s -I|--idx-file IDX-FILE FILENAME...\n'
+                '       %s -h|--help\n')
+
 def main():
     import sys
-    if len(sys.argv) < 4 or sys.argv[1] != "--idx":
-        import os.path
-        sys.stderr.write('Usage: %s --idx INDEX FILENAME...\n' % os.path.basename(sys.argv[0]))
-        sys.exit(1)
-
-    idx = [int(x) - 1 for x in sys.argv[2].split()]
+    import getopt
+    
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 
+                                   "hi:I:",
+                                   ["help", "idx=", "idx-file="])
+    except getopt.GetoptError:
+        # print help information and exit:
+        usage(sys.stderr)
+        sys.exit(2)
+        
+    if '-h' in [x[0] for x in opts] \
+        or '--help' in [x[0] for x in opts]:
+            usage(sys.stdout)
+            sys.exit(0)
+    
+    if len(opts) != 1:
+        usage(sys.stderr)
+        sys.exit(2)
+        
+    if opts[0][0] in ('-i', '--idx'):
+        idx = opts[0][1]
+    else:
+        idx = file(opts[0][1]).read()
+        
+    idx = [int(x) - 1 for x in idx.split()]
 
     from itcc.molecule import read
     for fname in sys.argv[3:]:
