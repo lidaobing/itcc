@@ -1,0 +1,3 @@
+__version__ = '@VERSION@'
+
+from itcc import tests as test_suite

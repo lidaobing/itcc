@@ -19,13 +19,14 @@ def get_ver():
     else:
         return "%s.dev-r%s" % (version, svnversion.split(':')[-1])
 
-__version__ = None
-if os.path.exists('itcc/__init__.py'):
-    execfile('itcc/__init__.py')
+__version__ = get_ver()
 
-if __version__ != get_ver():
-    __version__ = get_ver()
-    file('itcc/__init__.py', 'w').write("__version__ = '%s'\n" % __version__)
+new_init_py = file('itcc/__init__.py.in').read()
+new_init_py = new_init_py.replace('@VERSION@', __version__)
+
+if not os.path.exists('itcc/__init__.py') \
+        or file('itcc/__init__.py').read() != new_init_py:
+            file('itcc/__init__.py', 'w').write(new_init_py)
 
 __revision__ = '$Rev$'
 
