@@ -36,8 +36,9 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc-xyzpdb: output connect information
   * itcc-chiral: support more options
   * add itcc-pyramid-check
+  * remove itcc-caflish (r640) 
 
- -- LI Daobing <lidb@false>  Wed, 13 Jun 2007 15:15:04 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Thu, 14 Jun 2007 08:28:32 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

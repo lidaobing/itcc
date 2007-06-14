@@ -63,7 +63,6 @@ setup(
             'itcc-detailcmp = itcc.molecule.utils:detailcmp',
             'itcc-rg = itcc.molecule.utils:rg',
             'itcc-pyramid-check = itcc.molecule.utils:pyramid_check',
-            'itcc-caflisch = itcc.ccs2.solvent_caflisch:main',
             'itcc-loopdetect = itcc.ccs2.detectloop:main',
             'itcc-out2ene = itcc.tools.out2ene:main',
             'itcc-out2arch = itcc.tools.out2arch:main',
