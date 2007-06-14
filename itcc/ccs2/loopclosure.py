@@ -2,7 +2,6 @@
 import sys
 import os
 import os.path
-import math
 import bisect
 import heapq
 import pprint
@@ -21,8 +20,8 @@ except ImportError:
 import itcc
 from itcc.tinker import tinker
 from itcc.molecule import read, write, mtxyz, chiral, tools as moltools
-from itcc.ccs2 import detectloop, base, peptide, catordiff, sidechain
-from itcc.ccs2 import mezeipro2
+from itcc.ccs2 import detectloop, base, peptide, sidechain
+from itcc.ccs2 import mezeipro2, tordiff
 from itcc.ccs2 import mezei as Mezei
 from itcc.ccs2 import mezeipro as Mezeipro
 
@@ -53,6 +52,11 @@ class LoopClosure(object):
         self.moltypekey = None
         self.loop = None
         self.is_chain = False
+
+        self.cmptors = None
+        self.is_head_tail = None
+        self.is_achiral = None
+        self.loopstep = None
 
         self._step_count = 0
         self.seedmol = None
@@ -97,8 +101,8 @@ class LoopClosure(object):
         del odict['mutex']
         return odict
 
-    def __setstate__(self, dict):
-        self.__dict__.update(dict)
+    def __setstate__(self, dicts):
+        self.__dict__.update(dicts)
         self.olddir = os.getcwd()
         self.newdir = tempfile.mkdtemp('itcc')
         os.chdir(self.newdir)
@@ -107,7 +111,7 @@ class LoopClosure(object):
                 os.path.join(self.olddir,
                              os.path.basename(self.tmp_mtxyz_fname))
             self.tmp_mtxyz_file = file(self.tmp_mtxyz_fname, 'ab+')
-            for i in range(len(self._tasks)):
+            for i in range(len(self._tasks)): #pylint: disable-msg=W0612
                 read.readxyz(self.tmp_mtxyz_file)
             self.tmp_mtxyz_file.truncate()
         else:
@@ -247,6 +251,7 @@ class LoopClosure(object):
                 "we can't deal with ring less than 6-member.\n"
                 % len(self.loopatoms))
             return False
+        self._init_cmptors()
         self.shakedata = getshakedata(mol, self.loopatoms)
         r6s = tuple(typedmol.getr6s(self.loopatoms, self.is_chain))
         self.r6s = {}
@@ -266,6 +271,33 @@ class LoopClosure(object):
 
     def _init_chiral(self, mol):
         self._chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
+        
+    def _init_cmptors(self):
+        if self.is_head_tail is None:
+            if self.moltypekey == 'peptide':
+                self.is_head_tail = False
+            else:
+                self.is_head_tail = True
+            
+        if self.is_achiral is None:
+            if self.moltypekey == 'peptide':
+                self.is_achiral = False
+            else:
+                self.is_achiral = True
+                
+        if self.loopstep is None:
+            if self.moltypekey == 'peptide' or self.is_chain:
+                self.loopstep = 0
+            else:
+                self.loopstep = 1
+
+        if self.cmptors is None:
+            if self.is_chain:
+                self.cmptors = \
+                    [self.loopatoms[i:i+4] for i in range(len(self.loopatoms)-3)]
+            else:
+                self.cmptors = \
+                    [(self.loopatoms*2)[i:i+4] for i in range(len(self.loopatoms))]
 
     def _cleanup(self):
         os.chdir(self.olddir)
@@ -325,8 +357,7 @@ class LoopClosure(object):
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords[:] = coords2
-                if catordiff.catordiff(mol, mol2, self.loop) \
-                        <= math.radians(self.torerror):
+                if self._check_tor(mol, mol2):
                     res = taskidx
 
         if res is None:                
@@ -338,8 +369,7 @@ class LoopClosure(object):
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords[:] = coords2
-                if catordiff.catordiff(mol, mol2, self.loop) \
-                        <= math.radians(self.torerror):
+                if self._check_tor(mol, mol2):
                     res = taskidx
 
         if res is None:
@@ -510,6 +540,16 @@ class LoopClosure(object):
                                   self.forcefield,
                                   self.minconverge,
                                   prefix=threading.currentThread().getName())
+    
+    # TODO: provide a fast algorithm if self.is_head_tail is false 
+    # and self.is_achiral is false and self.loopstep is 0
+    def _check_tor(self, mol1, mol2):
+        tors1 = [mol1.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
+        tors2 = [mol2.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
+        return tordiff.torsdiff(tors1, tors2, 
+                                self.is_head_tail, 
+                                self.is_achiral, 
+                                self.loopstep) < self.torerror
 
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)

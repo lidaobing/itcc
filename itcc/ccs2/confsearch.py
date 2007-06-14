@@ -7,8 +7,8 @@ from itcc.ccs2 import loopclosure
 try:
     import psyco
     psyco.full()
-except ImportError:
-    pass #pylint: disable-msg=W0704
+except ImportError: #pylint: disable-msg=W0704
+    pass 
 
 __revision__ = '$Rev$'
 
@@ -28,8 +28,15 @@ def testcyc(ifname, options):
     loopc.dump_steps = options.dump_interaval
     loopc.np = options.np
     loopc.solvate = options.solvate
+    
     if options.chain:
         loopc.is_chain = True
+        
+    if options.cmptorsfile:
+        cmptors = [[int(x) - 1 for x in line.split()]
+                   for line in file(options.cmptorsfile).readlines
+                   if line.strip() and line.strip()[0] != '#']
+        loopc.comtors = cmptors
 
     if options.loop is None and options.loopfile is not None:
         options.loop = file(options.loopfile).read()
@@ -109,6 +116,7 @@ def main():
             'we treat all structure with energy lower than ' \
             'LEGAL_MIN_ENE is illegal, default is %.1f kcal/mol' \
             % loopclosure.LoopClosure.legal_min_ene)
+
     parser.add_option(
         '--loop',
         dest='loop',
@@ -124,6 +132,15 @@ def main():
         dest='chain',
         action='store_true',
         help="it is a CHAIN, not a loop")
+    parser.add_option(
+        '--cmptors',
+        dest='cmptorsfile',
+        metavar='FILE',
+        help='a file contains all torsion angle used to identify a molecule, '
+             'each line in this file have 4 columns, echo column is the '
+             'atom\'s index, 1-based, by default, these tors are generated '
+             'from the loop information and chain information')
+    
     parser.add_option(
         '--chiral-index',
         dest='chiral_index',
