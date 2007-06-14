@@ -1,16 +1,11 @@
                                                        -*- outline -*-
 
-* itcc confsearch consume too many memory
-
-
 * CCS2
 
 ** implement the extact R6 algorithm
 
 ** autodetect the logic symmetry of molecule
 and a general method to deal with symmetry relation functions.
-
-** support all-kinds of peptide.
 
 ** use a faster algorithm of CCS2
 ref: JCC, 18(2), 277-289, 1997
@@ -21,9 +16,6 @@ ref: JCC, 18(2), 277-289, 1997
 ** clean Molecule class
 keep Molecule class small and clean, remove other methods to
 src/Molecule/tools.py.
-
-** full-implement RMSD
-now rmsd.py doesn't consider translation and rotation
 
 ** support more file formats
 PDF
