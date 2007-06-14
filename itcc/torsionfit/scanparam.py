@@ -1,5 +1,5 @@
 # $Id$
-from itcc.Torsionfit import ga
+from itcc.torsionfit import ga
 
 __revision__ = '$Rev$'
 
@@ -63,6 +63,6 @@ def scanparam(list, stepsize, fmark):
         
 
 if __name__ == '__main__':
-    scanparam([0.064, -2.764, 2.672, 1.308, -4.157, -0.089, -1.803, -1.586], 0.001, ga.eval)
+    scanparam([0.064, -2.764, 2.672, 1.308, -4.157, -0.089, -1.803, -1.586], 0.001, ga.GA.eval)
     
 
