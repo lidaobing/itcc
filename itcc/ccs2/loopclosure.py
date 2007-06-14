@@ -52,6 +52,7 @@ class LoopClosure(object):
         self.minconverge = 0.001
         self.moltypekey = None
         self.loop = None
+        self.is_chain = False
 
         self._step_count = 0
         self.seedmol = None
@@ -79,6 +80,16 @@ class LoopClosure(object):
         self.multithread = False
         self.mutex = threading.Lock()
         self.solvate = None
+
+    def __call__(self, molfile):
+        assert self.forcefield is not None
+        if not self._prepare(molfile):
+            return
+
+        if self.np > 1:
+            self._run_multi_thread()
+        else:
+            self._run_single_thread()
 
     def __getstate__(self):
         odict = self.__dict__.copy()
@@ -115,15 +126,6 @@ class LoopClosure(object):
         return self.lowestene + self.searchrange
     searchbound = property(getsearchbound)
 
-    def __call__(self, molfile):
-        assert self.forcefield is not None
-        if not self._prepare(molfile):
-            return
-
-        if self.np > 1:
-            self._run_multi_thread()
-        else:
-            self._run_single_thread()
 
     def _run_single_thread(self):
         self.multithread = False
@@ -246,14 +248,14 @@ class LoopClosure(object):
                 % len(self.loopatoms))
             return False
         self.shakedata = getshakedata(mol, self.loopatoms)
-        r6s = tuple(typedmol.getr6s(self.loopatoms))
+        r6s = tuple(typedmol.getr6s(self.loopatoms, self.is_chain))
         self.r6s = {}
         for idx, x in enumerate(r6s):
             self.r6s[x] = idx
         self.log(r6s2str(r6s))
 
         mol, ene = self._minimizemol(mol)
-	if mol is None:
+        if mol is None:
             self.log("weird input molecule\n")
             return False
         self._step_count += 1
@@ -369,15 +371,24 @@ class LoopClosure(object):
 
     def getloopatoms(self, mol):
         if self.loop is not None:
-            for i in range(len(self.loop)):
-                assert mol.is_connect(self.loop[i], self.loop[i-1])
-            return self.loop
+            assert self._check_loop_atoms(mol, self.loop)
 
         looptype, loops = detectloop.loopdetect(mol)
         if looptype == detectloop.SIMPLELOOPS \
            and len(loops) == 1:
             self.loop = loops[0]
         return self.loop
+
+    def _check_loop_atoms(self, mol, loop):
+        if self.is_chain:
+            count = len(loop) - 1
+        else:
+            count = len(loop)
+        for i in range(count):
+            next = (i + 1) % len(loop)
+            if not mol.is_connect(self.loop[i], self.loop[next]):
+                return False
+        return True
 
     def printparams(self):
         self.start_time = time.time()

@@ -6,6 +6,7 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc-confsearch
     - add '-c', '-C', '-e' options, these options can provide a method to
       avoid minimize freeze when minimization some weird conformation.(r623)
+    - add '--chain' option, support conformational search on a chain. (r641)	
   * itcc rmsd
     - new "--no-h" option.
     - support read from stdin.
@@ -36,9 +37,9 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc-xyzpdb: output connect information
   * itcc-chiral: support more options
   * add itcc-pyramid-check
-  * remove itcc-caflish (r640) 
+  * remove itcc-caflish (r640)
 
- -- LI Daobing <lidaobing@gmail.com>  Thu, 14 Jun 2007 08:28:32 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Thu, 14 Jun 2007 09:45:28 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

@@ -12,7 +12,10 @@ class Peptide(base.Base):
         base.Base.__init__(self, mol)
         self.mol = mol
 
-    def getr6s(self, loopatoms):
+    def getr6s(self, loopatoms, is_chain = False):
+        if is_chain:
+            raise NotImplementedError
+        
         types = gettypes(self.mol, loopatoms)
         if ispair(types[-1], types[0]):
             types = types[1:] + types[:1]

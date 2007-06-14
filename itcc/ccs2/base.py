@@ -6,10 +6,15 @@ class Base:
     def __init__(self, _ = None):
         pass
     
-    def getr6s(self, loopatoms):
-        doubleloop = loopatoms * 2
-        for i in range(len(loopatoms)):
-            yield tuple([(x,) for x in doubleloop[i:i+7]])
+    def getr6s(self, loopatoms, is_chain = False):
+        if is_chain:
+            doubleloop = tuple(loopatoms)
+            count = len(doubleloop) - 6
+        else:
+            doubleloop = tuple(loopatoms) * 2
+            count = len(doubleloop) / 2
+        for i in range(count):
+            yield tuple((x,) for x in doubleloop[i:i+7])
     
     def getcombinations(self, r6s):
         for r6 in r6s:
