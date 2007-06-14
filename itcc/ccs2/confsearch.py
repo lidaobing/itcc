@@ -34,7 +34,7 @@ def testcyc(ifname, options):
         
     if options.cmptorsfile:
         cmptors = [[int(x) - 1 for x in line.split()]
-                   for line in file(options.cmptorsfile).readlines
+                   for line in file(options.cmptorsfile).readlines()
                    if line.strip() and line.strip()[0] != '#']
         loopc.comtors = cmptors
 
