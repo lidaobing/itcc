@@ -11,8 +11,8 @@ test_methane_in = """ 5 molden generated tinker .xyz (mm3 param.)
 5  H    -0.513360    0.889165   -0.363000      5     1
 """
 
-class TestNeighbours(unittest.TestCase):
-    def test_neighbours(self):
+class Test(unittest.TestCase):
+    def runTest(self):
         mol = read.readxyz(StringIO.StringIO(test_methane_in))
         neighbours = tools.neighbours(mol, 0)
         neighbours.sort()

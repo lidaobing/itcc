@@ -3,8 +3,8 @@ from itcc.molecule import _rmsd, read
 
 
 
-class TestRMSD(unittest.TestCase):
-    def testrmsd(self):
+class Test(unittest.TestCase):
+    def runTest(self):
         import StringIO
         mol1 = read.readxyz(StringIO.StringIO(test_in_1))
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))

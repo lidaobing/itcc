@@ -122,8 +122,8 @@ test_out = '''\
     14  H      3.167000  200.651000  200.902000     5     4
 '''
 
-class TestDmddat2mtxyz(unittest.TestCase):
-    def test(self):
+class Test(unittest.TestCase):
+    def runTest(self):
         import base64
         import StringIO
         from itcc.molecule import dmddat2mtxyz

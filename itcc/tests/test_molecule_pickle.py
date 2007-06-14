@@ -62,8 +62,8 @@ def main():
     import unittest
     unittest.main()
 
-class TestPickle(TestCase):
-    def test(self):
+class Test(TestCase):
+    def runTest(self):
         mol = read.readxyz(StringIO(test_in))
         mol = loads(dumps(mol))
         ofile = StringIO()

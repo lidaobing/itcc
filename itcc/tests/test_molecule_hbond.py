@@ -55,8 +55,8 @@ test_in = ''' 50  -125.3756
     49  HC    -1.433774   -1.966844   -0.077847     6    47
     50  HC    -1.128088   -3.085295   -1.404769     6    47
 '''
-class TestNeighbours(unittest.TestCase):
-    def test_hbond(self):
+class Test(unittest.TestCase):
+    def runTest(self):
         mol = read.readxyz(StringIO.StringIO(test_in))
         hbonds = set(hbond.detect_hbond(mol))
         self.assertEqual(hbonds, set(((33, 4, 0), (43, 14, 10), (3, 24, 20), (23, 44, 40))))
