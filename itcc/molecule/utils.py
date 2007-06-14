@@ -2,10 +2,10 @@ import sys
 import os.path
 import math
 from itcc.molecule import read, write
+from itcc.molecule.tools import neighbours, is_pyramid
 
 def mirrormol():
     if len(sys.argv) != 2:
-        import os.path 
         sys.stderr.write('Usage: %s <xyzfname>\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol = read.readxyz(file(sys.argv[1]))
@@ -14,7 +14,6 @@ def mirrormol():
 
 def printbonds():
     if len(sys.argv) != 2:
-        import os.path
         sys.stderr.write('Usage: %s <xyzfname>\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol = read.readxyz(file(sys.argv[1]))
@@ -112,6 +111,55 @@ def rg():
             ifile = file(fname)
         mol = read.readxyz(ifile)
         print ifile.name, radius_of_gyration(mol)
+
+def sub_pyramid_check(fname, atoms):
+    mol = read.readxyz(file(fname))
+    if atoms is None:
+        atoms = range(len(mol))
+    res = []
+    for atom in atoms:
+        neis = neighbours(mol, atom)
+        if len(neis) != 4:
+            continue
+        if is_pyramid(mol.coords[atom],
+                      mol.coords[neis[0]],
+                      mol.coords[neis[1]],
+                      mol.coords[neis[2]],
+                      mol.coords[neis[3]]):
+            res.append(atom)
+    return res
+
+def pyramid_check():
+    from optparse import OptionParser
+    usage = '%prog [options] <xyzfname>...'
+    parser = OptionParser(usage=usage)
+    
+    parser.add_option('-a', "--atoms", dest="atoms",
+                      help="only compare selected atoms, 1-based",
+                      metavar="STRING")
+    parser.add_option('-A', "--atomsfile", dest="atomsfile",
+                      help="read the selected atoms from file",
+                      metavar="FILE")
+    (options, args) = parser.parse_args()
+
+    if len(args) < 1:
+        parser.error("incorrect number of arguments")
+        
+    if options.atoms and options.atomsfile:
+        parser.error("options conflict")
+    
+    if options.atomsfile:
+        options.atoms = file(options.atomsfile).read()
+
+    atoms = None
+    if options.atoms:
+        atoms = [int(x)-1 for x in options.atoms.split()]
+
+    for fname in args:
+        res = sub_pyramid_check(fname, atoms)
+        if res:
+            print fname, ' '.join(str(x+1) for x in res)      
+
         
     
         

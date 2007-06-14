@@ -33,10 +33,11 @@ itcc (0.8.2~dev) unstable; urgency=low
   * depends on python-setuptools
   * itcc/molecule/molecule: the bond contain H has a different manbondlen
   * add itcc-rg
-  * itcc-xyzpdb: output connect information    
+  * itcc-xyzpdb: output connect information
   * itcc-chiral: support more options
+  * add itcc-pyramid-check
 
- -- LI Daobing <lidb@false>  Thu, 07 Jun 2007 04:00:27 +0800
+ -- LI Daobing <lidb@false>  Wed, 13 Jun 2007 15:15:04 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

@@ -1,6 +1,7 @@
 # $Id$
 import heapq
 import numpy
+from itcc.tools.tools import torsionangle
 
 __revision__ = '$Rev$'
 
@@ -90,3 +91,10 @@ def neighbours(mol, idx):
     if mol.connect is None:
         return None
     return [i for i in range(len(mol)) if mol.connect[idx][i]]
+
+def is_pyramid(O, A, B, C, D):
+    '''whether O(A, B, C, D) is a pyramid
+    '''
+    return torsionangle(O, A, B, C) * torsionangle(O, A, B, D) > 0 \
+        or torsionangle(O, A, C, B) * torsionangle(O, A, C, D) > 0
+
