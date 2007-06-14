@@ -4,7 +4,7 @@ from itcc.ccs2 import sidechain
 from itcc.tools import distance
 
 class Test(unittest.TestCase):
-    def test_movesidechain(self):
+    def runTest(self):
         fromcoords = numpy.array(((-1.0, 0.0, 0.0),
                                   (0.0, 0.0, 0.0),
                                   (0.0, -1.0, 0.0),

@@ -5,7 +5,6 @@ import os.path
 import bisect
 import heapq
 import pprint
-import itertools
 import time
 import random
 import tempfile
@@ -84,6 +83,8 @@ class LoopClosure(object):
         self.multithread = False
         self.mutex = threading.Lock()
         self.solvate = None
+        self.loopatoms = None
+        self.r6s = None
 
     def __call__(self, molfile):
         assert self.forcefield is not None
@@ -190,7 +191,7 @@ class LoopClosure(object):
 
             need_wait = False
             while len(threads) < self.np and self.taskheap:
-                r6idx, ene, taskidx, r6 = heapq.heappop(self.taskheap)
+                ene, taskidx, r6 = heapq.heappop(self.taskheap)[1:]
                 if self.searchbound is not None and ene > self.searchbound:
                     continue
                 task = Task(self, taskidx, r6)
@@ -394,7 +395,7 @@ class LoopClosure(object):
 
     def taskqueue(self):
         while self.taskheap:
-            r6idx, ene, taskidx, r6 = heapq.heappop(self.taskheap)
+            ene, taskidx, r6 = heapq.heappop(self.taskheap)[1:]
             if self.searchbound is not None and ene > self.searchbound:
                 continue
             yield taskidx, r6
@@ -514,9 +515,9 @@ class LoopClosure(object):
             self.log('%6i %6i %.4f\n' % (oldidx+1, newidx+1, self._tasks[oldidx][1]))
         self.log('\n')
 
-    def log(self, str, lvl=None):
+    def log(self, msg, lvl=None):
         if lvl is None or lvl <= self.log_level:
-            sys.stdout.write(str)
+            sys.stdout.write(msg)
             sys.stdout.flush()
 
     def is_valid(self, mol, ene):
@@ -554,13 +555,13 @@ class LoopClosure(object):
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
     if type_ == (1, 1, 1, 1, 1, 1, 1):
-        idxs = tuple(itertools.chain(*r6))
+        idxs = tuple(sum(r6, tuple()))
         return Mezei.R6(coords, idxs, dismat, shakedata)
     elif type_ == (2, 1, 2, 1, 2, 1, 2):
-        idxs = tuple(itertools.chain(*r6))[1:-1]
+        idxs = tuple(sum(r6, tuple()))[1:-1]
         return Mezeipro.R6(coords, idxs, dismat, shakedata)
     elif type_ == (1, 2, 1, 2, 1, 2, 1):
-        idxs = tuple(itertools.chain(*r6))
+        idxs = tuple(sum(r6, tuple()))
         return mezeipro2.R6(coords, idxs, dismat, shakedata)
     assert False, r6type(r6)
 

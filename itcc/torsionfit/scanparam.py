@@ -4,59 +4,59 @@ from itcc.torsionfit import ga
 __revision__ = '$Rev$'
 
 
-def foo(list):
+def foo(l):
     result = 0.0
-    for x in list:
+    for x in l:
         result += x * x
     return result
 
-def scanparam2(list, pos, stepsize, fmark, mark):
+def scanparam2(l, pos, stepsize, fmark, mark):
 
-    list[pos] += stepsize
-    nmark = fmark(list)
+    l[pos] += stepsize
+    nmark = fmark(l)
     if nmark < mark:
         while nmark < mark:
             mark = nmark
-            list[pos] += stepsize
-            nmark = fmark(list)
-        list[pos] -= stepsize
+            l[pos] += stepsize
+            nmark = fmark(l)
+        l[pos] -= stepsize
         return mark
 
-    list[pos] -= 2 * stepsize
-    nmark = fmark(list)
+    l[pos] -= 2 * stepsize
+    nmark = fmark(l)
     if nmark < mark:
         while nmark < mark:
             mark = nmark
-            list[pos] -= stepsize
-            nmark = fmark(list)
-        list[pos] += stepsize
+            l[pos] -= stepsize
+            nmark = fmark(l)
+        l[pos] += stepsize
         return mark
 
-    list[pos] += stepsize
+    l[pos] += stepsize
     return None
 
 
-def scanparam(list, stepsize, fmark):
-    n = len(list)
+def scanparam(l, stepsize, fmark):
+    n = len(l)
     goodcycle = 0
     pos = 0
 
     log = file('log', 'a+')
 
-    mark = fmark(list)
-    tmpstr = '[' + ', '.join(['%.3f' % x for x in list]) + ']'
+    mark = fmark(l)
+    tmpstr = '[' + ', '.join(['%.3f' % x for x in l]) + ']'
     log.write(' %s %.3f\n' % (tmpstr, mark))
     log.flush()
 
     
     while goodcycle < n:
-        nmark = scanparam2(list, pos, stepsize, fmark, mark)
+        nmark = scanparam2(l, pos, stepsize, fmark, mark)
         if nmark is None:
             goodcycle += 1
         else:
             mark = nmark
             goodcycle = 0
-            tmpstr = '[' + ', '.join(['%.3f' % x for x in list]) + ']'
+            tmpstr = '[' + ', '.join(['%.3f' % x for x in l]) + ']'
             log.write(' %s %.3f\n' % (tmpstr, mark))
             log.flush()
         pos = (pos + 1) % n            
