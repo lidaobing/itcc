@@ -1,5 +1,7 @@
 # $Id$
 
+# TODO: need a testcase for this module
+
 import math
 from itcc.tools import periodnumber
 
