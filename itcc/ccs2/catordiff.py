@@ -29,20 +29,24 @@ def getlooptor(mol, loop):
     return tools.calclooptor(mol, loop)
 
 def tordiff(tors1, tors2):
+    pi = math.pi
     assert len(tors1) == len(tors2)
+    result = None
     results = []
-    tors1 = [Angle(tor) for tor in tors1]
-    tors2 = [Angle(tor) for tor in tors2]
+    n = len(tors1)
     for newtors2 in varytors(tors2):
-        diff = max([abs(ang1 - ang2) for ang1, ang2 in zip(tors1, newtors2)])
-        results.append((diff, newtors2))
-    results.sort()
+        diff = max([(tors1[i] - newtors2[i] - pi) % (pi*2) + pi for i in range(n)])
+        if result is None or result > diff:
+            result = diff
+        if debug:
+            results.append((diff, newtors2))
     if debug:
+        results.sort()
         print 'Torsion of mol1: ', ['%6.1f' % math.degrees(float(tor)) for tor in tors1]
         print 'Torsion of mol2: ', ['%6.1f' % math.degrees(float(tor)) for tor in tors2]
         print 'Torsion of mol3: ', ['%6.1f' % math.degrees(float(tor)) for tor in results[0][1]]
         print ['%5.1f' % math.degrees(result[0]) for result in results]
-    return results[0][0]
+    return result
 
 def varytors(tors):
     negtors = [-tor for tor in tors]
