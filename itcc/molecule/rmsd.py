@@ -1,4 +1,8 @@
 # $Id$
+# TODO: itcc-rmsd a b c should output:
+# a b rmsd(a, b)
+# a c rmsd(a, c)
+# b c rmsd(b, c)
 
 import sys
 from itcc.molecule import _rmsd
