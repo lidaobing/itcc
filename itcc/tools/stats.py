@@ -6,7 +6,8 @@ from scipy import stats
 
 def stat_helper(ifile):
     for line in ifile:
-        yield float(line)
+        for word in line.split():
+            yield float(word)
 
 def stat(ifile):
     data = tuple(stat_helper(ifile))
