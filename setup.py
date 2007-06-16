@@ -47,7 +47,7 @@ setup(
     url='http://www.chemgen.szpku.edu.cn',
     packages = find_packages(),
     ext_modules = ext_modules,
-    test_suite = 'itcc.tests',
+    test_suite = 'tests',
     entry_points = {
         'console_scripts': [
             'itcc = itcc.itcc_main:main',
