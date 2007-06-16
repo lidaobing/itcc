@@ -58,13 +58,17 @@ double _rmsd(int n, double coor1[][3], double coor2[][3], double coor[][3], int 
 	}
 
 	r = 0;
-	for (i=0; i<3; i++)
+	for (i=0; i<3; i++) {
 		for (j=0; j<3; j++) {
 			R1[i][j] = 0;
-			for (k=0; k<n; k++)
-				if ( flag[k] ) R1[i][j] += tmp1[k][i] * tmp2[k][j];
+			for (k=0; k<n; k++) {
+				if ( flag[k] ) {
+					R1[i][j] += tmp1[k][i] * tmp2[k][j];
+				}
+			}
 			r += R1[i][j] * R1[i][j];
 		}
+	}
 
 	r = sqrt(r/3);
 
@@ -72,22 +76,28 @@ double _rmsd(int n, double coor1[][3], double coor2[][3], double coor[][3], int 
 		for (j=0; j<3; j++)
 			R1[i][j] /= r;
 
-	for (i=0; i<3; i++)
+	for (i=0; i<3; i++) {
 		for (j=0; j<3; j++) {
 			R[i][j] = 0;
-			for (k=0; k<3; k++)
+			for (k=0; k<3; k++) {
 				R[i][j] += R1[k][i] * R1[k][j];
+			}
 		}
+	}
 
-	for (i=0; i<3; i++)
-		for (j=0; j<3; j++)
+	for (i=0; i<3; i++) {
+		for (j=0; j<3; j++) {
 			RT[j+3*i] = R[j][i];
+		}
+	}
 
 	dsyev_ (&jobz, &uplo, &N, RT, &N, w, work, &lwork, &ok);
 
-	for (i=0; i<3; i++)
-		for (j=0; j<3; j++)
+	for (i=0; i<3; i++) {
+		for (j=0; j<3; j++) {
 			A[i][j] = RT[3*i+j];
+		}
+	}
 	
 	A[0][0] = A[2][1] * A[1][2] - A[2][2] * A[1][1];
 	A[0][1] = A[2][2] * A[1][0] - A[2][0] * A[1][2];
