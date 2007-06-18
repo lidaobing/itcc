@@ -71,7 +71,7 @@ class LoopClosure(object):
 
         keys = {self.config.get: ['forcefield', 'moltypekey', 'solvate',
                     'cmptorsfile', 'loopfile', 'chiral_index_file',
-                    'molfname'],
+                    'molfname', 'tinker_key_file']
                 self.config.getboolean: ['is_chain', 
                     'check_energy_before_minimization', 'is_achiral',
                     'check_minimal'
@@ -245,7 +245,10 @@ class LoopClosure(object):
         os.rename(ofname, os.path.join(self.olddir, 'checkfile'))
 
     def _get_tinker_key(self):
-        res = 'ENFORCE-CHIRALITY\n'
+        res = ''
+        if self.tinker_key_file is not None:
+            res += file(os.path.join(self.olddir, self.tinker_key_file)).read()
+        res += 'ENFORCE-CHIRALITY\n'
         if self.solvate is not None:
             res += 'SOLVATE %s\n' % self.solvate
         return res
@@ -505,6 +508,8 @@ class LoopClosure(object):
         msg += r6s2str(self.r6s)
         if self.chiral_idxs:
             msg += 'Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs)
+        msg += 'tinker.key:\n'
+        msg += _get_tinker_key()
         msg += '\n'
         self.log(msg)
 

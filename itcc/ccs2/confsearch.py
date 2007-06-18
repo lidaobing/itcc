@@ -34,49 +34,6 @@ def testcyc(ifname, options):
     loopc = loopclosure.LoopClosure(config)
     loopc.run()
 
-#    loopc = loopclosure.LoopClosure()
-#    
-#    if options.chain:
-#        loopc.is_chain = True
-#        
-#    if options.cmptorsfile:
-#        cmptors = [[int(x) - 1 for x in line.split()]
-#                   for line in file(options.cmptorsfile).readlines()
-#                   if line.strip() and line.strip()[0] != '#']
-#        loopc.comtors = cmptors
-#
-#    if options.loop is None and options.loopfile is not None:
-#        options.loop = file(options.loopfile).read()
-#    if options.loop is not None:
-#        loopc.loop = [int(x)-1 for x in options.loop.split()]
-#
-#    if options.chiral_index_file is not None and options.chiral_index is None:
-#        options.chiral_index = file(options.chiral_index_file).read()
-#    if options.chiral_index is not None:
-#        loopc.check_chiral = True
-#        loopc.chiral_idxs = [int(x)-1 for x in options.chiral_index.split()]
-#        
-#    if options.legal_min_ene is not None:
-#        loopc.legal_min_ene = options.legal_min_ene
-#        
-#    if options.check_energy_before_minimization is not None:
-#        loopc.check_energy_before_minimization \
-#            = options.check_energy_before_minimization
-#        
-#    if options.minimal_invalid_energy_before_minimization is not None:
-#        loopc.minimal_invalid_energy_before_minimization \
-#		= options.minimal_invalid_energy_before_minimization
-#    
-#    if options.achiral is not None:
-#        loopc.is_achiral = options.achiral
-#        
-#    if options.head_tail is not None:
-#        loopc.head_tail = options.head_tail
-#        
-#    if options.loop_step is not None:
-#        loopc.loopstep = options.loop_step
-#
-
 def main():
     from optparse import OptionParser
     config = loopclosure.LoopClosure.get_default_config()
