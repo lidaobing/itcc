@@ -19,63 +19,67 @@ def testcyc(ifname, options):
         loopc(ifname)
         return
 
-    loopc = loopclosure.LoopClosure()
-    loopc.forcefield = options.forcefield
-    loopc.keeprange = options.keepbound
-    loopc.searchrange = options.searchbound
-    loopc.maxsteps = options.maxsteps
-    loopc.moltypekey = options.moltype
-    loopc.dump_steps = options.dump_interaval
-    loopc.np = options.np
-    loopc.solvate = options.solvate
+    config = loopclosure.LoopClosure.get_default_config()
+
+    if options.config is not None:
+        config.read(options.config)    
+        del options.config
+
+    for key, val in options.__dict__.items():
+        if val is not None:
+            config.set('DEFAULT', key, str(val))
     
-    if options.chain:
-        loopc.is_chain = True
-        
-    if options.cmptorsfile:
-        cmptors = [[int(x) - 1 for x in line.split()]
-                   for line in file(options.cmptorsfile).readlines()
-                   if line.strip() and line.strip()[0] != '#']
-        loopc.comtors = cmptors
+    config.set('DEFAULT', 'molfname', ifname)
 
-    if options.loop is None and options.loopfile is not None:
-        options.loop = file(options.loopfile).read()
-    if options.loop is not None:
-        loopc.loop = [int(x)-1 for x in options.loop.split()]
+    loopc = loopclosure.LoopClosure(config)
+    loopc.run()
 
-    if options.chiral_index_file is not None and options.chiral_index is None:
-        options.chiral_index = file(options.chiral_index_file).read()
-    if options.chiral_index is not None:
-        loopc.check_chiral = True
-        loopc.chiral_idxs = [int(x)-1 for x in options.chiral_index.split()]
-        
-    if options.legal_min_ene is not None:
-        loopc.legal_min_ene = options.legal_min_ene
-        
-    if options.check_energy_before_minimization is not None:
-        loopc.check_energy_before_minimization \
-            = options.check_energy_before_minimization
-        
-    if options.minimal_invalid_energy_before_minimization is not None:
-        loopc.minimal_invalid_energy_before_minimization \
-		= options.minimal_invalid_energy_before_minimization
-    
-    if options.achiral is not None:
-        loopc.is_achiral = options.achiral
-        
-    if options.head_tail is not None:
-        loopc.head_tail = options.head_tail
-        
-    if options.loop_step is not None:
-        loopc.loopstep = options.loop_step
-
-    if ifname == '-':
-        loopc(sys.stdin)
-    else:
-        loopc(file(ifname))
+#    loopc = loopclosure.LoopClosure()
+#    
+#    if options.chain:
+#        loopc.is_chain = True
+#        
+#    if options.cmptorsfile:
+#        cmptors = [[int(x) - 1 for x in line.split()]
+#                   for line in file(options.cmptorsfile).readlines()
+#                   if line.strip() and line.strip()[0] != '#']
+#        loopc.comtors = cmptors
+#
+#    if options.loop is None and options.loopfile is not None:
+#        options.loop = file(options.loopfile).read()
+#    if options.loop is not None:
+#        loopc.loop = [int(x)-1 for x in options.loop.split()]
+#
+#    if options.chiral_index_file is not None and options.chiral_index is None:
+#        options.chiral_index = file(options.chiral_index_file).read()
+#    if options.chiral_index is not None:
+#        loopc.check_chiral = True
+#        loopc.chiral_idxs = [int(x)-1 for x in options.chiral_index.split()]
+#        
+#    if options.legal_min_ene is not None:
+#        loopc.legal_min_ene = options.legal_min_ene
+#        
+#    if options.check_energy_before_minimization is not None:
+#        loopc.check_energy_before_minimization \
+#            = options.check_energy_before_minimization
+#        
+#    if options.minimal_invalid_energy_before_minimization is not None:
+#        loopc.minimal_invalid_energy_before_minimization \
+#		= options.minimal_invalid_energy_before_minimization
+#    
+#    if options.achiral is not None:
+#        loopc.is_achiral = options.achiral
+#        
+#    if options.head_tail is not None:
+#        loopc.head_tail = options.head_tail
+#        
+#    if options.loop_step is not None:
+#        loopc.loopstep = options.loop_step
+#
 
 def main():
     from optparse import OptionParser
+    config = loopclosure.LoopClosure.get_default_config()
 
     usage = "usage: %prog [options] xyzfile|-\n" \
             "       %prog --resume checkfile\n" \
@@ -84,9 +88,13 @@ def main():
         usage,
         version = itcc.__version__)
     parser.set_defaults(
-        dump_interaval=100,
         np = 1,
         forcefield = 'mm2')
+    parser.add_option(
+        "--config",
+        dest='config',
+        metavar='FILE',
+        help="load config file")
     parser.add_option(
         "-f",
         "--forcefield",
@@ -95,13 +103,13 @@ def main():
     parser.add_option(
         '-k',
         "--keep",
-        dest="keepbound",
+        dest="keeprange",
         type='float',
         help='keep boundary(kcal/mol), default is no boundary')
     parser.add_option(
         '-s',
         "--search",
-        dest="searchbound",
+        dest="searchrange",
         type='float',
         help='search boundary(kcal/mol), default is no boundary')
     parser.add_option(
@@ -113,7 +121,7 @@ def main():
     parser.add_option(
         '-t',
         "--moltype",
-        dest="moltype",
+        dest="moltypekey",
         help="you can set it to `peptide'")
     parser.add_option(
         '-l',
@@ -124,21 +132,15 @@ def main():
             'low energy (e.g. -13960945.7658 kcal/mol), so ' \
             'we treat all structure with energy lower than ' \
             'LEGAL_MIN_ENE is illegal, default is %.1f kcal/mol' \
-            % loopclosure.LoopClosure.legal_min_ene)
-
-    parser.add_option(
-        '--loop',
-        dest='loop',
-        help='specify loop instead of auto-detect, begin with 1')
+            % config.getfloat('DEFAULT', 'legal_min_ene'))
     parser.add_option(
         '--loopfile', 
         dest='loopfile',
         metavar='FILE',
-        help='specify loop instead of auto-detect, '
-        'this option will be ignored if used with --loop.')
+        help='specify loop instead of auto-detect, begin with 1')
     parser.add_option(
         '--chain',
-        dest='chain',
+        dest='is_chain',
         action='store_true',
         help="it is a CHAIN, not a loop")
     parser.add_option(
@@ -151,12 +153,12 @@ def main():
              'from the loop information and chain information')
     parser.add_option(
         '--achiral',
-        dest='achiral',
+        dest='is_achiral',
         action='store_true',
         help='tors -> [-x for x in tors]')
     parser.add_option(
         '--chiral',
-        dest='achiral',
+        dest='is_achiral',
         action='store_false',
         help='disable --achiral')
     parser.add_option(
@@ -167,7 +169,7 @@ def main():
         help='tors -> (tos[i:] + tors[:i])[::-1]')
     parser.add_option(
         '--loop-step',
-        dest='loop_step',
+        dest='loopstep',
         type='int',
         metavar='INT',
         help='tors -> tos[i:] + tors[:i]')
@@ -190,7 +192,7 @@ def main():
         help='resume')
     parser.add_option(
         '--dump-interval',
-        dest='dump_interaval',
+        dest='dump_steps',
         type='int',
         metavar='INT',
         help='dump interval, default is 100 steps')
@@ -214,7 +216,7 @@ def main():
         action='store_true',
         help='check energy before minimization' \
             + ('', ', this is the default') \
-            [loopclosure.LoopClosure.check_energy_before_minimization])
+            [config.getboolean('DEFAULT', 'check_energy_before_minimization')])
     parser.add_option(
         '-C',
         '--no-check-energy-before-minimization',
@@ -222,7 +224,7 @@ def main():
         action='store_false',
         help="don't check energy before minimization" \
             + (', this is the default', '') \
-            [loopclosure.LoopClosure.check_energy_before_minimization])
+            [config.getboolean('DEFAULT', 'check_energy_before_minimization')])
     parser.add_option(
         '-e',
         '--minimal-invalid-energy-before-minimization',
@@ -231,7 +233,7 @@ def main():
         metavar='ENE',
         help="minimal invalid energy before minimization, " \
             "unit is kcal/mol, default is %.1f" \
-            % loopclosure.LoopClosure.minimal_invalid_energy_before_minimization)
+            % config.getfloat('DEFAULT', 'minimal_invalid_energy_before_minimization'))
                       
     (options, args) = parser.parse_args()
     if options.resume is None:

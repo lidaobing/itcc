@@ -28,34 +28,69 @@ __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
 class LoopClosure(object):
-    # in some forcefield (e.g. OPLSAA), there some illegal structure
-    # with extremely low energy (e.g. -13960945.7658 kcal/mol), so we
-    # treat all structure with energy lower than self.legal_min_ene is
-    # illegal.
-    legal_min_ene = -100000
-    
-    check_energy_before_minimization = True
-    minimal_invalid_energy_before_minimization = 100000
-
     S_NONE = 0
     S_INITED = 1
 
-    def __init__(self):
-        self.forcefield = None
-        self.keeprange = None
-        self.searchrange = None
-        self.maxsteps = None
-        self.eneerror = 0.0001          # unit: kcal/mol
-        self.torerror = 10              # unit: degree
-        self.minconverge = 0.001
-        self.moltypekey = None
-        self.loop = None
-        self.is_chain = False
+    @classmethod
+    def get_default_config(klass):
+        from ConfigParser import RawConfigParser
 
+        defaults = {
+                'log_level': '1',
+                'np': '1',
+                # molecule type
+
+                # loop type
+                'is_chain': 'False',
+
+                # dump
+                'dump_steps': '100',
+
+                # before minimization
+                'check_energy_before_minimization': 'True',
+                'minimal_invalid_energy_before_minimization': '100000', # unit: kcal/mol
+
+                # minimization
+                # 'minimization_method': 'newton',
+                'minconverge': '0.001', # unit: ?
+                # 'tinker_keep_chiral': 'true',
+
+                # after minimization
+                'legal_min_ene': '-100000', # unit: kcal/mol
+                'check_minimal': 'True',
+
+                # check
+                'eneerror': '0.0001', # unit: kcal/mol
+                'torerror': '10',     # unit: degree
+                }
+                
+        return RawConfigParser(defaults)
+
+    def __init__(self, config):
+        self.config = config
+        self.config.write(sys.stdout)
+
+        keys = {self.config.get: ['forcefield', 'moltypekey', 'solvate',
+                    'cmptorsfile', 'loopfile', 'chiral_index_file',],
+                self.config.getboolean: ['is_chain', 'check_chiral',
+                    'check_energy_before_minimization', 'is_achiral',
+                    'check_minimal'
+                    ],
+                self.config.getint: ['maxsteps', 'dump_steps', 'np',
+                    'head_tail', 'loopstep', 'log_level'],
+                self.config.getfloat: ['keeprange', 'searchrange', 'eneerror',
+                    'legal_min_ene', 'torerror', 'minconverge',
+                    'minimal_invalid_energy_before_minimization']}
+
+        for t in keys:
+            for key in keys[t]:
+                if self.config.has_option('DEFAULT', key):
+                    setattr(self, key, t('DEFAULT', key))
+                else:
+                    setattr(self, key, None)
+
+        self.loop = None
         self.cmptors = None
-        self.head_tail = None
-        self.is_achiral = None
-        self.loopstep = None
 
         self._step_count = 0
         self.seedmol = None
@@ -70,24 +105,21 @@ class LoopClosure(object):
         self.start_time = None
         self.olddir = None
         self.newdir = None
-        self.log_level = 1
         self.state = self.S_NONE
 
-        self.check_minimal = True
-        self.check_chiral = False
         self.chiral_idxs = []
         self._chirals = []
-        self.dump_steps = 100
 
-        self.np = 1
         self.multithread = False
         self.mutex = threading.Lock()
-        self.solvate = None
         self.loopatoms = None
         self.r6s = None
 
-    def __call__(self, molfile):
-        assert self.forcefield is not None
+    def run(self):
+        molfname = self.config.get('DEFAULT', 'molfname')
+        molfile = sys.stdin
+        if molfname != '-':
+            molfile = file(molfname)
         if not self._prepare(molfile):
             return
 
@@ -95,6 +127,8 @@ class LoopClosure(object):
             self._run_multi_thread()
         else:
             self._run_single_thread()
+
+    __cal__ = run
 
     def __getstate__(self):
         odict = self.__dict__.copy()
@@ -270,9 +304,11 @@ class LoopClosure(object):
         self.state = self.S_INITED
         return True
 
+    # TODO: read self.chiral_index_file
     def _init_chiral(self, mol):
         self._chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
         
+    # TODO, read self.cmptorsfile
     def _init_cmptors(self):
         if self.head_tail is None:
             if self.moltypekey == 'peptide':
@@ -348,6 +384,7 @@ class LoopClosure(object):
             if ene > max(self.keepbound, self.searchbound):
                 res = -2
 
+        # FIXME: remove duplicate codes
         if res is None:
             initidx = bisect.bisect(self.enes, (ene,))
             for idx in range(initidx-1, -1, -1):
@@ -400,6 +437,7 @@ class LoopClosure(object):
                 continue
             yield taskidx, r6
 
+    # read self.loopfile
     def getloopatoms(self, mol):
         if self.loop is not None:
             assert self._check_loop_atoms(mol, self.loop)
