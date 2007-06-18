@@ -38,11 +38,6 @@ def topeq(mol1, mol2):
             return False
     return True
 
-def usage(ofile):
-    ofile.write('Usage:\n')
-    ofile.write('    %s xyzfname1 mxyzfname2\n' % sys.argv[0])
-    ofile.write('    %s mtxyzfname\n' % sys.argv[0])
-
 def main():
     from optparse import OptionParser
     usage = "\n" \

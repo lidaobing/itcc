@@ -17,7 +17,7 @@ def printbonds():
         sys.stderr.write('Usage: %s <xyzfname>\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol = read.readxyz(file(sys.argv[1]))
-    import relalist
+    from itcc.molecule import relalist
     a = relalist.Relalist(mol)
     print a
 
@@ -51,7 +51,7 @@ def detailcmp():
     mol1 = read.readxyz(file(args[0]))
     mol2 = read.readxyz(file(args[1]))
     
-    import relalist
+    from itcc.molecule import relalist
     r1 = relalist.Relalist(mol1)
     
     bonds_data = []    
@@ -98,7 +98,7 @@ def detailcmp():
     print
     print 'torsions:'
     for x in sorted(torsions_data):
-        print x
+        print x[1][0], x[1][1], x[1][2], x[1][3], x[2], x[3], x[0]
 
 def rg():
     if len(sys.argv) < 2:

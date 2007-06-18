@@ -147,10 +147,9 @@ extern "C" {
   {
     PyObject* mol1, *mol2;
   
-    if(!PyArg_ParseTuple(args, "OO", &mol1, &mol2))
-      {
-	return NULL;
-      }
+    if(!PyArg_ParseTuple(args, "OO", &mol1, &mol2)) {
+		return NULL;
+     }
     
     PyObject* coords1 = PyObject_HasAttrString(mol1, "coords")
                            ?PyObject_GetAttrString(mol1, "coords")
