@@ -13,11 +13,8 @@ class Peptide(base.Base):
         self.mol = mol
 
     def getr6s(self, loopatoms, is_chain = False):
-        if is_chain:
-            raise NotImplementedError
-        
         types = gettypes(self.mol, loopatoms)
-        if ispair(types[-1], types[0]):
+        if not is_chain and ispair(types[-1], types[0]):
             types = types[1:] + types[:1]
             loopatoms = loopatoms[1:] + loopatoms[:1]
 
@@ -37,14 +34,13 @@ class Peptide(base.Base):
         else:
             assert idx == len(loopatoms)
 
-        doubleloop = newloopatoms * 2
-
-        for i in range(len(newloopatoms)):
-            yield tuple(doubleloop[i:i+7])
-
-    def getcombinations(self, R6s):
-        for R6 in R6s:
-            yield (R6,)
+        if not is_chain:
+            doubleloop = newloopatoms * 2
+            for i in range(len(newloopatoms)):
+                yield tuple(doubleloop[i:i+7])
+        else:
+            for i in range(len(newloopatoms)-6):
+                yield tuple(newloopatoms[i+i+7])
 
 def gettypes(mol, idxs):
     result = []

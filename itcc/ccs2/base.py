@@ -16,10 +16,6 @@ class Base:
         for i in range(count):
             yield tuple((x,) for x in doubleloop[i:i+7])
     
-    def getcombinations(self, r6s):
-        for r6 in r6s:
-            yield (r6,)
-
 def _test():
     base = Base()
     print tuple(base.getr6s(range(10)))
