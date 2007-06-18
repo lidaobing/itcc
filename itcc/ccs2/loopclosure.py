@@ -39,6 +39,7 @@ class LoopClosure(object):
                 'log_level': '1',
                 'np': '1',
                 # molecule type
+                'forcefield': 'mm2',
 
                 # loop type
                 'is_chain': 'False',
@@ -71,7 +72,7 @@ class LoopClosure(object):
 
         keys = {self.config.get: ['forcefield', 'moltypekey', 'solvate',
                     'cmptorsfile', 'loopfile', 'chiral_index_file',
-                    'molfname', 'tinker_key_file']
+                    'molfname', 'tinker_key_file'],
                 self.config.getboolean: ['is_chain', 
                     'check_energy_before_minimization', 'is_achiral',
                     'check_minimal'
@@ -285,7 +286,7 @@ class LoopClosure(object):
                 self.loopatoms = sum([[int(x) - 1 \
                         for x in line.split()
                         if line.strip() and line[0] != '#']
-                        for line in file(self.loopfile).readlines()])
+                        for line in file(os.path.join(self.olddir, self.loopfile)).readlines()], [])
         if self.loopatoms is None:
             looptype, loops = detectloop.loopdetect(self.seedmol)
             if looptype == detectloop.SIMPLELOOPS \
@@ -509,7 +510,7 @@ class LoopClosure(object):
         if self.chiral_idxs:
             msg += 'Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs)
         msg += 'tinker.key:\n'
-        msg += _get_tinker_key()
+        msg += self._get_tinker_key()
         msg += '\n'
         self.log(msg)
 

@@ -44,9 +44,6 @@ def main():
     parser = OptionParser(
         usage,
         version = itcc.__version__)
-    parser.set_defaults(
-        np = 1,
-        forcefield = 'mm2')
     parser.add_option(
         "--config",
         dest='config',

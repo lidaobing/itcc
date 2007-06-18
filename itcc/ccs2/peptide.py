@@ -40,7 +40,7 @@ class Peptide(base.Base):
                 yield tuple(doubleloop[i:i+7])
         else:
             for i in range(len(newloopatoms)-6):
-                yield tuple(newloopatoms[i+i+7])
+                yield tuple(newloopatoms[i:i+7])
 
 def gettypes(mol, idxs):
     result = []
