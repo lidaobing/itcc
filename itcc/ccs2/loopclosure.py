@@ -68,11 +68,11 @@ class LoopClosure(object):
 
     def __init__(self, config):
         self.config = config
-        self.config.write(sys.stdout)
 
         keys = {self.config.get: ['forcefield', 'moltypekey', 'solvate',
-                    'cmptorsfile', 'loopfile', 'chiral_index_file',],
-                self.config.getboolean: ['is_chain', 'check_chiral',
+                    'cmptorsfile', 'loopfile', 'chiral_index_file',
+                    'molfname'],
+                self.config.getboolean: ['is_chain', 
                     'check_energy_before_minimization', 'is_achiral',
                     'check_minimal'
                     ],
@@ -89,7 +89,6 @@ class LoopClosure(object):
                 else:
                     setattr(self, key, None)
 
-        self.loop = None
         self.cmptors = None
 
         self._step_count = 0
@@ -107,7 +106,7 @@ class LoopClosure(object):
         self.newdir = None
         self.state = self.S_NONE
 
-        self.chiral_idxs = []
+        self.chiral_idxs = None
         self._chirals = []
 
         self.multithread = False
@@ -116,11 +115,7 @@ class LoopClosure(object):
         self.r6s = None
 
     def run(self):
-        molfname = self.config.get('DEFAULT', 'molfname')
-        molfile = sys.stdin
-        if molfname != '-':
-            molfile = file(molfname)
-        if not self._prepare(molfile):
+        if not self.init():
             return
 
         if self.np > 1:
@@ -256,60 +251,79 @@ class LoopClosure(object):
         return res
         
         
-    def _prepare(self, molfile):
-        if self.state != self.S_NONE:
-            return True
-        self.printparams()
-        mol = read.readxyz(molfile)
-        self.seedmol = mol
-
-        if self.check_chiral:
-            self._init_chiral(mol)
-
+    def init_env(self):
+        self.start_time = time.time()
         self.olddir = os.getcwd()
         self.newdir = tempfile.mkdtemp('itcc')
         os.chdir(self.newdir)
-
-        file('tinker.key', 'w').write(self._get_tinker_key())
-        tinker.curdir = True
-
-        self.newmolnametmp = os.path.splitext(molfile.name)[0] + '.%03i'
         fd, self.tmp_mtxyz_fname = tempfile.mkstemp(dir=self.olddir)
         self.tmp_mtxyz_file = os.fdopen(fd, 'wb+')
-        typedmol = getmoltype(self.moltypekey)(mol)
-        self.loopatoms = self.getloopatoms(mol)
-        if self.loopatoms is None:
-            self.log("this moleclue does not contain loop. exit.\n")
-            return False
-        if len(self.loopatoms) < 6:
-            self.log("your ring is %s-member, "
-                "we can't deal with ring less than 6-member.\n"
-                % len(self.loopatoms))
-            return False
-        self._init_cmptors()
-        self.shakedata = getshakedata(mol, self.loopatoms)
-        r6s = tuple(typedmol.getr6s(self.loopatoms, self.is_chain))
-        self.r6s = {}
-        for idx, x in enumerate(r6s):
-            self.r6s[x] = idx
-        self.log(r6s2str(r6s))
+        return True
 
-        mol, ene = self._minimizemol(mol)
+    def init_mol(self):
+        self.seedmol = read.readxyz(file(os.path.join(self.olddir,
+                                                      self.molfname)))
+        self.newmolnametmp = os.path.splitext(self.molfname)[0] + '.%03i'
+        return True
+
+    def init_task(self):
+        mol, ene = self._minimizemol(self.seedmol)
         if mol is None:
             self.log("weird input molecule\n")
             return False
         self._step_count += 1
         self.lowestene = ene
         self.addtask(mol, ene)
-        self.state = self.S_INITED
         return True
 
-    # TODO: read self.chiral_index_file
-    def _init_chiral(self, mol):
-        self._chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
-        
-    # TODO, read self.cmptorsfile
-    def _init_cmptors(self):
+    def init_loop(self):
+        if self.loopatoms is None:
+            if self.loopfile is not None:
+                self.loopatoms = sum([[int(x) - 1 \
+                        for x in line.split()
+                        if line.strip() and line[0] != '#']
+                        for line in file(self.loopfile).readlines()])
+        if self.loopatoms is None:
+            looptype, loops = detectloop.loopdetect(self.seedmol)
+            if looptype == detectloop.SIMPLELOOPS \
+                    and len(loops) == 1:
+                self.loopatoms = loops[0]
+
+        if self.loopatoms is None:
+            self.log("this moleclue does not contain loop. exit.\n")
+            return False
+
+        if len(self.loopatoms) < 6:
+            self.log("your ring is %s-member, "
+                "we can't deal with ring less than 6-member.\n"
+                % len(self.loopatoms))
+            return False
+
+        return self._check_loop_atoms(self.seedmol, self.loopatoms)
+
+    def init_r6(self):
+        typedmol = getmoltype(self.moltypekey)(self.seedmol)
+        r6s = tuple(typedmol.getr6s(self.loopatoms, self.is_chain))
+        self.r6s = {}
+        for idx, x in enumerate(r6s):
+            self.r6s[x] = idx
+        return True
+
+    def init_sidechain(self):
+        self.shakedata = getshakedata(self.seedmol, self.loopatoms)
+        return True
+
+    def init_check(self):
+        if self.chiral_idxs is None:
+            if self.chiral_index_file is not None:
+                self.chiral_idxs = sum([[int(x) - 1 \
+                        for x in line.split()
+                        if line.strip() and line[0] != '#']
+                        for line in file(self.chiral_index_file).readlines()])
+
+        if self.chiral_idxs:
+            self._chirals = tuple(chiral.chiral_types(self.seedmol, self.chiral_idxs))
+
         if self.head_tail is None:
             if self.moltypekey == 'peptide':
                 self.head_tail = -1
@@ -329,12 +343,48 @@ class LoopClosure(object):
                 self.loopstep = 1
 
         if self.cmptors is None:
+            if self.cmptorsfile is not None:
+                self.cmptors = [[int(x)-1 for x in line.split()
+                    if line.strip() and line[0] != '#']
+                    for line in file(self.cmptorsfile).readlines()]
+
+        if self.cmptors is None:
             if self.is_chain:
                 self.cmptors = \
                     [self.loopatoms[i:i+4] for i in range(len(self.loopatoms)-3)]
             else:
                 self.cmptors = \
                     [(self.loopatoms*2)[i:i+4] for i in range(len(self.loopatoms))]
+
+        for x in self.cmptors:
+            assert len(x) == 4
+        return True
+
+    def init_tinker(self):
+        file('tinker.key', 'w').write(self._get_tinker_key())
+        tinker.curdir = True
+        return True
+
+    def init(self):
+        if self.state != self.S_NONE:
+            return True
+
+        self.print_copyright()
+        self.print_config()
+        if not (self.init_env()
+                and self.init_mol()
+                and self.init_loop()
+                and self.init_r6()
+                and self.init_sidechain()
+                and self.init_check()
+                and self.init_tinker()
+                and self.init_task()
+                ):
+            return False
+        self.print_params()
+
+        self.state = self.S_INITED
+        return True
 
     def _cleanup(self):
         os.chdir(self.olddir)
@@ -423,7 +473,6 @@ class LoopClosure(object):
         self.log('    Potential Surface Map       Minimum '
               '%6i %21.4f\n' % (taskidx+1, ene))
         self.writemol(mol, ene)
-
         r6s = self.r6s.keys()
         random.shuffle(r6s)
         for r6idx, r6 in enumerate(r6s):
@@ -438,16 +487,6 @@ class LoopClosure(object):
             yield taskidx, r6
 
     # read self.loopfile
-    def getloopatoms(self, mol):
-        if self.loop is not None:
-            assert self._check_loop_atoms(mol, self.loop)
-
-        looptype, loops = detectloop.loopdetect(mol)
-        if looptype == detectloop.SIMPLELOOPS \
-           and len(loops) == 1:
-            self.loop = loops[0]
-        return self.loop
-
     def _check_loop_atoms(self, mol, loop):
         if self.is_chain:
             count = len(loop) - 1
@@ -455,29 +494,19 @@ class LoopClosure(object):
             count = len(loop)
         for i in range(count):
             next = (i + 1) % len(loop)
-            if not mol.is_connect(self.loop[i], self.loop[next]):
+            if not mol.is_connect(loop[i], loop[next]):
                 return False
         return True
 
-    def printparams(self):
-        self.start_time = time.time()
-        self.log('Starttime: %s\n' % time.ctime(self.start_time)
-                 + 'Program Version: itcc %s\n' %  itcc.__version__
-                 + 'Forcefield: %s\n' % tinker.getparam(self.forcefield)
-                 + 'KeepRange: %s\n' % self.keeprange
-                 + 'SearchRange: %s\n' % self.searchrange
-                 + 'MaxSteps: %s\n' % self.maxsteps
-                 + 'MolType: %s\n' % self.moltypekey)
-        if self.loop is None:
-            self.log('Loop: auto\n')
-        else:
-            self.log('Loop: %s\n' % ' '.join(str(x+1) for x in self.loop))
-
-        if not self.check_chiral:
-            self.log('Chiral: none\n')
-        else:
-            self.log('Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs))
-        self.log('\n')
+    def print_params(self):
+        msg = 'starttime: %s\n' % time.ctime(self.start_time)
+        msg += 'loop: %s\n' % ' '.join(str(x+1) for x in self.loopatoms)
+        msg += 'r6s:\n'
+        msg += r6s2str(self.r6s)
+        if self.chiral_idxs:
+            msg += 'Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs)
+        msg += '\n'
+        self.log(msg)
 
     def printend(self):
         import datetime
@@ -561,7 +590,7 @@ class LoopClosure(object):
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
             return False
-        if self.check_chiral \
+        if self.chiral_idxs \
                 and tuple(chiral.chiral_types(mol, self.chiral_idxs)) \
                 != self._chirals:
             return False
@@ -590,6 +619,19 @@ class LoopClosure(object):
                                 self.head_tail, 
                                 self.loopstep) < self.torerror
 
+    def print_copyright(self):
+        msg = 'CCS2 conformational search (itcc ' + itcc.__version__ + ')\n'
+        self.log(msg)
+
+    def print_config(self):
+        msg = '# config file begin\n'
+        ofile = StringIO()
+        self.config.write(ofile)
+        msg += ofile.getvalue()
+        ofile.close()
+        msg += '# config file end\n'
+        self.log(msg)
+
 def getr6result(coords, r6, dismat, shakedata):
     type_ = r6type(r6)
     if type_ == (1, 1, 1, 1, 1, 1, 1):
@@ -610,6 +652,7 @@ _moltypedict = {'peptide': peptide.Peptide}
 def getmoltype(key):
     return _moltypedict.get(key, base.Base)
 
+# TODO: if it's a chain
 def getshakedata(mol, loop):
     result = {}
     dloop = loop * 2
@@ -623,6 +666,6 @@ def r6s2str(r6s):
     res = "This loop has %i R6 blocks:\n" % len(r6s)
     ofile = StringIO()
     pprint.pprint(r6s, ofile)
-    res += ofile.read()
+    res += ofile.getvalue()
     res += '\n'
     return res

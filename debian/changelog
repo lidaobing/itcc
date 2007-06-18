@@ -10,6 +10,7 @@ itcc (0.8.2~dev) unstable; urgency=low
     - add '--cmptor' option, support specify torsion angles used for compare.
       (r645)
     - add '--chiral', '--achiral', '--head-tail', '--loopstep'
+    - add '--config'
   * itcc rmsd
     - new "--no-h" option.
     - support read from stdin.
@@ -42,7 +43,7 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-pyramid-check
   * remove itcc-caflish (r640)
 
- -- LI Daobing <lidaobing@gmail.com>  Mon, 18 Jun 2007 13:46:55 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Mon, 18 Jun 2007 18:44:45 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
