@@ -53,7 +53,7 @@ class LoopClosure(object):
         self.is_chain = False
 
         self.cmptors = None
-        self.is_head_tail = None
+        self.head_tail = None
         self.is_achiral = None
         self.loopstep = None
 
@@ -274,11 +274,11 @@ class LoopClosure(object):
         self._chirals = tuple(chiral.chiral_types(mol, self.chiral_idxs))
         
     def _init_cmptors(self):
-        if self.is_head_tail is None:
+        if self.head_tail is None:
             if self.moltypekey == 'peptide':
-                self.is_head_tail = False
+                self.head_tail = -1
             else:
-                self.is_head_tail = True
+                self.head_tail = 0
             
         if self.is_achiral is None:
             if self.moltypekey == 'peptide':
@@ -548,8 +548,8 @@ class LoopClosure(object):
         tors1 = [mol1.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
         tors2 = [mol2.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
         return tordiff.torsdiff(tors1, tors2, 
-                                self.is_head_tail, 
                                 self.is_achiral, 
+                                self.head_tail, 
                                 self.loopstep) < self.torerror
 
 def getr6result(coords, r6, dismat, shakedata):

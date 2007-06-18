@@ -6,17 +6,17 @@ import math
 from itcc.tools import periodnumber
 
 def torsdiff(tors1, tors2,
-            is_head_tail = False,
             is_achiral = False,
+            head_tail = -1,
             loop_step = 0):
     '''torsdiff(coords1, coords2, tors, 
-            is_head_tail = False,
             is_achiral = False,
+            head_tail = -1,
             loop_step = 0)
             
-\param is_head_tail if true, means tor and tor[::-1] is same
-\param is_achiral if true, means tor and [-x for x in tor] is same
-\param loop_step if not zero, means tor and tor[loop_step:] + tor[:loop_step] is same
+\param is_achiral if true, tor->[-x for x in tor]
+\param head_tail if not -1, tor->(tor[head_tail:] + tor[:head_tail])[::-1]
+\param loop_step if not zero, means tor->tor[loop_step:] + tor[:loop_step]
     '''
     tors1 = list(tors1)
     tors2 = list(tors2)

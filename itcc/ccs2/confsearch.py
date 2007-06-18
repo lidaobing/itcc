@@ -59,6 +59,15 @@ def testcyc(ifname, options):
     if options.minimal_invalid_energy_before_minimization is not None:
         loopc.minimal_invalid_energy_before_minimization \
 		= options.minimal_invalid_energy_before_minimization
+    
+    if options.achiral is not None:
+        loopc.is_achiral = options.achiral
+        
+    if options.head_tail is not None:
+        loopc.head_tail = options.head_tail
+        
+    if options.loop_step is not None:
+        loopc.loopstep = options.loop_step
 
     if ifname == '-':
         loopc(sys.stdin)
@@ -140,7 +149,29 @@ def main():
              'each line in this file have 4 columns, echo column is the '
              'atom\'s index, 1-based, by default, these tors are generated '
              'from the loop information and chain information')
-    
+    parser.add_option(
+        '--achiral',
+        dest='achiral',
+        action='store_true',
+        help='tors -> [-x for x in tors]')
+    parser.add_option(
+        '--chiral',
+        dest='achiral',
+        action='store_false',
+        help='disable --achiral')
+    parser.add_option(
+        '--head-tail',
+        dest='head_tail',
+        type='int',
+        metavar='INT',
+        help='tors -> (tos[i:] + tors[:i])[::-1]')
+    parser.add_option(
+        '--loop-step',
+        dest='loop_step',
+        type='int',
+        metavar='INT',
+        help='tors -> tos[i:] + tors[:i]')
+   
     parser.add_option(
         '--chiral-index',
         dest='chiral_index',
