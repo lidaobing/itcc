@@ -32,8 +32,8 @@ def torsdiff(tors1, tors2,
             raise ValueError, "len(tors1) % loop_step != 0"
         
     tors2s = [tors2]
-    if is_head_tail:
-        tors2s += [x[::-1] for x in tors2s]
+    if head_tail != -1:
+        tors2s += [(x[head_tail:] + x[:head_tail])[::-1] for x in tors2s]
     if is_achiral:
         tors2s += [[-y for y in x] for x in tors2s]
     if loop_step != 0:
