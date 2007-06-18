@@ -58,7 +58,7 @@ class LoopClosure(object):
 
                 # after minimization
                 'legal_min_ene': '-100000', # unit: kcal/mol
-                'check_minimal': 'True',
+                'check_minimal': 'False',
 
                 # check
                 'eneerror': '0.0001', # unit: kcal/mol
@@ -408,8 +408,9 @@ class LoopClosure(object):
               % (head, taskidx + 1, ene))
 
         for newmol, newene, logstr in self.findneighbor(mol, r6):
-            if not self.is_valid(newmol, newene):
-                self.log(logstr + '\n')
+            validstr = self.is_valid(newmol, newene)
+            if validstr != 'V':
+                self.log('%s %s\n' % (logstr, validstr))
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
@@ -595,14 +596,14 @@ class LoopClosure(object):
 
     def is_valid(self, mol, ene):
         if ene < self.legal_min_ene:
-            return False
+            return 'L'
         if self.chiral_idxs \
                 and tuple(chiral.chiral_types(mol, self.chiral_idxs)) \
                 != self._chirals:
-            return False
+            return 'C'
         if self.check_minimal and not tinker.isminimal(mol, self.forcefield):
-            return False
-        return True
+            return 'M'
+        return 'V'
     
     # FIXME: we only need write mol once
     def _minimizemol(self, newmol):
