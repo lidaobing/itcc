@@ -36,7 +36,10 @@ ext_modules = [Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
                          depends=['itcc/tools/vector.hpp']),
                Extension('itcc.molecule._rmsd',
                          ['itcc/molecule/_rmsd.cpp'],
-                         libraries=['lapack'])
+                         libraries=['lapack']),
+               Extension('itcc.mopac._mopac',
+                         ['itcc/mopac/_mopac.cpp'],
+                         libraries=['mopac7', 'g2c', 'boost_python-mt'])
                ]
 
 setup(
