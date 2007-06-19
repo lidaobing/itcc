@@ -1,5 +1,5 @@
 
-PYTHON?=python
+PYTHON?=python2.5
 
 all:
 	$(PYTHON) setup.py build bdist_egg

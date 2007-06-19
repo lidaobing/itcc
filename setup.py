@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python2.5
 # $Id$
 
 import os
@@ -108,7 +108,19 @@ setup(
             'itcc-molcenter = itcc.tools.molcenter:main',
         ]
     },
-    include_package_data = True
-
+    include_package_data = True,
+    classifiers = [
+            'Development Status :: 4 - Beta',
+            'Environment :: Console',
+            'Intended Audience :: Science/Research',
+            'License :: Other/Proprietary License',
+            'Natural Language :: English',
+            'Operating System :: POSIX',
+            'Programming Language :: Python',
+            'Programming Language :: C',
+            'Programming Language :: C++',
+            'Topic :: Scientific/Engineering :: Chemistry',
+            ],
+    license = 'Other/Proprietary License',
 #    install_requires = ['numpy', 'Scientific']
 )
