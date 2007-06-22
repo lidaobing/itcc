@@ -2,7 +2,7 @@
 
 __revision__ = '$Rev$'
 
-from scipy import stats
+from numpy import *
 
 def stat_helper(ifile):
     for line in ifile:
@@ -10,12 +10,12 @@ def stat_helper(ifile):
             yield float(word)
 
 def stat(ifile):
-    data = tuple(stat_helper(ifile))
-    print 'min', min(data)
-    print 'max', max(data)
-    print 'median', stats.median(data)
-    print 'mean', stats.mean(data)
-    print 'stdev', stats.std(data)
+    data = array(stat_helper(ifile))
+    print 'min', data.min()
+    print 'max', data.max()
+    print 'median', median(data)
+    print 'mean', data.mean()
+    print 'stdev', data.std()
 
 def main():
     import sys

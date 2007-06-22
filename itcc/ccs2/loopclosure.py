@@ -1,4 +1,5 @@
 # $Id$
+# pylint: disable-msg=E1101
 import sys
 import os
 import os.path
@@ -28,6 +29,7 @@ __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
 class LoopClosure(object):
+    '''need a doc'''
     S_NONE = 0
     S_INITED = 1
 
