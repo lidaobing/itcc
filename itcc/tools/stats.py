@@ -10,7 +10,7 @@ def stat_helper(ifile):
             yield float(word)
 
 def stat(ifile):
-    data = array(stat_helper(ifile))
+    data = array(tuple(stat_helper(ifile)))
     print 'min', data.min()
     print 'max', data.max()
     print 'median', median(data)
