@@ -14,7 +14,6 @@ def gjf2xyz(gjffname, ofile):
     ofile.close()
 
 def main():
-    import sys
     if len(sys.argv) not in (2, 3):
         print >> sys.stderr, "Usage: %s gjffname|- [xyzfname|-]" % sys.argv[0]
         sys.exit(1)
