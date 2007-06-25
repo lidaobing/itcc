@@ -99,9 +99,9 @@ atomsymbol = ['',
 atommass = itcc.bodr.mass
 
 def atomchr(i):
-    if not i:
-        raise ValueError
-    return atomsymbol[i]
+    if 0 < i < len(atomsymbol):
+        return atomsymbol[i]
+    raise ValueError("atomchr: only support atom index from 1 to 109, inclusive")
 
 def atomord(chr_):
     if len(chr_) == 0:
