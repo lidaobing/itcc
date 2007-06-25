@@ -3,6 +3,7 @@ import os.path
 import math
 from itcc.molecule import read, write
 from itcc.molecule.tools import neighbours, is_pyramid
+from itcc.molecule import relalist
 
 def mirrormol():
     if len(sys.argv) != 2:
@@ -17,7 +18,6 @@ def printbonds():
         sys.stderr.write('Usage: %s <xyzfname>\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol = read.readxyz(file(sys.argv[1]))
-    from itcc.molecule import relalist
     a = relalist.Relalist(mol)
     print a
 
@@ -51,7 +51,6 @@ def detailcmp():
     mol1 = read.readxyz(file(args[0]))
     mol2 = read.readxyz(file(args[1]))
     
-    from itcc.molecule import relalist
     r1 = relalist.Relalist(mol1)
     
     bonds_data = []    
