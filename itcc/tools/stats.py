@@ -1,4 +1,7 @@
 # $Id$
+# pylint: disable-msg=W0401
+# pylint: disable-msg=W0611
+# pylint: disable-msg=W0622
 
 __revision__ = '$Rev$'
 

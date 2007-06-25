@@ -1,6 +1,5 @@
 # $Id$
 
-import numpy
 from itcc.molecule import tools
 from itcc.ccs2 import pyramid
 

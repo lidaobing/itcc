@@ -1,5 +1,6 @@
 # $Id$
 # pylint: disable-msg=E1101
+# pylint: disable-msg=W0201
 import sys
 import os
 import os.path
@@ -101,7 +102,6 @@ class LoopClosure(object):
         self.enes = []                  # Sorted List of (ene, taskidx)
         self.tmp_mtxyz_fname = None
         self.tmp_mtxyz_file = None
-        self.newmolnametmp = None
         self.lowestene = None
         self.shakedata = None
         self.start_time = None
@@ -269,7 +269,6 @@ class LoopClosure(object):
     def init_mol(self):
         self.seedmol = read.readxyz(file(os.path.join(self.olddir,
                                                       self.molfname)))
-        self.newmolnametmp = os.path.splitext(self.molfname)[0] + '.%03i'
         return True
 
     def init_task(self):
@@ -568,11 +567,11 @@ class LoopClosure(object):
     def reorganizeresults(self):
         self.tmp_mtxyz_file.seek(0)
         oldmols = mtxyz.Mtxyz(self.tmp_mtxyz_file)
-
-        if self.keeprange is None:
-            newidxs = [ene[1] for ene in self.enes]
-        else:
-            newidxs = [ene[1] for ene in self.enes if ene[0] <= self.keepbound]
+        newidxs = [ene[1] for ene in self.enes 
+                   if self.keeprange is None
+                      or ene[0] <= self.keepbound]
+        newmolnametmp = os.path.splitext(self.molfname)[0] \
+                        + "%0" + str(len(str(len(newidxs)))) + "i.xyz"
 
         self.log('\nOldidx Newidx Ene(sort by Oldidx)\n')
         for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
@@ -582,7 +581,7 @@ class LoopClosure(object):
             except ValueError:
                 self.log('%6i %6s %.4f\n' % (oldidx+1, '', ene))
             else:
-                newfname = self.newmolnametmp % (newidx + 1)
+                newfname = newmolnametmp % (newidx + 1)
                 file(newfname, 'w').write(oldmol)
                 self.log('%6i %6i %.4f\n' % (oldidx+1, newidx+1, ene))
 

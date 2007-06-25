@@ -1,14 +1,13 @@
 # $Id$
 
 import sys
-import pprint
 
 from itcc.molecule import read
-from itcc.ccs2 import detectloop, loopclosure, peptide
+from itcc.ccs2 import loopclosure, peptide, detectloop
 
 def main():
     mol = read.readxyz(file(sys.argv[1]))
-    loop  = loopdetect.loopdetect(mol)[1][0]
+    loop  = detectloop.loopdetect(mol)[1][0]
     loopc = loopclosure.LoopClosure()
 
     shakedata = loopclosure.getshakedata(mol, loop)

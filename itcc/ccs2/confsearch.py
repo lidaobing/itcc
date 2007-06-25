@@ -1,6 +1,4 @@
 # $Id$
-import sys
-
 import itcc
 from itcc.ccs2 import loopclosure
 
