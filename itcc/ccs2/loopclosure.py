@@ -572,7 +572,7 @@ class LoopClosure(object):
                    if self.keeprange is None
                       or ene[0] <= self.keepbound]
         newmolnametmp = os.path.splitext(self.molfname)[0] \
-                        + "%0" + str(len(str(len(newidxs)))) + "i.xyz"
+                        + ".%0" + str(len(str(len(newidxs)))) + "i.xyz"
 
         self.log('\nOldidx Newidx Ene(sort by Oldidx)\n')
         for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
