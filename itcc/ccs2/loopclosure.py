@@ -655,7 +655,7 @@ def getr6result(coords, r6, dismat, shakedata):
         idxs = tuple(sum(r6, tuple()))
         return Mezei.R6(coords, idxs, dismat, shakedata)
     elif type_ == (1, 1, 2, 1, 2, 1, 1):
-        idxs = tuple(sum(r6, tuple()))[1:-1]
+        idxs = tuple(sum(r6, tuple()))
         return Mezeipro.R6(coords, idxs, dismat, shakedata)
     elif type_ == (1, 2, 1, 2, 1, 2, 1):
         idxs = tuple(sum(r6, tuple()))
