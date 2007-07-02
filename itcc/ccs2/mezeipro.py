@@ -76,6 +76,7 @@ def safeop(op, *args):
 
 class R6sub:
     def __init__(self, coords, atmidx, dismat):
+        assert len(atmidx) == 9, atmidx
         self.coords = coords
         self.atmidx = atmidx
         self.dismat = dismat
