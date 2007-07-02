@@ -9,10 +9,9 @@ install:
 	$(PYTHON) setup.py install --prefix=/usr/local
 
 install2:
-	hostip=$(shell python -c "import socket; print socket.gethostbyname(socket.gethostname())"); \
 	for file in dist/*.egg; do \
 		cp $$file $(HOME)/public_html/; \
-		echo http://$$hostip/~$(USER)/$$(basename $$file); \
+		echo http://$(shell hostname -i)/~$(USER)/$$(basename $$file); \
 	done
 dist: sdist
 sdist:
