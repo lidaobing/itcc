@@ -647,11 +647,14 @@ class LoopClosure(object):
         self.log(msg)
 
 def getr6result(coords, r6, dismat, shakedata):
+    r6 = list(r6)
+    r6[0] = r6[0][-1:]
+    r6[-1] = r6[-1][:1]
     type_ = r6type(r6)
     if type_ == (1, 1, 1, 1, 1, 1, 1):
         idxs = tuple(sum(r6, tuple()))
         return Mezei.R6(coords, idxs, dismat, shakedata)
-    elif type_ == (2, 1, 2, 1, 2, 1, 2):
+    elif type_ == (1, 1, 2, 1, 2, 1, 1):
         idxs = tuple(sum(r6, tuple()))[1:-1]
         return Mezeipro.R6(coords, idxs, dismat, shakedata)
     elif type_ == (1, 2, 1, 2, 1, 2, 1):
