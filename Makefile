@@ -1,5 +1,4 @@
-
-PYTHON?=python2.5
+PYTHON?=python2.4
 
 all:
 	$(PYTHON) setup.py build bdist_egg
@@ -8,6 +7,12 @@ debug: clean
 	$(PYTHON) setup.py install
 install:
 	$(PYTHON) setup.py install --prefix=/usr/local
+
+install2:
+	for file in dist/*.egg; do \
+		cp $$file $(HOME)/public_html/; \
+		echo http://$(shell hostname)/~$(USER)/$$file; \
+	done
 dist: sdist
 sdist:
 	$(PYTHON) setup.py sdist -f
