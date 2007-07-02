@@ -328,7 +328,7 @@ class LoopClosure(object):
                         for x in line.split()
                         if line.strip() and line[0] != '#']
                         for line in file(os.path.join(self.olddir,
-			                              self.chiral_index_file)).readlines()])
+			                              self.chiral_index_file)).readlines()], [])
 
         if self.chiral_idxs:
             self._chirals = tuple(chiral.chiral_types(self.seedmol, self.chiral_idxs))
