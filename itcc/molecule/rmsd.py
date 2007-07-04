@@ -14,20 +14,27 @@ __all__ = ['rmsd']
 
 debug = False
 
-def rmsd(mol1, mol2, atoms1=None, atoms2=None):
+def rmsd_common(mol1, mol2, atoms1=None, atoms2=None):
     if debug:
         assert topeq(mol1, mol2)
     if atoms1 is None:
         coords1 = mol1.coords
     else:
-        coords1 = [mol1.coords[i] for i in atoms1]
+        coords1 = mol1.coords.take(atoms1, axis=0)
 
     if atoms2 is None:
         coords2 = mol2.coords
     else:
-        coords2 = [mol2.coords[i] for i in atoms2]
+        coords2 = mol2.coords.take(atoms2, axis=0)
+    return (coords1, coords2)
 
+def rmsd(mol1, mol2, atoms1=None, atoms2=None):
+    coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
     return _rmsd.rmsd(coords1, coords2)
+
+def rmsd2(mol1, mol2, atoms1=None, atoms2=None):
+    coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
+    return _rmsd.rmsd2(coords1, coords2)
 
 def topeq(mol1, mol2):
     if len(mol1) != len(mol2):
@@ -38,7 +45,7 @@ def topeq(mol1, mol2):
             return False
     return True
 
-def main():
+def main_common(rmsd_func):
     from optparse import OptionParser
     usage = "\n" \
             "    %prog [options] xyzfname1 xyzfname2\n" \
@@ -118,7 +125,13 @@ def main():
             atoms2_new = [x for x in atoms2_new if mol2.atoms[x].no != 1]
         else:
             atoms2_new = atoms2
-        print rmsd(mol1, mol2, atoms1, atoms2_new)
+        print rmsd_func(mol1, mol2, atoms1, atoms2_new)
+
+def main_rmsd():
+    main_common(rmsd)
+
+def main_rmsd2():
+    main_common(rmsd2)
 
 if __name__ == '__main__':
-    main()
+    main_rmsd()

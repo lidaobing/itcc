@@ -6,8 +6,6 @@
 #include <cmath>
 #include <cassert>
 
-#include <numpy/ndarrayobject.h>
-
 using namespace std;
 
 extern "C" {
@@ -30,12 +28,22 @@ extern "C" {
  *      coor1        : atom coordinates of the first structure                  *
  *      coor2        : atom coordinates of the second structure                 *
  *      coor         : transformation matrix U*(coor2)' -> (coor1)'             *
- *      flag         : flag for indicate selected atoms to alignment            *
  *      return value : RMSD                                                     *
  *********************************************************************************/
 
-double _rmsd(int n, double coor1[][3], double coor2[][3], double (&U) [4][4] , int flag[])
+double _rmsd(int n, double coor1[][3], double coor2[][3], double (&U) [4][4])
 {
+  if(n == 1) {
+    fill_n(U[0], 4*4, 0.0);
+    for(int i = 0; i < 4; ++i) {
+      U[i][i] = 1.0;
+    }
+    for(int i = 0; i < 3; ++i) {
+      U[i][3] = coor1[0][i] - coor2[0][i];
+    }
+    return 0.0;
+  }
+
   int i, j, k, N=3, lwork=9, ok;
   double r, R1[3][3], R[3][3], RT[9], w[3], work[9], A[3][3], B[3][3];
   char jobz='V', uplo='U';
@@ -68,9 +76,7 @@ double _rmsd(int n, double coor1[][3], double coor2[][3], double (&U) [4][4] , i
     for (j=0; j<3; j++) {
       R1[i][j] = 0;
       for (k=0; k<n; k++) {
-        if ( flag[k] ) {
-          R1[i][j] += tmp1[k][i] * tmp2[k][j];
-        }
+        R1[i][j] += tmp1[k][i] * tmp2[k][j];
       }
       r += R1[i][j] * R1[i][j];
     }
@@ -200,7 +206,7 @@ rmsd_common(PyObject* self, PyObject* args,
     }
 
   }
-  double res = _rmsd(len, coor1, coor2, U, flag);
+  double res = _rmsd(len, coor1, coor2, U);
   delete []coor1;
   delete []coor2;
   delete []flag;

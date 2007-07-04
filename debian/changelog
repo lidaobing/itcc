@@ -46,8 +46,9 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-pyramid-check
   * remove itcc-caflish (r640)
   * itcc.molecule._rmsd add a new func: rmsd2
+  * add itcc-rotate-to(r694)
 
- -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 13:41:09 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 14:10:39 +0800
 
 itcc (0.8.1) unstable; urgency=low
 
