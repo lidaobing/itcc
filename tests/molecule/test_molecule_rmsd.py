@@ -1,6 +1,7 @@
 import unittest
 
 import numpy
+import numpy.linalg
 
 from itcc.molecule import _rmsd, read
 
@@ -10,12 +11,25 @@ class Test(unittest.TestCase):
         mol1 = read.readxyz(StringIO.StringIO(test_in_1))
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))
         self.assertAlmostEqual(_rmsd.rmsd(mol1, mol2), 1.001, 3)
+
     def test_2(self):
         import StringIO
         mol1 = read.readxyz(StringIO.StringIO(test_in_1))
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))
         res = _rmsd.rmsd2(mol1, mol2)
         self.assertAlmostEqual(res[0], 1.001, 3)
+        for i in range(3):
+            self.assertAlmostEqual(res[1][3][i], 0.0)
+        self.assertAlmostEqual(res[1][3][3], 1.0)
+
+        mat = numpy.array([x[:3] for x in res[1][:3]])
+        self.assertAlmostEqual(abs((numpy.dot(mat, mat.transpose()) - numpy.eye(3))).max(), 0.0)
+        self.assertAlmostEqual(numpy.linalg.det(mat), 1.0)
+
+        newcoords2 = numpy.dot(mat, mol2.coords.transpose()).transpose() \
+                + numpy.array([res[1][i][3] for i in range(3)])
+        diff = newcoords2 - mol1.coords
+        self.assertAlmostEqual(((diff**2).sum()/(len(mol1)-1)) ** 0.5, res[0])
 
         res2 = _rmsd.rmsd2(mol1, mol1)
         self.assertAlmostEqual(res2[0], 0.0)
