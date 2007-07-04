@@ -2,6 +2,7 @@
 # $Id$
 
 import os
+import numpy
 from setuptools import setup, find_packages
 from distutils.core import Extension
 
@@ -30,12 +31,15 @@ if not os.path.exists('itcc/__init__.py') \
 
 __revision__ = '$Rev$'
 
+
+incdirs = [numpy.get_include()]
 ext_modules = [Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
                Extension("itcc.tools.cpptools",
                          ["itcc/tools/cpptools.cpp"],
                          depends=['itcc/tools/vector.hpp']),
                Extension('itcc.molecule._rmsd',
                          ['itcc/molecule/_rmsd.cpp'],
+                         include_dirs = incdirs,
                          libraries=['lapack']),
 #               Extension('itcc.mopac._mopac',
 #                         ['itcc/mopac/_mopac.cpp'],

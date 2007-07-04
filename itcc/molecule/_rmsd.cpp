@@ -1,8 +1,14 @@
 // $Id$
 
 #include <Python.h>
+
+#include <algorithm>
 #include <cmath>
 #include <cassert>
+
+#include <numpy/ndarrayobject.h>
+
+using namespace std;
 
 extern "C" {
   void dsyev_(char* jobz,
@@ -140,15 +146,15 @@ double _rmsd(int n, double coor1[][3], double coor2[][3], double coor[][3], int 
 	return d;
 }
 
-extern "C" {
 
-  static PyObject *
-  rmsd(PyObject* self, PyObject* args)
+  double
+  rmsd_common(PyObject* self, PyObject* args,
+              double (*& coor)[3], int& len)
   {
     PyObject* mol1, *mol2;
   
     if(!PyArg_ParseTuple(args, "OO", &mol1, &mol2)) {
-		return NULL;
+      return -1.0;
      }
     
     PyObject* coords1 = PyObject_HasAttrString(mol1, "coords")
@@ -159,13 +165,14 @@ extern "C" {
                            :mol2;
     assert(PySequence_Check(coords1));
     assert(PySequence_Check(coords2));
-    int len = PySequence_Size(coords1);
+    len = PySequence_Size(coords1);
     assert(PySequence_Size(coords2) == len);
 
     double (*coor1)[3] = new double[len][3];
     double (*coor2)[3] = new double[len][3];
-    double (*coor)[3] = new double[len][3];
+    coor = new double[len][3];
     int *flag = new int[len];
+    fill(flag, flag+len, 1);
     for(int i = 0; i < len; ++i)
       {
 	PyObject* vec1 = PySequence_GetItem(coords1, i);
@@ -182,21 +189,47 @@ extern "C" {
 	    coor2[i][j] = PyFloat_AsDouble(PySequence_GetItem(vec2, j));
 	  }
 
-	flag[i] = 1;
       }
-    double result = _rmsd(len, coor1, coor2, coor, flag);
+    double res = _rmsd(len, coor1, coor2, coor, flag);
     delete []coor1;
     delete []coor2;
-    delete []coor;
     delete []flag;
-    return Py_BuildValue("d", result);
+    return res;
   }
+
+extern "C" {
+  PyObject*
+  rmsd(PyObject* self, PyObject* args) {
+    double (*coor)[3];
+    int len;
+    double res = rmsd_common(self, args, coor, len);
+    if(res < 0.0) return NULL;
+    delete[] coor;
+    return Py_BuildValue("d", res);
+  }
+
+  PyObject*
+  rmsd2(PyObject* self, PyObject* args) {
+    double (*coor)[3];
+    int len;
+    double res = rmsd_common(self, args, coor, len);
+    if(res < 0.0) return NULL;
+    PyObject* py_coor = PyTuple_New(len);
+    for(int i = 0; i < len; ++i) {
+      PyTuple_SetItem(py_coor, i, Py_BuildValue("(ddd)", coor[i][0], coor[i][1], coor[i][2]));
+    }
+    delete[] coor;
+    return Py_BuildValue("(dO)", res, py_coor);
+  }
+
 
   static PyMethodDef _rmsdMethods[] = {
     {"rmsd", rmsd, METH_VARARGS,
      "Caculate the RMSD of two mol"},
-    {NULL, NULL, 0, NULL}       
-  };
+    {"rmsd2", rmsd2, METH_VARARGS,
+     "Caculate the RMSD of two mol, return a tuple of the rmsd and the fitted"
+     " coordinate of mol2."},
+    {NULL, NULL, 0, NULL} };
 
   PyMODINIT_FUNC
   init_rmsd(void)

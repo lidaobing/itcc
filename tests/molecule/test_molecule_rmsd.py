@@ -4,11 +4,18 @@ from itcc.molecule import _rmsd, read
 
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         import StringIO
         mol1 = read.readxyz(StringIO.StringIO(test_in_1))
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))
         self.assertAlmostEqual(_rmsd.rmsd(mol1, mol2), 1.001, 3)
+    def test_2(self):
+        import StringIO
+        mol1 = read.readxyz(StringIO.StringIO(test_in_1))
+        mol2 = read.readxyz(StringIO.StringIO(test_in_2))
+        res = _rmsd.rmsd2(mol1, mol2)
+        self.assertAlmostEqual(res[0], 1.001, 3)
+        print res[1]
 
 test_in_1 = '''\
     51  19.0934

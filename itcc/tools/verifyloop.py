@@ -6,11 +6,13 @@ def verifyloop(mol, loop):
     if len(loop_set) != len(loop):
         return False
 
+    res = True
     for i in range(len(loop)):
         if not mol.is_connect(loop[i], loop[i-1]):
-            return False
+            print loop[i]+1, loop[i-1]+1
+            res = False
 
-    return True
+    return res
 
 def main():
     if len(sys.argv) != 3:
