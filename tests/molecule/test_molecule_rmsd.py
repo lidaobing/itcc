@@ -10,7 +10,11 @@ class Test(unittest.TestCase):
         import StringIO
         mol1 = read.readxyz(StringIO.StringIO(test_in_1))
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))
+
         self.assertAlmostEqual(_rmsd.rmsd(mol1, mol2), 1.001, 3)
+        self.assertAlmostEqual(_rmsd.rmsd(mol1.coords.take([0], axis=0),
+                                          mol2.coords.take([0], axis=0)),
+                               0.0)
 
     def test_2(self):
         import StringIO
