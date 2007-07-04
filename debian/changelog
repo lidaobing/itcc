@@ -37,15 +37,17 @@ itcc (0.8.2~dev) unstable; urgency=low
   * add itcc-idx-verify
   * add itcc-molcenter
   * depends on python-setuptools
-  * itcc/molecule/molecule: the bond contain H has a different manbondlen
+  * itcc/molecule/molecule
+    - the bond contain H has a different maxbondlen
+    - coords is assignable again
   * add itcc-rg
   * itcc-xyzpdb: output connect information
   * itcc-chiral: support more options
   * add itcc-pyramid-check
   * remove itcc-caflish (r640)
-  * itcc.molecule._rmsd add a new func: rmsd2 
+  * itcc.molecule._rmsd add a new func: rmsd2
 
- -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 10:36:32 +0800
+ -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 13:41:09 +0800
 
 itcc (0.8.1) unstable; urgency=low
 

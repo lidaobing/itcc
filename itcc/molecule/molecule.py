@@ -44,7 +44,11 @@ class Molecule(object):
 
     def get_coords(self):
         return self._coords
-    coords = property(get_coords)
+    def set_coords(self, val):
+        if val.shape != (len(self), 3):
+            raise ValueError("wrong array shape: %s" % val.shape)
+        self._coords = numpy.array(val)
+    coords = property(get_coords, set_coords)
 
     def get_connect(self):
         return self._connect
