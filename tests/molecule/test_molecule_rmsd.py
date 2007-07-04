@@ -1,7 +1,8 @@
 import unittest
+
+import numpy
+
 from itcc.molecule import _rmsd, read
-
-
 
 class Test(unittest.TestCase):
     def test_1(self):
@@ -15,7 +16,10 @@ class Test(unittest.TestCase):
         mol2 = read.readxyz(StringIO.StringIO(test_in_2))
         res = _rmsd.rmsd2(mol1, mol2)
         self.assertAlmostEqual(res[0], 1.001, 3)
-        print res[1]
+
+        res2 = _rmsd.rmsd2(mol1, mol1)
+        self.assertAlmostEqual(res2[0], 0.0)
+        self.assertAlmostEqual(abs(res2[1] - numpy.eye(4)).max(), 0.0)
 
 test_in_1 = '''\
     51  19.0934
