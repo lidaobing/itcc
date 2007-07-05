@@ -20,12 +20,12 @@ def rmsd_common(mol1, mol2, atoms1=None, atoms2=None):
     if atoms1 is None:
         coords1 = mol1.coords
     else:
-        coords1 = mol1.coords.take(atoms1, axis=0)
+        coords1 = mol1.coords.take(tuple(atoms1), axis=0)
 
     if atoms2 is None:
         coords2 = mol2.coords
     else:
-        coords2 = mol2.coords.take(atoms2, axis=0)
+        coords2 = mol2.coords.take(tuple(atoms2), axis=0)
     return (coords1, coords2)
 
 def rmsd(mol1, mol2, atoms1=None, atoms2=None):
