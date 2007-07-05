@@ -126,8 +126,8 @@ class Test(unittest.TestCase):
     def runTest(self):
         import base64
         import StringIO
-        from itcc.molecule import dmddat2mtxyz
-        from itcc.tools.frame import parseframe
+        from itcc.tools import dmddat2mtxyz
+        from itcc.core.frame import parseframe
         dmddatfile = \
             StringIO.StringIO(base64.decodestring(test_in_dmddat_base64))
         molfile = StringIO.StringIO(test_in_mol)

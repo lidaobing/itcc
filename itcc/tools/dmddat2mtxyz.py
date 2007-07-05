@@ -4,7 +4,7 @@ __revision__ = '$Rev$'
 
 from itcc.tools import dmddat
 from itcc.molecule import read, write, molecule
-from itcc.tools.frame import parseframe
+from itcc.core.frame import parseframe
 
 def dmddat2mtxyz(dmddatfile, molfile, ofile, select_frames=None):
     aDmddat = dmddat.Dmddat(dmddatfile)

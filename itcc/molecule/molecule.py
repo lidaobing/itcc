@@ -4,7 +4,7 @@
 import pprint
 import math
 import numpy
-from itcc.tools import tools
+from itcc.core import tools
 from itcc.molecule.atom import Atom
 from itcc.molecule import tools as moltools
 

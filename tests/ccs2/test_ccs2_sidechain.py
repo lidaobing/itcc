@@ -1,7 +1,7 @@
 import unittest
 import numpy
 from itcc.ccs2 import sidechain
-from itcc.tools import distance
+from itcc.core.tools import distance
 
 class Test(unittest.TestCase):
     def runTest(self):

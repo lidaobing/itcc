@@ -1,7 +1,7 @@
 import unittest
 import numpy
 import math
-from itcc.tools import tools
+from itcc.core import tools
 
 class TestTools(unittest.TestCase):
     def test_torsionangle(self):

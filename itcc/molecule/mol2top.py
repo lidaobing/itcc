@@ -5,7 +5,7 @@ __revision__ = '$Rev$'
 import sys
 from itcc.molecule import read
 from itcc.molecule.relalist import Relalist
-from itcc.tools.tools import all
+from itcc.core.tools import all
 
 def mol2top(molfname, ofile=sys.stdout):
     if(not hasattr(molfname, 'read')):

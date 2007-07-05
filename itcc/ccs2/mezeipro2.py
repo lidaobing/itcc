@@ -27,7 +27,7 @@ for each N2 on the circle of N2
 import math
 import exceptions
 from itcc.ccs2 import pyramid, sidechain, rtbis
-from itcc.tools import tools
+from itcc.core import tools
 
 class Error(exceptions.Exception):
     pass

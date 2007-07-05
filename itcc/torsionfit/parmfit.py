@@ -8,7 +8,7 @@ import numpy
 from itcc.molecule import read
 from itcc.tinker import parameter, analyze, tinker, molparam
 from itcc.torsionfit import tools
-from itcc.tools import tools as extra_tools
+from itcc.core import tools as extra_tools
 
 def torene(tor, param):
     """torene(tor, param) -> Float

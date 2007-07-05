@@ -4,7 +4,7 @@ import unittest
 import numpy
 from itcc.molecule import read
 from itcc.ccs2 import sidechain
-from itcc.tools import tools
+from itcc.core import tools
 
 test_in = '''\
  5 molden generated tinker .xyz (mm3 param.)

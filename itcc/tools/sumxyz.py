@@ -4,7 +4,7 @@ import math
 import sys
 
 import numpy
-from itcc.tools import tools
+from itcc.core import tools
 from itcc.molecule import read
 
 __revision__ = '$Rev$'

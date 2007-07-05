@@ -4,7 +4,8 @@ import numpy
 from numpy import *
 import math
 from itcc.ccs2.transformation import RotationTranslation
-from itcc.tools import tools
+from itcc.core import tools
+
 
 __all__ = ['pyramid', 'pyramid2']
 __revision__ = '$Rev$'

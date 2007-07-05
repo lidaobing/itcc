@@ -6,7 +6,7 @@ import sys
 import random
 import math
 from itcc.molecule import read, molecule, write
-from itcc.tools import tools
+from itcc.core import tools
 
 first_offset = 10.0
 

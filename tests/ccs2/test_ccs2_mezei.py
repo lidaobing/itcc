@@ -4,7 +4,7 @@ import numpy
 import pprint
 import warnings
 from itcc.ccs2 import mezei
-from itcc.tools import distance
+from itcc.core.tools import distance
 
 class Test(unittest.TestCase):
     def runTest(self):

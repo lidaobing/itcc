@@ -1,7 +1,7 @@
 # $Id$
 import heapq
 import numpy
-from itcc.tools.tools import torsionangle
+from itcc.core.tools import torsionangle
 
 __revision__ = '$Rev$'
 

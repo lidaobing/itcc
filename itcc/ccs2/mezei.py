@@ -8,7 +8,7 @@
 
 from math import sqrt, sin, cos, pi
 import numpy
-from itcc.tools import tools
+from itcc.core import tools
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
 from itcc.ccs2 import sidechain, rtbis

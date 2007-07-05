@@ -3,7 +3,7 @@
 import sys
 import csv
 from itcc.molecule import read, rmsd
-from itcc.tools import tools
+from itcc.core import tools
 from itcc.torsionfit import tools as tortools
 from itcc.tinker import tinker
 

@@ -3,7 +3,7 @@
 """extend Mezei's method to protein.
 """
 import math
-from itcc.tools import tools
+from itcc.core import tools
 from itcc.ccs2 import pyramid, sidechain
 from itcc.ccs2 import config, rtbis
 

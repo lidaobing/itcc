@@ -3,14 +3,14 @@ import sys
 import random
 import math
 import numpy
-from itcc.tools import ctools
+from itcc.core import ctools
 
 __revision__ = '$Rev$'
 __all__ = ['length', 'angle', 'torsionangle', 'imptor',
            'combinecombine', 'xyzatm', 'minidx', 'maxidx',
            'weightedmean', 'weightedsd', 'datafreq',
-           'random_vector', 'mean', 'stdev', 'all', 'any',
-           'dissq', 'lensq']
+           'random_vector', 'all', 'any',
+           'dissq', 'lensq', 'distance', 'normal']
 
 def normal(a):
     return a / length(a)
