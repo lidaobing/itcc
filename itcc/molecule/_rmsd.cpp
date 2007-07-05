@@ -168,29 +168,28 @@ double
 rmsd_common(PyObject* self, PyObject* args,
             double (&U) [4][4], int& len)
 {
-  PyObject* mol1, *mol2;
+  PyObject* mol1_coords = NULL;
+  PyObject* mol2_coords = NULL;
 
+  PyObject* mol1, *mol2;
   if(!PyArg_ParseTuple(args, "OO", &mol1, &mol2)) {
     return -1.0;
   }
 
-  PyObject* coords1_ = PyObject_HasAttrString(mol1, "coords")
-    ?PyObject_GetAttrString(mol1, "coords")
-    :mol1;
-  PyObject* coords1 = PySequence_Fast(coords1_, "");
-
-  PyObject* coords2_ = PyObject_HasAttrString(mol2, "coords")
-  ?PyObject_GetAttrString(mol2, "coords")
-  :mol2;
-  PyObject* coords2 = PySequence_Fast(coords2_, "");
+  if(PyObject_HasAttrString(mol1, "coords")) {
+    mol1_coords = PyObject_GetAttrString(mol1, "coords");
+  }
+  if(PyObject_HasAttrString(mol2, "coords")) {
+    mol2_coords = PyObject_GetAttrString(mol2, "coords");
+  }
+  PyObject* coords1 = PySequence_Fast((mol1_coords?mol1_coords:mol1), "");
+  PyObject* coords2 = PySequence_Fast((mol2_coords?mol2_coords:mol2), "");
 
   len = PySequence_Size(coords1);
   assert(PySequence_Size(coords2) == len);
 
   double (*coor1)[3] = new double[len][3];
   double (*coor2)[3] = new double[len][3];
-  int *flag = new int[len];
-  fill(flag, flag+len, 1);
   for(int i = 0; i < len; ++i)
   {
     PyObject* vec1 = PySequence_Fast(PySequence_Fast_GET_ITEM(coords1, i), "");
@@ -198,27 +197,22 @@ rmsd_common(PyObject* self, PyObject* args,
     {
       coor1[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec1, j));
     }
-    Py_DECREF(vec1);
+    Py_CLEAR(vec1);
 
     PyObject* vec2 = PySequence_Fast(PySequence_Fast_GET_ITEM(coords2, i), "");
     for(int j = 0; j < 3; ++j)
     {
       coor2[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec2, j));
     }
-    Py_DECREF(vec2);
+    Py_CLEAR(vec2);
   }
   double res = _rmsd(len, coor1, coor2, U);
   delete []coor1;
   delete []coor2;
-  delete []flag;
-  Py_DECREF(coords1);
-  Py_DECREF(coords2);
-  if(PyObject_HasAttrString(mol1, "coords")) {
-    Py_DECREF(coords1_);
-  }
-  if(PyObject_HasAttrString(mol2, "coords")) {
-    Py_DECREF(coords2_);
-  }
+  Py_CLEAR(coords1);
+  Py_CLEAR(coords2);
+  Py_CLEAR(mol1_coords);
+  Py_CLEAR(mol2_coords);
   return res;
 }
 
