@@ -174,14 +174,16 @@ rmsd_common(PyObject* self, PyObject* args,
     return -1.0;
   }
 
-  PyObject* coords1 = PyObject_HasAttrString(mol1, "coords")
-  ?PyObject_GetAttrString(mol1, "coords")
-  :mol1;
-  PyObject* coords2 = PyObject_HasAttrString(mol2, "coords")
+  PyObject* coords1_ = PyObject_HasAttrString(mol1, "coords")
+    ?PyObject_GetAttrString(mol1, "coords")
+    :mol1;
+  PyObject* coords1 = PySequence_Fast(coords1_, "");
+
+  PyObject* coords2_ = PyObject_HasAttrString(mol2, "coords")
   ?PyObject_GetAttrString(mol2, "coords")
   :mol2;
-  assert(PySequence_Check(coords1));
-  assert(PySequence_Check(coords2));
+  PyObject* coords2 = PySequence_Fast(coords2_, "");
+
   len = PySequence_Size(coords1);
   assert(PySequence_Size(coords2) == len);
 
@@ -191,25 +193,32 @@ rmsd_common(PyObject* self, PyObject* args,
   fill(flag, flag+len, 1);
   for(int i = 0; i < len; ++i)
   {
-    PyObject* vec1 = PySequence_GetItem(coords1, i);
-    vec1 = PySequence_List(vec1);
+    PyObject* vec1 = PySequence_Fast(PySequence_Fast_GET_ITEM(coords1, i), "");
     for(int j = 0; j < 3; ++j)
     {
-      coor1[i][j] = PyFloat_AsDouble(PySequence_GetItem(vec1, j));
+      coor1[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec1, j));
     }
+    Py_DECREF(vec1);
 
-    PyObject* vec2 = PySequence_GetItem(coords2, i);
-    vec2 = PySequence_List(vec2);
+    PyObject* vec2 = PySequence_Fast(PySequence_Fast_GET_ITEM(coords2, i), "");
     for(int j = 0; j < 3; ++j)
     {
-      coor2[i][j] = PyFloat_AsDouble(PySequence_GetItem(vec2, j));
+      coor2[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec2, j));
     }
-
+    Py_DECREF(vec2);
   }
   double res = _rmsd(len, coor1, coor2, U);
   delete []coor1;
   delete []coor2;
   delete []flag;
+  Py_DECREF(coords1);
+  Py_DECREF(coords2);
+  if(PyObject_HasAttrString(mol1, "coords")) {
+    Py_DECREF(coords1_);
+  }
+  if(PyObject_HasAttrString(mol2, "coords")) {
+    Py_DECREF(coords2_);
+  }
   return res;
 }
 
@@ -233,7 +242,7 @@ extern "C" {
     for(int i = 0; i < 4; ++i) {
       PyTuple_SetItem(py_U, i, Py_BuildValue("(dddd)", U[i][0], U[i][1], U[i][2], U[i][3]));
     }
-    return Py_BuildValue("(dO)", res, py_U);
+    return Py_BuildValue("(dN)", res, py_U);
   }
 
 
