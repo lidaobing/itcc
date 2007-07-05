@@ -65,7 +65,7 @@ def imptor(a, b, c, d):
     ac = c - a
     abc = numpy.cross(ab, ac)
     angle_ = ad.angle(abc)
-    return pi - angle_
+    return math.pi - angle_
 
 def combinecombine(cmbs):
     if not cmbs:
@@ -88,13 +88,13 @@ def xyzatm(p1, p2, p3, r, theta, phi):
     r23 = normal(p2 - p3)
     rt = numpy.cross(r23, r12)
     cosine = r12 * r23
-    sine = sqrt(max(1.0 - cosine*cosine, 0.0))
+    sine = math.sqrt(max(1.0 - cosine*cosine, 0.0))
     rt /= sine
     ru = numpy.cross(rt, r12)
-    ts = sin(theta)
-    tc = cos(theta)
-    ps = sin(phi)
-    pc = cos(phi)
+    ts = math.sin(theta)
+    tc = math.cos(theta)
+    ps = math.sin(phi)
+    pc = math.cos(phi)
     return p1 + (ru * (ts * pc) + rt * (ts * ps) - r12 * tc) * r
 
 def minidx(iterable):
@@ -146,7 +146,7 @@ def weightedsd(datas, weights):
     sum_ = sum([(data - mean_)**2 * weight \
                 for data, weight in zip(datas, weights)])
     totalweight = sum(weights)
-    return sqrt(sum_/totalweight)
+    return math.sqrt(sum_/totalweight)
 
 def any(iterable):
     for element in iterable:
@@ -162,10 +162,10 @@ def all(iterable):
 
 def random_vector(length_=1.0):
     z = random.uniform(-length_, length_)
-    s = sqrt(length_*length_ - z*z)
-    theta = random.uniform(0.0, pi+pi)
-    x = s * cos(theta)
-    y = s * sin(theta)
+    s = math.sqrt(length_*length_ - z*z)
+    theta = random.uniform(0.0, math.pi*2)
+    x = s * math.cos(theta)
+    y = s * math.sin(theta)
     return (x, y, z)
 
 def open_file_or_stdin(ifname):

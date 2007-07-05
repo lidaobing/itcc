@@ -33,7 +33,7 @@ __revision__ = '$Rev$'
 
 
 incdirs = [numpy.get_include()]
-ext_modules = [Extension("itcc.tools.ctools", ["itcc/tools/ctools.c"]),
+ext_modules = [Extension("itcc.core.ctools", ["itcc/core/ctools.c"]),
                Extension("itcc.tools.cpptools",
                          ["itcc/tools/cpptools.cpp"],
                          depends=['itcc/tools/vector.hpp']),
@@ -105,7 +105,7 @@ setup(
             'itcc-tor2freeene = itcc.tools.tor2freeene:main',
             'itcc-rmsd = itcc.molecule.rmsd:main_rmsd',
             'itcc-rmsd2 = itcc.molecule.rmsd:main_rmsd2',
-            'itcc-dmddat2mtxyz = itcc.molecule.dmddat2mtxyz:main',
+            'itcc-dmddat2mtxyz = itcc.tools.dmddat2mtxyz:main',
             'itcc-printefit = itcc.torsionfit.printefit:main',
             'itcc-constrain = itcc.tinker.constrain:main',
             'itcc-loop2looptor = itcc.tools.loop2looptor:main',
