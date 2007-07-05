@@ -7,7 +7,7 @@
 import sys
 from itcc.molecule import _rmsd
 from itcc.molecule import mtxyz
-from itcc.tools import frame
+from itcc.core import frame
 
 __revision__ = '$Rev$'
 __all__ = ['rmsd']
