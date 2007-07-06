@@ -112,6 +112,7 @@ setup(
             'itcc-idx-verify = itcc.tools.idx_verify:main',
             'itcc-molcenter = itcc.tools.molcenter:main',
             'itcc-rotate-to = itcc.tools.rotate_to:main',
+            'itcc-histogram = itcc.tools.histogram:main',
         ]
     },
     include_package_data = True,
