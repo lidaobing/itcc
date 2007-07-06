@@ -34,33 +34,39 @@ def molstat(mol, idxs):
     print '\t'.join([str(x) for x in result])
     sys.stdout.flush()
 
-def mtxyzstat(mtxyzfname, idxs, print_header=False):
-    if(print_header):
-        print_idx(idxs)
+def mtxyzstat(mtxyzfname, idxs):
     for mol in mtxyz.Mtxyz(file(mtxyzfname)):
         molstat(mol, idxs)
 
 def main():
     from optparse import OptionParser
 
-    usage = 'usage: %prog [-H|--header] mtxyzfname {-|idxfname}'
+    usage = 'usage: %prog [-H|--header] -I idx-file mtxyzfname...'
     parser = OptionParser(usage)
     parser.add_option('-H', '--header',
                       action='store_true', dest='print_header',
                       help='print header')
+    parser.add_option('-I', '--idx-file',
+                      dest='idx_file',
+                      metavar='FILE',
+                      help='index file, "-" means stdin, index is 1-based')
     (options, args) = parser.parse_args()
 
-    if len(args) != 2:
+    if len(args) < 1 or options.idx_file is None:
         parser.error("incorrect number of arguments")
 
-    if args[1] == '-':
+    if options.idx_file == '-':
         idx_ifile = sys.stdin
     else:
-        idx_ifile = file(args[1])
+        idx_ifile = file(options.idx_ifile)
 
     idxs = readidx(idx_ifile)
 
-    mtxyzstat(args[0], idxs, options.print_header)
+    if(options.print_header):
+        print_idx(idxs)
+
+    for arg in args:
+        mtxyzstat(arg, idxs)
 
 if __name__ == '__main__':
     main()
