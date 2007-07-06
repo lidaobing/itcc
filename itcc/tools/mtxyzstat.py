@@ -17,6 +17,7 @@ def readidx(ifile):
     return result
 
 def print_idx(idxs):
+    print 'Name',
     print '\t'.join(['-'.join([str(x+1) for x in idx]) for idx in idxs])
 
 def mol_calc_wrap(mol, idx):
@@ -58,7 +59,7 @@ def main():
     if options.idx_file == '-':
         idx_ifile = sys.stdin
     else:
-        idx_ifile = file(options.idx_ifile)
+        idx_ifile = file(options.idx_file)
 
     idxs = readidx(idx_ifile)
 
@@ -66,6 +67,7 @@ def main():
         print_idx(idxs)
 
     for arg in args:
+        print arg,
         mtxyzstat(arg, idxs)
 
 if __name__ == '__main__':
