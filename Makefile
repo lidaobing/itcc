@@ -9,9 +9,10 @@ install:
 	$(PYTHON) setup.py install --prefix=/usr/local
 
 install2:
+	mkdir -p $(HOME)/public_html/
 	for file in dist/*.egg; do \
 		cp $$file $(HOME)/public_html/; \
-		echo http://$(shell hostname -i)/~$(USER)/$$(basename $$file); \
+		echo http://$(strip $(shell hostname -i))/~$(USER)/$$(basename $$file); \
 	done
 dist: sdist
 sdist:
