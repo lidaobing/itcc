@@ -46,6 +46,8 @@ class LoopClosure(object):
                    ('check_energy_before_minimization', bool, True),
                    ('is_achiral', bool, False),
                    ('check_minimal', bool, False),
+                   ('out_mtxyz', bool, True),
+                   ('out_mtxyz_fname', str, "$(molfname)s-out"),
                    ('maxsteps', int, -1),
                    ('dump_steps', int, 1000),
                    ('np', int, 1),
@@ -607,17 +609,39 @@ class LoopClosure(object):
                       or ene[0] <= self.keepbound]
         newmolnametmp = os.path.splitext(self.molfname)[0] \
                         + ".%0" + str(len(str(len(newidxs)))) + "i.xyz"
+                        
+        if self.config.getboolean('DEFAULT', 'out_mtxyz'):
+            res = [None] * len(newidxs)
+            for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
+                try:
+                    newidx = newidxs.index(oldidx)
+                    assert res[newidx] is None
+                    res[newidx] = oldmol
+                except ValueError:
+                    pass
+            for x in res:
+                assert x is not None
+            ofname = self.config.get('DEFAULT', 'out_mtxyz_fname')
+            self.backup(ofname)
+            file(ofname, 'w').writelines(res)
+        else:
+            for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
+                try:
+                    newidx = newidxs.index(oldidx)
+                except ValueError:
+                    pass
+                ofname = newmolnametmp % (newidx + 1)
+                self.backup(ofname)
+                file(ofname, 'w').write(oldmol)
 
         self.log('\nOldidx Newidx Ene(sort by Oldidx)\n')
-        for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
+        for oldidx in range(len(self.enes)):
             ene = self._tasks[oldidx][1]
             try:
                 newidx = newidxs.index(oldidx)
             except ValueError:
                 self.log('%6i %6s %.4f\n' % (oldidx+1, '', ene))
             else:
-                newfname = newmolnametmp % (newidx + 1)
-                file(newfname, 'w').write(oldmol)
                 self.log('%6i %6i %.4f\n' % (oldidx+1, newidx+1, ene))
 
         self.log('\nOldidx Newidx Ene(sort by Newidx)\n')
@@ -674,6 +698,16 @@ class LoopClosure(object):
         ofile.close()
         msg += '# config file end\n'
         self.log(msg)
+    
+    def backup(self, fname):
+        if not os.path.exists(fname): return
+        i = 1
+        while 1:
+            new_fname = fname + '.~%i~' % i
+            if not os.path.exists(fname):
+                break
+            i += 1
+        os.rename(fname, new_fname)
 
 def getr6result(coords, r6, dismat, shakedata):
     r6 = list(r6)

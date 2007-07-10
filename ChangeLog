@@ -4,6 +4,8 @@
 	* itcc/ccs2/loopclosure.py: improve config handling, now log file will 
 	print full config file.
 	fix a typo '__cal__'
+	new config option: out_mtxyz, out_mtxyz_fname, set default out_mtxyz to
+	 true to default output to a mtxyz file.
 
 2007-04-19  LI Daobing  <lidaobing@gmail.com>
 
