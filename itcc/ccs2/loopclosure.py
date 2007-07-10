@@ -33,43 +33,72 @@ class LoopClosure(object):
     '''need a doc'''
     S_NONE = 0
     S_INITED = 1
-
+    
+    config_keys = (('forcefield', str, "mm2"),
+                   ('moltypekey', str, ""),
+                   ('solvate', str, ""),
+                   ('cmptorsfile', str, ""),
+                   ('loopfile', str, ""),
+                   ('chiral_index_file', str, ""),
+                   ('molfname', str, ""),
+                   ('tinker_key_file', str, ""),
+                   ('is_chain', bool, False),
+                   ('check_energy_before_minimization', bool, True),
+                   ('is_achiral', bool, False),
+                   ('check_minimal', bool, False),
+                   ('maxsteps', int, -1),
+                   ('dump_steps', int, 1000),
+                   ('np', int, 1),
+                   ('head_tail', int, -1),
+                   ('loopstep', int, -1),
+                   ('log_level', int, 1),
+                   ('keeprange', float, -1.0),
+                   ('searchrange', float, -1.0),
+                   ('eneerror', float, 0.0001),
+                   ('legal_min_ene', float, -100000),
+                   ('torerror', float, 10.0),
+                   ('minconverge', float, 0.001),
+                   ('minimal_invalid_energy_before_minimization', float, 100000.0))
+    
     @classmethod
     def get_default_config(klass):
         from ConfigParser import RawConfigParser
+        res = RawConfigParser()
+        for x in klass.config_keys:
+            res.set('DEFAULT', x[0], str(x[2]))
+        return res
+        
 
-        defaults = {
-                'log_level': '1',
-                'np': '1',
-                # molecule type
-                'forcefield': 'mm2',
-
-                # loop type
-                'is_chain': 'False',
-
-                # dump
-                'dump_steps': '100',
-
-                # before minimization
-                'check_energy_before_minimization': 'True',
-                'minimal_invalid_energy_before_minimization': '100000', # unit: kcal/mol
-
-                # minimization
-                # 'minimization_method': 'newton',
-                'minconverge': '0.001', # unit: ?
-                # 'tinker_keep_chiral': 'true',
-
-                # after minimization
-                'legal_min_ene': '-100000', # unit: kcal/mol
-                'check_minimal': 'False',
-
-                # check
-                'eneerror': '0.0001', # unit: kcal/mol
-                'torerror': '10',     # unit: degree
-                }
+#        defaults = {
+#                'log_level': '1',
+#                'np': '1',
+#                # molecule type
+#                'forcefield': 'mm2',
+#
+#                # loop type
+#                'is_chain': 'False',
+#
+#                # dump
+#                'dump_steps': '100',
+#
+#                # before minimization
+#                'check_energy_before_minimization': 'True',
+#                'minimal_invalid_energy_before_minimization': '100000', # unit: kcal/mol
+#
+#                # minimization
+#                # 'minimization_method': 'newton',
+#                'minconverge': '0.001', # unit: ?
+#                # 'tinker_keep_chiral': 'true',
+#
+#                # after minimization
+#                'legal_min_ene': '-100000', # unit: kcal/mol
+#                'check_minimal': 'False',
+#
+#                # check
+#                'eneerror': '0.0001', # unit: kcal/mol
+#                'torerror': '10',     # unit: degree
+#                }
                 
-        return RawConfigParser(defaults)
-
     def __init__(self, config):
         self.config = config
 
@@ -249,7 +278,7 @@ class LoopClosure(object):
 
     def _get_tinker_key(self):
         res = ''
-        if self.tinker_key_file is not None:
+        if self.tinker_key_file:
             res += file(os.path.join(self.olddir, self.tinker_key_file)).read()
         if res and res[-1] != '\n':
             res += '\n'
@@ -286,7 +315,7 @@ class LoopClosure(object):
 
     def init_loop(self):
         if self.loopatoms is None:
-            if self.loopfile is not None:
+            if self.loopfile:
                 self.loopatoms = sum([[int(x) - 1 \
                         for x in line.split()
                         if line.strip() and line[0] != '#']
@@ -323,7 +352,7 @@ class LoopClosure(object):
 
     def init_check(self):
         if self.chiral_idxs is None:
-            if self.chiral_index_file is not None:
+            if self.chiral_index_file:
                 self.chiral_idxs = sum([[int(x) - 1 \
                         for x in line.split()
                         if line.strip() and line[0] != '#']
@@ -352,7 +381,7 @@ class LoopClosure(object):
                 self.loopstep = 1
 
         if self.cmptors is None:
-            if self.cmptorsfile is not None:
+            if self.cmptorsfile:
                 self.cmptors = [[int(x)-1 for x in line.split()
                     if line.strip() and line[0] != '#']
                     for line in file(self.cmptorsfile).readlines()]

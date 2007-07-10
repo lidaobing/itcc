@@ -1,3 +1,8 @@
+2007-07-10  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/ccs2/loopclosure.py: improve config handling, now log file will 
+	print full config file.
+
 2007-04-19  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/molecule/write.py (writegjf): fix a bug about header was
