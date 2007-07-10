@@ -53,7 +53,8 @@ def getparam(key):
         _GETPARAM_CACHE[key] = getparam_real(key)
     return _GETPARAM_CACHE[key]
 
-def getparam_real(key):    
+def getparam_real(key):
+    assert isinstance(key, str)
     if os.path.isfile(key):
         return os.path.abspath(key)
     if not key.endswith('.prm'):

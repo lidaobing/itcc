@@ -34,40 +34,44 @@ class LoopClosure(object):
     S_NONE = 0
     S_INITED = 1
     
-    config_keys = (('forcefield', str, "mm2"),
-                   ('moltypekey', str, ""),
+    config_keys = {
+        'DEFAULT': (('moltypekey', str, ""),
+                    ('cmptorsfile', str, ""),
+                    ('loopfile', str, ""),
+                    ('chiral_index_file', str, ""),
+                    ('molfname', str, ""),
+                    ('is_chain', bool, False),
+                    ('check_energy_before_minimization', bool, True),
+                    ('is_achiral', bool, False),
+                    ('check_minimal', bool, False),
+                    ('out_mtxyz', bool, True),
+                    ('out_mtxyz_fname', str, "$(molfname)s-out"),
+                    ('maxsteps', int, -1),
+                    ('dump_steps', int, 1000),
+                    ('np', int, 1),
+                    ('head_tail', int, -1),
+                    ('loopstep', int, -1),
+                    ('log_level', int, 1),
+                    ('keeprange', float, -1.0),
+                    ('searchrange', float, -1.0),
+                    ('eneerror', float, 0.0001),
+                    ('legal_min_ene', float, -100000),
+                    ('torerror', float, 10.0),
+                    ('minimal_invalid_energy_before_minimization', float, 100000.0)),
+        'tinker': (('forcefield', str, "mm2"),
                    ('solvate', str, ""),
-                   ('cmptorsfile', str, ""),
-                   ('loopfile', str, ""),
-                   ('chiral_index_file', str, ""),
-                   ('molfname', str, ""),
                    ('tinker_key_file', str, ""),
-                   ('is_chain', bool, False),
-                   ('check_energy_before_minimization', bool, True),
-                   ('is_achiral', bool, False),
-                   ('check_minimal', bool, False),
-                   ('out_mtxyz', bool, True),
-                   ('out_mtxyz_fname', str, "$(molfname)s-out"),
-                   ('maxsteps', int, -1),
-                   ('dump_steps', int, 1000),
-                   ('np', int, 1),
-                   ('head_tail', int, -1),
-                   ('loopstep', int, -1),
-                   ('log_level', int, 1),
-                   ('keeprange', float, -1.0),
-                   ('searchrange', float, -1.0),
-                   ('eneerror', float, 0.0001),
-                   ('legal_min_ene', float, -100000),
-                   ('torerror', float, 10.0),
-                   ('minconverge', float, 0.001),
-                   ('minimal_invalid_energy_before_minimization', float, 100000.0))
+                   ('minconverge', float, 0.001))
+        }
     
     @classmethod
     def get_default_config(klass):
         from ConfigParser import RawConfigParser
         res = RawConfigParser()
-        for x in klass.config_keys:
-            res.set('DEFAULT', x[0], str(x[2]))
+        for sect, val in klass.config_keys.items():
+            res.add_section(sect)
+            for x in val:
+                res.set(sect, x[0], str(x[2]))
         return res
         
 
@@ -104,25 +108,13 @@ class LoopClosure(object):
     def __init__(self, config):
         self.config = config
 
-        keys = {self.config.get: ['forcefield', 'moltypekey', 'solvate',
-                    'cmptorsfile', 'loopfile', 'chiral_index_file',
-                    'molfname', 'tinker_key_file'],
-                self.config.getboolean: ['is_chain', 
-                    'check_energy_before_minimization', 'is_achiral',
-                    'check_minimal'
-                    ],
-                self.config.getint: ['maxsteps', 'dump_steps', 'np',
-                    'head_tail', 'loopstep', 'log_level'],
-                self.config.getfloat: ['keeprange', 'searchrange', 'eneerror',
-                    'legal_min_ene', 'torerror', 'minconverge',
-                    'minimal_invalid_energy_before_minimization']}
-
-        for t in keys:
-            for key in keys[t]:
-                if self.config.has_option('DEFAULT', key):
-                    setattr(self, key, t('DEFAULT', key))
-                else:
-                    setattr(self, key, None)
+        methods = {str: self.config.get,
+                   bool: self.config.getboolean,
+                   int: self.config.getint,
+                   float: self.config.getfloat}
+        for sect, val in self.config_keys.items():
+            for x in val:
+                setattr(self, x[0], methods[x[1]](sect, x[0]))
 
         self.cmptors = None
 

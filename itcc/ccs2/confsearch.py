@@ -25,7 +25,11 @@ def testcyc(ifname, options):
 
     for key, val in options.__dict__.items():
         if val is not None:
-            config.set('DEFAULT', key, str(val))
+            for k, v in loopclosure.LoopClosure.config_keys.items():
+                if key in (x[0] for x in v):
+                    sect = k
+                    break
+            config.set(sect, key, str(val))
     
     config.set('DEFAULT', 'molfname', ifname)
 
