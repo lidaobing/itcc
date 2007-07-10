@@ -155,7 +155,7 @@ class LoopClosure(object):
         else:
             self._run_single_thread()
 
-    __cal__ = run
+    __call__ = run
 
     def __getstate__(self):
         odict = self.__dict__.copy()
