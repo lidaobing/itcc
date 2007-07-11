@@ -1,5 +1,7 @@
 2007-07-11  LI Daobing  <lidaobing@gmail.com>
 
+	* setup.py: add new console_scripts `itcc-moldiff'.
+	* itcc/tools/moldiff.py: added
 	* Makefile (install3): add install3
 
 2007-07-10  LI Daobing  <lidaobing@gmail.com>

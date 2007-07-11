@@ -114,6 +114,7 @@ setup(
             'itcc-rotate-to = itcc.tools.rotate_to:main',
             'itcc-histogram = itcc.tools.histogram:main',
             'itcc-tordiff = itcc.tools.tordiff:main',
+            'itcc-moldiff = itcc.tools.moldiff:main',
         ]
     },
     include_package_data = True,
