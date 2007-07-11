@@ -28,7 +28,7 @@ def main():
     res = moldiff(mol1, mol2)
     
     for i, x in enumerate(res):
-        print i+1, x
+        print i+1, '%f' % x
     
 if __name__ == '__main__':
     main()
