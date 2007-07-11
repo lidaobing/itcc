@@ -14,6 +14,12 @@ install2:
 		cp $$file $(HOME)/public_html/; \
 		echo http://$(strip $(shell hostname -i))/~$(USER)/$$(basename $$file); \
 	done
+
+install3:
+	sudo svn-clean
+	./setup.py bdist
+	sudo easy_install dist/*.egg
+
 dist: sdist
 sdist:
 	$(PYTHON) setup.py sdist -f
