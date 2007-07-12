@@ -114,9 +114,8 @@ def analyze(mol, forcefield):
 
     cmdname = 'analyze'
     forcefield = getparam(forcefield)
-    ifile = subprocess.Popen([cmdname, molfname, forcefield, 'E'],
-                             stdout=subprocess.PIPE).stdout
-    lines = ifile.readlines()
+    lines = subprocess.Popen([cmdname, molfname, forcefield, 'E'],
+                             stdout=subprocess.PIPE).communicate()[0].splitlines()
     for line in lines:
         if 'Total' in line:
             try:
@@ -158,13 +157,10 @@ def optimize_minimize_mol(cmdname, mol, forcefield,
 
     ofname = ifname + '_2'
 
-    ifile = subprocess.Popen([progpath, ifname, forcefield, str(converge)],
-                             stdout=subprocess.PIPE).stdout
+    lines = subprocess.Popen([progpath, ifname, forcefield, str(converge)],
+                             stdout=subprocess.PIPE).communicate()[0].splitlines()
 
     result = None
-
-    lines = ifile.readlines()
-    ifile.close()
 
     for line in lines:
         if line.find('Function') != -1:
@@ -198,13 +194,10 @@ def optimize_file(ifname, forcefield, converge = 0.01):
 
 def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
     ofname = ifname + '_2'
-    ifile = subprocess.Popen([cmdname, ifname, forcefield, str(converge)],
-                             stdout=subprocess.PIPE).stdout
+    lines = subprocess.Popen([cmdname, ifname, forcefield, str(converge)],
+                             stdout=subprocess.PIPE).communicate()[0].splitlines()
 
     result = None
-
-    lines = ifile.readlines()
-    ifile.close()
 
     for line in lines:
         if line.find('Function') != -1:
@@ -226,13 +219,10 @@ def optimize_minimize_file(cmdname, ifname, forcefield, converge = 0.01):
 
 def newton_file(ifname, forcefield, converge = 0.01):
     ofname = ifname + '_2'
-    ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
-                             stdout=subprocess.PIPE).stdout
+    lines = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
+                             stdout=subprocess.PIPE).communicate()[0].splitlines()
 
     result = None
-
-    lines = ifile.readlines()
-    ifile.close()
 
     for line in lines:
         if line.find('Function') != -1:
@@ -278,10 +268,8 @@ def vibratemol(mol, forcefield):
     
     forcefield = getparam(forcefield)
 
-    ifile = subprocess.Popen([cmdname, molfname, forcefield, '0'],
-                             stdout=subprocess.PIPE).stdout
-
-    lines = ifile.readlines()
+    lines = subprocess.Popen([cmdname, molfname, forcefield, '0'],
+                             stdout=subprocess.PIPE).communicate()[0].splitlines()
 
     for idx, line in enumerate(lines):
         if line.startswith(' Vibrational Frequencies (cm-1) :'):
@@ -300,7 +288,6 @@ def vibratemol(mol, forcefield):
             assert int(line[i:i+5]) == counter.next(), line
             result.append(_vibratefloat(line[i+5:i+15]))
 
-    ifile.close()
     molfile.close()
 
     return result
