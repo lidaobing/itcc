@@ -10,7 +10,7 @@ except ImportError: #pylint: disable-msg=W0704
 
 __revision__ = '$Rev$'
 
-def testcyc(ifname, options):
+def run(ifname, options):
     if options.resume is not None:
         import cPickle
         loopc = cPickle.load(file(options.resume))
@@ -21,7 +21,7 @@ def testcyc(ifname, options):
 
     if options.config is not None:
         config.read(options.config)    
-        del options.config
+    del options.config
 
     for key, val in options.__dict__.items():
         if val is not None:
@@ -195,11 +195,11 @@ def main():
     if options.resume is None:
         if len(args) != 1:
             parser.error("incorrect number of arguments")
-        testcyc(args[0], options)
+        run(args[0], options)
     else:
         if len(args) != 0:
             parser.error("incorrect number of arguments")
-        testcyc(None, options)
+        run(None, options)
 
 if __name__ == '__main__':
     main()

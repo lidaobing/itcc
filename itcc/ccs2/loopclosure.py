@@ -12,6 +12,7 @@ import random
 import tempfile
 import shutil
 import cPickle
+import logging
 from cStringIO import StringIO
 try:
     import threading
@@ -45,7 +46,7 @@ class LoopClosure(object):
                     ('is_achiral', bool, False),
                     ('check_minimal', bool, False),
                     ('out_mtxyz', bool, True),
-                    ('out_mtxyz_fname', str, "$(molfname)s-out"),
+                    ('out_mtxyz_fname', str, "%(molfname)s-out"),
                     ('maxsteps', int, -1),
                     ('dump_steps', int, 1000),
                     ('np', int, 1),
@@ -66,10 +67,11 @@ class LoopClosure(object):
     
     @classmethod
     def get_default_config(klass):
-        from ConfigParser import RawConfigParser
-        res = RawConfigParser()
+        from ConfigParser import ConfigParser
+        res = ConfigParser()
         for sect, val in klass.config_keys.items():
-            res.add_section(sect)
+            if sect != 'DEFAULT':
+                res.add_section(sect)
             for x in val:
                 res.set(sect, x[0], str(x[2]))
         return res
@@ -141,8 +143,12 @@ class LoopClosure(object):
         self.r6s = None
 
     def run(self):
+        logging.basicConfig(level=logging.INFO)
+        logging.debug('enter run')
+        logging.debug('call self.init')
         if not self.init():
             return
+        logging.debug('return from self.init')
 
         if self.np > 1:
             self._run_multi_thread()
@@ -188,9 +194,10 @@ class LoopClosure(object):
 
 
     def _run_single_thread(self):
+        logging.debug('enter _run_single_thread')
         self.multithread = False
         last_dump_step = self._step_count
-        while self.maxsteps is None \
+        while self.maxsteps < 0 \
               or self._step_count < self.maxsteps:
             if self._step_count - last_dump_step >= self.dump_steps:
                 self.dump()
@@ -200,8 +207,12 @@ class LoopClosure(object):
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
                 break
+            logging.debug('call self.runtask')
             self.runtask(taskidx, r6)
+            logging.debug('return from self.runtask')
+        logging.debug('call self._cleanup')
         self._cleanup()
+        logging.debug('return from self._cleanup')
 
     def _run_multi_thread(self):
         self.multithread = True
@@ -423,7 +434,9 @@ class LoopClosure(object):
     def _cleanup(self):
         os.chdir(self.olddir)
         shutil.rmtree(self.newdir)
+        logging.debug('call self.reorganizeresults')
         self.reorganizeresults()
+        logging.debug('return from self.reorganizeresults')
         self.printend()
 
     def runtask(self, taskidx, r6):
@@ -599,8 +612,6 @@ class LoopClosure(object):
         newidxs = [ene[1] for ene in self.enes 
                    if self.keeprange is None
                       or ene[0] <= self.keepbound]
-        newmolnametmp = os.path.splitext(self.molfname)[0] \
-                        + ".%0" + str(len(str(len(newidxs)))) + "i.xyz"
                         
         if self.config.getboolean('DEFAULT', 'out_mtxyz'):
             res = [None] * len(newidxs)
@@ -614,9 +625,14 @@ class LoopClosure(object):
             for x in res:
                 assert x is not None
             ofname = self.config.get('DEFAULT', 'out_mtxyz_fname')
+            logging.debug('call self.backup')
             self.backup(ofname)
+            logging.debug('return from self.backup')
+            logging.info('write result to %s' % ofname)
             file(ofname, 'w').writelines(res)
         else:
+            newmolnametmp = os.path.splitext(self.molfname)[0] \
+                        + ".%0" + str(len(str(len(newidxs)))) + "i.xyz"
             for oldidx, oldmol in enumerate(oldmols.read_mol_as_string()):
                 try:
                     newidx = newidxs.index(oldidx)
@@ -663,10 +679,17 @@ class LoopClosure(object):
             ene = tinker.analyze(newmol, self.forcefield)
             if ene >= self.minimal_invalid_energy_before_minimization:
                 return None, None
-        return tinker.newton_mol(newmol,
+        logging.debug('call tinker.newton_mol')
+        logging.debug('  self.forcefield=%s' % self.forcefield)
+        logging.debug('  self.minconverge=%s' % self.minconverge)
+        logging.debug('  prefix=%s' % threading.currentThread().getName())
+        res = tinker.newton_mol(newmol,
                                   self.forcefield,
                                   self.minconverge,
                                   prefix=threading.currentThread().getName())
+        logging.debug('return from tinker.newton_mol')
+        return res
+        
     
     # TODO: provide a fast algorithm if self.is_head_tail is false 
     # and self.is_achiral is false and self.loopstep is 0
@@ -685,6 +708,7 @@ class LoopClosure(object):
     def print_config(self):
         msg = '# config file begin\n'
         ofile = StringIO()
+        ofile.write(repr(self.config))
         self.config.write(ofile)
         msg += ofile.getvalue()
         ofile.close()
@@ -696,9 +720,10 @@ class LoopClosure(object):
         i = 1
         while 1:
             new_fname = fname + '.~%i~' % i
-            if not os.path.exists(fname):
+            if not os.path.exists(new_fname):
                 break
             i += 1
+        logging.info("backup `%s' to `%s'" % (fname, new_fname))
         os.rename(fname, new_fname)
 
 def getr6result(coords, r6, dismat, shakedata):

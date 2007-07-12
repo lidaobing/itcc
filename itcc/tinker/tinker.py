@@ -336,12 +336,11 @@ def newton_mol(mol, forcefield,
     ofname = ifname + '_2'
 
     ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
-                             stdout=subprocess.PIPE).stdout
+                             stdout=subprocess.PIPE).communicate()[0]
 
     result = None
 
-    lines = ifile.readlines()
-    ifile.close()
+    lines = ifile.splitlines()
 
     for line in lines:
         if line.find('Function') != -1:

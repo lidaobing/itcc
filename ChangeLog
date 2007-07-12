@@ -1,3 +1,11 @@
+2007-07-12  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/tinker/tinker.py: use communicate to end subprocess as soon as possible
+	* itcc/ccs2/confsearch.py: rename `testcyc' to `run'.
+	* itcc/ccs2/loopclosure.py: dont't add 'DEFAULT' section to config file.
+	add logging code
+	fix default value of out_mtxyz_fname
+
 2007-07-11  LI Daobing  <lidaobing@gmail.com>
 
 	* setup.py: add new console_scripts `itcc-moldiff'.
