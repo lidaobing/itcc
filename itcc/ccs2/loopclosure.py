@@ -377,7 +377,7 @@ class LoopClosure(object):
             else:
                 self.is_achiral = True
                 
-        if self.loopstep is None:
+        if self.loopstep == -1:
             if self.moltypekey == 'peptide' or self.is_chain:
                 self.loopstep = 0
             else:
