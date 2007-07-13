@@ -63,7 +63,7 @@ def main():
     unittest.main()
 
 class Test(TestCase):
-    def runTest(self):
+    def test_1(self):
         mol = read.readxyz(StringIO(test_in))
         mol = loads(dumps(mol))
         ofile = StringIO()

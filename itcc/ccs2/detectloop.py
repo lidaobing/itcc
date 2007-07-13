@@ -1,5 +1,10 @@
 # $Id$
 
+try:
+    set
+except:
+    from sets import Set as set
+
 __all__ = ["loopdetect", 'NOLOOP',
            'SIMPLELOOPS', 'COMPLEXLOOPS']
 __revision__ = '$Rev$'

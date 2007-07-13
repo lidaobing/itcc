@@ -3,7 +3,7 @@ import numpy
 from itcc.ccs2 import pyramid
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         A = numpy.array((1.0, 2.0, 3.0))
         B = numpy.array((5.0, 4.0, 7.0))
         C = numpy.array((-1.0, 2.0, 0.5))

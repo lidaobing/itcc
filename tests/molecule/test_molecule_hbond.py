@@ -1,6 +1,12 @@
 import unittest
 import StringIO
 
+try:
+    set
+except:
+    from sets import Set as set
+
+
 from itcc.molecule import read, hbond
 
 test_in = ''' 50  -125.3756
@@ -56,7 +62,7 @@ test_in = ''' 50  -125.3756
     50  HC    -1.128088   -3.085295   -1.404769     6    47
 '''
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         mol = read.readxyz(StringIO.StringIO(test_in))
         hbonds = set(hbond.detect_hbond(mol))
         self.assertEqual(hbonds, set(((33, 4, 0), (43, 14, 10), (3, 24, 20), (23, 44, 40))))

@@ -7,7 +7,7 @@ from itcc.ccs2 import mezei
 from itcc.core.tools import distance
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         points = numpy.array(((0.0, 0.0, 0.0),
                               (1.0, 0.0, 0.0),
                               (2.0, 2.0, 1.0),

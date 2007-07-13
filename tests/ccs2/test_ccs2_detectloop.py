@@ -44,7 +44,7 @@ in_str = '''\
 
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         mol = read.readxyz(StringIO.StringIO(in_str))
         res = detectloop.loopdetect(mol)
         if res[0] != 1:

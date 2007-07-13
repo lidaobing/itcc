@@ -5,7 +5,7 @@ import unittest
 from itcc.molecule import atom
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         a = atom.Atom(1)
         a = atom.Atom('H')
         self.assertRaises(ValueError, lambda: atom.Atom(0))

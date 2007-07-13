@@ -78,7 +78,7 @@ test_out = '''17 1 2 3
 '''
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         ifile = StringIO.StringIO(test_in)
         ofile = StringIO.StringIO()
         mol2top(ifile, ofile)

@@ -123,7 +123,7 @@ test_out = '''\
 '''
 
 class Test(unittest.TestCase):
-    def runTest(self):
+    def test_1(self):
         import base64
         import StringIO
         from itcc.tools import dmddat2mtxyz
