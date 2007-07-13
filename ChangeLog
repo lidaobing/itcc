@@ -1,6 +1,7 @@
 2007-07-13  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/ccs2/loopclosure.py: default loopstep is -1 instead of None
+	fix maxsteps bug in multicpu.
 
 2007-07-12  LI Daobing  <lidaobing@gmail.com>
 

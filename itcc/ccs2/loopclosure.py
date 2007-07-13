@@ -239,7 +239,7 @@ class LoopClosure(object):
             some_threads_finished_condition.acquire()
             clear_threads()
             if (not threads and not self.taskheap) \
-              or (self.maxsteps is not None
+              or (self.maxsteps >= 0
                   and self._step_count >= self.maxsteps) :
                 some_threads_finished_condition.release()
                 for thread in threads:
