@@ -197,22 +197,22 @@ rmsd_common(PyObject* self, PyObject* args,
     {
       coor1[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec1, j));
     }
-    Py_CLEAR(vec1);
+    Py_XDECREF(vec1);
 
     PyObject* vec2 = PySequence_Fast(PySequence_Fast_GET_ITEM(coords2, i), "");
     for(int j = 0; j < 3; ++j)
     {
       coor2[i][j] = PyFloat_AsDouble(PySequence_Fast_GET_ITEM(vec2, j));
     }
-    Py_CLEAR(vec2);
+    Py_XDECREF(vec2);
   }
   double res = _rmsd(len, coor1, coor2, U);
   delete []coor1;
   delete []coor2;
-  Py_CLEAR(coords1);
-  Py_CLEAR(coords2);
-  Py_CLEAR(mol1_coords);
-  Py_CLEAR(mol2_coords);
+  Py_XDECREF(coords1);
+  Py_XDECREF(coords2);
+  Py_XDECREF(mol1_coords);
+  Py_XDECREF(mol2_coords);
   return res;
 }
 
