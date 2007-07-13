@@ -11,15 +11,15 @@ class TestTools(unittest.TestCase):
         d = numpy.array((1.0, 1.0, 1.0))
         
         t1 = tools.torsionangle(a, a, c, d)
-        self.assertNotEqual(t1, t1) # t1 is nan
+        self.assertEqual(str(t1), 'nan') # t1 is nan
         t1 = tools.torsionangle(a, b, b, d)
-        self.assertNotEqual(t1, t1) # t1 is nan
+        self.assertEqual(str(t1), 'nan') # t1 is nan
         t1 = tools.torsionangle(a, b, c, c)
-        self.assertNotEqual(t1, t1) # t1 is nan
+        self.assertEqual(str(t1), 'nan') # t1 is nan
         t1 = tools.torsionangle(a, b, a, d)
-        self.assertNotEqual(t1, t1) # t1 is nan
+        self.assertEqual(str(t1), 'nan') # t1 is nan
         t1 = tools.torsionangle(a, b, c, b)
-        self.assertNotEqual(t1, t1) # t1 is nan
+        self.assertEqual(str(t1), 'nan') # t1 is nan
         self.assertAlmostEqual(math.degrees(tools.torsionangle(a, b, c, a)),
                                0.0)
         self.assertAlmostEqual(math.degrees(tools.torsionangle(a, b, c, d)),

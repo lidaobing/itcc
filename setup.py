@@ -3,6 +3,7 @@
 
 import os
 import numpy
+import sys
 from setuptools import setup, find_packages
 from distutils.core import Extension
 
@@ -46,14 +47,19 @@ ext_modules = [Extension("itcc.core.ctools", ["itcc/core/ctools.c"]),
 #                         libraries=['mopac7', 'g2c', 'boost_python-mt'])
                ]
 
+py_modules = []
+if sys.version_info[:2] == (2, 3):
+    py_modules.append('subprocess')
+
 setup(
     name="itcc",
     version=__version__,
     author='LI Daobing',
     author_email='lidaobing@gmail.com',
     url='http://www.chemgen.szpku.edu.cn',
-    packages = find_packages(),
+    packages = [x for x in find_packages() if x.startswith('itcc')],
     ext_modules = ext_modules,
+    py_modules = py_modules,
     test_suite = 'tests',
     entry_points = {
         'console_scripts': [

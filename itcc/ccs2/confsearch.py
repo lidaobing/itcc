@@ -26,7 +26,7 @@ def run(ifname, options):
     for key, val in options.__dict__.items():
         if val is not None:
             for k, v in loopclosure.LoopClosure.config_keys.items():
-                if key in (x[0] for x in v):
+                if key in [x[0] for x in v]:
                     sect = k
                     break
             config.set(sect, key, str(val))

@@ -41,8 +41,8 @@ def torsdiff(tors1, tors2,
         for i in range(len(tors1)/loop_step - 1):
             tors2s += [x[loop_step:] + x[:loop_step] for x in tors2s[-n:]]
             
-    return min(tordiff(tors1, x) for x in tors2s)
+    return min([tordiff(tors1, x) for x in tors2s])
 
 def tordiff(tors1, tors2):
     Angle = periodnumber.genPNclass(-math.pi, math.pi)
-    return max(abs(Angle(x1-x2)) for x1, x2 in zip(tors1, tors2))
+    return max([abs(Angle(x1-x2)) for x1, x2 in zip(tors1, tors2)])

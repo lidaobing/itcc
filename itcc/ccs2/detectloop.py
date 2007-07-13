@@ -149,11 +149,11 @@ def main():
     elif res[0] == SIMPLELOOPS:
         print 'SIMPLELOOPS'
         for loop in res[1]:
-            print ' '.join(str(x+1) for x in std_simple_loop(loop))
+            print ' '.join([str(x+1) for x in std_simple_loop(loop)])
     else:
         print 'COMPLEXLOOPS'
         for loop in res[1]:
-            print ' '.join(str(x+1) for x in std_complex_loop(loop))
+            print ' '.join([str(x+1) for x in std_complex_loop(loop)])
 
 if __name__ == '__main__':
     main()

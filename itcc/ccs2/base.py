@@ -14,7 +14,7 @@ class Base:
             doubleloop = tuple(loopatoms) * 2
             count = len(doubleloop) / 2
         for i in range(count):
-            yield tuple((x,) for x in doubleloop[i:i+7])
+            yield tuple([(x,) for x in doubleloop[i:i+7]])
     
 def _test():
     base = Base()

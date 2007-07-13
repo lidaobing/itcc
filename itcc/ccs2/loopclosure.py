@@ -65,7 +65,6 @@ class LoopClosure(object):
                    ('minconverge', float, 0.001))
         }
     
-    @classmethod
     def get_default_config(klass):
         from ConfigParser import ConfigParser
         res = ConfigParser()
@@ -75,7 +74,7 @@ class LoopClosure(object):
             for x in val:
                 res.set(sect, x[0], str(x[2]))
         return res
-        
+    get_default_config = classmethod(get_default_config)
 
 #        defaults = {
 #                'log_level': '1',
@@ -143,7 +142,6 @@ class LoopClosure(object):
         self.r6s = None
 
     def run(self):
-        logging.basicConfig(level=logging.INFO)
         logging.debug('enter run')
         logging.debug('call self.init')
         if not self.init():
@@ -548,11 +546,11 @@ class LoopClosure(object):
 
     def print_params(self):
         msg = 'starttime: %s\n' % time.ctime(self.start_time)
-        msg += 'loop: %s\n' % ' '.join(str(x+1) for x in self.loopatoms)
+        msg += 'loop: %s\n' % ' '.join([str(x+1) for x in self.loopatoms])
         msg += 'r6s:\n'
         msg += r6s2str(self.r6s)
         if self.chiral_idxs:
-            msg += 'Chiral: %s\n' % ' '.join(str(x+1) for x in self.chiral_idxs)
+            msg += 'Chiral: %s\n' % ' '.join([str(x+1) for x in self.chiral_idxs])
         msg += 'tinker.key:\n'
         msg += self._get_tinker_key()
         msg += '\n'

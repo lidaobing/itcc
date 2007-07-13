@@ -34,7 +34,7 @@ class Test(unittest.TestCase):
 
         for i in range(len(a)):
             for j in range(i):
-                self.assert_(sum(distance(a[i][k], a[j][k]) for k in range(2,5)) > 0.5)
+                self.assert_(sum([distance(a[i][k], a[j][k]) for k in range(2,5)]) > 0.5)
 
 def _test():
     unittest.main()
