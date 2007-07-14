@@ -142,6 +142,7 @@ class LoopClosure(object):
         self.r6s = None
 
     def run(self):
+        logging.getLogger().setLevel(logging.INFO)
         logging.debug('enter run')
         logging.debug('call self.init')
         if not self.init():
@@ -179,13 +180,13 @@ class LoopClosure(object):
         self.mutex = threading.Lock()
 
     def getkeepbound(self):
-        if self.keeprange is None:
+        if self.keeprange < 0:
             return None
         return self.lowestene + self.keeprange
     keepbound = property(getkeepbound)
 
     def getsearchbound(self):
-        if self.searchrange is None:
+        if self.searchrange < 0:
             return None
         return self.lowestene + self.searchrange
     searchbound = property(getsearchbound)
@@ -200,7 +201,6 @@ class LoopClosure(object):
             if self._step_count - last_dump_step >= self.dump_steps:
                 self.dump()
                 last_dump_step = self._step_count
-                os.system("ps -p %s -o rss" % os.getpid())
             try:
                 taskidx, r6 = self.taskqueue().next()
             except StopIteration:
@@ -475,8 +475,8 @@ class LoopClosure(object):
         if is out of range, return -2'''
         res = None
         self.mutex.acquire()
-        if self.keeprange is not None and \
-           self.searchrange is not None:
+        if self.keeprange >= 0 and \
+           self.searchrange >= 0:
             if ene > max(self.keepbound, self.searchbound):
                 res = -2
 
@@ -608,7 +608,7 @@ class LoopClosure(object):
         self.tmp_mtxyz_file.seek(0)
         oldmols = mtxyz.Mtxyz(self.tmp_mtxyz_file)
         newidxs = [ene[1] for ene in self.enes 
-                   if self.keeprange is None
+                   if self.keeprange < 0.0
                       or ene[0] <= self.keepbound]
                         
         if self.config.getboolean('DEFAULT', 'out_mtxyz'):
