@@ -1,5 +1,6 @@
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 
+	* tests/ccs2/test_ccs2_detectloop.py: add mol name as comment.
 	* tests/ccs2/confsearch.py: restore `sys.stdout' and `sys.stderr' after test.
 	* itcc/itcc_main.py: python2.3 does not have `sorted'.
 	* itcc/tools/histogram.py: python2.3 does not have `sorted'.

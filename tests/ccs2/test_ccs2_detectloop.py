@@ -5,7 +5,7 @@ from itcc.molecule import read
 from itcc.ccs2 import detectloop
 
 in_str = '''\
-    34  molden generated tinker .xyz (mm3 param.)
+    34  H11C6-C6H11
      1  C     -0.299313   -0.731773    0.091523     1     2     3    13    18
      2  C     -0.418179   -0.584204    1.624583     1     1     4     5     6
      3  C      1.065422   -0.274523   -0.495834     1     1    19    20    30
