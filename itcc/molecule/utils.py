@@ -1,9 +1,15 @@
+# $Id$
 import sys
 import os.path
 import math
 from itcc.molecule import read, write
 from itcc.molecule.tools import neighbours, is_pyramid
 from itcc.molecule import relalist
+
+try:
+    sorted
+except:
+    from itcc.core.tools import sorted_ as sorted
 
 def mirrormol():
     if len(sys.argv) != 2:

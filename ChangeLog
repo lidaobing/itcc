@@ -1,5 +1,9 @@
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/itcc_main.py: python2.3 does not have `sorted'.
+	* itcc/tools/histogram.py: python2.3 does not have `sorted'.
+	* itcc/molecule/utils.py: python2.3 does not have `sorted'.
+	* itcc/core/tools.py: add `sorted_'.
 	* itcc/ccs2/loopclosure.py: 
 	  - fix bug on searchrange and keeprange
 	  - fix bug on maxsteps

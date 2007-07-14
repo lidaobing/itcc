@@ -2,6 +2,11 @@
 import sys
 import numpy
 
+try:
+    sorted
+except:
+    from itcc.core.tools import sorted_ as sorted
+
 def histogram(ifile, base, step):
     data = numpy.array([float(x) for x in ifile.read().split()])
     data -= base

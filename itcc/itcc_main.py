@@ -6,6 +6,11 @@ import sys
 import os.path
 import itcc
 
+try:
+    sorted
+except:
+    from itcc.core.tools import sorted_ as sorted
+
 subscript = [
     ('Gaussian', {
         'out2arch':   ('tools.out2arch', 'gaussian out to arch file'),

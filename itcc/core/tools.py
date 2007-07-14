@@ -174,6 +174,12 @@ def open_file_or_stdin(ifname):
     else:
         return file(ifname)
 
+def sorted_(iterable):
+    '''python 2.3 does not support sorted'''
+    res = list(iterable)
+    res.sort()
+    return res
+
 def _test():
     import doctest
     doctest.testmod()
