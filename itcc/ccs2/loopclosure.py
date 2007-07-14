@@ -706,7 +706,6 @@ class LoopClosure(object):
     def print_config(self):
         msg = '# config file begin\n'
         ofile = StringIO()
-        ofile.write(repr(self.config))
         self.config.write(ofile)
         msg += ofile.getvalue()
         ofile.close()
