@@ -287,7 +287,7 @@ class LoopClosure(object):
             res += '\n'
         if not self.is_achiral:
             res += 'ENFORCE-CHIRALITY\n'
-        if self.solvate is not None:
+        if self.solvate:
             res += 'SOLVATE %s\n' % self.solvate
         return res
         
