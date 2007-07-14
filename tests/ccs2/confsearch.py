@@ -1,3 +1,4 @@
+# $Id$
 import sys
 import os
 import unittest
@@ -78,6 +79,8 @@ class TestConfsearch(unittest.TestCase):
     def setUp(self):
         from itcc.ccs2 import confsearch
         self.confsearch = confsearch
+        self.stdout_bak = sys.stdout
+        self.stderr_bak = sys.stderr
         os.system("rm -rf subdirs")
         os.mkdir("subdirs", 0700)
         self.olddir = os.getcwd()
@@ -118,6 +121,8 @@ class TestConfsearch(unittest.TestCase):
 #        self.confsearch.main()
         
     def tearDown(self):
+        sys.stdout = self.stdout_bak
+        sys.stderr = self.stderr_bak
         os.chdir(self.olddir)
 
 def _test():
