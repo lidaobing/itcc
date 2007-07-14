@@ -601,7 +601,7 @@ class LoopClosure(object):
             logstr = '  Step %5i   Comb %02i-%02i %42.4f ' \
                 % (self._step_count, self.r6s[r6], molidx, rene)
             yield rmol, rene, logstr
-            if self.maxsteps is not None and self._step_count >= self.maxsteps:
+            if self.maxsteps > 0 and self._step_count >= self.maxsteps:
                 return
 
     def reorganizeresults(self):

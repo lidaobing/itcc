@@ -1,6 +1,9 @@
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/ccs2/loopclosure.py: fix bug on searchrange and keeprange
+	* itcc/ccs2/loopclosure.py: 
+	  - fix bug on searchrange and keeprange
+	  - fix bug on maxsteps
+	
 
 2007-07-13  LI Daobing  <lidaobing@gmail.com>
 
