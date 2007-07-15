@@ -1,3 +1,7 @@
+2007-07-15  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/ccs2/detectloop.py: new algorithm support H11C6-C6H11.
+
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 
 	* tests/ccs2/test_ccs2_detectloop.py: add mol name as comment.
