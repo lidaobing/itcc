@@ -65,10 +65,10 @@ class LoopClosure(object):
                    ('minconverge', float, 0.001))
         }
     
-    def get_default_config(klass):
+    def get_default_config(cls):
         from ConfigParser import ConfigParser
         res = ConfigParser()
-        for sect, val in klass.config_keys.items():
+        for sect, val in cls.config_keys.items():
             if sect != 'DEFAULT':
                 res.add_section(sect)
             for x in val:

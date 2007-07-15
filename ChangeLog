@@ -1,7 +1,9 @@
 2007-07-15  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/ccs2/loopclosure.py: update for detectloop
-	* itcc/ccs2/findneighbour.py: ditto
+	* itcc/ccs2/loopclosure.py:
+	  - update for detectloop
+	  - s/klass/cls/, satisfy pylint.
+	* itcc/ccs2/findneighbour.py: update for detectloop
 	* tests/ccs2/test_ccs2_detectloop.py: ditto
 	* itcc/ccs2/catordiff.py: ditto
 	* itcc/ccs2/detectloop.py:
