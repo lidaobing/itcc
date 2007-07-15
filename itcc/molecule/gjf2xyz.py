@@ -15,7 +15,8 @@ def gjf2xyz(gjffname, ofile):
 
 def main():
     if len(sys.argv) not in (2, 3):
-        print >> sys.stderr, "Usage: %s gjffname|- [xyzfname|-]" % sys.argv[0]
+        import os.path
+        print >> sys.stderr, "Usage: %s gjffname|- [xyzfname|-]" % os.path.basename(sys.argv[0])
         sys.exit(1)
     
 

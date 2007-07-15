@@ -8,22 +8,24 @@ from itcc.molecule import read, write
 def xyz2gjf(ifile, header = None):
     write.writegjf(read.readxyz(ifile), sys.stdout, header)
 
-def _usage(ofile):
-    ofile.write('Usage: xyz2gjf [-h <headerfile|->] <xyzfname|->\n')
+def _usage(argv0, ofile):
+    ofile.write('Usage: ' + argv0 + ' [-h <headerfile|->] <xyzfname|->\n')
 
 def main():
+    import os.path
+    argv0 = os.path.basename(sys.argv[0])
     argv = sys.argv[1:]
     headerfname = None
     if argv:
         if argv[0] == '-h':
             argv = argv[1:]
             if not argv:
-                _usage(sys.stderr)
+                _usage(argv0, sys.stderr)
                 sys.exit(1)
             headerfname = argv[0]
             argv = argv[1:]
     if len(argv) != 1:
-        _usage(sys.stderr)
+        _usage(argv0, sys.stderr)
         sys.exit(1)
 
     header = None

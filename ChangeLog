@@ -1,5 +1,8 @@
 2007-07-15  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/molecule/gjf2xyz.py: improve usage
+	* itcc/tools/xyz2gro.py: improve usage
+	* itcc/tools/xyz2gjf.py: improve usage
 	* itcc/ccs2/loopclosure.py:
 	  - update for detectloop
 	  - s/klass/cls/, satisfy pylint.

@@ -29,7 +29,8 @@ def xyz2gro(ifname, ofname):
 def main():
     import sys
     if len(sys.argv) != 3:
-        print >> sys.stderr, "Usage: %s ifname ofname" % sys.argv[0]
+        import os.path
+        print >> sys.stderr, "Usage: %s ifname ofname" % os.path.basename(sys.argv[0])
         sys.exit(1)
     xyz2gro(sys.argv[1], sys.argv[2])
 
