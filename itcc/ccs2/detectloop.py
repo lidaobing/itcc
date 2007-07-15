@@ -14,6 +14,9 @@ NOLOOP = 0
 SIMPLELOOPS = 1
 COMPLEXLOOPS = 2
 
+def is_simpleloop(loop):
+    return isinstance(loop[0], int)
+
 def part_loop(loop):
     res = []
     cache = set()
