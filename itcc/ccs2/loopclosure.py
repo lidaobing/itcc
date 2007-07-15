@@ -324,14 +324,12 @@ class LoopClosure(object):
                         if line.strip() and line[0] != '#']
                         for line in file(os.path.join(self.olddir, self.loopfile)).readlines()], [])
         if self.loopatoms is None:
-            looptype, loops = detectloop.loopdetect(self.seedmol)
-            if looptype == detectloop.SIMPLELOOPS \
-                    and len(loops) == 1:
-                self.loopatoms = loops[0]
-
-        if self.loopatoms is None:
-            self.log("this moleclue does not contain loop. exit.\n")
-            return False
+            loops = detectloop.loopdetect(self.seedmol)
+            try:
+                self.loopatoms = detectloop.pick_largest_simpleloop(loops)
+            except Exception, e:
+                self.log(str(e))
+                return False
 
         if len(self.loopatoms) < 6:
             self.log("your ring is %s-member, "

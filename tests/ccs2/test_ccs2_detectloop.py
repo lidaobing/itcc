@@ -47,9 +47,8 @@ class Test(unittest.TestCase):
     def test_1(self):
         mol = read.readxyz(StringIO.StringIO(in_str))
         res = detectloop.loopdetect(mol)
-        if res[0] != 1:
-            warnings.warn("res[0] should be 1")
-        
+        res.sort()
+        self.assertEqual(res, [[0, 1, 3, 6, 9, 12], [2, 18, 20, 23, 26, 29]])
 
 if __name__ == '__main__':
     unittest.main()

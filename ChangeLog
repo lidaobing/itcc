@@ -1,8 +1,13 @@
 2007-07-15  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/ccs2/loopclosure.py: update for detectloop
+	* itcc/ccs2/findneighbour.py: ditto
+	* tests/ccs2/test_ccs2_detectloop.py: ditto
+	* itcc/ccs2/catordiff.py: ditto
 	* itcc/ccs2/detectloop.py:
 	  - new algorithm support H11C6-C6H11.
 	  - new func `is_simpleloop', `is_allsimpleloop', `pick_largest_simpleloop'.
+	  - clean code.
 
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 
