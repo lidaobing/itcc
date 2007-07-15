@@ -2,7 +2,7 @@
 
 	* itcc/ccs2/detectloop.py:
 	  - new algorithm support H11C6-C6H11.
-	  - new func `is_simpleloop'.	
+	  - new func `is_simpleloop', `is_allsimpleloop', `pick_largest_simpleloop'.
 
 2007-07-14  LI Daobing  <lidaobing@gmail.com>
 

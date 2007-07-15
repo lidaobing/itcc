@@ -14,8 +14,29 @@ NOLOOP = 0
 SIMPLELOOPS = 1
 COMPLEXLOOPS = 2
 
+class Error(Exception):
+    pass
+    
+
 def is_simpleloop(loop):
     return isinstance(loop[0], int)
+
+def is_allsimpleloop(loops):
+    for loop in loops:
+        if not is_simpleloop(loop):
+            return False
+    return True
+
+def pick_largest_simpleloop(loops):
+    if not loops:
+        raise Error("no loop")
+    if not is_allsimpleloop(loops):
+        raise Error("some loop is not simple loop")
+    lens = [len(x) for x in loops]
+    lens.sort()
+    if len(lens) >= 2 and lens[-1] == lens[-2]:
+        raise Error("there is a tie between laargest simple loop")
+    return [x for x in loops if len(x) == lens[-1]][0]
 
 def part_loop(loop):
     res = []
