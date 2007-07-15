@@ -39,7 +39,7 @@ def tordiff(tors1, tors2):
             thisresult = max(thisresult, abs((tors1[i] - newtors2[i] - pi) % (pi*2) + pi))
             if thisresult > result:
                 break
-        result = min(result. thisresult)
+        result = min(result, thisresult)
     return result
 
 def varytors(tors):

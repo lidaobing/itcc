@@ -11,6 +11,7 @@ __revision__ = '$Rev$'
 
 name = 'itcc'
 version = '0.8.2.dev'
+description = 'collection of tools on computational chemistry'
 author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
 url = 'http://www.chemgen.szpku.edu.cn'
@@ -114,6 +115,7 @@ def main():
     setup(
         name=name,
         version=version,
+        description=description,
         author=author,
         author_email=author_email,
         url=url,
