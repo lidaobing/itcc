@@ -1,4 +1,4 @@
-# $Id$
+# $Id: loopclosure.py 749 2007-07-17 02:31:29Z lidaobing@gmail.com $
 # pylint: disable-msg=E1101
 # pylint: disable-msg=W0201
 import sys
@@ -28,7 +28,7 @@ from itcc.ccs2 import mezei as Mezei
 from itcc.ccs2 import mezeipro as Mezeipro
 
 __all__ = ['LoopClosure']
-__revision__ = '$Rev$'
+__revision__ = '$Rev: 749 $'
 
 class Error(Exception):
     pass
@@ -226,6 +226,7 @@ class LoopClosure(object):
         logging.debug('return from self._cleanup')
 
     def _run_multi_thread(self):
+        raise Error("does not support multi thread in find-neighbour")
         self.multithread = True
 
         threads = []
@@ -326,7 +327,7 @@ class LoopClosure(object):
             return False
         self._step_count += 1
         self.lowestene = ene
-        self.addtask(mol, ene)
+        self.addtask(mol, ene, 1)
         return True
 
     def init_loop(self):
@@ -522,7 +523,7 @@ class LoopClosure(object):
         self.mutex.release()
         return res
 
-    def addtask(self, mol, ene):
+    def addtask(self, mol, ene, init=None):
         self.mutex.acquire()
         self._tasks.append((mol.coords, ene))
         taskidx = len(self._tasks) - 1
@@ -532,8 +533,9 @@ class LoopClosure(object):
         self.writemol(mol, ene)
         r6s = self.r6s.keys()
         random.shuffle(r6s)
-        for r6idx, r6 in enumerate(r6s):
-            heapq.heappush(self.taskheap, (r6idx, ene, taskidx, r6))
+        if init is not None:
+            for r6idx, r6 in enumerate(r6s):
+                heapq.heappush(self.taskheap, (r6idx, ene, taskidx, r6))
         self.mutex.release()
 
     def taskqueue(self):

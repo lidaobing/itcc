@@ -95,6 +95,7 @@ entry_points = {
         'itcc-histogram = itcc.tools.histogram:main',
         'itcc-tordiff = itcc.tools.tordiff:main',
         'itcc-moldiff = itcc.tools.moldiff:main',
+        'itcc-findneighbour = itcc.ccs2.confsearch2:main',
     ]
 }
 classifiers = [
