@@ -1,6 +1,9 @@
 2007-07-17  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/ccs2/loopclosure.py: new key `min_method' in config.
+	* itcc/ccs2/tordiff.py: add document that input unit is radian
+	* itcc/ccs2/loopclosure.py:
+	  - new key `min_method' in config.
+	  - fix a bug about torsion angle unit.
 	* itcc/tinker/tinker.py: rename minimizamol to minimiza_mol, rename optimizemol 
 	  to optimize_mol.
 

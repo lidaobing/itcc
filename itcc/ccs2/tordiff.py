@@ -9,11 +9,14 @@ def torsdiff(tors1, tors2,
             is_achiral = False,
             head_tail = -1,
             loop_step = 0):
-    '''torsdiff(coords1, coords2, tors, 
+    '''\
+torsdiff(tors1, tors2,
             is_achiral = False,
             head_tail = -1,
             loop_step = 0)
             
+\param tors1, unit is radian
+\param tors2, unit is radian
 \param is_achiral if true, tor->[-x for x in tor]
 \param head_tail if not -1, tor->(tor[head_tail:] + tor[:head_tail])[::-1]
 \param loop_step if not zero, means tor->tor[loop_step:] + tor[:loop_step]

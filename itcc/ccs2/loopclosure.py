@@ -1,6 +1,7 @@
 # $Id$
 # pylint: disable-msg=E1101
 # pylint: disable-msg=W0201
+import math
 import sys
 import os
 import os.path
@@ -123,6 +124,7 @@ class LoopClosure(object):
                 setattr(self, x[0], methods[x[1]](sect, x[0]))
 
         self.cmptors = None
+        self.torerror_radian = math.radians(self.torerror)
 
         self._step_count = 0
         self.seedmol = None
@@ -710,7 +712,7 @@ class LoopClosure(object):
         return tordiff.torsdiff(tors1, tors2, 
                                 self.is_achiral, 
                                 self.head_tail, 
-                                self.loopstep) < self.torerror
+                                self.loopstep) < self.torerror_radian
 
     def print_copyright(self):
         msg = 'CCS2 conformational search (itcc ' + itcc.__version__ + ')\n'
