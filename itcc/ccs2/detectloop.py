@@ -2,7 +2,7 @@
 
 try:
     set
-except:
+except NameError:
     from sets import Set as set
 
 __all__ = ["loopdetect", 'pick_largest_simpleloop']
