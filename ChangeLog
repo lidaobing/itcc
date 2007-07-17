@@ -1,3 +1,8 @@
+2007-07-17  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/tinker/tinker.py: rename minimizamol to minimiza_mol, rename optimizemol 
+	  to optimize_mol.
+
 2007-07-15  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/molecule/gjf2xyz.py: improve usage

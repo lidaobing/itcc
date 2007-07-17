@@ -127,11 +127,11 @@ def analyze(mol, forcefield):
                     raise
     raise Error(''.join(lines))
 
-def optimizemol(*args, **kwargs):
+def optimize_mol(*args, **kwargs):
     return optimize_minimize_mol('optimize', *args, **kwargs)
 
 
-def minimizemol(*args, **kwargs):
+def minimize_mol(*args, **kwargs):
     return optimize_minimize_mol('minimize', *args, **kwargs)
 
 
