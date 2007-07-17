@@ -30,6 +30,9 @@ from itcc.ccs2 import mezeipro as Mezeipro
 __all__ = ['LoopClosure']
 __revision__ = '$Rev$'
 
+class Error(Exception):
+    pass
+
 class LoopClosure(object):
     '''need a doc'''
     S_NONE = 0
@@ -58,7 +61,9 @@ class LoopClosure(object):
                     ('eneerror', float, 0.0001),
                     ('legal_min_ene', float, -100000),
                     ('torerror', float, 10.0),
-                    ('minimal_invalid_energy_before_minimization', float, 100000.0)),
+                    ('minimal_invalid_energy_before_minimization', float, 100000.0),
+                    ('min_method', str, 'newton'),
+                    ),
         'tinker': (('forcefield', str, "mm2"),
                    ('solvate', str, ""),
                    ('tinker_key_file', str, ""),
@@ -140,6 +145,14 @@ class LoopClosure(object):
         self.mutex = threading.Lock()
         self.loopatoms = None
         self.r6s = None
+
+        min_func_dict = {'newton': tinker.newton_mol,
+                         'minimize': tinker.minimize_mol,
+                         'optimize': tinker.optimize_mol}
+        if self.min_method not in min_func_dict:
+            raise Error("unknown min_method `" + self.min_method + "'")
+        self.min_func = min_func_dict[self.min_method]
+        
 
     def run(self):
         logging.getLogger().setLevel(logging.INFO)
@@ -679,10 +692,10 @@ class LoopClosure(object):
         logging.debug('  self.forcefield=%s' % self.forcefield)
         logging.debug('  self.minconverge=%s' % self.minconverge)
         logging.debug('  prefix=%s' % threading.currentThread().getName())
-        res = tinker.newton_mol(newmol,
-                                  self.forcefield,
-                                  self.minconverge,
-                                  prefix=threading.currentThread().getName())
+        res = self.min_func(newmol,
+                            self.forcefield,
+                            self.minconverge,
+                            prefix=threading.currentThread().getName())
         logging.debug('return from tinker.newton_mol')
         return res
         

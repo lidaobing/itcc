@@ -12,6 +12,7 @@ itcc (0.8.2~dev) unstable; urgency=low
     - add '--chiral', '--achiral', '--head-tail', '--loopstep'
     - add '--config'
     - add 'tinker_key_file' to config
+    - add 'min_method' to config
   * itcc rmsd
     - new "--no-h" option.
     - support read from stdin.
