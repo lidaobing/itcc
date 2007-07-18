@@ -6,7 +6,7 @@ def relative(ifile, ofile):
     data = []
     for line in ifile:
         for word in line.split():
-            data.append(word)
+            data.append(float(word))
     
     m = min(data)
     
