@@ -11,7 +11,7 @@ def relative(ifile, ofile):
     m = min(data)
     
     for x in data:
-        print '%f\t%f\n' % (x, x-m)
+        ofile.write('%f\t%f\n' % (x, x-m))
 
 def main():
     if len(sys.argv) != 2:
