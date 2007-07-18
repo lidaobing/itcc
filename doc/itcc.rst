@@ -173,6 +173,7 @@ I am lazy. So following commands is not documented.
 - itcc-histogram
 - itcc-tordiff
 - itcc-moldiff
+- itcc-relative
 
 THANKS
 ------

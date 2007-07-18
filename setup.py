@@ -96,6 +96,7 @@ entry_points = {
         'itcc-tordiff = itcc.tools.tordiff:main',
         'itcc-moldiff = itcc.tools.moldiff:main',
         'itcc-findneighbour = itcc.ccs2.confsearch2:main',
+        'itcc-relative = itcc.tools.relative:main',
     ]
 }
 classifiers = [
