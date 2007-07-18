@@ -1,5 +1,6 @@
 2007-07-18  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/ccs2/loopclosure.py: fix bug on is_achiral, headtail.
 	* itcc/ccs2/catordiff.py: use itcc.ccs2.tordiff module.
 	* itcc/tools/relative.py: added.
 	* itcc/ccs2/detectloop.py: reduce one pylint warning.

@@ -47,15 +47,15 @@ class LoopClosure(object):
                     ('molfname', str, ""),
                     ('is_chain', bool, False),
                     ('check_energy_before_minimization', bool, True),
-                    ('is_achiral', bool, False),
+                    ('is_achiral', str, "auto"),
                     ('check_minimal', bool, False),
                     ('out_mtxyz', bool, True),
                     ('out_mtxyz_fname', str, "%(molfname)s-out"),
                     ('maxsteps', int, -1),
                     ('dump_steps', int, 1000),
                     ('np', int, 1),
-                    ('head_tail', int, -1),
-                    ('loopstep', int, -1),
+                    ('head_tail', str, "auto"),
+                    ('loopstep', str, "auto"),
                     ('log_level', int, 1),
                     ('keeprange', float, -1.0),
                     ('searchrange', float, -1.0),
@@ -378,23 +378,31 @@ class LoopClosure(object):
         if self.chiral_idxs:
             self._chirals = tuple(chiral.chiral_types(self.seedmol, self.chiral_idxs))
 
-        if self.head_tail is None:
+        if self.head_tail == 'auto':
             if self.moltypekey == 'peptide':
                 self.head_tail = -1
             else:
                 self.head_tail = 0
+        else:
+            self.head_tail = int(self.head_tail)
+                
             
-        if self.is_achiral is None:
+        if self.is_achiral == "auto":
             if self.moltypekey == 'peptide':
                 self.is_achiral = False
             else:
                 self.is_achiral = True
+        else:
+            self.is_achiral = self.config.getboolean('DEFAULT', 'is_achiral')
                 
-        if self.loopstep == -1:
+                
+        if self.loopstep == "auto":
             if self.moltypekey == 'peptide' or self.is_chain:
                 self.loopstep = 0
             else:
                 self.loopstep = 1
+        else:
+            self.loopstep = int(self.loopstep)
 
         if self.cmptors is None:
             if self.cmptorsfile:
