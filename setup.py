@@ -18,7 +18,7 @@ url = 'http://www.chemgen.szpku.edu.cn'
 packages = [x for x in find_packages() if x.startswith('itcc')]
 
 incdirs = [numpy.get_include()]
-ext_modules = [Extension("itcc.core.ctools", ["itcc/core/ctools.c"]),
+ext_modules = [Extension("itcc.core.ctools", ["extend/itcc_core_ctools.c"]),
                Extension("itcc.tools.cpptools",
                          ["itcc/tools/cpptools.cpp"],
                          depends=['itcc/tools/vector.hpp']),
@@ -125,7 +125,7 @@ def main():
         py_modules = py_modules,
         test_suite = test_suite,
         entry_points = entry_points,
-        include_package_data = True,
+        include_package_data = False,
         classifiers = classifiers,
         license = license_,
     )
