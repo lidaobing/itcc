@@ -18,12 +18,12 @@ url = 'http://www.chemgen.szpku.edu.cn'
 packages = [x for x in find_packages() if x.startswith('itcc')]
 
 incdirs = [numpy.get_include()]
-ext_modules = [Extension("itcc.core.ctools", ["extend/itcc_core_ctools.c"]),
+ext_modules = [Extension("itcc.core.ctools", ["ext/itcc_core_ctools.c"]),
                Extension("itcc.tools.cpptools",
-                         ["itcc/tools/cpptools.cpp"],
-                         depends=['itcc/tools/vector.hpp']),
+                         ["ext/itcc_tools_cpptools.cpp"],
+                         depends=['ext/vector.hpp']),
                Extension('itcc.molecule._rmsd',
-                         ['itcc/molecule/_rmsd.cpp'],
+                         ['ext/itcc_molecule__rmsd.cpp'],
                          include_dirs = incdirs,
                          libraries=['lapack']),
 #               Extension('itcc.mopac._mopac',
