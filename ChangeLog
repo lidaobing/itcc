@@ -1,5 +1,6 @@
 2007-07-18  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/ccs2/detectloop.py: reduce one pylint warning.
 	* setup.py: does not ship C/C++ source code.
 
 2007-07-17  LI Daobing  <lidaobing@gmail.com>

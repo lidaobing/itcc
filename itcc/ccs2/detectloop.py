@@ -1,8 +1,6 @@
 # $Id$
 
-try:
-    set
-except NameError:
+if not hasattr(__builtins__, 'set'):
     from sets import Set as set
 
 __all__ = ["loopdetect", 'pick_largest_simpleloop']
