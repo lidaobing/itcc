@@ -3,6 +3,8 @@
 
 import sys
 import math
+import logging
+
 from itcc.tools import periodnumber
 from itcc.molecule import read, molecule, tools
 from itcc.ccs2 import detectloop
@@ -36,9 +38,11 @@ def tordiff(tors1, tors2):
     for newtors2 in varytors(tors2):
         thisresult = 0.0
         for i in range(n):
-            thisresult = max(thisresult, abs((tors1[i] - newtors2[i] - pi) % (pi*2) + pi))
+            thisresult = max(thisresult, pi - abs(abs(tors1[i] - newtors2[i]) - pi))
             if thisresult > result:
                 break
+            
+        logging.debug("%f" % thisresult)
         result = min(result, thisresult)
     return result
 

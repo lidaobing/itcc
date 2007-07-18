@@ -1,5 +1,6 @@
 2007-07-18  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/ccs2/catordiff.py: fix a bug in calculate tordiff.
 	* itcc/tools/relative.py: added.
 	* itcc/ccs2/detectloop.py: reduce one pylint warning.
 	* setup.py:
