@@ -1,3 +1,7 @@
+2007-07-19  LI Daobing  <lidaobing@gmail.com>
+
+	* setup.py: does not build depends on numpy.
+
 2007-07-18  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/ccs2/loopclosure.py: fix bug on is_achiral, headtail.

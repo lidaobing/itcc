@@ -2,7 +2,6 @@
 # $Id$
 
 import os
-import numpy
 import sys
 from setuptools import setup, find_packages
 from distutils.core import Extension
@@ -17,14 +16,12 @@ author_email = 'lidaobing@gmail.com'
 url = 'http://www.chemgen.szpku.edu.cn'
 packages = [x for x in find_packages() if x.startswith('itcc')]
 
-incdirs = [numpy.get_include()]
 ext_modules = [Extension("itcc.core.ctools", ["ext/itcc-core-ctools.c"]),
                Extension("itcc.tools.cpptools",
                          ["ext/itcc-tools-cpptools.cpp"],
                          depends=['ext/vector.hpp']),
                Extension('itcc.molecule._rmsd',
                          ['ext/itcc-molecule-_rmsd.cpp'],
-                         include_dirs = incdirs,
                          libraries=['lapack']),
 #               Extension('itcc.mopac._mopac',
 #                         ['itcc/mopac/_mopac.cpp'],
