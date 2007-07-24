@@ -10,10 +10,10 @@ __revision__ = '$Rev$'
 
 name = 'itcc'
 version = '0.8.2.dev'
-description = 'collection of tools on computational chemistry'
+description = 'my collection of scripts on computational chemistry'
 author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
-url = 'http://www.chemgen.szpku.edu.cn'
+url = 'http://www.lidaobing.cn/itcc.xhtml'
 packages = [x for x in find_packages() if x.startswith('itcc')]
 
 ext_modules = [Extension("itcc.core.ctools", ["ext/itcc-core-ctools.c"]),
