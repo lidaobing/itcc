@@ -1,21 +1,52 @@
-itcc (0.8.2~dev) unstable; urgency=low
+itcc NEWS
+=========
 
-  * debian/rules: use 0.1.2~svn123 instead of 0.1.2.svn123
-  * Makefile: change default python from 'python2.4' to python
-  * use the version scheme proposed by python-setuptools
-  * itcc-confsearch
-    - add '-c', '-C', '-e' options, these options can provide a method to
-      avoid minimize freeze when minimization some weird conformation.(r623)
-    - add '--chain' option, support conformational search on a chain. (r641)
-    - add '--cmptor' option, support specify torsion angles used for compare.
-      (r645)
-    - add '--chiral', '--achiral', '--head-tail', '--loopstep'
-    - add '--config'
-    - add 'tinker_key_file' to config
-    - add 'min_method' to config
-  * itcc rmsd
-    - new "--no-h" option.
-    - support read from stdin.
+
+0.8.2.dev
+---------
+
+new scripts
+'''''''''''
+
+itcc-stats, itcc-mirrormol, itcc-calcangle, itcc-ene2agr,
+itcc-enestep2countstep, itcc-count, itcc-loop2looptor, itcc-idx-verify,
+itcc-molcenter, itcc-rotate-to, itcc-tordiff, itcc-relative, itcc-rg
+
+
+modified scripts
+''''''''''''''''
+
+itcc-confsearch
+"""""""""""""""
+
+* add '-c', '-C', '-e' options, these options can provide a method to
+  avoid minimize freeze when minimization some weird conformation.
+      
+* add '--chain' option, support conformational search on a chain. (r641)
+
+* add '--cmptor' option, support specify torsion angles used for
+  compare.  (r645)
+
+* add '--chiral', '--achiral', '--head-tail', '--loopstep'
+
+* add '--config'
+
+* add 'tinker_key_file' to config
+* add 'min_method' to config
+
+itcc-rmsd
+"""""""""
+
+* new "--no-h" option.
+* support read from stdin.
+    
+** others
+
+*** Makefile: change default python from 'python2.4' to python
+
+*** use the version scheme proposed by python-setuptools
+
+  
   * itcc out2arch
     - exit 1 when meet with invalid gaussian log file.
     - support "-a" option
@@ -28,28 +59,16 @@ itcc (0.8.2~dev) unstable; urgency=low
   * itcc sumxyz
     - support read from stdin
     - change output format
-  * add itcc-stats
-  * add itcc-mirrormol
-  * add itcc-calcangle
-  * add itcc-ene2agr
-  * add itcc-enestep2countstep
-  * add itcc-count
-  * add itcc-loop2looptor
-  * add itcc-idx-verify
-  * add itcc-molcenter
   * depends on python-setuptools
   * itcc/molecule/molecule
     - the bond contain H has a different maxbondlen
     - coords is assignable again
-  * add itcc-rg
+  * add 
   * itcc-xyzpdb: output connect information
   * itcc-chiral: support more options
   * add itcc-pyramid-check
   * remove itcc-caflish (r640)
   * itcc.molecule._rmsd add a new func: rmsd2
-  * add itcc-rotate-to(r694)
-  * add itcc-tordiff(r712)
-  * add itcc-relative(r758)
 
  -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 14:10:39 +0800
 
