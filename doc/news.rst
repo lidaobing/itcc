@@ -14,6 +14,8 @@ itcc-enestep2countstep, itcc-count, itcc-loop2looptor, itcc-idx-verify,
 itcc-molcenter, itcc-rotate-to, itcc-tordiff, itcc-relative, itcc-rg,
 itcc-pyramid-check
 
+itcc-mol2top rename to itcc-mol2tor.
+
 
 modified scripts
 ''''''''''''''''

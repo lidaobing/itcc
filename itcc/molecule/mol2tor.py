@@ -7,7 +7,7 @@ from itcc.molecule import read
 from itcc.molecule.relalist import Relalist
 from itcc.core.tools import all
 
-def mol2top(molfname, ofile=sys.stdout):
+def mol2tor(molfname, ofile=sys.stdout):
     if(not hasattr(molfname, 'read')):
       ifile = file(molfname)
     else:
@@ -27,7 +27,7 @@ def main():
         sys.stderr.write("Usage: %s xyzfname\n" % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
-    mol2top(sys.argv[1])
+    mol2tor(sys.argv[1])
 
 if __name__ == '__main__':
     main()
