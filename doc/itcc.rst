@@ -1,9 +1,9 @@
 ITCC
 ====
 
-itcc is a set of scripts used in my works.
-
 .. contents::
+
+Hello, I am LI Daobing, itcc is a set of scripts used in my works.
 
 Author and Copyright Holders
 -----------------------------
@@ -31,8 +31,9 @@ Install
 .. _Debian: http://www.debian.org
 
 2. run following command as root: ``easy_install itcc``, now I only upload a
-   python2.4-i386 version to pypi, if you need other version, mail me.
-
+   python2.4-i386 version to pypi, and it should be installable from python2.3
+   to python 2.5, and also can be used in other platform. If you need other
+   version, mail me.
 
 Programs
 --------
@@ -40,8 +41,10 @@ Programs
 Common rules:
 
 * If you call a script without arguments, it will print a brief usage.
-* If a script accept a filename as input or output, often it will support/treat "-" as the stand input or standard output.
-* If you find ``fname...`` in the brief usage, it means that it support more than one fname in arguments.
+* If a script accept a filename as input or output, often it will support/treat
+  "-" as the stand input or standard output.
+* If you find ``fname...`` in the brief usage, it means that it support more
+  than one fname in arguments.
 
 OK, if you find any bug in these scripts or this documention, don't hesitate to
 tell me, you can find my email address in the top of this page.
@@ -112,22 +115,38 @@ minimization, the chiral info, or double bound is broken in minimization. I
 use this script to preprocess the molecule, then the minimization is much
 smooth than previous.
 
-itcc-
+itcc-makecyclicalkane
+'''''''''''''''''''''
+
+Make a cyclic alkane in txyz format and MM2/MM3 force field. Coordinate is
+pertubated to make it not on a saddle point. I suggest you use MM3 force field
+to minimize this structure to avoid get a pyramid conformation (all four single
+bond of a carbon is in one side).
+
+Data Processing
+~~~~~~~~~~~~~~~
+
+itcc-count
+''''''''''
+
+Print every unique word from the input file and the word's appearance times.
+
+itcc-stats
+''''''''''
+
+Print the sum, min, max, median, mean, std of the data from the input file.
 
 Undocumented Programs
 ~~~~~~~~~~~~~~~~~~~~~
 
 I am lazy. So following commands is not documented.
 
-- itcc
-- itcc-makecyclicalkane
 - itcc-stats
 - itcc-calcangle
 - itcc-ene2agr
 - itcc-enestep2countstep
 - itcc-random-protein-input
 - itcc-loopverify
-- itcc-count
 - itcc-mirrormol
 - itcc-printbonds
 - itcc-detailcmp
