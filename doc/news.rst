@@ -1,6 +1,7 @@
 itcc NEWS
 =========
 
+.. contents::
 
 0.8.2.dev
 ---------
@@ -10,7 +11,8 @@ new scripts
 
 itcc-stats, itcc-mirrormol, itcc-calcangle, itcc-ene2agr,
 itcc-enestep2countstep, itcc-count, itcc-loop2looptor, itcc-idx-verify,
-itcc-molcenter, itcc-rotate-to, itcc-tordiff, itcc-relative, itcc-rg
+itcc-molcenter, itcc-rotate-to, itcc-tordiff, itcc-relative, itcc-rg,
+itcc-pyramid-check
 
 
 modified scripts
@@ -40,37 +42,60 @@ itcc-rmsd
 * new "--no-h" option.
 * support read from stdin.
     
-** others
+itcc-out2arch
+"""""""""""""
 
-*** Makefile: change default python from 'python2.4' to python
+* exit 1 when meet with invalid gaussian log file.
+* support "-a" option
 
-*** use the version scheme proposed by python-setuptools
+itcc-gjf2xyz
+""""""""""""
+* support send output to stdout
 
-  
-  * itcc out2arch
-    - exit 1 when meet with invalid gaussian log file.
-    - support "-a" option
-  * itcc gjf2xyz
-    - support send output to stdout
-  * itcc out2ene
-    - still print the filename if does not find the ene.
-  * itcc xyz2gjf
-    - support custom header
-  * itcc sumxyz
-    - support read from stdin
-    - change output format
-  * depends on python-setuptools
-  * itcc/molecule/molecule
-    - the bond contain H has a different maxbondlen
-    - coords is assignable again
-  * add 
-  * itcc-xyzpdb: output connect information
-  * itcc-chiral: support more options
-  * add itcc-pyramid-check
-  * remove itcc-caflish (r640)
-  * itcc.molecule._rmsd add a new func: rmsd2
+itcc-out2ene
+""""""""""""
 
- -- LI Daobing <lidaobing@gmail.com>  Wed, 04 Jul 2007 14:10:39 +0800
+* still print the filename if does not find the ene.
+
+itcc-xyz2gjf
+""""""""""""
+* support custom header
+
+itcc-sumxyz
+"""""""""""
+* support read from stdin
+* change output format
+
+
+itcc-xyzpdb
+"""""""""""
+
+* output connect information
+
+
+itcc-chiral
+"""""""""""
+
+* support more options
+
+library
+'''''''
+* itcc/molecule/molecule
+  - the bond contain H has a different maxbondlen
+  - coords is assignable again
+* itcc.molecule._rmsd add a new func: rmsd2
+
+others
+''''''
+
+* Makefile: change default python from 'python2.4' to python
+
+* python-setuptools
+  * use the version scheme proposed by python-setuptools
+  * rewrite setup.py with python-setuptools
+
+0.8.1 and older versions
+------------------------
 
 itcc (0.8.1) unstable; urgency=low
 
@@ -85,7 +110,7 @@ itcc (0.8) unstable; urgency=low
   * itcc rmsd
     - support only one argument.
     - add options: '--atoms', '--atomsfile', '--atoms1', '--atoms1file',
-      '--atoms2', '--atoms2file'.
+    '--atoms2', '--atoms2file'.
   * 'itcc dmddat2dmddat' support new '-F' option.
   * add new function: 'itcc.Molecule.tools.logic_distance'.
   * new module: itcc.CCS2.triangle

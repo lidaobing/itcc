@@ -9,7 +9,7 @@ Author and Copyright Holders
 -----------------------------
 
 LI Daobing
-  <lidaobing at gmail dot com>
+  lidaobing@gmail.com
 
 WU Yundong
   http://home.ust.hk/%7Echydwu/
@@ -57,6 +57,27 @@ itcc
 
 print version information of this package.
 
+Conformational Search
+~~~~~~~~~~~~~~~~~~~~~
+
+itcc-confsearch
+'''''''''''''''
+
+A new conformational search based on exactly loop closure. Support cyclic
+and acyclic alkane, cyclic and acylic peptide, loop region.
+
+I know this description will confuse you. Then just run following scripts to
+got all 261 conformations of cycloheptadecane in 3.0 kcal/mol in MM2 force
+field. (install tinker first)
+
+::
+
+  itcc-makecyclicalkane 17 > 1.xyz
+  minimize 1.xyz /usr/share/tinker/params/mm3.prm 0.01
+  cp 1.xyz_2 a.xyz
+  cp /usr/share/tinker/params/mm2.prm .
+  itcc-confsearch -f mm2 -s 3 -k 3 a.xyz > test1.log
+  
 File Format Convert
 ~~~~~~~~~~~~~~~~~~~
 
@@ -123,6 +144,16 @@ pertubated to make it not on a saddle point. I suggest you use MM3 force field
 to minimize this structure to avoid get a pyramid conformation (all four single
 bond of a carbon is in one side).
 
+itcc-random-protein-input
+'''''''''''''''''''''''''
+
+Randomize the phi and psi angle from a TINKER protein's input file.
+
+itcc-scalexyz
+'''''''''''''
+
+scale all coords of a TINKER xyz file. I have forgotten why I write this.
+
 Data Processing
 ~~~~~~~~~~~~~~~
 
@@ -136,16 +167,21 @@ itcc-stats
 
 Print the sum, min, max, median, mean, std of the data from the input file.
 
+Others
+~~~~~~
+
+itcc-calcangle
+''''''''''''''
+given the lengths or a triangle, output the angles in degree. (maybe I should
+remove this script)
+
 Undocumented Programs
 ~~~~~~~~~~~~~~~~~~~~~
 
 I am lazy. So following commands is not documented.
 
-- itcc-stats
-- itcc-calcangle
 - itcc-ene2agr
 - itcc-enestep2countstep
-- itcc-random-protein-input
 - itcc-loopverify
 - itcc-mirrormol
 - itcc-printbonds
@@ -157,11 +193,9 @@ I am lazy. So following commands is not documented.
 - itcc-out2arch
 - itcc-optimizes
 - itcc-chiral
-- itcc-confsearch
 - itcc-catordiff
 - itcc-detectloop
 - itcc-dmddummy
-- itcc-scalexyz
 - itcc-columnmean
 - itcc-almostequaldiff
 - itcc-shake
@@ -202,6 +236,13 @@ SHA Yao
 
 ZUO Chunshan
   chunshan at gmail dot com
+
+NEWS
+----
+
+In a spearate page news.xhtml_.
+
+.. _news.xhtml: news.xhtml
 
 More
 ----
