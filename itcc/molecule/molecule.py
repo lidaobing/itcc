@@ -138,7 +138,7 @@ class Molecule(object):
         t1 = coords[k] - coords[j]
         t2 = coords[i] - coords[j]
         cos_ = sum(t1*t2)/math.sqrt(sum(t1*t1) * sum(t2*t2))
-        return math.acos(cos_)
+        return math.acos(max(min(cos_, 1), -1))
 
     def calctor(self, i, j, k, l):
         "return in radian"
