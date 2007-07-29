@@ -25,6 +25,15 @@ class TestTools(unittest.TestCase):
         self.assertAlmostEqual(math.degrees(tools.torsionangle(a, b, c, d)),
                                90.0)
 
+    def test_angle(self):
+        a = numpy.array((0.0, 0.0, 0.0))
+        b = numpy.array((1.0, 0.0, 0.0))
+        c = numpy.array((1.0, 1.0, 0.0))
+        self.assertAlmostEqual(tools.angle(a, b, c),
+                               math.radians(90.0))
+        self.assertAlmostEqual(tools.angle(a, c, b),
+                               math.radians(45.0))
+
 def _test():
     unittest.main()
 

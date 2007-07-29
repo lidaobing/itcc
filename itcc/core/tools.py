@@ -39,7 +39,7 @@ def lensq(a):
     return sum(a*a)
 
 def angle(a, b, c):
-    return sum((a-b) * (c-b)) / math.sqrt(lensq(a-b) * lensq(c-b))
+    return ctools.angle(tuple(a), tuple(b), tuple(c))
 
 def torsionangle(a, b, c, d):
     """torsionangle(a, b, c, d) -> angle
