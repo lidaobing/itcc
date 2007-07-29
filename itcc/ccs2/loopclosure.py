@@ -569,6 +569,9 @@ class LoopClosure(object):
     def print_params(self):
         msg = 'starttime: %s\n' % time.ctime(self.start_time)
         msg += 'loop: %s\n' % ' '.join([str(x+1) for x in self.loopatoms])
+        msg += 'head_tail: %s\n' % self.head_tail
+        msg += 'is_achiral: %s\n' % self.is_achiral
+        msg += 'loopstep: %s\n' % self.loopstep
         msg += 'r6s:\n'
         msg += r6s2str(self.r6s)
         if self.chiral_idxs:

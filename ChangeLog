@@ -1,7 +1,8 @@
 2007-07-29  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/ccs2/loopclosure.py (LoopClosure.print_copyright): log the
-	host information.
+	* itcc/ccs2/loopclosure.py:
+	  - log the host information.
+	  - log auto-detected check params.
 
 2007-07-19  LI Daobing  <lidaobing@gmail.com>
 
