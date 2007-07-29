@@ -12,7 +12,8 @@ install2:
 	mkdir -p $(HOME)/public_html/
 	for file in dist/*.egg; do \
 		cp $$file $(HOME)/public_html/; \
-		echo http://$(strip $(shell hostname -i))/~$(USER)/$$(basename $$file); \
+		ip=$(shell python -c "import socket; print socket.gethostbyaddr(socket.gethostname())[-1][0]"); \
+		echo http://$$ip/~$(USER)/$$(basename $$file); \
 	done
 
 install3:
