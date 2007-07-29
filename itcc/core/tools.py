@@ -39,7 +39,7 @@ def lensq(a):
     return sum(a*a)
 
 def angle(a, b, c):
-    return (a-b).angle(c-b)
+    return (a-b) * (c-b) / math.sqrt(lensq(a-b) * lensq(c-b))
 
 def torsionangle(a, b, c, d):
     """torsionangle(a, b, c, d) -> angle
