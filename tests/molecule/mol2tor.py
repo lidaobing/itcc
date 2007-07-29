@@ -2,7 +2,7 @@
 
 import unittest
 import StringIO
-from itcc.molecule.mol2top import mol2top
+from itcc.molecule.mol2tor import mol2tor
 
 test_in = '''    51  19.0934
      1  C      3.666000    0.063000    0.085000     1     2    17    18    19
@@ -81,7 +81,7 @@ class Test(unittest.TestCase):
     def test_1(self):
         ifile = StringIO.StringIO(test_in)
         ofile = StringIO.StringIO()
-        mol2top(ifile, ofile)
+        mol2tor(ifile, ofile)
         self.assertEqual(ofile.getvalue(), test_out)
 
 if __name__ == '__main__':

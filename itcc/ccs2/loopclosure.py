@@ -14,6 +14,7 @@ import tempfile
 import shutil
 import cPickle
 import logging
+import socket
 from cStringIO import StringIO
 try:
     import threading
@@ -724,6 +725,7 @@ class LoopClosure(object):
 
     def print_copyright(self):
         msg = 'CCS2 conformational search (itcc ' + itcc.__version__ + ')\n'
+        msg += 'running on %s\n' % str(socket.gethostbyaddr(socket.gethostname()))
         self.log(msg)
 
     def print_config(self):
