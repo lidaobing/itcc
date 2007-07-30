@@ -1,6 +1,7 @@
 # $Id$
 import sys
 import numpy
+import math
 
 try:
     sorted
@@ -8,16 +9,15 @@ except:
     from itcc.core.tools import sorted_ as sorted
 
 def histogram(ifile, base, step):
-    data = numpy.array([float(x) for x in ifile.read().split()])
-    data -= base
-    data /= step
-    data = numpy.floor(data)
-
     res = {}
-    for x in data:
-        if x not in res:
-            res[x] = 0
-        res[x] += 1
+    for line in ifile:
+        for word in line.split():
+            t = float(word)
+            t -= base
+            t = int(t//step)
+            if t not in res:
+                res[t] = 0
+            res[t] += 1
 
     for k, v in sorted(res.items()):
         print base + step * k, '~', base + step * (k+1), v
