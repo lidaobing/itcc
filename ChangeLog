@@ -1,3 +1,7 @@
+2007-07-31  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/tools/mtxyz2txyz.py: added
+
 2007-07-29  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/ccs2/loopclosure.py:
