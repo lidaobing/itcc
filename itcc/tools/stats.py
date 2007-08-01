@@ -14,7 +14,10 @@ def stat_helper(ifile):
 
 def stat(ifile):
     data = array(tuple(stat_helper(ifile)))
+    print 'n', len(data)
     print 'sum', data.sum()
+    if len(data) == 0:
+        return
     print 'min', data.min()
     print 'max', data.max()
     print 'median', median(data)
