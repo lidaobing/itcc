@@ -2,7 +2,7 @@
 
 from itcc.molecule import read, write
 
-def mtxyz2xyz(ifile, ofilenamepattern):
+def mtxyz2txyz(ifile, ofilenamepattern):
     i = 1
     while 1:
         try:
@@ -11,6 +11,7 @@ def mtxyz2xyz(ifile, ofilenamepattern):
             write.writexyz(mol, file(ofname, 'w'))
         except:
             break
+        i += 1
 def main():
     import sys
     if len(sys.argv) != 3:
