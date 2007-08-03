@@ -211,6 +211,7 @@ I am lazy. So following commands is not documented.
 - itcc-out2ene
 - itcc-parmeval
 - itcc-parmfit
+- itcc-pdbqchargeshift
 - itcc-pdbqchargesum
 - itcc-printbonds
 - itcc-printefit

@@ -74,6 +74,7 @@ entry_points = {
         'itcc-out2ene = itcc.tools.out2ene:main',
         'itcc-parmeval = itcc.torsionfit.parmeval:main',
         'itcc-parmfit = itcc.torsionfit.parmfit:main',
+        'itcc-pdbqchargeshift = itcc.tools.pdbqchargeshift:main',
         'itcc-pdbqchargesum = itcc.tools.pdbqcharge:main',
         'itcc-printbonds = itcc.molecule.utils:printbonds',
         'itcc-printefit = itcc.torsionfit.printefit:main',
