@@ -46,6 +46,7 @@ entry_points = {
         'itcc-count = itcc.tools.count:main',
         'itcc-detailcmp = itcc.molecule.utils:detailcmp',
         'itcc-detectloop = itcc.ccs2.detectloop:main',
+        'itcc-dlg = itcc.tools.dlg:main',
         'itcc-dmddat2dmddat = itcc.tools.dmddat2dmddat:main',
         'itcc-dmddat2mtxyz = itcc.tools.dmddat2mtxyz:main',
         'itcc-dmddat_fix = itcc.tools.dmddat_fix:main',

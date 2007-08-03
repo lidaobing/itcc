@@ -12,7 +12,8 @@ new scripts
 itcc-stats, itcc-mirrormol, itcc-calcangle, itcc-ene2agr,
 itcc-enestep2countstep, itcc-count, itcc-loop2looptor, itcc-idx-verify,
 itcc-molcenter, itcc-rotate-to, itcc-tordiff, itcc-relative, itcc-rg,
-itcc-pyramid-check, itcc-mtxyz2txyz, itcc-pdbqchargesum, itcc-pdbqchargeshift
+itcc-pyramid-check, itcc-mtxyz2txyz, itcc-pdbqchargesum, itcc-pdbqchargeshift,
+itcc-dlg
 
 itcc-mol2top rename to itcc-mol2tor.
 
