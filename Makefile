@@ -19,7 +19,7 @@ install2:
 install3:
 	sudo svn-clean
 	./setup.py bdist
-	sudo easy_install dist/*.egg
+	sudo easy_install-2.4 dist/*.egg
 
 dist: sdist
 sdist:

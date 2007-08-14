@@ -32,7 +32,9 @@ def getlooptor(mol, loop):
 def main():
     if len(sys.argv) != 3:
         import os.path
-        print 'Usage: %s xyzfname1 xyzfname2' % os.path.basename(sys.argv[0])
+        sys.stderr.write('Usage: %s xyzfname1 xyzfname2\n'
+                         'result unit is degree\n'
+                          % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol1 = read.readxyz(file(sys.argv[1]))
     mol2 = read.readxyz(file(sys.argv[2]))
