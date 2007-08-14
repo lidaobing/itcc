@@ -106,9 +106,9 @@ def split_loop(loop):
     while tasks:
         task = tasks.pop()
         res.append(list(task))
-        while len(loop(task[-1])) == 2:
-            res.append([x for x in loop[task[-1]] if x != task[-2]][0])
-        tasks.remove(tuple(res[-1:-3:-1]))
+        while len(loop[res[-1][-1]]) == 2:
+            res[-1].append([x for x in loop[res[-1][-1]] if x != res[-1][-2]][0])
+        tasks.remove(tuple(res[-1][-1:-3:-1]))
         res[-1] = min(res[-1], res[-1][::-1])
     return [res]
 
