@@ -1,3 +1,7 @@
+2007-08-15  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/ccs2/loopclosure.py: fix bug when socket is out of work.
+
 2007-08-11  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/ccs2/catordiff.py: improve usage.

@@ -728,7 +728,12 @@ class LoopClosure(object):
 
     def print_copyright(self):
         msg = 'CCS2 conformational search (itcc ' + itcc.__version__ + ')\n'
-        msg += 'running on %s\n' % str(socket.gethostbyaddr(socket.gethostname()))
+        host = "unknown host"
+        try:
+            host = str(socket.gethostbyaddr(socket.gethostname()))
+        except:
+            pass
+        msg += 'running on %s\n' % host
         self.log(msg)
 
     def print_config(self):
