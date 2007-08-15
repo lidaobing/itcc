@@ -16,7 +16,7 @@ def mirrormol():
         sys.stderr.write('Usage: %s <xyzfname>\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     mol = read.readxyz(file(sys.argv[1]))
-    mol.coords = [-x for x in mol.coords]
+    mol.coords = -mol.coords
     write.writexyz(mol)
 
 def printbonds():

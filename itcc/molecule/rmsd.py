@@ -28,13 +28,21 @@ def rmsd_common(mol1, mol2, atoms1=None, atoms2=None):
         coords2 = mol2.coords.take(tuple(atoms2), axis=0)
     return (coords1, coords2)
 
-def rmsd(mol1, mol2, atoms1=None, atoms2=None):
+def rmsd(mol1, mol2, atoms1=None, atoms2=None, mirror=False):
     coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
-    return _rmsd.rmsd(coords1, coords2)
+    if mirror:
+        return min(_rmsd.rmsd(coords1, coords2),
+                   _rmsd.rmsd(coords1, -coords2))
+    else:
+        return _rmsd.rmsd(coords1, coords2)
 
-def rmsd2(mol1, mol2, atoms1=None, atoms2=None):
+def rmsd2(mol1, mol2, atoms1=None, atoms2=None, mirror=False):
     coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
-    return _rmsd.rmsd2(coords1, coords2)
+    if mirror:
+        return min(_rmsd.rmsd2(coords1, coords2),
+                   _rmsd.rmsd2(coords1, -coords2))
+    else:
+        return _rmsd.rmsd2(coords1, coords2)
 
 def topeq(mol1, mol2):
     if len(mol1) != len(mol2):
@@ -74,6 +82,10 @@ def main_common(rmsd_func):
     parser.add_option('-C', "--atoms2file", dest="atoms2file",
                       help="read the selected atoms from file",
                       metavar="FILE")
+    parser.add_option('-m', '--mirror',
+                      dest='mirror',
+                      action='store_true',
+                      help='also consider the mirror molecule')
     (options, args) = parser.parse_args()
 
     if len(args) not in (1, 2):
@@ -125,7 +137,7 @@ def main_common(rmsd_func):
             atoms2_new = [x for x in atoms2_new if mol2.atoms[x].no != 1]
         else:
             atoms2_new = atoms2
-        print rmsd_func(mol1, mol2, atoms1, atoms2_new)
+        print rmsd_func(mol1, mol2, atoms1, atoms2_new, options.mirror)
 
 def main_rmsd():
     main_common(rmsd)

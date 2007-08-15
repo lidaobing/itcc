@@ -43,6 +43,7 @@ itcc-rmsd
 """""""""
 
 * new "--no-h" option.
+* new "--mirror" option.
 * support read from stdin.
     
 itcc-out2arch

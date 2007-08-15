@@ -1,3 +1,8 @@
+2007-08-16  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/molecule/rmsd.py: support '--mirror'.
+	* itcc/molecule/utils.py: fix bug in itcc-mirrormol.
+
 2007-08-15  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/ccs2/loopclosure.py: fix bug when socket is out of work.
