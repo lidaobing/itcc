@@ -1,5 +1,4 @@
-#! /usr/bin/env python
-# $Id: calcangle.py 15 2005-11-25 06:50:31Z nichloas $
+# $Id$
 from math import degrees, acos
 
 def calc_angle(a, b, c):
