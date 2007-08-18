@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# $Id$
 
 def ene2agr(ifiles, ofile):
     i1 = 0

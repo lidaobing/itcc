@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+# $Id$
 
 def enestep2countstep(ifile, enes, ofile):
     data = []
