@@ -10,8 +10,13 @@ def relative(ifile, ofile):
     
     m = min(data)
     
-    for x in data:
-        ofile.write('%f\t%f\n' % (x, x-m))
+    try:
+        for x in data:
+            ofile.write('%f\t%f\n' % (x, x-m))
+    except IOError, e:
+        import errno
+        if e.errno != errno.EPIPE:
+            raise
 
 def main():
     if len(sys.argv) != 2:
