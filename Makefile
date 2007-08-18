@@ -1,4 +1,4 @@
-PYTHON?=python
+PYTHON?=python2.4
 
 all:
 	$(PYTHON) setup.py build bdist_egg
@@ -18,8 +18,8 @@ install2:
 
 install3:
 	sudo svn-clean
-	python ./setup.py bdist
-	sudo easy_install dist/*.egg
+	$(PYTHON) ./setup.py bdist
+	sudo $(PYTHON) `which easy_install` dist/*.egg
 
 dist: sdist
 sdist:
