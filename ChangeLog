@@ -1,5 +1,7 @@
 2007-08-18  LI Daobing  <lidaobing@gmail.com>
 
+	* setup.py (entry_points): add itcc-ccslog2enestep
+	* itcc/tools/ccslog2enestep.py: added
 	* itcc/tools/relative.py: handle SIGPIPE correctly.
 
 2007-08-16  LI Daobing  <lidaobing@gmail.com>

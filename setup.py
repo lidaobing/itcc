@@ -38,6 +38,7 @@ entry_points = {
         'itcc-almostequaldiff = itcc.tools.almostequaldiff:main',
         'itcc-calcangle = itcc.tools.calcangle:main',
         'itcc-catordiff = itcc.ccs2.catordiff:main',
+        'itcc-ccslog2enestep = itcc.tools.ccslog2enestep:main',
         'itcc-chiral = itcc.molecule.chiral:main',
         'itcc-cmpxyztop = itcc.molecule.cmpxyztop:main',
         'itcc-columnmean = itcc.tools.columnmean:main',
