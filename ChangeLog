@@ -1,3 +1,7 @@
+2007-08-20  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/tools/relative.py: add '-v' option.
+
 2007-08-18  LI Daobing  <lidaobing@gmail.com>
 
 	* setup.py (entry_points): add itcc-ccslog2enestep
