@@ -78,6 +78,7 @@ entry_points = {
         'itcc-parmfit = itcc.torsionfit.parmfit:main',
         'itcc-pdbqchargeshift = itcc.tools.pdbqchargeshift:main',
         'itcc-pdbqchargesum = itcc.tools.pdbqcharge:main',
+        'itcc-pdbq-large-charge = itcc.tools.pdbq_large_charge:main',
         'itcc-printbonds = itcc.molecule.utils:printbonds',
         'itcc-printefit = itcc.torsionfit.printefit:main',
         'itcc-pyramid-check = itcc.molecule.utils:pyramid_check',
