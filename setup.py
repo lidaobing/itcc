@@ -36,6 +36,7 @@ entry_points = {
     'console_scripts': [
         'itcc = itcc.itcc_main:main',
         'itcc-almostequaldiff = itcc.tools.almostequaldiff:main',
+        'itcc-autodock-charge-bury = itcc.tools.autodock_charge_bury:main',
         'itcc-calcangle = itcc.tools.calcangle:main',
         'itcc-catordiff = itcc.ccs2.catordiff:main',
         'itcc-ccslog2enestep = itcc.tools.ccslog2enestep:main',

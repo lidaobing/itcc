@@ -9,7 +9,7 @@ class DlgItem(object):
                 self.rank = int(line.split()[-1])
                 break
             
-        if rank is None:
+        if self.rank is None:
             return
         
         for line in ifile:
@@ -25,7 +25,7 @@ class DlgItem(object):
         self.mol = ''
         for line in ifile:
             if line.split()[:1] == ['ATOM']:
-                self.mol += self.line
+                self.mol += line
             elif line.split()[:1] == ['TER']:
                 break
         
@@ -46,6 +46,6 @@ class Dlg(object):
     def next(self):
         res = DlgItem(self.ifile)
         if res:
-            yield res
+            return res
         else:
             raise StopIteration
