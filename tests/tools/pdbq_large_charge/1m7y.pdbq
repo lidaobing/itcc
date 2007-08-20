@@ -1,0 +1,76 @@
+REMARK  13 active torsions:
+REMARK  status: ('A' for Active; 'I' for Inactive)
+REMARK    1  A    between atoms: A3_4  and  O3_5 
+REMARK    2  A    between atoms: A4_6  and  C4A_7 
+REMARK    3  A    between atoms: C4A_7  and  N4A_16 
+REMARK    4  A    between atoms: A5_8  and  C5A_10 
+REMARK    5  A    between atoms: C5A_10  and  OP4_11 
+REMARK    6  A    between atoms: OP4_11  and  P_12 
+REMARK    7  A    between atoms: N4A_16  and  CAI_17 
+REMARK    8  A    between atoms: CAI_17  and  CBC_18 
+REMARK    9  A    between atoms: CAI_17  and  CBI_21 
+REMARK   10  A    between atoms: CGI_22  and  OET_23 
+REMARK   11  A    between atoms: OET_23  and  CEI_24 
+REMARK   12  A    between atoms: CEI_24  and  CFI_25 
+REMARK   13  A    between atoms: CFI_25  and  NI_26 
+ROOT
+ATOM      1  C4A SUB d   1      20.207  -0.127  20.868  0.00  0.00     0.213
+ENDROOT
+BRANCH   1   2
+ATOM      2  A4  SUB d   1      21.287   0.749  20.124  0.00  0.00     0.064
+ATOM      3  A3  SUB d   1      21.052   1.245  18.751  0.00  0.00     0.133
+ATOM      4  A5  SUB d   1      22.564   1.087  20.791  0.00  0.00     0.021
+ATOM      5  A2  SUB d   1      22.073   2.029  18.140  0.00  0.00     0.055
+ATOM      6  N1  SUB d   1      23.237   2.276  18.879  0.00  0.00    -0.310
+ATOM      7  C2A SUB d   1      22.048   2.630  16.773  0.00  0.00     0.108
+ATOM      8  A6  SUB d   1      23.504   1.841  20.146  0.00  0.00     0.065
+BRANCH   4   9
+ATOM      9  C5A SUB d   1      22.796   0.563  22.209  0.00  0.00     0.266
+BRANCH   9  10
+ATOM     10  OP4 SUB d   1      23.111  -0.819  22.139  0.00  0.00    -0.294
+BRANCH  10  11
+ATOM     11  P   SUB d   1      24.080  -1.532  23.244  0.00  0.00     0.223
+ATOM     12  oP1 SUB d   1      25.268  -1.989  22.465  0.00  0.00    -0.519
+ATOM     13  oP2 SUB d   1      23.369  -2.669  23.807  0.00  0.00    -0.519
+ATOM     14  oP3 SUB d   1      24.409  -0.547  24.294  0.00  0.00    -0.519
+ENDBRANCH  10  11
+ENDBRANCH   9  10
+ENDBRANCH   4   9
+BRANCH   3  15
+ATOM     15  O3  SUB d   1      19.954   0.998  18.077  0.00  0.00    -0.319
+ATOM     16  H51 SUB d   1      19.370   0.469  18.608  0.00  0.00     0.261
+ENDBRANCH   3  15
+ENDBRANCH   1   2
+BRANCH   1  17
+ATOM     17  N4A SUB d   1      18.879   0.080  20.352  0.00  0.00     0.282
+ATOM     18  H16 SUB d   1      18.867   1.037  20.036  0.00  0.00     0.222
+ATOM     19  H16 SUB d   1      18.802  -0.581  19.502  0.00  0.00     0.222
+BRANCH  17  20
+ATOM     20  CAI SUB d   1      17.723  -0.080  21.024  0.00  0.00     0.162
+BRANCH  20  21
+ATOM     21  CBC SUB d   1      16.555   0.090  20.256  0.00  0.00     0.091
+ATOM     22  O2B SUB d   1      16.643   0.753  19.150  0.00  0.00    -0.550
+ATOM     23  O3B SUB d   1      15.400  -0.401  20.644  0.00  0.00    -0.550
+ENDBRANCH  20  21
+BRANCH  20  24
+ATOM     24  CBI SUB d   1      17.725  -0.357  22.451  0.00  0.00     0.044
+ATOM     25  CGI SUB d   1      16.816  -1.125  23.054  0.00  0.00     0.155
+BRANCH  25  26
+ATOM     26  OET SUB d   1      17.018  -1.331  24.475  0.00  0.00    -0.312
+BRANCH  26  27
+ATOM     27  CEI SUB d   1      15.760  -1.420  25.171  0.00  0.00     0.258
+BRANCH  27  28
+ATOM     28  CFI SUB d   1      15.509  -2.849  25.669  0.00  0.00     0.177
+BRANCH  28  29
+ATOM     29  NI  SUB d   1      15.336  -3.737  24.520  0.00  0.00     0.237
+ATOM     30  H26 SUB d   1      15.171  -4.677  24.844  0.00  0.00     0.215
+ATOM     31  H26 SUB d   1      16.169  -3.719  23.953  0.00  0.00     0.215
+ATOM     32  H26 SUB d   1      14.549  -3.427  23.972  0.00  0.00     0.215
+ENDBRANCH  28  29
+ENDBRANCH  27  28
+ENDBRANCH  26  27
+ENDBRANCH  25  26
+ENDBRANCH  20  24
+ENDBRANCH  17  20
+ENDBRANCH   1  17
+TORSDOF 11

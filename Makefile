@@ -1,12 +1,16 @@
 PYTHON?=python2.4
 
-all:
+all: build-python2.5 build-python2.4
 	$(PYTHON) setup.py build bdist_egg
 debug: clean
 	$(PYTHON) setup.py build --debug
 	$(PYTHON) setup.py install
-install:
-	$(PYTHON) setup.py install --prefix=/usr/local
+install: install-python2.5 install-python2.4
+
+install-python2.5: build-python2.5
+
+build-python2.5:
+	python2.5 setup.py build --build-lib
 
 install2:
 	mkdir -p $(HOME)/public_html/
