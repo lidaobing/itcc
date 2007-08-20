@@ -1,7 +1,9 @@
 2007-08-21  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/tools/pdbq_large_charge.py: add itcc-pdbq-large-charge
-	* setup.py: ditto.
+	* itcc/tools/pdbq_large_charge.py:
+	  - added
+	  - add support to Arg
+	* setup.py: add itcc-pdbq-large-charge
 
 2007-08-20  LI Daobing  <lidaobing@gmail.com>
 

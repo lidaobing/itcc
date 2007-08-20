@@ -15,8 +15,7 @@ def pdbq_large_charge(ifile, ofile, verbose):
             while '0' <= typ[0] <= '9':
                 typ = typ[1:]
             coords = [float(line[x:x+8]) for x in range(30,54,8)]
-            charge = float(line[70:76])
-            data.append((idx, typ, coords, charge))
+            data.append((idx, typ, coords))
     
 #    res = 0
 #    for idx, typ, coords, charge in data:
@@ -61,6 +60,8 @@ def pdbq_large_charge(ifile, ofile, verbose):
             O1count = len([1 for x in neighs[i] if typs[x] in ('O1', 'o1')])
             if O1count == 2:
                 charge = -1
+            if [typs[x] for x in neighs[i]] == ['N3'] * 3:
+                charge = 1
         if typs[i][0] == 'S':
             O1count = len([1 for x in neighs[i] if typs[x] in ('O1', 'o1')])
             if O1count == 4:
@@ -72,7 +73,7 @@ def pdbq_large_charge(ifile, ofile, verbose):
             charge = 1
         res += abs(charge)
         if verbose and charge != 0:
-            ofile.write('%s\t%s\t%i\n' % (data[i][0], typs[i][0], charge))
+            ofile.write('%s\t%s\t%+i\n' % (data[i][0], typs[i][0], charge))
     ofile.write("%s\n" % res)
 
 def main():
