@@ -19,6 +19,7 @@ def expose_area(protein, ligand, atoms):
     r2q = r2 * r2
     r2hq = r2h * r2h
     
+    ress = []
     for atom in atoms:
         coord = ligand.coords[atom.idx]
         coords = [x for x in (c60.c60()* r1 + coord)]
@@ -39,6 +40,8 @@ def expose_area(protein, ligand, atoms):
         for coord in coords:
             if min(((protein.coords - coord) ** 2).sum(axis=1)) > r2q:
                 res += 1
+        ress.append(res)
+    return ress
 #                
 #        for i in range(len(protein.atoms)):
 #            for idx in range(len(coords))[::-1]:
@@ -47,7 +50,7 @@ def expose_area(protein, ligand, atoms):
 #                    or (protein.atoms[i] != 'H' and disq(coord, protein.coords[i]) <= r2q):
 #                    del coords[idx]
         
-        print atom.idx+1, ligand.atoms[atom.idx], res
+#        print atom.idx+1, ligand.atoms[atom.idx], res
 
 def main():
     if len(sys.argv) != 3:
@@ -70,16 +73,21 @@ def main():
     
     pdb = Pdb(ifile1)
     proccessed_rank = set()
+    print "rank\tE\tdE\tnewE"
     for x in aDlg:
         if x.rank in proccessed_rank:
             continue
         if charges is None:
             charges = pdbq_large_charge.pdbq_large_charge(StringIO(x.mol))
         x2 = Pdb(StringIO(x.mol))
-        print "rank =", x.rank
-        expose_area(pdb, x2, charges)
-        
-    
+        res = expose_area(pdb, x2, charges)
+        dE = 0.0
+        for i, y in enumerate(res):
+            if y == 0:
+                dE += 2.0 * abs(charges[i].charge)
+            elif 1 <= y <= 4:
+                dE += 1.0
+        print '%s\t%s\t%s\t%s' % (x.rank, x.ene, dE, x.ene+dE)
 
 if __name__ == '__main__':
     main()
