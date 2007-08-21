@@ -86,7 +86,7 @@ def main():
             if y == 0:
                 dE += 2.0 * abs(charges[i].charge)
             elif 1 <= y <= 4:
-                dE += 1.0
+                dE += 1.0 * abs(charges[i].charge)
         print '%s\t%s\t%s\t%s' % (x.rank, x.ene, dE, x.ene+dE)
 
 if __name__ == '__main__':
