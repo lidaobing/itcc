@@ -35,14 +35,19 @@ def expose_area(protein, ligand, atoms):
                     print i
                     raise
         
-        for i in range(len(protein.atoms)):
-            for idx in range(len(coords))[::-1]:
-                coord = coords[idx]
-                if (protein.atoms[i] == 'H' and disq(coord, protein.coords[i]) <= r2hq) \
-                    or (protein.atoms[i] != 'H' and disq(coord, protein.coords[i]) <= r2q):
-                    del coords[idx]
+        res = 0
+        for coord in coords:
+            if min(((protein.coords - coord) ** 2).sum(axis=1)) > r2q:
+                res += 1
+#                
+#        for i in range(len(protein.atoms)):
+#            for idx in range(len(coords))[::-1]:
+#                coord = coords[idx]
+#                if (protein.atoms[i] == 'H' and disq(coord, protein.coords[i]) <= r2hq) \
+#                    or (protein.atoms[i] != 'H' and disq(coord, protein.coords[i]) <= r2q):
+#                    del coords[idx]
         
-        print atom.idx+1, len(coords)
+        print atom.idx+1, ligand.atoms[atom.idx], res
 
 def main():
     if len(sys.argv) != 3:
@@ -71,7 +76,7 @@ def main():
         if charges is None:
             charges = pdbq_large_charge.pdbq_large_charge(StringIO(x.mol))
         x2 = Pdb(StringIO(x.mol))
-        print x.rank
+        print "rank =", x.rank
         expose_area(pdb, x2, charges)
         
     
