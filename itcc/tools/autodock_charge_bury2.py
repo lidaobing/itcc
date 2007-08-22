@@ -1,4 +1,4 @@
-# $Id: autodock_charge_bury.py 824 2007-08-22 08:09:15Z lidb $
+# $Id$
 
 import sys
 import math
