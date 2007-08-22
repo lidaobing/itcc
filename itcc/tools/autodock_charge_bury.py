@@ -9,7 +9,7 @@ from itcc.tools.pdb import Pdb
 from itcc.tools import c60
 
 class Param(object):
-    def __init__(self, r1=4.0, r2=3.3, r2o=2.6, r2h=1.8):
+    def __init__(self, r1=3.7, r2=2.7, r2o=2.5, r2h=1.8):
         self.r1 = r1
         self.r2 = r2
         self.r2o = r2o
