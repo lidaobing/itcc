@@ -13,11 +13,21 @@ def disq(coord1, coord2):
 
 def expose_area(protein, ligand, atoms):
     r1 = 4.0
-    r2 = 2.6
+    r2 = 3.0
+    r2o = 2.6
     r2h = 1.8
     
     r2q = r2 * r2
+    r2oq = r2o * r2o
     r2hq = r2h * r2h
+    
+    pro_coords_o = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] in 'Oo' ],
+                                      axis=0)
+    pro_coords_h = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] == 'H' ],
+                                      axis=0)
+    pro_coords_other = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] not in 'HOo' ],
+                                      axis=0)
+    
     
     ress = []
     for atom in atoms:
@@ -37,8 +47,14 @@ def expose_area(protein, ligand, atoms):
                     raise
         
         res = 0
+        
         for coord in coords:
-            if min(((protein.coords - coord) ** 2).sum(axis=1)) > r2q:
+            ok = True
+            for pro_coords, rq in ((pro_coords_o, r2oq), (pro_coords_other, r2q), (pro_coords_h, r2hq)):
+                if min(((pro_coords - coord) ** 2).sum(axis=1)) < rq:
+                    ok = False
+                    break
+            if ok:
                 res += 1
         ress.append(res)
         print atom.idx+1, ligand.atoms[atom.idx], res
