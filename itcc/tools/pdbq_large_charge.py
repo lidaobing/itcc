@@ -52,6 +52,7 @@ def pdbq_large_charge(ifile, ofile=sys.stdout, verbose=0):
     for i in range(len(data)):
         charge = 0
         if typs[i][0] == 'P':
+            typ = 'P'
             O1count = len([1 for x in neighs[i] if typs[x] in ('O1', 'o1')])
             if O1count == 4:
                 charge = -3
@@ -64,12 +65,16 @@ def pdbq_large_charge(ifile, ofile=sys.stdout, verbose=0):
             S1count = len([1 for x in neighs[i] if typs[x] == 'S1'])
             N3count = len([1 for x in neighs[i] if typs[x] == 'N3'])
             if O1count == 2:
+                typ = 'CO'
                 charge = -1
             if [typs[x] for x in neighs[i]] == ['N3'] * 3:
+                typ = 'CN'
                 charge = 1
             if typs[i] == 'C3' and N3count == 2 and O1count == 0 and S1count == 0:
+                typ = 'CN'
                 charge = 1
         if typs[i][0] == 'S':
+            typ = 'S'
             O1count = len([1 for x in neighs[i] if typs[x] in ('O1', 'o1')])
             if O1count == 4:
                 charge = -2
@@ -77,11 +82,14 @@ def pdbq_large_charge(ifile, ofile=sys.stdout, verbose=0):
                 charge = -1
         
         if typs[i] == 'N4':
+            typ = 'N'
             charge = 1
+            
         if charge != 0:
             t = Result()
             t.idx = i
             t.charge = charge
+            t.type = typ
             res.append(t)
         if verbose >= 2 and charge != 0:
             ofile.write('%s\t%s\t%+i\n' % (data[i][0], typs[i][0], charge))
