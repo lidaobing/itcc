@@ -13,7 +13,7 @@ def disq(coord1, coord2):
 
 def expose_area(protein, ligand, atoms):
     r1 = 4.0
-    r2 = 3.0
+    r2 = 3.3
     r2o = 2.6
     r2h = 1.8
     
