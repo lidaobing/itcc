@@ -2,15 +2,19 @@
 
 import sys
 import math
+import random
 from cStringIO import StringIO
+
+import numpy
 
 from itcc.tools import dlg, pdbq_large_charge
 from itcc.tools.pdb import Pdb
 from itcc.tools import c60
 
 class Param(object):
-    def __init__(self, r1=3.5, r2=3.0, r2o=2.5, r2h=1.8):
-        self.r1 = r1
+    def __init__(self, r1l=3.5, r1h = 4.0, r2=3.0, r2o=2.5, r2h=1.8):
+        self.r1l = r1l
+        self.r1h = r1h
         self.r2 = r2
         self.r2o = r2o
         self.r2h = r2h
@@ -22,6 +26,7 @@ def disq(coord1, coord2):
     return sum((coord1-coord2)**2)
 
 def expose_area(protein, ligand, atoms, verbose=0):
+    count = 200
     params = {'P': Param(),
               'S': Param(),
               'N': Param(),
@@ -44,7 +49,14 @@ def expose_area(protein, ligand, atoms, verbose=0):
         except:
             print atom.__dict__
         coord = ligand.coords[atom.idx]
-        coords = [x for x in (c60.c60()* param.r1 + coord)]
+#        coords = [x for x in (c60.c60()* (param.r1l + param.r1h) / 2.0 + coord)]
+        coords = []
+        while len(coords) < count:
+            t1 = numpy.array([random.uniform(-param.r1h, param.r1h) for i in range(3)])
+            lensq = sum(t1 * t1)
+            if param.r1l * param.r1l <= lensq <= param.r1h * param.r1h:
+                coords.append(coord + t1)
+            
         for i in range(len(ligand.atoms)):
             if i == atom.idx:
                 continue
