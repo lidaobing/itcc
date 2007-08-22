@@ -8,18 +8,26 @@ from itcc.tools import dlg, pdbq_large_charge
 from itcc.tools.pdb import Pdb
 from itcc.tools import c60
 
+class Param(object):
+    def __init__(self, r1=4.0, r2=3.3, r2o=2.6, r2h=1.8):
+        self.r1 = r1
+        self.r2 = r2
+        self.r2o = r2o
+        self.r2h = r2h
+        self.r2q = r2 * r2
+        self.r2oq = r2o * r2o
+        self.r2hq = r2h * r2h
+
 def disq(coord1, coord2):
     return sum((coord1-coord2)**2)
 
-def expose_area(protein, ligand, atoms):
-    r1 = 4.0
-    r2 = 3.3
-    r2o = 2.6
-    r2h = 1.8
-    
-    r2q = r2 * r2
-    r2oq = r2o * r2o
-    r2hq = r2h * r2h
+def expose_area(protein, ligand, atoms, verbose=0):
+    params = {'P': Param(),
+              'S': Param(),
+              'N': Param(),
+              'CO': Param(),
+              'CN': Param(),
+              }
     
     pro_coords_o = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] in 'Oo' ],
                                       axis=0)
@@ -31,16 +39,21 @@ def expose_area(protein, ligand, atoms):
     
     ress = []
     for atom in atoms:
+        try:
+            param = params[atom.type]
+        except:
+            print atom.__dict__
         coord = ligand.coords[atom.idx]
-        coords = [x for x in (c60.c60()* r1 + coord)]
+        coords = [x for x in (c60.c60()* param.r1 + coord)]
         for i in range(len(ligand.atoms)):
             if i == atom.idx:
                 continue
             for idx in range(len(coords))[::-1]:
                 coord = coords[idx]
                 try:
-                    if (ligand.atoms[i] == 'H' and disq(coord, ligand.coords[i]) <= r2hq) \
-                        or (ligand.atoms[i] != 'H' and disq(coord, ligand.coords[i]) <= r2q):
+                    if (ligand.atoms[i][0] == 'H' and disq(coord, ligand.coords[i]) <= param.r2hq) \
+                        or (ligand.atoms[i][0] in 'Oo' and disq(coord, ligand.coords[i]) <= param.r2oq) \
+                        or (ligand.atoms[i][0] not in 'HOo' and disq(coord, ligand.coords[i]) <= param.r2q):
                         del coords[idx]
                 except:
                     print i
@@ -50,12 +63,14 @@ def expose_area(protein, ligand, atoms):
         
         for coord in coords:
             ok = True
-            for pro_coords, rq in ((pro_coords_o, r2oq), (pro_coords_other, r2q), (pro_coords_h, r2hq)):
+            for pro_coords, rq in ((pro_coords_o, param.r2oq), (pro_coords_other, param.r2q), (pro_coords_h, param.r2hq)):
                 if min(((pro_coords - coord) ** 2).sum(axis=1)) < rq:
                     ok = False
                     break
             if ok:
                 res += 1
+                if verbose >= 1:
+                    print 'HETATM   %2i  O   HOH    %2i    %8.3f%8.3f%8.3f  1.00  0.0.0' % (res, res, coord[0], coord[1], coord[2])
         ress.append(res)
         print atom.idx+1, ligand.atoms[atom.idx], res
     return ress
@@ -69,18 +84,25 @@ def expose_area(protein, ligand, atoms):
         
 
 def main():
-    if len(sys.argv) != 3:
+    args = sys.argv[1:]
+    
+    verbose = 0
+    if args and args[0] == '-v':
+        verbose = 1
+        args = args[1:]
+    
+    if len(args) != 2:
         import os.path
-        sys.stderr.write('Usage: %s foo.pdbqs foo.dlg\n' % os.path.basename(sys.argv[0]))
+        sys.stderr.write('Usage: %s [-v] foo.pdbqs foo.dlg\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     
     ifile1 = sys.stdin
-    if sys.argv[1] != '-':
-        ifile1 = file(sys.argv[1])
+    if args[0] != '-':
+        ifile1 = file(args[0])
         
     ifile2 = sys.stdin
-    if sys.argv[2] != '-':
-        ifile2 = file(sys.argv[2])
+    if args[1] != '-':
+        ifile2 = file(args[1])
     
     sys.stdout.flush()
     aDlg = dlg.Dlg(ifile2)
@@ -98,7 +120,7 @@ def main():
         if charges is None:
             charges = pdbq_large_charge.pdbq_large_charge(StringIO(x.mol))
         x2 = Pdb(StringIO(x.mol))
-        res = expose_area(pdb, x2, charges)
+        res = expose_area(pdb, x2, charges, verbose)
         dE = 0.0
         for i, y in enumerate(res):
             if y == 0:
