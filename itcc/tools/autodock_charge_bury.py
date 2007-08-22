@@ -27,11 +27,8 @@ def disq(coord1, coord2):
 
 def expose_area(protein, ligand, atoms, verbose=0):
     count = 200
-    params = {'P': Param(),
-              'S': Param(),
-              'N': Param(),
-              'CO': Param(),
-              'CN': Param(),
+    params = {'H': Param(),
+              'O': Param(),
               }
     
     pro_coords_o = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] in 'OoN' ],
@@ -42,50 +39,53 @@ def expose_area(protein, ligand, atoms, verbose=0):
                                       axis=0)
     
     
-    ress = []
+    resss = []
     for atom in atoms:
-        try:
-            param = params[atom.type]
-        except:
-            print atom.__dict__
-        coord = ligand.coords[atom.idx]
-#        coords = [x for x in (c60.c60()* (param.r1l + param.r1h) / 2.0 + coord)]
-        coords = []
-        while len(coords) < count:
-            t1 = numpy.array([random.uniform(-param.r1h, param.r1h) for i in range(3)])
-            lensq = sum(t1 * t1)
-            if param.r1l * param.r1l <= lensq <= param.r1h * param.r1h:
-                coords.append(coord + t1)
+        ress = []
+        for active in atom.actives:
+            typ = ligand.atoms[active][0]
+            param = params[typ]
+            coord = ligand.coords[active]
+    #        coords = [x for x in (c60.c60()* (param.r1l + param.r1h) / 2.0 + coord)]
+            coords = []
+            while len(coords) < count:
+                t1 = numpy.array([random.uniform(-param.r1h, param.r1h) for i in range(3)])
+                lensq = sum(t1 * t1)
+                if param.r1l * param.r1l <= lensq <= param.r1h * param.r1h:
+                    coords.append(coord + t1)
+                
+            for i in range(len(ligand.atoms)):
+                if i == active:
+                    continue
+                for idx in range(len(coords))[::-1]:
+                    coord = coords[idx]
+                    try:
+                        if (ligand.atoms[i][0] == 'H' and disq(coord, ligand.coords[i]) <= param.r2hq) \
+                            or (ligand.atoms[i][0] in 'OoN' and disq(coord, ligand.coords[i]) <= param.r2oq) \
+                            or (ligand.atoms[i][0] not in 'HOoN' and disq(coord, ligand.coords[i]) <= param.r2q):
+                            del coords[idx]
+                    except:
+                        print i
+                        raise
             
-        for i in range(len(ligand.atoms)):
-            if i == atom.idx:
-                continue
-            for idx in range(len(coords))[::-1]:
-                coord = coords[idx]
-                try:
-                    if (ligand.atoms[i][0] == 'H' and disq(coord, ligand.coords[i]) <= param.r2hq) \
-                        or (ligand.atoms[i][0] in 'OoN' and disq(coord, ligand.coords[i]) <= param.r2oq) \
-                        or (ligand.atoms[i][0] not in 'HOoN' and disq(coord, ligand.coords[i]) <= param.r2q):
-                        del coords[idx]
-                except:
-                    print i
-                    raise
-        
-        res = 0
-        
-        for coord in coords:
-            ok = True
-            for pro_coords, rq in ((pro_coords_o, param.r2oq), (pro_coords_other, param.r2q), (pro_coords_h, param.r2hq)):
-                if min(((pro_coords - coord) ** 2).sum(axis=1)) < rq:
-                    ok = False
-                    break
-            if ok:
-                res += 1
-                if verbose >= 1:
-                    print 'HETATM   %2i  O   HOH    %2i    %8.3f%8.3f%8.3f  1.00  0.0.0' % (res, res, coord[0], coord[1], coord[2])
-        ress.append(res)
-        print atom.idx+1, ligand.atoms[atom.idx], res
-    return ress
+            res = 0
+            
+            for coord in coords:
+                ok = True
+                for pro_coords, rq in ((pro_coords_o, param.r2oq), (pro_coords_other, param.r2q), (pro_coords_h, param.r2hq)):
+                    if min(((pro_coords - coord) ** 2).sum(axis=1)) < rq:
+                        ok = False
+                        break
+                if ok:
+                    res += 1
+                    if verbose >= 1:
+                        print 'HETATM   %2i  O   HOH    %2i    %8.3f%8.3f%8.3f  1.00  0.0.0' % (res, res, coord[0], coord[1], coord[2])
+            ress.append(res)
+            print active+1, ligand.atoms[active], res
+        resss.append(sum(ress)/len(ress))
+        print atom.idx+1, ligand.atoms[atom.idx], resss[-1]
+        print
+    return resss
 #                
 #        for i in range(len(protein.atoms)):
 #            for idx in range(len(coords))[::-1]:
