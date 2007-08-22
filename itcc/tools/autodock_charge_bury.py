@@ -9,7 +9,7 @@ from itcc.tools.pdb import Pdb
 from itcc.tools import c60
 
 class Param(object):
-    def __init__(self, r1=3.7, r2=2.7, r2o=2.5, r2h=1.8):
+    def __init__(self, r1=3.5, r2=3.0, r2o=2.5, r2h=1.8):
         self.r1 = r1
         self.r2 = r2
         self.r2o = r2o
@@ -29,11 +29,11 @@ def expose_area(protein, ligand, atoms, verbose=0):
               'CN': Param(),
               }
     
-    pro_coords_o = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] in 'Oo' ],
+    pro_coords_o = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] in 'OoN' ],
                                       axis=0)
     pro_coords_h = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] == 'H' ],
                                       axis=0)
-    pro_coords_other = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] not in 'HOo' ],
+    pro_coords_other = protein.coords.take([i for i in range(len(protein.atoms)) if protein.atoms[i][0] not in 'HOoN' ],
                                       axis=0)
     
     
@@ -52,8 +52,8 @@ def expose_area(protein, ligand, atoms, verbose=0):
                 coord = coords[idx]
                 try:
                     if (ligand.atoms[i][0] == 'H' and disq(coord, ligand.coords[i]) <= param.r2hq) \
-                        or (ligand.atoms[i][0] in 'Oo' and disq(coord, ligand.coords[i]) <= param.r2oq) \
-                        or (ligand.atoms[i][0] not in 'HOo' and disq(coord, ligand.coords[i]) <= param.r2q):
+                        or (ligand.atoms[i][0] in 'OoN' and disq(coord, ligand.coords[i]) <= param.r2oq) \
+                        or (ligand.atoms[i][0] not in 'HOoN' and disq(coord, ligand.coords[i]) <= param.r2q):
                         del coords[idx]
                 except:
                     print i
