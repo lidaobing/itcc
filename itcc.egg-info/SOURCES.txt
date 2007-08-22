@@ -29,6 +29,7 @@ itcc.egg-info/PKG-INFO
 itcc.egg-info/SOURCES.txt
 itcc.egg-info/dependency_links.txt
 itcc.egg-info/entry_points.txt
+itcc.egg-info/native_libs.txt
 itcc.egg-info/top_level.txt
 itcc/bodr/__init__.py
 itcc/bodr/_load_mass.py
