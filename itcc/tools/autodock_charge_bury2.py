@@ -25,6 +25,14 @@ class Param(object):
 def disq(coord1, coord2):
     return sum((coord1-coord2)**2)
 
+def max_distance(coords):
+    res = 0.0
+    for i in range(len(coords)):
+        for j in range(i):
+            t = coords[i] - coords[j]
+            res = max(res, sum(t*t))
+    return math.sqrt(res)
+
 def expose_area(protein, ligand, atoms, verbose=0):
     count = 200
     params = {'P': Param(r1l=3.4, r1h = 4.0),
@@ -72,6 +80,7 @@ def expose_area(protein, ligand, atoms, verbose=0):
                     raise
         
         res = 0
+        res2 = []
         
         for coord in coords:
             ok = True
@@ -81,10 +90,15 @@ def expose_area(protein, ligand, atoms, verbose=0):
                     break
             if ok:
                 res += 1
+                res2.append(coord)
                 if verbose >= 1:
                     print 'HETATM   %2i  O   HOH    %2i    %8.3f%8.3f%8.3f  1.00  0.0.0' % (res, res, coord[0], coord[1], coord[2])
+        if res and verbose >= 1:
+            print 'TER'
         ress.append(res)
-        print atom.idx+1, ligand.atoms[atom.idx], res, ' '.join([str(x) for x in coord])
+        
+        max_dis = max_distance(res2)
+        print atom.idx+1, ligand.atoms[atom.idx], res, max_dis
     return ress
 #                
 #        for i in range(len(protein.atoms)):
