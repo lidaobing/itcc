@@ -9,7 +9,7 @@ import numpy
 
 from itcc.tools import dlg, pdbq_large_charge
 from itcc.tools.pdb import Pdb
-from itcc.tools import c60
+from itcc.tools import ball_200
 
 
 
@@ -36,7 +36,7 @@ def disq(coord1, coord2):
 
 def is_solvent(pro_coords_o, pro_coords_h, pro_coords_other, ligand, coord_water):
     r = 2.8
-    coords = [x for x in (c60.c60()* r + coord_water)]
+    coords = [x for x in (ball_200.data* r + coord_water)]
     param = params['O']
     for i in range(len(ligand.atoms)):
         for idx in range(len(coords))[::-1]:
@@ -62,7 +62,7 @@ def find_water(pro_coords_o, pro_coords_h, pro_coords_other, ligand, idx):
     coords = []
     for i in range(param.stepcount):
         r = param.r1l + i * param.step
-        coords.extend([x for x in (c60.c60()* r + ligand.coords[idx])])
+        coords.extend([x for x in (ball_200.data* r + ligand.coords[idx])])
 
     for i in range(len(ligand.atoms)):
         for idx in range(len(coords))[::-1]:
