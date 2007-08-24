@@ -38,6 +38,7 @@ entry_points = {
         'itcc-almostequaldiff = itcc.tools.almostequaldiff:main',
         'itcc-autodock-charge-bury = itcc.tools.autodock_charge_bury:main',
         'itcc-autodock-charge-bury2 = itcc.tools.autodock_charge_bury2:main',
+        'itcc-ball = itcc.tools.ball:main',
         'itcc-calcangle = itcc.tools.calcangle:main',
         'itcc-catordiff = itcc.ccs2.catordiff:main',
         'itcc-ccslog2enestep = itcc.tools.ccslog2enestep:main',
