@@ -14,7 +14,7 @@ from itcc.tools import c60
 
 
 class Param(object):
-    def __init__(self, r1l=3.0, r1h = 3.5, step=0.1, r2=3.0, r2o=2.5, r2h=1.8):
+    def __init__(self, r1l=3.0, r1h = 3.5, step=0.2, r2=3.0, r2o=2.5, r2h=1.8):
         self.step = step
         self.stepcount = int(round((r1h-r1l)/step)+1)
         self.r1l = r1l
@@ -26,8 +26,8 @@ class Param(object):
         self.r2oq = r2o * r2o
         self.r2hq = r2h * r2h
         
-params = {'H': Param(),
-          'O': Param(),
+params = {'H': Param(r1l=1.7, r1h = 2.3),
+          'O': Param(r1l=2.8, r1h = 3.3),
           'o': Param(),
           }
 
