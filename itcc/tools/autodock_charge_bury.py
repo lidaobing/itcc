@@ -36,6 +36,7 @@ def disq(coord1, coord2):
 
 def is_solvent(pro_coords_o, pro_coords_h, pro_coords_other, ligand, coord_water):
     r = 2.8
+    min_count = 3
     coords = [x for x in (ball_200.data* r + coord_water)]
     param = params['O']
     for i in range(len(ligand.atoms)):
@@ -46,6 +47,7 @@ def is_solvent(pro_coords_o, pro_coords_h, pro_coords_other, ligand, coord_water
                 or (ligand.atoms[i][0] not in 'HOoN' and disq(coord, ligand.coords[i]) <= param.r2q):
                 del coords[idx]
 
+    res = []
     for coord in coords:
         ok = True
         for pro_coords, rq in ((pro_coords_o, param.r2oq), (pro_coords_other, param.r2q), (pro_coords_h, param.r2hq)):
@@ -53,8 +55,9 @@ def is_solvent(pro_coords_o, pro_coords_h, pro_coords_other, ligand, coord_water
                 ok = False
                 break
         if ok:
-            return True
-    
+	    res.append(coord)
+	    if len(res) >= min_count:
+	        return True
     return False
 
 def find_water(pro_coords_o, pro_coords_h, pro_coords_other, ligand, idx):
