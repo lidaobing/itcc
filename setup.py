@@ -3,6 +3,7 @@
 
 import os
 import sys
+import glob
 from setuptools import setup, find_packages
 from distutils.core import Extension
 
@@ -15,6 +16,7 @@ author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
 url = 'http://www.lidaobing.cn/itcc/'
 packages = [x for x in find_packages() if x.startswith('itcc')]
+scripts = glob.glob('scripts/*')
 
 ext_modules = [Extension("itcc.core.ctools", ["ext/itcc-core-ctools.c"]),
                Extension("itcc.tools.cpptools",
@@ -137,6 +139,7 @@ def main():
         include_package_data = False,
         classifiers = classifiers,
         license = license_,
+        scripts = scripts,
     )
 
 if __name__ == '__main__':

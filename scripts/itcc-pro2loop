@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+	echo "Usage: $0 xyzfile"
+	exit 1
+fi
+
+grep -A 2 " N " "$1" | awk '{print $1}'
