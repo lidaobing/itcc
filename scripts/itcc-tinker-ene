@@ -1,0 +1,22 @@
+#!/bin/sh
+
+if [ $# -lt 2 ]; then
+	echo "Usage: `basename $0` forcefield xyzfile..."
+	exit 1
+fi
+
+FF=$1
+if [ ! -f $FF ]; then
+	FF=/usr/share/tinker/params/$FF.prm
+	if [ ! -f $FF ]; then
+		echo "can't find force field: $1"
+		exit 1
+	fi
+fi
+shift
+
+for file in $@; do
+        printf "$file\t"
+        analyze $file $FF E  | grep Total | awk '{print $5}'
+done
+
