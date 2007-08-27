@@ -9,7 +9,7 @@ def relative(ifile, ofile, verbose, base=None):
             data.append(float(word))
     
     if base is None:
-        m = min(data)
+        base = min(data)
     
     try:
         for x in data:
