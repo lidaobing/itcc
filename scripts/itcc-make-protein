@@ -1,0 +1,88 @@
+#!/bin/bash
+
+function usage
+{
+	echo "Usage: `basename $0` [-f forcefield] seq"
+	echo "  default forcefield is oplsaa"
+}
+
+FF=oplsaa
+
+while [ $# -ne 0 ]; do
+	case "$1" in
+	-f)
+		shift
+		if [ $# -ne 0 ]; then
+			FF=$1
+			shift
+		else
+			usage
+			exit 1
+		fi
+		;;
+	*)
+		break
+		;;
+	esac
+done
+
+if [ $# -ne 1 ]; then
+	usage
+	exit 1
+fi
+
+if [ ! -f "$FF" ]; then
+	FF2=/usr/share/tinker/params/$FF.prm
+	if [ ! -f "$FF2" ]; then
+		echo "can't find force field: $FF"
+		exit 1
+	else
+		FF=$FF2
+	fi
+fi
+
+OLDPWD=`pwd`
+NEWDIR=/tmp/tmp-$$
+mkdir $NEWDIR
+cd $NEWDIR
+
+cat << EOF > tinker.key
+ENFORCE-CHIRALITY
+EOF
+
+cat << EOF > input.txt
+1.xyz
+title
+$FF
+EOF
+
+for R in `echo $1 | sed 's/./ \0/g'`; do
+	echo "$R 20.0 20.0 180.0" >> input.txt
+done
+
+cat << EOF >> input.txt
+
+Y
+EOF
+
+itcc-random-protein-input input.txt | protein 1>&2
+newton 1.xyz $FF A A 0.01 1>&2
+cat 1.xyz_2
+
+cd $OLDPWD
+rm -rf $NEWDIR
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
