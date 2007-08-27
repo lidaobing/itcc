@@ -5,4 +5,4 @@ if [ $# != 1 ]; then
 	exit 1
 fi
 
-grep -A 2 " N " "$1" | grep -v "^--" | awk '{print $1}'
+grep -A 1 " N " "$1" | grep CT | awk '{print $1}'

@@ -16,7 +16,7 @@ author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
 url = 'http://www.lidaobing.cn/itcc/'
 packages = [x for x in find_packages() if x.startswith('itcc')]
-scripts = glob.glob('scripts/*')
+scripts = [x for x in glob.glob('scripts/*') if not x.endswith('~')]
 
 ext_modules = [Extension("itcc.core.ctools", ["ext/itcc-core-ctools.c"]),
                Extension("itcc.tools.cpptools",
