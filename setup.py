@@ -95,6 +95,7 @@ entry_points = {
         'itcc-rmsd2 = itcc.molecule.rmsd:main_rmsd2',
         'itcc-rotate-to = itcc.tools.rotate_to:main',
         'itcc-scalexyz = itcc.tools.scalexyz:main',
+        'itcc-scanlog2enestep = itcc.tools.scanlog2enestep:main',
         'itcc-scanlog2idxene = itcc.tools.scanlog2idxene:main',
         'itcc-settype = itcc.molecule.settype:main',
         'itcc-shake = itcc.tools.shake:main',
