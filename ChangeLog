@@ -1,5 +1,9 @@
 2007-08-30  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/tools/scanlog2enestep.py: add itcc-scanlog2enestep
+
+	* setup.py (entry_points): add itcc-scanlog2enestep
+
 	* itcc/tools/enestep2countstep.py (main): support read from
 	standard input.
 
