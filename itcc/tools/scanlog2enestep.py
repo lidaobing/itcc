@@ -9,6 +9,7 @@ def scanlog2enestep(ifile, ofile):
             ofile.write('%s %i\n' % (line.split()[-1], step))
 
 def main():
+    import sys
     if len(sys.argv) != 2:
         import os.path
         sys.stderr.write(
