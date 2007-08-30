@@ -25,10 +25,12 @@ def main():
     import sys
     if len(sys.argv) < 3:
         import os.path
-        sys.stderr.write('usage: %s ifname ene1 ene2 ...\n' % os.path.basename(sys.argv[0]))
+        sys.stderr.write('usage: %s <ifname|-> ene...\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
-    ifile = file(sys.argv[1])
+    ifile = sys.stdin
+    if sys.argv[1] != '-':
+        ifile = file(sys.argv[1])
     enes = [float(x) for x in sys.argv[2:]]
     enestep2countstep(ifile, enes, sys.stdout)
 
