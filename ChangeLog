@@ -1,5 +1,7 @@
 2007-08-30  LI Daobing  <lidaobing@gmail.com>
 
+	* scripts/itcc-mmlog2enestep: add itcc-mmlog2enestep
+
 	* itcc/tools/scanlog2enestep.py: add itcc-scanlog2enestep
 
 	* setup.py (entry_points): add itcc-scanlog2enestep
