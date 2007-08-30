@@ -1,3 +1,7 @@
+2007-08-30  LI Daobing  <lidaobing@gmail.com>
+
+	* itcc/tools/ccslog2enestep.py: itcc-ccslog2enestep does not work.
+
 2007-08-27  LI Daobing  <lidaobing@gmail.com>
 
 	* itcc/tools/relative.py: fix a bug when do not use '-b'
