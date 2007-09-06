@@ -42,11 +42,15 @@ def mtxyzstat(mtxyzfname, idxs):
 def main():
     from optparse import OptionParser
 
-    usage = 'usage: %prog [-H|--header] -I idx-file mtxyzfname...'
+    usage = 'usage: %prog [-H|--header] [-v] -I idx-file mtxyzfname...'
     parser = OptionParser(usage)
     parser.add_option('-H', '--header',
                       action='store_true', dest='print_header',
                       help='print header')
+    parser.add_option('-v', '--verbose',
+            action = 'store_true',
+            dest = 'verbose',
+            help = 'print filename')
     parser.add_option('-I', '--idx-file',
                       dest='idx_file',
                       metavar='FILE',
@@ -63,11 +67,12 @@ def main():
 
     idxs = readidx(idx_ifile)
 
-    if(options.print_header):
+    if options.print_header:
         print_idx(idxs)
 
     for arg in args:
-        print arg,
+        if options.verbose:
+            print arg,
         mtxyzstat(arg, idxs)
 
 if __name__ == '__main__':
