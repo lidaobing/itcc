@@ -1,12 +1,12 @@
 #!/bin/sh
 # $Id$
 
-if [ $# -lt 2 ]; then
+if [ $# -ne 1 ]; then
     echo "Usage: `basename $0` ifname"
     exit 1
 fi
 
-grep 'Conf.*unique' $1 | awk '{print $2,$5}'
+grep 'Conf.*unique' $1 | awk '{print $5,$2}'
 
 
     
