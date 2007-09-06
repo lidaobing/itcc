@@ -1,3 +1,5 @@
+# $Id$
+
 def loop2looptor(ifile, ofile):
     a = [int(x) for x in ifile.read().split()]
     a += a
