@@ -1,18 +1,32 @@
 # $Id$
 
-def loop2looptor(ifile, ofile):
+def loop2looptor(ifile, ofile, l=4):
     a = [int(x) for x in ifile.read().split()]
     a += a
+    formatstr = ('%i ' * l)[:-1] + '\n'
     for i in range(len(a)/2):
-        ofile.write('%i %i %i %i\n' % tuple(a[i:i+4]))
+        ofile.write(formatstr % tuple(a[i:i+l]))
 
 def main():
     import sys
-    if len(sys.argv) != 2:
+    import getopt
+    
+    opts, args = getopt.getopt(sys.argv[1:], 'l:')
+
+    if len(args) != 1:
         import os.path
-        sys.stderr.write('Usage: %s loop\n' % os.path.basename(sys.argv[0]))
+        sys.stderr.write('Usage: %s [-l N] <loop|->\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
-    loop2looptor(file(sys.argv[1]), sys.stdout)
+
+    l = 4
+    for k, v in opts:
+        if k == '-l':
+            l = int(v)
+
+    ifile = sys.stdin
+    if args[0] != '-':
+        ifile = file(args[0])
+    loop2looptor(ifile, sys.stdout, l)
 
 if __name__ == '__main__':
     main()
