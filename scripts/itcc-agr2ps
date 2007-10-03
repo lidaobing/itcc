@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+	echo "Usage: `basename $0` agrfile"
+	exit 1
+fi
+
+gracebat -hardcopy -printfile - -hdevice PostScript $1 2> /dev/null
