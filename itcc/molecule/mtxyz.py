@@ -35,6 +35,9 @@ class Mtxyz:
                 cur = 0
                 need = None
 
+def read_mtxyz_frame(ifile, frame_idx):
+    assert frame_idx >= 0
+
             
 
         

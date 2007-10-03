@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ $# -ne 2 ]; then
+	echo "Usage: `basename $0` psfile emffile"
+	exit 1
+fi
+
+IFNAME=$1
+OFNAME=$2
+FIGNAME=/tmp/tmp-$$.fig
+
+pstoedit -f fig $IFNAME $FIGNAME
+fig2dev -L emf $FIGNAME $OFNAME
+rm -f $FIGNAME
