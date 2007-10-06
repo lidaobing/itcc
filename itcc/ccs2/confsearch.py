@@ -190,6 +190,10 @@ def main():
         help="minimal invalid energy before minimization, " \
             "unit is kcal/mol, default is %.1f" \
             % config.getfloat('DEFAULT', 'minimal_invalid_energy_before_minimization'))
+    parser.add_option(
+            '--log-iter',
+            dest='log_iter',
+            action='store_true')
                       
     (options, args) = parser.parse_args()
     if options.resume is None:

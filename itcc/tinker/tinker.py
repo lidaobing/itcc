@@ -302,8 +302,8 @@ def isminimal(mol, forcefield):
     return abs(freqs[0]) < abs(freqs[6])
 
 class NewtonMol(object):
-    def __init__(self):
-        self.log_iter = False
+    def __init__(self, log_iter=False):
+        self.log_iter = log_iter
         self.iters = []
 
     def do_log_iter(self, lines):

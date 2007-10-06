@@ -47,6 +47,7 @@ class LoopClosure(object):
                     ('chiral_index_file', str, ""),
                     ('molfname', str, ""),
                     ('is_chain', bool, False),
+                    ('log_iter', bool, False),
                     ('check_energy_before_minimization', bool, True),
                     ('is_achiral', str, "auto"),
                     ('check_minimal', bool, False),
@@ -152,6 +153,10 @@ class LoopClosure(object):
         min_func_dict = {'newton': tinker.newton_mol,
                          'minimize': tinker.minimize_mol,
                          'optimize': tinker.optimize_mol}
+        if self.config.getboolean('DEFAULT', 'log_iter'):
+            self.min_algo = tinker.NewtonMol(log_iter=True)
+            min_func_dict['newton'] = self.min_algo.newton_mol
+
         if self.min_method not in min_func_dict:
             raise Error("unknown min_method `" + self.min_method + "'")
         self.min_func = min_func_dict[self.min_method]
@@ -583,6 +588,12 @@ class LoopClosure(object):
 
     def printend(self):
         import datetime
+
+        if self.config.getboolean('DEFAULT', 'log_iter') and self.min_algo.iters:
+            self.log('minimization iterations:\n')
+            for i in range(0, len(self.min_algo.iters), 10):
+                self.log(''.join(['%4i' % x for x in self.min_algo.iters[i:i+10]])+'\n')
+            self.log('\n')
 
         self.log('Starttime: %s\n' % time.ctime(self.start_time))
         end_time = time.time()
