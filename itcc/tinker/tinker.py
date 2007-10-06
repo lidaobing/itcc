@@ -301,51 +301,68 @@ def isminimal(mol, forcefield):
         return False
     return abs(freqs[0]) < abs(freqs[6])
 
-def newton_mol(mol, forcefield,
-               converge = 0.01, prefix=None):
-    """newton_mol(mol, forcefield, converge = 0.01, prefix=None) -> (Molecule, Float)
-    optimized the mol with newton, and return the optimized energy
-    """
-    forcefield = getparam(forcefield)
+class NewtonMol(object):
+    def __init__(self):
+        self.log_iter = False
+        self.iters = []
 
-    if curdir:
-        if prefix is None:
-            ifname = 'tinker.xyz'
+    def do_log_iter(self, lines):
+        for idx, line in enumerate(lines):
+            if line.startswith(' TNCG'):
+                if idx > 2:
+                    self.iters.append(int(lines[idx-2].split()[0]))
+                return
+
+    def newton_mol(self, mol, forcefield,
+                   converge = 0.01, prefix=None):
+        """newton_mol(mol, forcefield, converge = 0.01, prefix=None) -> (Molecule, Float)
+        optimized the mol with newton, and return the optimized energy
+        """
+        forcefield = getparam(forcefield)
+
+        if curdir:
+            if prefix is None:
+                ifname = 'tinker.xyz'
+            else:
+                ifname = prefix + '.xyz'
+            ofile = file(ifname, 'w')
         else:
-            ifname = prefix + '.xyz'
-        ofile = file(ifname, 'w')
-    else:
-        ofile = tempfile.NamedTemporaryFile(suffix='.xyz')
-        ifname = ofile.name
-    write.writexyz(mol, ofile)
-    ofile.flush()
+            ofile = tempfile.NamedTemporaryFile(suffix='.xyz')
+            ifname = ofile.name
+        write.writexyz(mol, ofile)
+        ofile.flush()
 
-    ofname = ifname + '_2'
+        ofname = ifname + '_2'
 
-    ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
-                             stdout=subprocess.PIPE).communicate()[0]
+        ifile = subprocess.Popen(['newton', ifname, forcefield, 'A', 'A', str(converge)],
+                                 stdout=subprocess.PIPE).communicate()[0]
 
-    result = None
+        result = None
 
-    lines = ifile.splitlines()
+        lines = ifile.splitlines()
 
-    for line in lines:
-        if line.find('Function') != -1:
-            result = float(line.split()[-1])
-            break
+        if self.log_iter:
+            self.do_log_iter(lines)
+
+        for line in lines:
+            if line.startswith(' Final Function'):
+                result = float(line.split()[-1])
+                break
 
 
-    if result is None:
-        sys.stdout.writelines(lines)
-        raise RuntimeError, ifname
-    try:
-        newmol = read.readxyz(file(ofname))
-    except:
-        print ifname, ofname
-        raise
-    ofile.close()
-    os.remove(ofname)
-    if curdir:
-        os.remove(ifname)
-
-    return newmol, result
+        if result is None:
+            sys.stdout.writelines(lines)
+            raise RuntimeError, ifname
+        try:
+            newmol = read.readxyz(file(ofname))
+        except:
+            print ifname, ofname
+            raise
+        ofile.close()
+        os.remove(ofname)
+        if curdir:
+            os.remove(ifname)
+        return newmol, result
+    
+_newton_mol_inst = NewtonMol()
+newton_mol = _newton_mol_inst.newton_mol
