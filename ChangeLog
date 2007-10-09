@@ -1,3 +1,8 @@
+2007-10-09  LI Daobing  <lidaobing@gmail.com>
+
+	* setup.py: add itcc-ranlog2enestep.
+	* itcc/tools/ranlog2enestep.py: added.
+
 2007-08-30  LI Daobing  <lidaobing@gmail.com>
 
 	* scripts/itcc-mmlog2enestep: add itcc-mmlog2enestep

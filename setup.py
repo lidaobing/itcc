@@ -88,6 +88,7 @@ entry_points = {
         'itcc-printefit = itcc.torsionfit.printefit:main',
         'itcc-pyramid-check = itcc.molecule.utils:pyramid_check',
         'itcc-random-protein-input = itcc.tools.random_protein_input:main',
+        'itcc-ranlog2enestep = itcc.tools.ranlog2enestep:main',
         'itcc-relative = itcc.tools.relative:main',
         'itcc-removepbc = itcc.molecule.removepbc:main',
         'itcc-rg = itcc.molecule.utils:rg',
