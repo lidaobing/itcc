@@ -1,8 +1,11 @@
 2007-10-09  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/tools/omega.py: added.
 	* ext/itcc-core-ctools.c: document that torsionangle can also return nan.
 	* itcc/tools/enestep2countstep.py: add '-b' option.
-	* setup.py: add itcc-ranlog2enestep.
+	* setup.py: 
+	  add itcc-ranlog2enestep.
+	  add itcc-omega.
 	* itcc/tools/ranlog2enestep.py: added.
 
 2007-08-30  LI Daobing  <lidaobing@gmail.com>

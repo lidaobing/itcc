@@ -75,6 +75,7 @@ entry_points = {
         'itcc-mtxyz2txyz = itcc.tools.mtxyz2txyz:main',
         'itcc-mtxyzrg = itcc.tools.mtxyzrg:main',
         'itcc-mtxyzstat = itcc.tools.mtxyzstat:main',
+        'itcc-omega = itcc.tools.omega:main',
         'itcc-onecolumn = itcc.tools.onecolumn:main',
         'itcc-optimizes = itcc.tinker.optimizes:main',
         'itcc-out2arch = itcc.tools.out2arch:main',
