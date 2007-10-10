@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ $# != 1 ]; then
+	echo "Usage: `basename $0` xyzfile"
+	exit 1
+fi
+
+itcc-pro2loop "$1" | itcc-loop2looptor - | awk '{if(NR%3==2) print $0}'

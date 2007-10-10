@@ -1,5 +1,6 @@
 2007-10-10  LI Daobing  <lidaobing@gmail.com>
 
+	* scripts/itcc-pro2omega: added.
 	* itcc/molecule/settype.py: support multi input xyz file.
 
 2007-10-09  LI Daobing  <lidaobing@gmail.com>
