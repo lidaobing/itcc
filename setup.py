@@ -106,6 +106,7 @@ entry_points = {
         'itcc-sumparam = itcc.tools.sumparam:main',
         'itcc-sumxyz = itcc.tools.sumxyz:main',
         'itcc-tor2freeene = itcc.tools.tor2freeene:main',
+        'itcc-tor2omega = itcc.tools.tor2omega:main',
         'itcc-tordiff = itcc.tools.tordiff:main',
         'itcc-xyz2gjf = itcc.tools.xyz2gjf:main',
         'itcc-xyz2gro = itcc.tools.xyz2gro:main',

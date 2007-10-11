@@ -1,3 +1,8 @@
+2007-10-11  LI Daobing  <lidaobing@gmail.com>
+
+	* setup.py: add itcc-tor2omega.
+	* itcc/tools/tor2omega.py: added.
+
 2007-10-10  LI Daobing  <lidaobing@gmail.com>
 
 	* scripts/itcc-pro2omega: added.
