@@ -2,7 +2,7 @@
 
 import sys
 
-def relative(ifile, ofile, verbose, base=None):
+def relative(ifile, ofile, verbose, base=None, number=False):
     data = []
     for line in ifile:
         for word in line.split():
@@ -10,9 +10,14 @@ def relative(ifile, ofile, verbose, base=None):
     
     if base is None:
         base = min(data)
+        
+    idx = 1
     
     try:
         for x in data:
+            if number:
+                ofile.write('%i\t' % idx)
+                idx += 1
             if verbose:
                 ofile.write('%f\t%f\n' % (x, x-base))
             else:
@@ -25,19 +30,22 @@ def relative(ifile, ofile, verbose, base=None):
 def main():
     verbose = False
     base = None
+    number = False
     
     import getopt
-    opts, args = getopt.getopt(sys.argv[1:], "vb:")
+    opts, args = getopt.getopt(sys.argv[1:], "vnb:")
     
     for k, v in opts:
         if k == '-v':
             verbose = True
         elif k == '-b':
             base = float(v)
+        elif k == '-n':
+            number = True
             
     if len(args) != 1:
         import os.path
-        sys.stderr.write('Usage: %s [-v] [-b base] <FILE|->\n' % os.path.basename(sys.argv[0]))
+        sys.stderr.write('Usage: %s [-v] [-n] [-b base] <FILE|->\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
     
     ifile = sys.stdin
@@ -46,7 +54,7 @@ def main():
     
     ofile = sys.stdout
     
-    relative(ifile, ofile, verbose, base)
+    relative(ifile, ofile, verbose, base, number)
 
 if __name__ == '__main__':
     main()

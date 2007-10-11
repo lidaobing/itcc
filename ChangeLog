@@ -1,5 +1,6 @@
 2007-10-11  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/tools/relative.py: add '-n'.
 	* scripts/itcc-tinker-ene: add '-v'.
 	* itcc/molecule/chiral.py: add '-v'.
 	* setup.py: add itcc-tor2omega.
