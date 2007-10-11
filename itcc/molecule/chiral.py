@@ -30,32 +30,40 @@ def main():
     
     try:
         opts, args = getopt.getopt(sys.argv[1:], 
-                                   "hi:I:",
-                                   ["help", "idx=", "idx-file="])
+                                   "hvi:I:",
+                                   ["help", 'verbose', "idx=", "idx-file="])
     except getopt.GetoptError:
         # print help information and exit:
         usage(sys.stderr)
         sys.exit(2)
         
-    if '-h' in [x[0] for x in opts] \
-        or '--help' in [x[0] for x in opts]:
+    idx = None
+    verbose = False
+    
+    for k, v in opts:
+        if k in ('-h', '--help'):
             usage(sys.stdout)
             sys.exit(0)
+        elif k in ('-v', '--verbose'):
+            verbose = True
+        elif k in ('-i', '--idx'):
+            idx = v
+        elif k in ('-I', '--idx-file'):
+            ifile = sys.stdin
+            if v != '-':
+                ifile = file(v)
+            idx = ifile.read()
     
-    if len(opts) != 1:
+    if idx is None:
         usage(sys.stderr)
-        sys.exit(2)
-        
-    if opts[0][0] in ('-i', '--idx'):
-        idx = opts[0][1]
-    else:
-        idx = file(opts[0][1]).read()
+        sys.exit(1)
         
     idx = [int(x) - 1 for x in idx.split()]
 
-    for fname in sys.argv[3:]:
+    for fname in args:
         for mol in mtxyz.Mtxyz(file(fname)):
-            sys.stdout.write("%s " % fname)
+            if verbose:
+                sys.stdout.write("%s " % fname)
             for x in idx:
                 t = chiral_type(mol, x)
                 if t is True:
