@@ -1,8 +1,15 @@
 #!/bin/sh
 
 if [ $# -lt 2 ]; then
-	echo "Usage: `basename $0` forcefield xyzfile..."
+	echo "Usage: `basename $0` [-v] forcefield xyzfile..."
 	exit 1
+fi
+
+if [ $1 = '-v' ]; then
+	VERBOSE=1
+	shift
+else
+	VERBOSE=
 fi
 
 FF=$1
@@ -16,7 +23,9 @@ fi
 shift
 
 for file in $@; do
-        printf "$file\t"
+		if [ $VERBOSE ]; then
+        	printf "$file\t"
+        fi
         analyze $file $FF E  | grep Total | awk '{print $5}'
 done
 
