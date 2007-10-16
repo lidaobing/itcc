@@ -13,7 +13,7 @@ def main():
     if len(sys.argv) != 2:
         import os.path
         sys.stderr.write(
-            'Usage: %s <ifname|->\n' % os.path.basename(sys.argv[0]))
+            'Usage: %s [-i] <ifname|->\n' % os.path.basename(sys.argv[0]))
         sys.exit(1)
 
     ifile = sys.stdin

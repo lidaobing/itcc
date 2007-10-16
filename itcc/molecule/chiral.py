@@ -20,8 +20,8 @@ def chiral_types(mol, idxs):
 def usage(ofile):
     import os.path
     prog = os.path.basename(sys.argv[0])
-    ofile.write('Usage: %s -i|--idx IDX FILENAME...\n'
-                '       %s -I|--idx-file IDX-FILE FILENAME...\n'
+    ofile.write('Usage: %s [-v] -i|--idx IDX FILENAME...\n'
+                '       %s [-v] -I|--idx-file IDX-FILE FILENAME...\n'
                 '       %s -h|--help\n' % (prog, prog, prog))
 
 def main():
