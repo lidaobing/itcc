@@ -4,7 +4,7 @@ def omega2restrain(ifile, ofile):
     for line in ifile:
         line = line.strip()
         assert len(line.split()) == 4
-        ofile.write('RESTRAIN-TORSION %s 1.0 90.0 270.0\n' % line)
+        ofile.write('RESTRAIN-TORSION %s 1.0 120.0 240.0\n' % line)
 
 def main():
     import sys
