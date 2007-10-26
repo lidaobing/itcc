@@ -25,11 +25,10 @@ for each N2 on the circle of N2
 '''
 
 import math
-import exceptions
 from itcc.ccs2 import pyramid, sidechain, rtbis
 from itcc.core import tools
 
-class Error(exceptions.Exception):
+class Error(Exception):
     pass
 
 class Mezeipro2:
