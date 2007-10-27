@@ -1,5 +1,6 @@
 2007-10-27  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/ccs2/loopclosure.py: remove duplicated code.
 	* itcc/tools/tordiff.py: add '-F', '-v', '-s'.
 	* itcc/molecule/rmsd.py: add '-s'.
 

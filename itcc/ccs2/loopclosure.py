@@ -516,31 +516,17 @@ class LoopClosure(object):
             if ene > max(self.keepbound, self.searchbound):
                 res = -2
 
-        # FIXME: remove duplicate codes
         if res is None:
-            initidx = bisect.bisect(self.enes, (ene,))
-            for idx in range(initidx-1, -1, -1):
+            for idx in range(bisect.bisect(self.enes, (ene-self.eneerror,)),
+                             bisect.bisect(self.enes, (ene+self.eneerror,))):
                 ene2 = self.enes[idx][0]
-                if round(ene - ene2, 4) > self.eneerror:
-                    break
                 taskidx = self.enes[idx][1]
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
                 mol2.coords[:] = coords2
                 if self._check_tor(mol, mol2):
                     res = taskidx
-
-        if res is None:                
-            for idx in range(initidx, len(self.enes)):
-                ene2 = self.enes[idx][0]
-                if round(ene2 - ene, 4) > self.eneerror:
                     break
-                taskidx = self.enes[idx][1]
-                coords2 = self._tasks[taskidx][0]
-                mol2 = self.seedmol.copy()
-                mol2.coords[:] = coords2
-                if self._check_tor(mol, mol2):
-                    res = taskidx
 
         if res is None:
             res = -1
