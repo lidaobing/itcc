@@ -28,13 +28,18 @@ def rmsd_common(mol1, mol2, atoms1=None, atoms2=None):
         coords2 = mol2.coords.take(tuple(atoms2), axis=0)
     return (coords1, coords2)
 
-def rmsd(mol1, mol2, atoms1=None, atoms2=None, mirror=False):
+def rmsd(mol1, mol2, atoms1=None, atoms2=None, mirror=False, loop_step=None):
     coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
+    coords2s = [coords2]
     if mirror:
-        return min(_rmsd.rmsd(coords1, coords2),
-                   _rmsd.rmsd(coords1, -coords2))
-    else:
-        return _rmsd.rmsd(coords1, coords2)
+        coords2s.append(-coords2)
+    if loop_step is not None:
+        for t in coords2s[:]:
+            for i in range(loop_step, len(coords2), loop_step):
+                idx = tuple(range(i, len(coords2)) + range(i))
+                coords2s.append(t.take(idx, axis=0))
+                
+    return min([_rmsd.rmsd(coords1, x) for x in coords2s])
 
 def rmsd2(mol1, mol2, atoms1=None, atoms2=None, mirror=False):
     coords1, coords2 = rmsd_common(mol1, mol2, atoms1, atoms2)
@@ -82,6 +87,10 @@ def main_common(rmsd_func):
     parser.add_option('-C', "--atoms2file", dest="atoms2file",
                       help="read the selected atoms from file",
                       metavar="FILE")
+    parser.add_option('-s', '--loop-step', 
+                      dest='loop_step',
+                      type='int',
+                      help='logical symmetry: loop step')
     parser.add_option('-m', '--mirror',
                       dest='mirror',
                       action='store_true',
@@ -137,7 +146,8 @@ def main_common(rmsd_func):
             atoms2_new = [x for x in atoms2_new if mol2.atoms[x].no != 1]
         else:
             atoms2_new = atoms2
-        print rmsd_func(mol1, mol2, atoms1, atoms2_new, options.mirror)
+        print rmsd_func(mol1, mol2, atoms1, atoms2_new, 
+                        options.mirror, options.loop_step)
 
 def main_rmsd():
     main_common(rmsd)
