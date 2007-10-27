@@ -364,5 +364,6 @@ class NewtonMol(object):
             os.remove(ifname)
         return newmol, result
     
-_newton_mol_inst = NewtonMol()
-newton_mol = _newton_mol_inst.newton_mol
+    __call__ = newton_mol
+    
+newton_mol = NewtonMol()

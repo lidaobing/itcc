@@ -1,9 +1,11 @@
 2007-10-27  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/tinker/tinker.py: newton_mol's type from bindmthod to object
 	* itcc/ccs2/loopclosure.py: 
 	  + remove duplicated code.
 	  + keep the lowest energy one of the duplicated result.
 	  + change default eneerror to 0.00015.
+	  + min_func is dump-able.
 	* itcc/tools/tordiff.py: add '-F', '-v', '-s'.
 	* itcc/molecule/rmsd.py: add '-s'.
 

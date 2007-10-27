@@ -181,7 +181,6 @@ class LoopClosure(object):
         odict = self.__dict__.copy()
         del odict['tmp_mtxyz_file']
         del odict['mutex']
-        del odict['min_func']
         return odict
 
     def __setstate__(self, dicts):
@@ -200,14 +199,6 @@ class LoopClosure(object):
         else:
             self.tmp_mtxyz_file = None
         self.mutex = threading.Lock()
-
-        if self.hasattr('min_algo'):
-            self.min_func = self.min_algo.newton_mol
-        else:
-            min_func_dict = {'newton': tinker.newton_mol,
-                             'minimize': tinker.minimize_mol,
-                             'optimize': tinker.optimize_mol}
-            self.min_func = min_func_dict[self.min_method]
 
     def getkeepbound(self):
         if self.keeprange < 0:
