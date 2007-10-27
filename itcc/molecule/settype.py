@@ -45,7 +45,7 @@ def main():
         ifile = sys.stdin
         if fname != '-':
             ifile = file(fname)
-        settype2(ifile, types, sys.stdout)
+        settype2(ifile, types, file(ifile.name+'_2', 'w'))
 
 if __name__ == '__main__':
     main()
