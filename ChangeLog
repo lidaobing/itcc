@@ -1,5 +1,6 @@
 2007-10-27  LI Daobing  <lidaobing@gmail.com>
 
+	* itcc/tools/tordiff.py: add '-F', '-v', '-s'.
 	* itcc/molecule/rmsd.py: add '-s'.
 
 2007-10-17  LI Daobing  <lidaobing@gmail.com>
