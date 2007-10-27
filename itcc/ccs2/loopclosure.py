@@ -61,7 +61,7 @@ class LoopClosure(object):
                     ('log_level', int, 1),
                     ('keeprange', float, -1.0),
                     ('searchrange', float, -1.0),
-                    ('eneerror', float, 0.0001),
+                    ('eneerror', float, 0.00015),
                     ('legal_min_ene', float, -100000),
                     ('torerror', float, 10.0),
                     ('minimal_invalid_energy_before_minimization', float, 100000.0),
