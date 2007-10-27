@@ -1,6 +1,8 @@
 2007-10-27  LI Daobing  <lidaobing@gmail.com>
 
-	* itcc/ccs2/loopclosure.py: remove duplicated code.
+	* itcc/ccs2/loopclosure.py: 
+	  + remove duplicated code.
+	  + keep the lowest energy one of the duplicated result.
 	* itcc/tools/tordiff.py: add '-F', '-v', '-s'.
 	* itcc/molecule/rmsd.py: add '-s'.
 

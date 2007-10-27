@@ -491,6 +491,8 @@ class LoopClosure(object):
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
+                if newene < self.enes[idx][0]:
+                    self.update_ene_task(idx, newene, newmol.coords)
                 self.log(logstr + '(%i)\n' % (idx + 1))
             else:
                 self.log(logstr + '\n')
@@ -504,6 +506,17 @@ class LoopClosure(object):
                 self.mutex.release()
                 if finished:
                     return
+    
+    def update_ene_task(self, eneidx, newene, newcoord):
+        '''sometime we find a duplicate record but with a lower energy,
+        we need to replace the archived record with this record'''
+        self.mutex.acquire()
+        old_rec = self.enes[eneidx]
+        del self.enes[eneidx]
+        bisect.insort(self.enes, (newene, old_rec[1]))
+        taskidx = old_rec[1]
+        self._tasks[taskidx] = (newcoord, newene)
+        self.mutex.release()
 
     def eneidx(self, mol, ene):
         '''return the taskidx
