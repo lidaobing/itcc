@@ -61,7 +61,7 @@ def main():
     if file_list is None:
         files = [tuple(args)]
     else:
-        files = [tuple(line.split()) for line in file_list.readlines()]
+        files = [tuple(line.split()) for line in file(file_list).readlines()]
     
     for fname1, fname2 in files:
         ifile1 = sys.stdin

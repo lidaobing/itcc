@@ -1,7 +1,7 @@
 # $Id$
 
 class MezeiBase(object):
-    
+     
     
     def R6(self, coords, atmidx, dismat, shakedata):
         '''Wrapped R6 algorithm, include R6 and shakeH'''
