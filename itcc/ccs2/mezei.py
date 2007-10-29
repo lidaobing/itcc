@@ -11,13 +11,13 @@ import numpy
 from itcc.core import tools
 from itcc.ccs2.config import config
 from itcc.ccs2.pyramid import pyramid
-from itcc.ccs2 import sidechain, rtbis
+from itcc.ccs2 import sidechain, rtbis, mezeibase
 
 __revision__ = '$Rev$'
 __all__ = ["R6", "r6_base"]
 
 
-class Mezei(object):
+class Mezei(mezeibase.MezeiBase):
     def __init__(self):
         self.min_abs_dist = 1.0
 
