@@ -1,8 +1,9 @@
 import sys
 
 def multi(ifile1, ifile2, ofile):
+    x2s = ifile2.read().split()
     for x1 in ifile1.read().split():
-        for x2 in ifile2.read().split():
+        for x2 in x2s:
             ofile.write('%s %s\n' % (x1, x2))
 
 def main():
