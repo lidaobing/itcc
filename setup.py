@@ -75,6 +75,7 @@ entry_points = {
         'itcc-mtxyz2txyz = itcc.tools.mtxyz2txyz:main',
         'itcc-mtxyzrg = itcc.tools.mtxyzrg:main',
         'itcc-mtxyzstat = itcc.tools.mtxyzstat:main',
+        'itcc-multi = itcc.tools.multi:main',
         'itcc-omega = itcc.tools.omega:main',
         'itcc-omega2restrain = itcc.tools.omega2restrain:main',
         'itcc-onecolumn = itcc.tools.onecolumn:main',
