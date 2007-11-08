@@ -7,9 +7,7 @@ import numpy
 
 from itcc.molecule import read
 
-def tordiff(mol1, mol2, idxs, step=None):
-    data1 = numpy.array([mol1.calctor(idx[0], idx[1], idx[2], idx[3]) for idx in idxs])
-    data2 = numpy.array([mol2.calctor(idx[0], idx[1], idx[2], idx[3]) for idx in idxs])
+def tordiff(data1, data2, idxs, step=None):
     if step is None:
         data2s = [data2]
     else:
@@ -27,6 +25,18 @@ def usage(ofile):
     usage += '  -s  logical symmetry: step\n'
     usage += '  -v  verbose\n'
     ofile.write(usage)
+
+def cached_fname2tors(fname, idxs, cache):
+    if fname in cache:
+        return cache[fname]
+
+    ifile1 = sys.stdin
+    if fname != '-':
+        ifile1 = file(fname)
+    mol1 = read.readxyz(ifile1)
+    data1 = numpy.array([mol1.calctor(idx[0], idx[1], idx[2], idx[3]) for idx in idxs])
+    cache[fname] = data1
+    return data1
 
 def main():
     import getopt
@@ -63,20 +73,14 @@ def main():
     else:
         files = [tuple(line.split()) for line in file(file_list).readlines()]
     
+    cache = {}
     for fname1, fname2 in files:
-        ifile1 = sys.stdin
-        if fname1 != '-':
-            ifile1 = file(fname1)
-        mol1 = read.readxyz(ifile1)
-        
-        ifile2 = sys.stdin
-        if fname2 != '-':
-            ifile2 = file(fname2)
-        mol2 = read.readxyz(ifile2)
+        tors1 = cached_fname2tors(fname1, tors, cache)
+        tors2 = cached_fname2tors(fname2, tors, cache)
             
-        res = tordiff(mol1, mol2, tors, step)
+        res = tordiff(tors1, tors2, step)
         if verbose:
-            print ifile1.name, ifile2.name,
+            print fname1, fname2,
         print res
 
 if __name__ == '__main__':
