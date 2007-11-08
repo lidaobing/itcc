@@ -5,7 +5,7 @@
 # b c rmsd(b, c)
 
 import sys
-from itcc.molecule import _rmsd
+from itcc.molecule import read, _rmsd
 from itcc.molecule import mtxyz
 from itcc.core import frame
 
@@ -13,6 +13,17 @@ __revision__ = '$Rev$'
 __all__ = ['rmsd']
 
 debug = False
+
+def cache_mol(fname1, mol_cache):
+    if fname1 in mol_cache:
+        mol1 = mol_cache[fname1]
+    else:
+        ifile1 = sys.stdin
+        if fname1 != '-':
+            ifile1 = file(fname1)
+        mol1 = read.readxyz(ifile1)
+        mol_cache[fname1] = mol1
+    return mol1
 
 def rmsd_common(mol1, mol2, atoms1=None, atoms2=None):
     if debug:
@@ -141,20 +152,14 @@ def main_common(rmsd_func):
 
     from itcc.molecule import read
 
+    mol_cache = {}
     for filepair in filelists:
         fname1 = filepair[0]
         fname2 = filepair[1]
         if options.verbose:
             print fname1, fname2,
-        ifile1 = sys.stdin
-        if fname1 != '-':
-            ifile1 = file(fname1)
-        mol1 = read.readxyz(ifile1)
-
-        ifile2 = sys.stdin
-        if fname2 != '-':
-            ifile2 = file(fname2)
-        mol2 = read.readxyz(ifile2)
+        mol1 = cache_mol(fname1, mol_cache)
+        mol2 = cache_mol(fname2, mol_cache)
 
         if options.no_h:
             if atoms1 is None:
