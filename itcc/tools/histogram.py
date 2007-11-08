@@ -19,8 +19,10 @@ def histogram(ifile, base, step):
                 res[t] = 0
             res[t] += 1
 
+    total = 0
     for k, v in sorted(res.items()):
-        print base + step * k, '~', base + step * (k+1), v
+        total += v
+        print base + step * k, '~', base + step * (k+1), v, total
 
 def usage(ofile):
     import os.path

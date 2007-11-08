@@ -62,7 +62,7 @@ def main_common(rmsd_func):
     from optparse import OptionParser
     usage = "\n" \
             "    %prog [options] xyzfname1 xyzfname2\n" \
-            "    %prog [options] mtxyzfname\n" \
+            "    %prog [options] -F FILE\n" \
             "    %prog -h"
     parser = OptionParser(usage=usage)
     parser.set_default("no_h", False)
@@ -87,6 +87,9 @@ def main_common(rmsd_func):
     parser.add_option('-C', "--atoms2file", dest="atoms2file",
                       help="read the selected atoms from file",
                       metavar="FILE")
+    parser.add_option('-F', "--files", dest="files",
+                      help="read the compare file lists from FILE",
+                      metavar="FILE")
     parser.add_option('-s', '--loop-step', 
                       dest='loop_step',
                       type='int',
@@ -95,9 +98,17 @@ def main_common(rmsd_func):
                       dest='mirror',
                       action='store_true',
                       help='also consider the mirror molecule')
+    parser.add_option('-v', '--verbose',
+                      dest='verbose',
+                      action='store_true',
+                      help='be verbose')
     (options, args) = parser.parse_args()
 
-    if len(args) not in (1, 2):
+    if len(args) == 2 and options.files is None:
+        pass
+    elif len(args) == 0 and options.files:
+        pass
+    else:
         parser.error("incorrect number of arguments")
 
     if (options.atoms and options.atomsfile) or \
@@ -122,22 +133,34 @@ def main_common(rmsd_func):
     if options.atoms2:
         atoms2 = frame.parseframe(options.atoms2)
 
-    from itcc.molecule import read
-    ifiles = []
-    for arg in args:
-        if arg == '-':
-            ifile = sys.stdin
-        else:
-            ifile = file(arg)
-        ifiles.append(ifile)
-    mol1 = read.readxyz(ifiles[0])
-    if options.no_h:
-        if atoms1 is None:
-            atoms1 = range(len(mol1))
-        atoms1 = [x for x in atoms1 if mol1.atoms[x].no != 1]
+    filelists = []
+    if options.files is not None:
+        filelists = [line.split() for line in file(options.files).readlines()]
+    else:
+        filelists = [args]
 
-            
-    for mol2 in mtxyz.Mtxyz(ifiles[-1]):
+    from itcc.molecule import read
+
+    for filepair in filelists:
+        fname1 = filepair[0]
+        fname2 = filepair[1]
+        if options.verbose:
+            print fname1, fname2,
+        ifile1 = sys.stdin
+        if fname1 != '-':
+            ifile1 = file(fname1)
+        mol1 = read.readxyz(ifile1)
+
+        ifile2 = sys.stdin
+        if fname2 != '-':
+            ifile2 = file(fname2)
+        mol2 = read.readxyz(ifile2)
+
+        if options.no_h:
+            if atoms1 is None:
+                atoms1 = range(len(mol1))
+            atoms1 = [x for x in atoms1 if mol1.atoms[x].no != 1]
+
         if options.no_h:
             if atoms2 is None:
                 atoms2_new = range(len(mol2))
