@@ -2,7 +2,7 @@
 
 import math
 
-from itcc.molecule import read
+from itcc.molecule import mtxyz
 
 def omega_type(mol, idxs):
     res = ''
@@ -43,10 +43,10 @@ def main():
         ifile = sys.stdin
         if fname != '-':
             ifile = file(fname)
-        mol = read.readxyz(ifile)
-        if verbose:
-            print fname,
-        print omega_type(mol, idxs)
+        for mol in mtxyz.Mtxyz(ifile):
+            if verbose:
+                print fname,
+            print omega_type(mol, idxs)
                         
 if __name__ == '__main__':
     main()
