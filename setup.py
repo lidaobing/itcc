@@ -60,6 +60,7 @@ entry_points = {
         'itcc-ene2agr = itcc.tools.ene2agr:main',
         'itcc-enestep2countstep = itcc.tools.enestep2countstep:main',
         'itcc-findneighbour = itcc.ccs2.confsearch2:main',
+        'itcc-floatformat = itcc.tools.floatformat:main',
         'itcc-gjf2xyz = itcc.molecule.gjf2xyz:main',
         'itcc-histogram = itcc.tools.histogram:main',
         'itcc-idx-verify = itcc.tools.idx_verify:main',
