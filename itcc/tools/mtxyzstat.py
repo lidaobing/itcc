@@ -4,6 +4,8 @@ __revision__ = '$Rev$'
 
 import math
 import sys
+
+from itcc.core import IgnoreEpipe
 from itcc.molecule import mtxyz
 
 def readidx(ifile):
@@ -16,9 +18,9 @@ def readidx(ifile):
         result.append(tuple([int(word) - 1 for word in words]))
     return result
 
-def print_idx(idxs):
-    print 'Name',
-    print '\t'.join(['-'.join([str(x+1) for x in idx]) for idx in idxs])
+def print_idx(idxs, ofile):
+    ofile.write('Name ')
+    ofile.write('\t'.join(['-'.join([str(x+1) for x in idx]) for idx in idxs]) + '\n')
 
 def mol_calc_wrap(mol, idx):
     if len(idx) == 2:
@@ -30,14 +32,14 @@ def mol_calc_wrap(mol, idx):
     else:
         assert False
 
-def molstat(mol, idxs):
+def molstat(mol, idxs, ofile):
     result = [mol_calc_wrap(mol, idx) for idx in idxs]
-    print '\t'.join([str(x) for x in result])
-    sys.stdout.flush()
+    ofile.write('\t'.join([str(x) for x in result]) + '\n')
+    ofile.flush()
 
-def mtxyzstat(mtxyzfname, idxs):
+def mtxyzstat(mtxyzfname, idxs, ofile):
     for mol in mtxyz.Mtxyz(file(mtxyzfname)):
-        molstat(mol, idxs)
+        molstat(mol, idxs, ofile)
 
 def main():
     from optparse import OptionParser
@@ -67,13 +69,14 @@ def main():
 
     idxs = readidx(idx_ifile)
 
+    ofile = IgnoreEpipe(sys.stdout)
     if options.print_header:
-        print_idx(idxs)
+        print_idx(idxs, ofile)
 
     for arg in args:
         if options.verbose:
-            print arg,
-        mtxyzstat(arg, idxs)
+            ofile.write('%s ' % arg)
+        mtxyzstat(arg, idxs, ofile)
 
 if __name__ == '__main__':
     main()

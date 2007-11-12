@@ -2,6 +2,8 @@
 
 import sys
 
+from itcc.core import IgnoreEpipe
+
 def relative(ifile, ofile, verbose, base=None, number=False):
     data = []
     for line in ifile:
@@ -13,19 +15,14 @@ def relative(ifile, ofile, verbose, base=None, number=False):
         
     idx = 1
     
-    try:
-        for x in data:
-            if number:
-                ofile.write('%i\t' % idx)
-                idx += 1
-            if verbose:
-                ofile.write('%f\t%f\n' % (x, x-base))
-            else:
-                ofile.write('%f\n' % (x-base))
-    except IOError, e:
-        import errno
-        if e.errno != errno.EPIPE:
-            raise
+    for x in data:
+        if number:
+            ofile.write('%i\t' % idx)
+            idx += 1
+        if verbose:
+            ofile.write('%f\t%f\n' % (x, x-base))
+        else:
+            ofile.write('%f\n' % (x-base))
 
 def main():
     verbose = False
@@ -52,7 +49,7 @@ def main():
     if args[0] != '-':
         ifile = file(args[0])
     
-    ofile = sys.stdout
+    ofile = IgnoreEpipe(sys.stdout)
     
     relative(ifile, ofile, verbose, base, number)
 
