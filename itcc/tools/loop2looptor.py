@@ -2,6 +2,7 @@
 
 def loop2looptor(ifile, ofile, l=4):
     a = [int(x) for x in ifile.read().split()]
+    a = a[-1:] + a[:-1]
     a += a
     formatstr = ('%i ' * l)[:-1] + '\n'
     for i in range(len(a)/2):
