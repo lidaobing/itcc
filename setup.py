@@ -1,13 +1,10 @@
 #!/usr/bin/env python2.4
-# $Id$
 
 import os
 import sys
 import glob
 from setuptools import setup, find_packages
 from distutils.core import Extension
-
-__revision__ = '$Rev$'
 
 name = 'itcc'
 version = '0.8.2.dev'
@@ -44,6 +41,7 @@ entry_points = {
         'itcc-calcangle = itcc.tools.calcangle:main',
         'itcc-catordiff = itcc.ccs2.catordiff:main',
         'itcc-ccslog2enestep = itcc.tools.ccslog2enestep:main',
+        'itcc-ccslog2major = itcc.tools.ccslog2major:main',
         'itcc-chiral = itcc.molecule.chiral:main',
         'itcc-cmpxyztop = itcc.molecule.cmpxyztop:main',
         'itcc-columnmean = itcc.tools.columnmean:main',
