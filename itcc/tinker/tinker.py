@@ -31,7 +31,8 @@ def _which(cmdname):
         return False
 
 class Error(RuntimeError):
-    pass
+    def __init__(self, s):
+        RuntimeError.__init__(self, 'cwd: %s\n%s' % (os.getcwd(), s))
 
 class _Prepare:
     def __init__(self, curdir_):
@@ -97,8 +98,10 @@ def constrain(ifname, param = None):
     return lines
 
 
-def _writemoltotempfile(mol):
-    ofile = tempfile.NamedTemporaryFile()
+def _writemoltotempfile(mol, dir=None):
+    if dir is None:
+        dir = os.getcwd()
+    ofile = tempfile.NamedTemporaryFile(dir=dir)
     write.writexyz(mol, ofile)
     ofile.flush()
     return ofile
