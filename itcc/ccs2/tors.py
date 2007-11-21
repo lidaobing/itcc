@@ -1,5 +1,4 @@
-import Numeric
-import psyco
+import numpy
 import bisect
 
 criterion = 1
@@ -65,7 +64,6 @@ class TorsSet:
 
     def distance(item1, item2):
         return max([abs(x1-x2) for x1, x2 in zip(item1, item2)])
-    psyco.bind(distance)
     distance = staticmethod(distance)
     
 
@@ -73,7 +71,7 @@ class Tors(object):
     __slots__ = ['_data', '_sortdata']
 
     def __init__(self, data):
-        self._data = Numeric.array(data)
+        self._data = numpy.array(data)
         self._sortdata = [abs(x) for x in data]
         self._sortdata.sort()
         self._sortdata.insert(0, -self._sortdata[0])
@@ -82,7 +80,7 @@ class Tors(object):
     def __eq__(self, other):
         n = len(self._data)
         odata = other._data
-        doubledata = Numeric.array(list(self._data) * 2)
+        doubledata = numpy.array(list(self._data) * 2)
         criter = criterion
 
         for x in odata:
@@ -98,7 +96,6 @@ class Tors(object):
                max(abs(doubledata[i+n:i:-1] + odata)) < criter:
                 return True
         return False
-    psyco.bind(__eq__)
 
     def __str__(self):
         return str(self._data)
