@@ -34,6 +34,7 @@ test_suite = 'tests'
 entry_points = {
     'console_scripts': [
         'itcc = itcc.itcc_main:main',
+        'itcc-addmethyl = itcc.tools.addmethyl:main',
         'itcc-almostequaldiff = itcc.tools.almostequaldiff:main',
         'itcc-autodock-charge-bury = itcc.tools.autodock_charge_bury:main',
         'itcc-autodock-charge-bury2 = itcc.tools.autodock_charge_bury2:main',
