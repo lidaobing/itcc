@@ -43,12 +43,20 @@ class Molecule(object):
     atoms = property(get_atoms)
 
     def get_coords(self):
-        return self._coords
+        res = self._coords.view()
+        res.setflags(write=False)
+        return res
     def set_coords(self, val):
         if val.shape != (len(self), 3):
             raise ValueError("wrong array shape: %s" % val.shape)
-        self._coords = numpy.array(val)
+        if isinstance(val, numpy.ndarray):
+            self._coords = val.copy()
+        else:
+            self._coords = numpy.array(val)
     coords = property(get_coords, set_coords)
+
+    def change_coord(self, idx, coord):
+        self._coords[idx] = coord
 
     def get_connect(self):
         return self._connect
@@ -86,8 +94,8 @@ class Molecule(object):
             pos = len(self)
         self.atoms.insert(pos, atom)
         self._coords = numpy.resize(self.coords, (len(self.atoms), 3))
-        self.coords[pos+1:,:] = self.coords[pos:-1,:]
-        self.coords[pos] = numpy.array(coord)
+        self._coords[pos+1:,:] = self.coords[pos:-1,:]
+        self._coords[pos] = numpy.array(coord)
         self._connect = None
 
     # connect system

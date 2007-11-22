@@ -468,7 +468,7 @@ class LoopClosure(object):
         self.mutex.acquire() # r self.tasks
         ene = self._tasks[taskidx][1]
         mol = self.seedmol.copy()
-        mol.coords[:] = self._tasks[taskidx][0]
+        mol.coords = self._tasks[taskidx][0]
         self.mutex.release()
         self.log('\n')
         head = ' CCS2 Local Search'
@@ -482,8 +482,8 @@ class LoopClosure(object):
                 continue
             idx = self.eneidx(newmol, newene)
             if idx >= 0:
-                if newene < self.enes[idx][0]:
-                    self.update_ene_task(idx, newene, newmol.coords)
+#                 if newene < self.enes[idx][0]:
+#                     self.update_ene_task(idx, newene, newmol.coords)
                 self.log(logstr + '(%i)\n' % (idx + 1))
             else:
                 self.log(logstr + '\n')
@@ -506,7 +506,8 @@ class LoopClosure(object):
         del self.enes[eneidx]
         bisect.insort(self.enes, (newene, old_rec[1]))
         taskidx = old_rec[1]
-        self._tasks[taskidx] = (newcoord, newene)
+        self._tasks[taskidx] = (newcoord.copy(), newene)
+        self._tasks[taskidx][0].setflags(write=False)
         self.mutex.release()
 
     def eneidx(self, mol, ene):
@@ -521,13 +522,13 @@ class LoopClosure(object):
                 res = -2
 
         if res is None:
-            for idx in range(bisect.bisect(self.enes, (ene-self.eneerror,)),
-                             bisect.bisect(self.enes, (ene+self.eneerror,))):
+            for idx in range(bisect.bisect_left(self.enes, (ene-self.eneerror,)),
+                             bisect.bisect_right(self.enes, (ene+self.eneerror,))):
                 ene2 = self.enes[idx][0]
                 taskidx = self.enes[idx][1]
                 coords2 = self._tasks[taskidx][0]
                 mol2 = self.seedmol.copy()
-                mol2.coords[:] = coords2
+                mol2.coords = coords2
                 if self._check_tor(mol, mol2):
                     res = taskidx
                     break
@@ -539,7 +540,8 @@ class LoopClosure(object):
 
     def addtask(self, mol, ene):
         self.mutex.acquire()
-        self._tasks.append((mol.coords, ene))
+        self._tasks.append((mol.coords.copy(), ene))
+        self._tasks[-1][0].setflags(write=False)
         taskidx = len(self._tasks) - 1
         bisect.insort(self.enes, (ene, taskidx))
         self.log('    Potential Surface Map       Minimum '
@@ -628,7 +630,7 @@ class LoopClosure(object):
                 in enumerate(getr6result(coords, r6, dismat, self.shakedata)):
             newmol = mol.copy()
             for idx, coord in molresult.items():
-                newmol.coords[idx] = coord
+                newmol.change_coord(idx, coord)
             rmol, rene = self._minimizemol(newmol)
             if rmol is None:
                 continue
@@ -642,6 +644,8 @@ class LoopClosure(object):
                 return
 
     def reorganizeresults(self):
+        logging.debug('LoopClosure.enes: %s' % self.enes)
+        logging.debug('LoopClosure.tasks: %s' % [(id(x[0]), x[1]) for x in self._tasks])
         self.tmp_mtxyz_file.seek(0)
         oldmols = mtxyz.Mtxyz(self.tmp_mtxyz_file)
         newidxs = [ene[1] for ene in self.enes 
@@ -731,10 +735,16 @@ class LoopClosure(object):
     def _check_tor(self, mol1, mol2):
         tors1 = [mol1.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
         tors2 = [mol2.calctor(x[0], x[1], x[2], x[3]) for x in self.cmptors]
-        return tordiff.torsdiff(tors1, tors2, 
+        diff = tordiff.torsdiff(tors1, tors2, 
                                 self.is_achiral, 
                                 self.head_tail, 
-                                self.loopstep) < self.torerror_radian
+                                self.loopstep)
+        res = diff < self.torerror_radian
+#         if res:
+#             logging.info('LoopClosure._check_tor: tors1: %s' % tors1)
+#             logging.info('LoopClosure._check_tor: tors2: %s' % tors2)
+#             logging.info('LoopClosure._check_tor: diff: %s < %s' % (diff, self.torerror_radian))
+        return res
 
     def print_copyright(self):
         msg = 'CCS2 conformational search (itcc ' + itcc.__version__ + ')\n'
