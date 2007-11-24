@@ -7,12 +7,14 @@ def random_protein_input(ifile, ofile):
 
     for i in range(3, len(lines)):
         line = lines[i]
-        words = line.split()
-        if not words: break
+        line = line.strip()
+        if not line:
+            break
+        words = line.split(' ', 3)
         ofile.write("%s %s %s %s\n" % (words[0],
                                        random.uniform(-180, 180),
                                        random.uniform(-180, 180),
-                                       180.0))
+                                       words[3]))
 
     ofile.writelines(lines[i:])
 
