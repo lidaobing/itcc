@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 from distutils.core import Extension
 
 name = 'itcc'
-version = '0.8.2.dev'
+version = '0.9.1'
 description = 'my collection of scripts on computational chemistry'
 author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
