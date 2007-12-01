@@ -1,7 +1,3 @@
-# $Id$
-
-__revision__ = '$Rev$'
-
 import sys
 from itcc.molecule import read, write
 
@@ -43,4 +39,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
