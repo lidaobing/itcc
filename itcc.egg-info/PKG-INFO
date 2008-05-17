@@ -1,0 +1,20 @@
+Metadata-Version: 1.0
+Name: itcc
+Version: 0.9.2
+Summary: my collection of scripts on computational chemistry
+Home-page: http://pypi.python.org/pypi/itcc
+Author: LI Daobing
+Author-email: lidaobing@gmail.com
+License: OSI Approved :: GNU General Public License (GPL)
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: Other/Proprietary License
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: C
+Classifier: Programming Language :: C++
+Classifier: Topic :: Scientific/Engineering :: Chemistry
