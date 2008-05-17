@@ -2,3 +2,4 @@
 *.so
 /build
 /itcc.egg-info
+dist

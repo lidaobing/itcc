@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/env python
 
 import os
 import sys
@@ -11,7 +11,7 @@ version = '0.9.1'
 description = 'my collection of scripts on computational chemistry'
 author = 'LI Daobing'
 author_email = 'lidaobing@gmail.com'
-url = 'http://www.lidaobing.cn/itcc/'
+url = 'http://pypi.python.org/pypi/itcc'
 packages = [x for x in find_packages() if x.startswith('itcc')]
 scripts = [x for x in glob.glob('scripts/*') if not x.endswith('~')]
 
@@ -127,7 +127,7 @@ classifiers = [
         'Programming Language :: C++',
         'Topic :: Scientific/Engineering :: Chemistry',
         ]
-license_ = 'Other/Proprietary License'
+license_ = 'OSI Approved :: GNU General Public License (GPL)'
 
 def main():
     setup(
