@@ -1,3 +1,0 @@
-itcc/core/ctools.so
-itcc/tools/cpptools.so
-itcc/molecule/_rmsd.so
